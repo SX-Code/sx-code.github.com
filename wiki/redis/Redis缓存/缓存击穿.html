@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.14.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Redis：缓存击穿 - swcode</title>
+
+  
+    <meta name="description" content="缓存击穿问题也叫热点Key问题，就是一个被高并发访问并且缓存重建业务较复杂的key突然失效了，无数的请求访问会在瞬间给数据库带来巨大冲击。 解决方案 互斥锁  逻辑过期     KEY VALUE    heima:user:1 {name:”Jack”, age:”21”, expire:”114514114514”}       优缺点   解决方案 优点 缺点    互斥锁 没有额外的内存消">
+<meta property="og:type" content="website">
+<meta property="og:title" content="缓存击穿">
+<meta property="og:url" content="http://example.com/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="缓存击穿问题也叫热点Key问题，就是一个被高并发访问并且缓存重建业务较复杂的key突然失效了，无数的请求访问会在瞬间给数据库带来巨大冲击。 解决方案 互斥锁  逻辑过期     KEY VALUE    heima:user:1 {name:”Jack”, age:”21”, expire:”114514114514”}       优缺点   解决方案 优点 缺点    互斥锁 没有额外的内存消">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/image17.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/image18.png">
+<meta property="article:published_time" content="2022-11-07T11:17:04.080Z">
+<meta property="article:modified_time" content="2022-11-07T11:17:04.080Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/image17.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+<header class="header">
+
+<div class="logo-wrap wiki"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><div class="main" ff="title">Redis</div><div class="sub cap">通过项目学习Reids的各种应用</div></a></div>
+</header>
+
+
+<div class="widgets">
+
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Redis常见命令</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis缓存</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98.html"><span class="toc-text">什么是缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5.html"><span class="toc-text">缓存更新策略</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F.html"><span class="toc-text">缓存穿透</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9.html"><span class="toc-text">缓存雪崩</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF.html"><span class="toc-text">缓存击穿</span></a><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">优缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%93%8D"><span class="toc-text">代码实操</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E8%A7%A3%E5%86%B3"><span class="toc-text">互斥锁解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%87%E6%9C%9F%E8%A7%A3%E5%86%B3"><span class="toc-text">逻辑过期解决</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%B7%A5%E5%85%B7%E5%B0%81%E8%A3%85.html"><span class="toc-text">缓存工具封装</span></a></div></div></div>
+
+
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-07T11:17:04.080Z">2022-11-07</time></div></div>
+
+  <article class='content md wiki'>
+  <h1 class="article-title"><span>缓存击穿</span></h1>
+  <p>缓存击穿问题也叫热点Key问题，就是一个被高并发访问并且缓存重建业务较复杂的key突然失效了，无数的请求访问会在瞬间给数据库带来巨大冲击。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li><p>互斥锁</p>
+</li>
+<li><p>逻辑过期 </p>
+<table>
+<thead>
+<tr>
+<th align="center">KEY</th>
+<th align="center">VALUE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">heima:user:1</td>
+<td align="center">{name:”Jack”, age:”21”, expire:”114514114514”}</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/image17.png" fancybox="true"/></div></div>
+
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><table>
+<thead>
+<tr>
+<th align="center">解决方案</th>
+<th>优点</th>
+<th align="left">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">互斥锁</td>
+<td>没有额外的内存消耗<br />保证一致性<br />实现简单</td>
+<td align="left">线程需要等待，性能受影响 <br />可能有死锁风险</td>
+</tr>
+<tr>
+<td align="center">逻辑过期</td>
+<td>线程无需等待，性能较好</td>
+<td align="left">不保证一致性<br />有额外的内存消耗<br />实现复杂</td>
+</tr>
+</tbody></table>
+<p><strong>互斥锁</strong></p>
+<ul>
+<li>优点<ul>
+<li>没有额外的内存消耗</li>
+<li>保证一致性</li>
+<li>实现简单</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>线程需要等待，性能受影响</li>
+<li>可能有死锁风险</li>
+</ul>
+</li>
+</ul>
+<p><strong>逻辑过期</strong></p>
+<ul>
+<li>优点<ul>
+<li>线程无需等待，性能较好</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>不保证一致性</li>
+<li>有额外的内存消耗</li>
+<li>实现复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="代码实操"><a href="#代码实操" class="headerlink" title="代码实操"></a>代码实操</h3><h4 id="互斥锁解决"><a href="#互斥锁解决" class="headerlink" title="互斥锁解决"></a>互斥锁解决</h4><blockquote>
+<p>利用互斥锁解决缓存击穿问题</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Shop <span class="title function_">queryWithMutex</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> RedisConstants.CACHE_SHOP_KEY + id;</span><br><span class="line">    <span class="comment">// 从redis查询商铺缓存</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">shopJson</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">    <span class="comment">// 判断是否存在</span></span><br><span class="line">    <span class="keyword">if</span> (StrUtil.isNotBlank(shopJson)) &#123;</span><br><span class="line">        <span class="comment">// 存在</span></span><br><span class="line">        <span class="type">Shop</span> <span class="variable">shop</span> <span class="operator">=</span> JSONUtil.toBean(shopJson, Shop.class);</span><br><span class="line">        <span class="keyword">return</span> shop;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断命中的是否为空值 =&gt; shopJson == &quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;&quot;</span>.equals(shopJson)) &#123;</span><br><span class="line">        <span class="comment">// 返回错误信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 实现缓存重建</span></span><br><span class="line">    <span class="comment">// 获取互斥锁</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> RedisConstants.LOCK_SHOP_KEY + id;</span><br><span class="line">    <span class="type">Shop</span> <span class="variable">shop</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">isLock</span> <span class="operator">=</span> tryLock(lockKey);</span><br><span class="line">        <span class="keyword">if</span> (!isLock) &#123;</span><br><span class="line">            <span class="comment">// 失败，休眠并重试</span></span><br><span class="line">            Thread.sleep(<span class="number">50</span>);</span><br><span class="line">            <span class="keyword">return</span> queryWithMutex(id);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 成功，查询数据库</span></span><br><span class="line">        shop = getById(id);</span><br><span class="line">        <span class="keyword">if</span> (shop != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 存在，写入redis</span></span><br><span class="line">            stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), RedisConstants.CACHE_SHOP_TTL, TimeUnit.MINUTES);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 不存在，写入空值，解决内存穿透问题</span></span><br><span class="line">            stringRedisTemplate.opsForValue().set(key, <span class="string">&quot;&quot;</span>, RedisConstants.CACHE_NULL_TTL, TimeUnit.MINUTES);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="comment">// 释放互斥锁</span></span><br><span class="line">        unLock(lockKey);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> shop;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取锁</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">tryLock</span><span class="params">(String key)</span> &#123;</span><br><span class="line">    <span class="type">Boolean</span> <span class="variable">flag</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().setIfAbsent(key, <span class="string">&quot;1&quot;</span>, <span class="number">10</span>, TimeUnit.SECONDS);</span><br><span class="line">    <span class="keyword">return</span> BooleanUtil.isTrue(flag);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 释放锁</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">unLock</span><span class="params">(String key)</span> &#123;</span><br><span class="line">    stringRedisTemplate.delete(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="逻辑过期解决"><a href="#逻辑过期解决" class="headerlink" title="逻辑过期解决"></a>逻辑过期解决</h4><blockquote>
+<p>基于逻辑过期方式解决缓存击穿问题，数据需要提前写入Redis</p>
+</blockquote>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/image18.png" fancybox="true"/></div></div>
+
+<p>代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ExecutorService</span> <span class="variable">CACHE_REBUILD_EXECUTOR</span> <span class="operator">=</span> Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">public</span> Shop <span class="title function_">queryWithLogicalExpire</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> CACHE_SHOP_KEY + id;</span><br><span class="line">    <span class="comment">// 从redis查询商铺缓存</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">shopJson</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">    <span class="comment">// 判断是否存在</span></span><br><span class="line">    <span class="keyword">if</span> (StrUtil.isBlank(shopJson)) &#123;</span><br><span class="line">        <span class="comment">// 不存在，直接返回</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 命中，需要先把json反序列化为对象</span></span><br><span class="line">    <span class="type">RedisData</span> <span class="variable">redisData</span> <span class="operator">=</span> JSONUtil.toBean(shopJson, RedisData.class);</span><br><span class="line">    <span class="type">Shop</span> <span class="variable">shop</span> <span class="operator">=</span> JSONUtil.toBean((JSONObject) redisData.getData(), Shop.class);</span><br><span class="line">    <span class="type">LocalDateTime</span> <span class="variable">expireTime</span> <span class="operator">=</span> redisData.getExpireTime();</span><br><span class="line">    <span class="comment">// 判断是否过期</span></span><br><span class="line">    <span class="keyword">if</span> (expireTime.isAfter(LocalDateTime.now())) &#123;</span><br><span class="line">        <span class="comment">// 未过期，直接返回店铺信息</span></span><br><span class="line">        <span class="keyword">return</span> shop;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 过期，需要重建缓存</span></span><br><span class="line">    <span class="comment">// 缓存重建</span></span><br><span class="line">    <span class="comment">// 获取互斥锁</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> RedisConstants.LOCK_SHOP_KEY + id;</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">isLock</span> <span class="operator">=</span> tryLock(lockKey);</span><br><span class="line">    <span class="comment">// 判断是否获取锁成功</span></span><br><span class="line">    <span class="keyword">if</span> (isLock) &#123;</span><br><span class="line">        <span class="comment">// DoubleCheck</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">doubleShopJson</span> <span class="operator">=</span> stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">        <span class="type">RedisData</span> <span class="variable">doubleRedisData</span> <span class="operator">=</span> JSONUtil.toBean(doubleShopJson, RedisData.class);</span><br><span class="line">        <span class="keyword">if</span> (doubleRedisData.getExpireTime().isAfter(LocalDateTime.now())) &#123;</span><br><span class="line">            <span class="comment">// 未过期，直接返回店铺信息</span></span><br><span class="line">            <span class="keyword">return</span> JSONUtil.toBean((JSONObject) doubleRedisData.getData(), Shop.class);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 成功，开启独立线程，实现缓存重建</span></span><br><span class="line">        CACHE_REBUILD_EXECUTOR.submit(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 重建缓存</span></span><br><span class="line">                saveShop2Redis(id, <span class="number">1800L</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="comment">// 释放锁</span></span><br><span class="line">                unLock(lockKey);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 返回过期的商铺信息</span></span><br><span class="line">    <span class="keyword">return</span> shop;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 数据预热</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">saveShop2Redis</span><span class="params">(Long id, Long expireSeconds)</span> &#123;</span><br><span class="line">    <span class="comment">// 查询店铺数据</span></span><br><span class="line">    <span class="type">Shop</span> <span class="variable">shop</span> <span class="operator">=</span> getById(id);</span><br><span class="line">    <span class="comment">// 逻辑过期时间</span></span><br><span class="line">    <span class="type">RedisData</span> <span class="variable">redisData</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisData</span>();</span><br><span class="line">    redisData.setData(shop);</span><br><span class="line">    redisData.setExpireTime(LocalDateTime.now().plusSeconds(expireSeconds));</span><br><span class="line">    <span class="comment">// 写入redis</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> RedisConstants.CACHE_SHOP_KEY + id;</span><br><span class="line">    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(redisData));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9.html">缓存雪崩</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%B7%A5%E5%85%B7%E5%B0%81%E8%A3%85.html">缓存工具封装</a></div></section></div>
+
+  
+
+  <div class='related-wrap md reveal' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </div>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.14.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.14.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js'
+  };
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
