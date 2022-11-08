@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.14.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://fastly.jsdelivr.net'>
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>封装处理Retrofit协程请求中的异常 - swcode</title>
+
+  
+    <meta name="description" content="异常的处理总是令我们头疼。如果不进行统一封装处理，我们需要对每个使用协程请求进行单独的异常处理，我们一起来看看如何封装吧....">
+<meta property="og:type" content="article">
+<meta property="og:title" content="封装处理Retrofit协程请求中的异常">
+<meta property="og:url" content="http://example.com/2022/11/08/%E5%B0%81%E8%A3%85%E5%A4%84%E7%90%86Retrofit%E5%8D%8F%E7%A8%8B%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/index.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="异常的处理总是令我们头疼。如果不进行统一封装处理，我们需要对每个使用协程请求进行单独的异常处理，我们一起来看看如何封装吧....">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-08T06:13:59.000Z">
+<meta property="article:modified_time" content="2022-11-08T06:22:28.360Z">
+<meta property="article:author" content="swcode">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Kotlin">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header">
+
+<div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0">不要点那里啊😠</div></a></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">笔记</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+
+<div class="widgets">
+
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">封装处理Retrofit协程请求中的异常</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%8B%93%E5%B1%95%E6%96%B9%E6%B3%95"><span class="toc-text">编写拓展方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">统一异常处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="toc-text">如何使用</span></a></li></ol></div></div></div>
+
+
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Android%E5%BC%80%E5%8F%91/">Android开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-11-08T06:13:59.000Z">2022-11-08</time></div></div>
+
+<article class='content md post'>
+<h1 class="article-title"><span>封装处理Retrofit协程请求中的异常</span></h1>
+<p>上篇文章讲解了怎么使用<code>Kotlin</code>的协程配合<code>Retrofit</code>发起网络请求，使用也是非常方便，但是在处理请求异常还不是很人性化。这篇文章，我们将处理异常的代码进行封装，以便对异常情况返回给页面，提供更加友好的提示。</p>
+<h3 id="编写拓展方法"><a href="#编写拓展方法" class="headerlink" title="编写拓展方法"></a>编写拓展方法</h3><p>我们写一个扩展（全局）方法，就叫<code>ViewModelExt.kt</code>，在下面创建方法。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ViewModel扩展方法：启动协程</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> block 协程逻辑</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> onError 错误回调方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> onComplete 完成回调方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> ViewModel.<span class="title">launch</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    block: <span class="type">suspend</span> <span class="type">CoroutineScope</span>.() -&gt; <span class="type">Unit</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    onError: (<span class="type">e</span>: <span class="type">Throwable</span>) -&gt; <span class="type">Unit</span> = &#123; _: <span class="type">Throwable</span> -&gt; &#125;,</span></span></span><br><span class="line"><span class="params"><span class="function">    onComplete: () -&gt; <span class="type">Unit</span> = &#123;&#125;</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span> &#123;</span><br><span class="line">    viewModelScope.launch(</span><br><span class="line">        CoroutineExceptionHandler &#123; _, throwable -&gt;</span><br><span class="line">            run &#123;</span><br><span class="line">                <span class="comment">// 这里统一处理错误</span></span><br><span class="line">                ExceptionUtil.catchException(throwable)</span><br><span class="line">                onError(throwable)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            block.invoke(<span class="keyword">this</span>)</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            onComplete()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="统一异常处理"><a href="#统一异常处理" class="headerlink" title="统一异常处理"></a>统一异常处理</h3><p>拓展方法里面对写成过程做了统一拦截，在<code>onComplete</code>方法可以做统一的异常处理</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 异常工具类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> ssq</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">object</span> ExceptionUtil &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理异常，toast提示错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">catchException</span><span class="params">(e: <span class="type">Throwable</span>)</span></span> &#123;</span><br><span class="line">        e.printStackTrace()</span><br><span class="line">        <span class="keyword">when</span> (e) &#123;</span><br><span class="line">            <span class="keyword">is</span> HttpException -&gt; &#123;</span><br><span class="line">                catchHttpException(e.code())</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">is</span> SocketTimeoutException -&gt; &#123;</span><br><span class="line">                showToast(R.string.common_error_net_time_out)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">is</span> UnknownHostException, <span class="keyword">is</span> NetworkErrorException -&gt; &#123;</span><br><span class="line">                showToast(R.string.common_error_net)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">is</span> MalformedJsonException, <span class="keyword">is</span> JsonSyntaxException -&gt; &#123;</span><br><span class="line">                showToast(R.string.common_error_server_json)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">is</span> InterruptedIOException -&gt; &#123;</span><br><span class="line">                showToast(<span class="string">&quot;服务器连接失败，请稍后重试&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 自定义接口异常</span></span><br><span class="line">            <span class="keyword">is</span> ApiException -&gt; &#123;</span><br><span class="line">                showToast(e.message?:<span class="string">&quot;&quot;</span>, e.code)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">is</span> ConnectException -&gt; &#123;</span><br><span class="line">                showToast( <span class="string">&quot;连接服务器失败&quot;</span> )</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> -&gt; &#123;</span><br><span class="line">                showToast(<span class="string">&quot;<span class="subst">$&#123;MyApplication.instance.getString(</span></span></span><br><span class="line"><span class="subst"><span class="string">                    R.string.common_error_do_something_fail</span></span></span><br><span class="line"><span class="subst"><span class="string">                )&#125;</span>：<span class="subst">$&#123;e::class.java.name&#125;</span>&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理网络异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">catchHttpException</span><span class="params">(errorCode: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (errorCode <span class="keyword">in</span> <span class="number">200</span> until <span class="number">300</span>) <span class="keyword">return</span><span class="comment">// 成功code则不处理</span></span><br><span class="line">        showToast(</span><br><span class="line">            catchHttpExceptionCode(</span><br><span class="line">                errorCode</span><br><span class="line">            ), errorCode</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * toast提示</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">showToast</span><span class="params">(<span class="meta">@StringRes</span> errorMsg: <span class="type">Int</span>, errorCode: <span class="type">Int</span> = <span class="number">-1</span>)</span></span> &#123;</span><br><span class="line">        showToast(</span><br><span class="line">            MyApplication.instance.getString(</span><br><span class="line">                errorMsg</span><br><span class="line">            ), errorCode</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * toast提示</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">showToast</span><span class="params">(errorMsg: <span class="type">String</span>, errorCode: <span class="type">Int</span> = <span class="number">-1</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (errorCode == -<span class="number">1</span>) &#123;</span><br><span class="line">            ToastUtils.showShort(errorMsg)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ToastUtils.showShort(<span class="string">&quot;<span class="variable">$errorCode</span>：<span class="variable">$errorMsg</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理网络异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">catchHttpExceptionCode</span><span class="params">(errorCode: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> = <span class="keyword">when</span> (errorCode) &#123;</span><br><span class="line">        <span class="keyword">in</span> <span class="number">500.</span><span class="number">.600</span> -&gt; R.string.common_error_server</span><br><span class="line">        <span class="keyword">in</span> <span class="number">400</span> until <span class="number">500</span> -&gt; R.string.common_error_request</span><br><span class="line">        <span class="keyword">else</span> -&gt; R.string.common_error_request</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ApiException</code>是自定义的异常类</p>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>我们在一个<code>ViewModel</code>中可以这样使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(user: <span class="type">User</span>)</span></span> = launch(&#123;</span><br><span class="line">    <span class="keyword">val</span> resultData = RetrofitClient.userService.login(user)</span><br><span class="line">    <span class="keyword">if</span> (resultData.code == <span class="number">20000</span>) &#123;</span><br><span class="line">        userInfo.value = RetrofitClient.userService.getUserInfo().<span class="keyword">data</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,onError = &#123; e: Throwable -&gt;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>注意：我们在ViewModel的拓展方法中已经进行了协程调用操作，所以这里直接调用拓展方法即可。</p>
+<p>如果是返回的结果不对，可以这样做</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(user: <span class="type">User</span>)</span></span> = launch(&#123;</span><br><span class="line">    <span class="keyword">val</span> resultData = RetrofitClient.userService.login(user)</span><br><span class="line">    <span class="keyword">if</span> (resultData.code == <span class="number">20000</span>) &#123;</span><br><span class="line">        userInfo.value = RetrofitClient.userService.getUserInfo().<span class="keyword">data</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> ApiException(-<span class="number">1</span>, <span class="string">&quot;返回结果出错&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,onError = &#123; e: Throwable -&gt;</span><br><span class="line">    <span class="comment">// 在这里进行处理</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>ApiException</code>是自定义的异常处理，该异常同样会被拦截，进入onError中，可以在这里进行处理。</p>
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a>许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/11/08/%E8%A7%A3%E5%86%B3WebView-Recyclerview%E5%AE%9E%E7%8E%B0%E6%96%87%E7%AB%A0%E8%AF%A6%E6%83%85%E9%A1%B5%E7%9A%84%E9%AB%98%E5%BA%A6%E9%97%AE%E9%A2%98/">解决WebView+Recyclerview实现文章详情页的高度问题</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/08/%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B%E9%85%8D%E5%90%88Retrofit%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82/">使用Kotlin协程配合Retrofit发送请求</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md reveal' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.14.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.14.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://fastly.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js'
+  };
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://fastly.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://fastly.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti/umd/heti.min.css","js":"https://unpkg.com/heti/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
