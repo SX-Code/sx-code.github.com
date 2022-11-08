@@ -20,12 +20,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>解决WebView+Recyclerview实现文章详情页的高度问题 - swcode</title>
+  <title>安卓开发-解决WebView+Recyclerview实现文章详情页的高度问题 - swcode</title>
 
   
     <meta name="description" content="在实现类似文章详情页面时，我们通常会设计为上面显示文章，中间可能显示推荐，最下面会显示评论信息。可使用WebView和Recyclerview实现上述效果，但同时带来了高度问题，一起来看看吧....">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决WebView+Recyclerview实现文章详情页的高度问题">
+<meta property="og:title" content="安卓开发-解决WebView+Recyclerview实现文章详情页的高度问题">
 <meta property="og:url" content="http://example.com/2022/11/08/%E8%A7%A3%E5%86%B3WebView-Recyclerview%E5%AE%9E%E7%8E%B0%E6%96%87%E7%AB%A0%E8%AF%A6%E6%83%85%E9%A1%B5%E7%9A%84%E9%AB%98%E5%BA%A6%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="在实现类似文章详情页面时，我们通常会设计为上面显示文章，中间可能显示推荐，最下面会显示评论信息。可使用WebView和Recyclerview实现上述效果，但同时带来了高度问题，一起来看看吧....">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/blog/wzxqy04.gif">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/blog/wzxqy05.gif">
 <meta property="article:published_time" content="2022-11-08T06:26:45.000Z">
-<meta property="article:modified_time" content="2022-11-08T06:46:57.810Z">
+<meta property="article:modified_time" content="2022-11-08T07:00:24.870Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
@@ -91,7 +91,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">解决WebView+Recyclerview实现文章详情页的高度问题</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%981"><span class="toc-text">问题1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%982"><span class="toc-text">问题2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="toc-text">具体方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo%E4%B8%8B%E8%BD%BD"><span class="toc-text">Demo下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">安卓开发-解决WebView+Recyclerview实现文章详情页的高度问题</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%981"><span class="toc-text">问题1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%982"><span class="toc-text">问题2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-text">效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95"><span class="toc-text">具体方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo%E4%B8%8B%E8%BD%BD"><span class="toc-text">Demo下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div></div></div>
 
 
 
@@ -109,7 +109,7 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Android%E5%BC%80%E5%8F%91/">Android开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-11-08T06:26:45.000Z">2022-11-08</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>解决WebView+Recyclerview实现文章详情页的高度问题</span></h1>
+<h1 class="article-title"><span>安卓开发-解决WebView+Recyclerview实现文章详情页的高度问题</span></h1>
 <p>最近在写一个APP时，需要显示文章详情页，准备使用WebView和RecyclerView实现上面文章，下面评论。出现了WebView高度问题，WebView加载<code>HTML</code>格式数据，而非<code>URL</code>。</p>
 <ul>
 <li>这里的<code>WebView</code>为自定义组件<code>NestedScrollingWebView</code>，已解决嵌套滑动问题。</li>
@@ -146,7 +146,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/08/%E5%B0%81%E8%A3%85%E5%A4%84%E7%90%86Retrofit%E5%8D%8F%E7%A8%8B%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">封装处理Retrofit协程请求中的异常</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/11/08/%E5%AE%89%E5%8D%93%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8Retrofit%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87/">安卓开发-使用Retrofit上传图片</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/08/%E5%B0%81%E8%A3%85%E5%A4%84%E7%90%86Retrofit%E5%8D%8F%E7%A8%8B%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">安卓开发-封装处理Retrofit协程请求中的异常</a></div></section></div>
 
 
 

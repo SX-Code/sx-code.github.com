@@ -20,21 +20,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>使用Kotlin协程配合Retrofit发送请求 - swcode</title>
+  <title>安卓开发-使用Kotlin协程配合Retrofit发送请求 - swcode</title>
 
   
     <meta name="description" content="在使用Kotlin进行Android开发时，我们可以使用更加便捷的方式发送网络请求，一起来看看吧....">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Kotlin协程配合Retrofit发送请求">
+<meta property="og:title" content="安卓开发-使用Kotlin协程配合Retrofit发送请求">
 <meta property="og:url" content="http://example.com/2022/11/08/%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B%E9%85%8D%E5%90%88Retrofit%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82/index.html">
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="在使用Kotlin进行Android开发时，我们可以使用更加便捷的方式发送网络请求，一起来看看吧....">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-08T06:05:41.000Z">
-<meta property="article:modified_time" content="2022-11-08T06:13:02.670Z">
+<meta property="article:modified_time" content="2022-11-08T07:00:38.660Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Android">
 <meta property="article:tag" content="Kotlin">
+<meta property="article:tag" content="Retrofit">
 <meta name="twitter:card" content="summary">
   
   
@@ -87,7 +88,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">使用Kotlin协程配合Retrofit发送请求</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">导入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#data-class"><span class="toc-text">data class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Retrofit%E5%AE%9E%E4%BE%8B"><span class="toc-text">Retrofit实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8ViewModel%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-text">在ViewModel中使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewModelScope"><span class="toc-text">ViewModelScope</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%8D%8F%E7%A8%8B"><span class="toc-text">不使用协程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-1"><span class="toc-text">Service</span></a></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">安卓开发-使用Kotlin协程配合Retrofit发送请求</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">导入依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#data-class"><span class="toc-text">data class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Retrofit%E5%AE%9E%E4%BE%8B"><span class="toc-text">Retrofit实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8ViewModel%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="toc-text">在ViewModel中使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewModelScope"><span class="toc-text">ViewModelScope</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%8D%8F%E7%A8%8B"><span class="toc-text">不使用协程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-1"><span class="toc-text">Service</span></a></li></ol></div></div></div>
 
 
 
@@ -105,7 +106,7 @@
 <div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Android%E5%BC%80%E5%8F%91/">Android开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-11-08T06:05:41.000Z">2022-11-08</time></div></div>
 
 <article class='content md post'>
-<h1 class="article-title"><span>使用Kotlin协程配合Retrofit发送请求</span></h1>
+<h1 class="article-title"><span>安卓开发-使用Kotlin协程配合Retrofit发送请求</span></h1>
 <p>Retrofit2.6开始增加了对Kotlin协程的支持，可以通过suspend函数进行异步调用。本文简单介绍一下使用Kotlin协程配合Retrofit使用，发起网络请求。</p>
 <h3 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h3><p>app的build文件中加入：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">implementation <span class="string">&#x27;com.squareup.retrofit2:retrofit:2.9.0&#x27;</span></span><br><span class="line">implementation <span class="string">&#x27;com.squareup.retrofit2:converter-gson:2.9.0&#x27;</span></span><br><span class="line">implementation <span class="string">&#x27;androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1&#x27;</span></span><br></pre></td></tr></table></figure>
@@ -141,7 +142,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/11/08/%E5%B0%81%E8%A3%85%E5%A4%84%E7%90%86Retrofit%E5%8D%8F%E7%A8%8B%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">封装处理Retrofit协程请求中的异常</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/08/%E8%87%AA%E5%AE%9A%E4%B9%89Naive-UI%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BCData-Table%E4%B8%AD%E6%8C%89%E9%92%AEButton%E5%9B%BE%E6%A0%87/">自定义Naive UI的数据表格Data Table中按钮Button图标</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/11/08/%E5%B0%81%E8%A3%85%E5%A4%84%E7%90%86Retrofit%E5%8D%8F%E7%A8%8B%E8%AF%B7%E6%B1%82%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8/">安卓开发-封装处理Retrofit协程请求中的异常</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/08/%E8%87%AA%E5%AE%9A%E4%B9%89Naive-UI%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BCData-Table%E4%B8%AD%E6%8C%89%E9%92%AEButton%E5%9B%BE%E6%A0%87/">自定义Naive UI的数据表格Data Table中按钮Button图标</a></div></section></div>
 
 
 
