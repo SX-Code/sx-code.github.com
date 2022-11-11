@@ -23,17 +23,27 @@
   <title>DSTServer：mod问题 - swcode</title>
 
   
-    <meta name="description" content="mod位置  由于官方原因，饥荒的mod会在两个位置出现 mod添加方式  mod的添加方式一共有两种 mod更新问题    mod消失问题">
+    <meta name="description" content="mod位置  由于官方原因，饥荒的mod会在两个位置出现  饥荒客户端根目录的mods文件夹，可以注意到这里的mod有workshop-的前缀 点击查看示例  另一个需要从Steam库目录开始找，例如我的：E:\SteamLibrary\steamapps\workshop\content\322330 点击查看示例  这两个文件夹中的mod的ID可能有一样的，但只有一个是正确的。辨别方法就是进入">
 <meta property="og:type" content="website">
 <meta property="og:title" content="mod问题">
 <meta property="og:url" content="http://example.com/wiki/server/DSTServer/%E9%97%AE%E9%A2%98/mod%E9%97%AE%E9%A2%98.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="mod位置  由于官方原因，饥荒的mod会在两个位置出现 mod添加方式  mod的添加方式一共有两种 mod更新问题    mod消失问题">
+<meta property="og:description" content="mod位置  由于官方原因，饥荒的mod会在两个位置出现  饥荒客户端根目录的mods文件夹，可以注意到这里的mod有workshop-的前缀 点击查看示例  另一个需要从Steam库目录开始找，例如我的：E:\SteamLibrary\steamapps\workshop\content\322330 点击查看示例  这两个文件夹中的mod的ID可能有一样的，但只有一个是正确的。辨别方法就是进入">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-08T08:01:02.810Z">
-<meta property="article:modified_time" content="2022-11-08T08:01:02.810Z">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver16.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver17.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver14.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver15.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver16.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver17.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver18.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver19.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver20.png">
+<meta property="article:published_time" content="2022-11-09T07:33:39.080Z">
+<meta property="article:modified_time" content="2022-11-09T07:33:39.080Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver16.png">
   
   
 
@@ -82,7 +92,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">写在前面</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/index.html"><span class="toc-text">饥荒服务器</span></a></div></div><div class="widget-header cap dis-select"><span class="name">服务器搭建</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/%E5%9C%A8%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8.html"><span class="toc-text">在本地搭建服务器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/%E5%9C%A8%E4%BA%91%E6%9C%8D%E4%B8%8A%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8.html"><span class="toc-text">在云服上搭建服务器</span></a></div></div><div class="widget-header cap dis-select"><span class="name">遇到的问题</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E9%97%AE%E9%A2%98/%E7%BD%91%E7%BB%9C%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98.html"><span class="toc-text">网络卡顿问题</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/server/DSTServer/%E9%97%AE%E9%A2%98/mod%E9%97%AE%E9%A2%98.html"><span class="toc-text">mod问题</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E4%BD%8D%E7%BD%AE"><span class="toc-text">mod位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%B7%BB%E5%8A%A0%E6%96%B9%E5%BC%8F"><span class="toc-text">mod添加方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%9B%B4%E6%96%B0%E9%97%AE%E9%A2%98"><span class="toc-text">mod更新问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%B6%88%E5%A4%B1%E9%97%AE%E9%A2%98"><span class="toc-text">mod消失问题</span></a></li></ol></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">写在前面</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/index.html"><span class="toc-text">饥荒服务器</span></a></div></div><div class="widget-header cap dis-select"><span class="name">服务器搭建</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/%E5%9C%A8%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8.html"><span class="toc-text">在本地搭建服务器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/%E5%9C%A8%E4%BA%91%E6%9C%8D%E4%B8%8A%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8.html"><span class="toc-text">在云服上搭建服务器</span></a></div></div><div class="widget-header cap dis-select"><span class="name">遇到的问题</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/server/DSTServer/%E9%97%AE%E9%A2%98/%E7%BD%91%E7%BB%9C%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98.html"><span class="toc-text">网络卡顿问题</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/server/DSTServer/%E9%97%AE%E9%A2%98/mod%E9%97%AE%E9%A2%98.html"><span class="toc-text">mod问题</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E4%BD%8D%E7%BD%AE"><span class="toc-text">mod位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%B7%BB%E5%8A%A0%E6%96%B9%E5%BC%8F"><span class="toc-text">mod添加方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%A4%8D%E5%88%B6mod"><span class="toc-text">手动复制mod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ServerModSetup-%E2%80%9C%E2%80%9D"><span class="toc-text">ServerModSetup(“”)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%9B%B4%E6%96%B0%E9%97%AE%E9%A2%98"><span class="toc-text">mod更新问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mod%E6%B6%88%E5%A4%B1%E9%97%AE%E9%A2%98"><span class="toc-text">mod消失问题</span></a></li></ol></div></div></div>
 
 
 
@@ -100,20 +110,74 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/server/DSTServer/index.html">DSTServer</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-08T08:01:02.810Z">2022-11-08</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/server/DSTServer/index.html">DSTServer</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-09T07:33:39.080Z">2022-11-09</time></div></div>
 
   <article class='content md wiki'>
   <h1 class="article-title"><span>mod问题</span></h1>
   <h2 class="tag-plugin quot" type="text" id="mod位置"><a href="#mod位置" class="headerlink" title="mod位置"></a>mod位置</h2>
 
 <p>由于官方原因，饥荒的mod会在两个位置出现</p>
+<ol>
+<li><p>饥荒客户端根目录的<code>mods</code>文件夹，可以注意到这里的mod有<code>workshop-</code>的前缀</p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver16.png" fancybox="true"/></div></div></div></details>
+</li>
+<li><p>另一个需要从Steam库目录开始找，例如我的：<code>E:\SteamLibrary\steamapps\workshop\content\322330</code></p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver17.png" fancybox="true"/></div></div></div></details></li>
+</ol>
+<div class="tag-plugin note" color="warning"><div class="body"><p>这两个文件夹中的mod的ID可能有一样的，但只有一个是正确的。辨别方法就是进入mod文件夹，如果里面是空的或者只有一个文件，那它是错误的。</p></div></div>
+
+
+
 <h2 class="tag-plugin quot" type="text" id="mod添加方式"><a href="#mod添加方式" class="headerlink" title="mod添加方式"></a>mod添加方式</h2>
 
-<p>mod的添加方式一共有两种</p>
+<p>mod的添加方式有两种，这里直接推荐第二种：</p>
+<ul>
+<li>复制客户端mod到服务端，客户端的mod位置有两个位置，稍后会说明。</li>
+<li>在文件中使用<code>ServerModSetup(&quot;&quot;)</code>或者<code>ServerModCollectionSetup(&quot;&quot;)</code>，服务器启动时会<mark class="tag-plugin mark" color="green">自动下载和更新</mark>。</li>
+</ul>
+<p>在操作开始前，我们先来了解以下mod配置文件</p>
+<p>存档的mod配置文件中会有这个存档所需的mod代码ID，我们到存档文件中找到这个文件:<code>modoverrides.lua</code></p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver14.png" fancybox="true"/></div></div>
+
+<p>打开它，我们就能看到所有的mod配置信息</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver15.png" fancybox="true"/></div></div>
+
+<h3 id="手动复制mod"><a href="#手动复制mod" class="headerlink" title="手动复制mod"></a>手动复制mod</h3><p>mod的位置一共有两个:</p>
+<ol>
+<li><p>饥荒客户端根目录的<code>mods</code>文件夹，可以注意到这里的mod有<code>workshop-</code>的前缀</p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver16.png" fancybox="true"/></div></div></div></details>
+</li>
+<li><p>另一个需要从Steam库目录开始找，例如我的：<code>E:\SteamLibrary\steamapps\workshop\content\322330</code></p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver17.png" fancybox="true"/></div></div></div></details></li>
+</ol>
+<div class="tag-plugin note" color="warning"><div class="body"><p>这两个文件夹中的mod的ID可能有一样的，但只有一个是正确的。辨别方法就是进入mod文件夹，如果里面是空的或者只有一个文件，那它是错误的。</p></div></div>
+
+<p>好了，到这里我们就可以复制到服务器根目录的<code>mods</code>中了，但这里也有两种方式</p>
+<ol>
+<li>全部复制，这会将客户端mod和服务器mod无差别的复制过去。</li>
+<li>只复制自己存档开启的，可对照mod配置文件中的ID，一个一个的复制过去</li>
+</ol>
+<p>但无论哪种方式，我们都需要在ID前加上<code>workshop-</code>前缀，例如：<code>workshop-2831613121</code>，已有的不用加。</p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver18.png" fancybox="true"/></div></div></div></details>
+
+
+
+<h3 id="ServerModSetup-“”"><a href="#ServerModSetup-“”" class="headerlink" title="ServerModSetup(“”)"></a>ServerModSetup(“”)</h3><p>首先来到<mark class="tag-plugin mark" color="green">饥荒服务器</mark>的根目录的<code>mods</code>文件夹中，打开<code>dedicated_server_mods_setup.lua</code>文件，在文件末尾加入</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ServerModSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ServerModCollectionSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>区别在于<code>ServerModSetup</code>是下载单个mod的，<code>ServerModCollectionSetup</code>是下载合集mod的。</p>
+<p>引号中的数字ID在存档的mod配置文件<code>modoverrides.lua</code>，属于按需引入。</p>
+<details class="tag-plugin folding" ><summary><span>点击查看示例</span></summary><div class="body"><div class="tag-plugin split" bg="block"><div class="cell" index="0"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver19.png" alt="ServerModSetup" fancybox="true"/></div><div class="image-meta"><span class="image-caption center">ServerModSetup</span></div></div></div><div class="cell" index="1"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/server/dst/dstserver20.png" alt="ServerModCollectionSetup" fancybox="true"/></div><div class="image-meta"><span class="image-caption center">ServerModCollectionSetup</span></div></div></div></div></div></details>
+
+
+
 <h2 class="tag-plugin quot" type="text" id="mod更新问题"><a href="#mod更新问题" class="headerlink" title="mod更新问题"></a>mod更新问题</h2>
 
-
-
+<p>如果使用的是手动复制方式，你需要在客户端把mod更新完后，再将更新后的mod复制到饥荒服务器的mods中，重复<a href="#%E6%89%8B%E5%8A%A8%E5%A4%8D%E5%88%B6mod">手动复制mod</a>过程</p>
+<p>如果采用的是第二种方式，只需要关闭服务器，然后再次启动即可。</p>
 <h2 class="tag-plugin quot" type="text" id="mod消失问题"><a href="#mod消失问题" class="headerlink" title="mod消失问题"></a>mod消失问题</h2>
   
 

@@ -30,8 +30,8 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="三种策略    内存淘汰 超时剔除 主动更新    说明 不用自己维护，利用Redis的内存淘汰机制，当内存不足时自动淘汰部分数据。下次查询时更新缓存 给缓存数据添加TTL时间，到期后自动删除缓存，下次查询时更新缓存 编写业务逻辑，在修改数据库的同时，更新缓存   一致性 差 一般 好   维护成本 无 低 高   业务场景：  低一致性需求：使用内存淘汰机制。例如店铺类型的查询缓存 高一致性需求">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-07T11:10:37.180Z">
-<meta property="article:modified_time" content="2022-11-07T11:10:37.180Z">
+<meta property="article:published_time" content="2022-11-09T07:33:39.070Z">
+<meta property="article:modified_time" content="2022-11-09T07:33:39.070Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
   
@@ -100,7 +100,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-07T11:10:37.180Z">2022-11-07</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-09T07:33:39.070Z">2022-11-09</time></div></div>
 
   <article class='content md wiki'>
   <h1 class="article-title"><span>缓存更新策略</span></h1>
