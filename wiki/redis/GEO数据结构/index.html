@@ -20,18 +20,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Redis：缓存雪崩 - swcode</title>
+  <title>Redis：GEO数据结构 - swcode</title>
 
   
-    <meta name="description" content="缓存雪崩是指在同一时段大量的缓存key同时失效或者Redis服务宕机，导致大量请求到达数据库，带来巨大压力 解决方案 给不同的Key的TTL添加随机值  利用Redi集群提高服务的可用性  给缓存业务添加降级限流策略  给业务添加多级缓存">
+    <meta name="description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
 <meta property="og:type" content="website">
-<meta property="og:title" content="缓存雪崩">
-<meta property="og:url" content="http://example.com/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9.html">
+<meta property="og:title" content="GEO数据结构">
+<meta property="og:url" content="http://example.com/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="缓存雪崩是指在同一时段大量的缓存key同时失效或者Redis服务宕机，导致大量请求到达数据库，带来巨大压力 解决方案 给不同的Key的TTL添加随机值  利用Redi集群提高服务的可用性  给缓存业务添加降级限流策略  给业务添加多级缓存">
+<meta property="og:description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-09T07:33:39.070Z">
-<meta property="article:modified_time" content="2022-11-09T07:33:39.070Z">
+<meta property="article:published_time" content="2022-11-12T10:30:27.000Z">
+<meta property="article:modified_time" content="2022-11-12T10:30:27.000Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
   
@@ -82,7 +82,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Redis常见命令</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis缓存</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98.html"><span class="toc-text">什么是缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5.html"><span class="toc-text">缓存更新策略</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F.html"><span class="toc-text">缓存穿透</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9.html"><span class="toc-text">缓存雪崩</span></a><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF.html"><span class="toc-text">缓存击穿</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%B7%A5%E5%85%B7%E5%B0%81%E8%A3%85.html"><span class="toc-text">缓存工具封装</span></a></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Redis常见命令</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-text">常见命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">使用案例</span></a></li></ol></div></div></div>
 
 
 
@@ -100,28 +100,53 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-09T07:33:39.070Z">2022-11-09</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-12T10:30:27.000Z">2022-11-12</time></div></div>
 
   <article class='content md wiki'>
-  <h1 class="article-title"><span>缓存雪崩</span></h1>
-  <p>缓存雪崩是指在同一时段大量的缓存key同时失效或者Redis服务宕机，导致大量请求到达数据库，带来巨大压力</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
-<li><p>给不同的Key的TTL添加随机值</p>
+  <h1 class="article-title"><span>GEO数据结构</span></h1>
+  <p>GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。</p>
+<h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><ul>
+<li><u>GEOADD</u>：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）
 </li>
-<li><p>利用Redi集群提高服务的可用性</p>
+<li><u>GEODIST</u>：计算指定的两个点之间的距离并返回
 </li>
-<li><p>给缓存业务添加降级限流策略</p>
+<li><u>GEOHASH</u>：将指定member的坐标转化为hash字符串形式并返回
 </li>
-<li><p>给业务添加多级缓存</p>
+<li><u>GEOPOS</u>：返回指定member的坐标
 </li>
+<li><u>GEORADIUS</u>：指定圆心、半径，找到该园内包含的所有member，并按照与圆心之间的距离排序后返回。<mark class="tag-plugin mark" color="orange">6.2以后已废弃</mark>
+</li>
+<li><u>GEOSEARCH</u>：在指定范围内搜索member，并按照与指定点之间的距离排序后返回。范围可以是圆形或矩形。<mark class="tag-plugin mark" color="green">6.2以后新功能</mark>。
+</li>
+<li><u>GEOSEARCHSTORE</u>：与GEOSEARCH功能一致，不过可以把结果存储到一个指定的key。<mark class="tag-plugin mark" color="green">6.2以后新功能</mark>。</li>
 </ul>
+<h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><p>需求：</p>
+<ol>
+<li>添加下面几条数据：<ul>
+<li>北京南站（116.378248 39.865275）</li>
+<li>北京站（116.42803 39.903738）</li>
+<li>北京西站（116.322287 39.893729）</li>
+</ul>
+</li>
+<li>计算北京西站到北京站的距离</li>
+<li>搜索天安门（116.397904 39.909005）附近10km内的所有火车站，并按照距离升序排序</li>
+</ol>
+<p>添加命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEOADD g1 116.378248 39.865275 bjn 116.42803 39.903738 bjz 116.322287 39.893729 bjx</span><br></pre></td></tr></table></figure>
+
+<p>计算距离</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GEODIST g1 bjx bjz km</span><br><span class="line"><span class="string">&quot;9.0916&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>搜索</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GEOSEARCH g1 FROMLONLAT 116.397904 39.909005 BYRADIUS 10 km WITHDIST</span><br><span class="line">1) 1) <span class="string">&quot;bjz&quot;</span></span><br><span class="line">   2) <span class="string">&quot;2.6361&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;bjn&quot;</span></span><br><span class="line">   2) <span class="string">&quot;5.1452&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;bjx&quot;</span></span><br><span class="line">   2) <span class="string">&quot;6.6723&quot;</span></span><br></pre></td></tr></table></figure>
+
 
   
 
 
   </article>
   
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F.html">缓存穿透</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF.html">缓存击穿</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html">Redis缓存</a></div><div class="item" id="next"></div></section></div>
 
   
 
