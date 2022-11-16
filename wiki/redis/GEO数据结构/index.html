@@ -23,15 +23,15 @@
   <title>Redis：GEO数据结构 - swcode</title>
 
   
-    <meta name="description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
+    <meta name="description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在6.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GEO数据结构">
 <meta property="og:url" content="http://example.com/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
+<meta property="og:description" content="GEO就是Geolocation的简写形式，代表地理坐标。Redis在6.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。 常见命令 GEOADD：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）  GEODIST：计算指定的两个点之间的距离并返回  GEOHASH：将指定member的坐标转化为hash字符串形">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-12T10:30:27.000Z">
-<meta property="article:modified_time" content="2022-11-12T10:30:27.000Z">
+<meta property="article:published_time" content="2022-11-14T11:09:12.280Z">
+<meta property="article:modified_time" content="2022-11-14T11:09:12.280Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
   
@@ -82,7 +82,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Redis常见命令</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-text">常见命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">使用案例</span></a></li></ol></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html"><span class="toc-text">Redis常见数据结构</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-text">常见命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">使用案例</span></a></li></ol></div></div><div class="widget-header cap dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html"><span class="toc-text">单点Redis的问题</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html"><span class="toc-text">分布式缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html"><span class="toc-text">多级缓存</span></a></div></div></div>
 
 
 
@@ -100,11 +100,11 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-12T10:30:27.000Z">2022-11-12</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-14T11:09:12.280Z">2022-11-14</time></div></div>
 
   <article class='content md wiki'>
   <h1 class="article-title"><span>GEO数据结构</span></h1>
-  <p>GEO就是Geolocation的简写形式，代表地理坐标。Redis在3.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。</p>
+  <p>GEO就是Geolocation的简写形式，代表地理坐标。Redis在6.2版本中加入了对GEO的支持，允许存储地理坐标信息，帮助我们根据经纬度来检索数据。</p>
 <h2 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h2><ul>
 <li><u>GEOADD</u>：添加一个地理空间信息，包含：经度（longitude）、纬度（latitude）、值（member）
 </li>
@@ -132,13 +132,13 @@
 <li>搜索天安门（116.397904 39.909005）附近10km内的所有火车站，并按照距离升序排序</li>
 </ol>
 <p>添加命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEOADD g1 116.378248 39.865275 bjn 116.42803 39.903738 bjz 116.322287 39.893729 bjx</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">GEOADD g1 116.378248 39.865275 bjn 116.42803 39.903738 bjz 116.322287 39.893729 bjx</span><br></pre></td></tr></table></figure>
 
 <p>计算距离</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GEODIST g1 bjx bjz km</span><br><span class="line"><span class="string">&quot;9.0916&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">GEODIST g1 bjx bjz km</span><br><span class="line"><span class="string">&quot;9.0916&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>搜索</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GEOSEARCH g1 FROMLONLAT 116.397904 39.909005 BYRADIUS 10 km WITHDIST</span><br><span class="line">1) 1) <span class="string">&quot;bjz&quot;</span></span><br><span class="line">   2) <span class="string">&quot;2.6361&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;bjn&quot;</span></span><br><span class="line">   2) <span class="string">&quot;5.1452&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;bjx&quot;</span></span><br><span class="line">   2) <span class="string">&quot;6.6723&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">GEOSEARCH g1 FROMLONLAT 116.397904 39.909005 BYRADIUS 10 km WITHDIST</span><br><span class="line">1) 1) <span class="string">&quot;bjz&quot;</span></span><br><span class="line">   2) <span class="string">&quot;2.6361&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;bjn&quot;</span></span><br><span class="line">   2) <span class="string">&quot;5.1452&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;bjx&quot;</span></span><br><span class="line">   2) <span class="string">&quot;6.6723&quot;</span></span><br></pre></td></tr></table></figure>
 
 
   
@@ -146,7 +146,7 @@
 
   </article>
   
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html">Redis缓存</a></div><div class="item" id="next"></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html">Redis缓存</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html">单点Redis的问题</a></div></section></div>
 
   
 

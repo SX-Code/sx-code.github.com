@@ -163,10 +163,10 @@
 
 
 <h3 id="ServerModSetup-“”"><a href="#ServerModSetup-“”" class="headerlink" title="ServerModSetup(“”)"></a>ServerModSetup(“”)</h3><p>首先来到<mark class="tag-plugin mark" color="green">饥荒服务器</mark>的根目录的<code>mods</code>文件夹中，打开<code>dedicated_server_mods_setup.lua</code>文件，在文件末尾加入</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ServerModSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">ServerModSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>或者</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ServerModCollectionSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line">ServerModCollectionSetup(<span class="string">&quot;1185229307&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1207269058&quot;</span>)</span><br><span class="line">ServerModCollectionSetup(<span class="string">&quot;1216718131&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>区别在于<code>ServerModSetup</code>是下载单个mod的，<code>ServerModCollectionSetup</code>是下载合集mod的。</p>
 <p>引号中的数字ID在存档的mod配置文件<code>modoverrides.lua</code>，属于按需引入。</p>

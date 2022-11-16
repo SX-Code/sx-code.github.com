@@ -20,21 +20,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Redis：Redis常见命令 - swcode</title>
+  <title>Redis：Redis常见数据结构 - swcode</title>
 
   
     <meta name="description" content="Redis数据结构介绍 Redis是一个key-value的数据库，key一般是String类型，不过value的类型多种多样    官方学习文档 https:&#x2F;&#x2F;redis.io&#x2F;commands&#x2F;   Redis通用命令 KEYS：查看符合模板的所有key，不建议在生产环境设备上使用  DEL：删除一个指定的key  EXISTS：判断key是否存在  EXPIRE：给一个key设置有效期，有">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Redis常见命令">
-<meta property="og:url" content="http://example.com/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html">
+<meta property="og:title" content="Redis常见数据结构">
+<meta property="og:url" content="http://example.com/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html">
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="Redis数据结构介绍 Redis是一个key-value的数据库，key一般是String类型，不过value的类型多种多样    官方学习文档 https:&#x2F;&#x2F;redis.io&#x2F;commands&#x2F;   Redis通用命令 KEYS：查看符合模板的所有key，不建议在生产环境设备上使用  DEL：删除一个指定的key  EXISTS：判断key是否存在  EXPIRE：给一个key设置有效期，有">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image3.png">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image4.png">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image5.gif">
-<meta property="article:published_time" content="2022-11-09T07:33:39.080Z">
-<meta property="article:modified_time" content="2022-11-09T07:33:39.080Z">
+<meta property="article:published_time" content="2022-11-14T11:09:51.160Z">
+<meta property="article:modified_time" content="2022-11-14T11:09:51.160Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image3.png">
@@ -86,7 +86,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Redis常见命令</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">Redis数据结构介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">Redis通用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String%E7%B1%BB%E5%9E%8B"><span class="toc-text">String类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hash%E7%B1%BB%E5%9E%8B"><span class="toc-text">Hash类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List%E7%B1%BB%E5%9E%8B"><span class="toc-text">List类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set%E7%B1%BB%E5%9E%8B"><span class="toc-text">Set类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortedSet%E7%B1%BB%E5%9E%8B"><span class="toc-text">SortedSet类型</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html"><span class="toc-text">Redis常见数据结构</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">Redis数据结构介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E9%80%9A%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">Redis通用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String%E7%B1%BB%E5%9E%8B"><span class="toc-text">String类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hash%E7%B1%BB%E5%9E%8B"><span class="toc-text">Hash类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List%E7%B1%BB%E5%9E%8B"><span class="toc-text">List类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set%E7%B1%BB%E5%9E%8B"><span class="toc-text">Set类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SortedSet%E7%B1%BB%E5%9E%8B"><span class="toc-text">SortedSet类型</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html"><span class="toc-text">单点Redis的问题</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html"><span class="toc-text">分布式缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html"><span class="toc-text">多级缓存</span></a></div></div></div>
 
 
 
@@ -104,10 +104,10 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-09T07:33:39.080Z">2022-11-09</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-14T11:09:51.160Z">2022-11-14</time></div></div>
 
   <article class='content md wiki'>
-  <h1 class="article-title"><span>Redis常见命令</span></h1>
+  <h1 class="article-title"><span>Redis常见数据结构</span></h1>
   <h2 id="Redis数据结构介绍"><a href="#Redis数据结构介绍" class="headerlink" title="Redis数据结构介绍"></a>Redis数据结构介绍</h2><blockquote>
 <p><strong>Redis是一个key-value的数据库，key一般是String类型，不过value的类型多种多样</strong></p>
 </blockquote>
@@ -125,7 +125,7 @@
 <li><p>EXISTS：判断key是否存在</p>
 </li>
 <li><p>EXPIRE：给一个key设置有效期，有效期到期时该key会被自动删除</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPIRE name <span class="number">10</span> # <span class="number">10</span>s</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">EXPIRE name <span class="number">10</span> # <span class="number">10</span>s</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>TTL：查看一个KEY的剩余有效期</p>
 </li>
@@ -176,7 +176,7 @@
 <li><p>INCR：让一个整型key自增1</p>
 </li>
 <li><p>INCRBY：让一个整型key自增并且指定步长，例如：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INCRBY age <span class="number">-1</span> # 自减，等同DECR</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">INCRBY age <span class="number">-1</span> # 自减，等同DECR</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>INCRBYFLOAT：让一个浮点类型的数字自增并指定步长</p>
 </li>
@@ -190,7 +190,7 @@
 <blockquote>
 <p><strong>Redis的key允许有多个单词形成层级结构，多个单词之间用” ：“隔开，格式如下：</strong></p>
 </blockquote>
-<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">项目名:业务名:类型:id</span><br></pre></td></tr></table></figure>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">项目名:业务名:类型:id</span><br></pre></td></tr></table></figure>
 
 <p>这个格式并非固定，也可以根据自己的需求来删除或添加词条。</p>
 <p>例如我们的项目名称叫 <code>heima</code>，有<code>user</code>和<code>product</code>两种不同类型的数据，我们可以这样定义key：</p>
@@ -237,7 +237,7 @@
 <li><p>HVALS：获取一个hash类型的key中的所有的value</p>
 </li>
 <li><p>HINCRBY：让一个hash类型key的字段自增且指定步长</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HINCRBY <span class="built_in">test</span>:<span class="built_in">hash</span> age 2</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">HINCRBY <span class="built_in">test</span>:<span class="built_in">hash</span> age 2</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>HSETNX：添加一个hash类型的key的field值，前提是这个field不存在，否则不执行</p>
 </li>
