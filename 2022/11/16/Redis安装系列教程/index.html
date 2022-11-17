@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image33.png">
 <meta property="article:published_time" content="2022-11-16T11:35:55.000Z">
-<meta property="article:modified_time" content="2022-11-16T11:53:34.330Z">
+<meta property="article:modified_time" content="2022-11-17T09:47:37.190Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -89,7 +89,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis安装系列教程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-text">安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85Redis"><span class="toc-text">单机安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-text">配置Redis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB"><span class="toc-text">开启主从关系</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis安装系列教程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-text">安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85Redis"><span class="toc-text">单机安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-text">配置Redis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB"><span class="toc-text">开启主从关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li></ol></div></div></div>
 
 
 
@@ -224,13 +224,22 @@
 
 
 
-<p>出现 Error condition on socket for SYNC: Connection refused</p>
-<p>问题描述</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">104319:S 15 Nov 2022 21:43:43.662 * Connecting to MASTER 192.168.52.101:7001</span><br><span class="line">104319:S 15 Nov 2022 21:43:43.662 * MASTER &lt;-&gt; REPLICA <span class="built_in">sync</span> started</span><br><span class="line">104319:S 15 Nov 2022 21:43:43.662 <span class="comment"># Error condition on socket for SYNC: Connection refused</span></span><br></pre></td></tr></table></figure>
+<details class="tag-plugin folding" color="yellow"><summary><span>出现 Error condition on socket for SYNC: Connection refused</span></summary><div class="body"><p>出现 Error condition on socket for SYNC: Connection refused</p><p>问题描述</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">104319:S 15 Nov 2022 21:43:43.662 * Connecting to MASTER 192.168.52.101:7001</span><br><span class="line">104319:S 15 Nov 2022 21:43:43.662 * MASTER &lt;-&gt; REPLICA <span class="built_in">sync</span> started</span><br><span class="line">104319:S 15 Nov 2022 21:43:43.662 <span class="comment"># Error condition on socket for SYNC: Connection refused</span></span><br></pre></td></tr></table></figure><p>解决方案</p><p>修改配置文件中的bind字段</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">bind</span> 0.0.0.0</span><br></pre></td></tr></table></figure></div></details>
 
-<p>解决方案</p>
-<p>修改配置文件中的bind字段</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">bind</span> 0.0.0.0</span><br></pre></td></tr></table></figure>
+
+
+<details class="tag-plugin folding" color="yellow"><summary><span>出现 -DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.</span></summary><div class="body"><p>出现 -DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.</p><p>问题描述</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Error reply to PING from master: <span class="string">&#x27;-DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.&#x27;</span></span><br></pre></td></tr></table></figure><p>解决方案1</p><p>因为主服务器开启了保护模式或者设置了密码，关闭保护模式</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">protected-mode no</span><br></pre></td></tr></table></figure><p>解决方案2</p><p>设置密码</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">CONFIG SET masterauth 123123</span><br></pre></td></tr></table></figure></div></details>
+
+
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用客户端连接7001，查看主从信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 7001</span><br><span class="line"></span><br><span class="line">127.0.0.1:7001&gt; INFO replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip=192.168.52.101,port=7002,state=online,offset=504,lag=0</span><br><span class="line">slave1:ip=192.168.52.101,port=7003,state=online,offset=504,lag=0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:72984f6fa2a4549194b49eba1df261c33d73fdfa</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:504</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:1</span><br><span class="line">repl_backlog_histlen:504</span><br></pre></td></tr></table></figure>
+
+<p>在7001中<code>set</code>一个数据，在其他Redis<code>get</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># set</span></span><br><span class="line">redis-cli -p 7001</span><br><span class="line"><span class="built_in">set</span> num 123</span><br><span class="line"></span><br><span class="line"><span class="comment">#get</span></span><br><span class="line">redis-cli -p 7002</span><br><span class="line">get num</span><br></pre></td></tr></table></figure>
+
+<p>当我们在从节点<code>set</code>时会报错	</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> num 666</span><br><span class="line">(error) READONLY You can<span class="string">&#x27;t write against a read only replica.</span></span><br></pre></td></tr></table></figure>
 
 
 

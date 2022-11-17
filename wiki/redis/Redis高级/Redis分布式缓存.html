@@ -23,18 +23,26 @@
   <title>Redis：分布式缓存 - swcode</title>
 
   
-    <meta name="description" content="Redis持久化">
+    <meta name="description" content="单点Redis的问题数据丢失问题：Redis是内存存储，服务器重启可能丢失数据  实现Redis数据持久化  并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景  搭建主从集群，实现读写分离  故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段  利用Redis哨兵，实现健康检测和自动恢复  存储能力问题：Redis基于内存，单节点存储的数据量难">
 <meta property="og:type" content="website">
 <meta property="og:title" content="分布式缓存">
 <meta property="og:url" content="http://example.com/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="Redis持久化">
+<meta property="og:description" content="单点Redis的问题数据丢失问题：Redis是内存存储，服务器重启可能丢失数据  实现Redis数据持久化  并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景  搭建主从集群，实现读写分离  故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段  利用Redis哨兵，实现健康检测和自动恢复  存储能力问题：Redis基于内存，单节点存储的数据量难">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-15T03:10:45.710Z">
-<meta property="article:modified_time" content="2022-11-15T03:10:45.710Z">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image31.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image34.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image35.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image36.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image37.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image38.png">
+<meta property="article:published_time" content="2022-11-17T10:30:57.820Z">
+<meta property="article:modified_time" content="2022-11-17T10:30:57.820Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image31.png">
   
   
 
@@ -83,7 +91,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html"><span class="toc-text">Redis常见数据结构</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html"><span class="toc-text">单点Redis的问题</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html"><span class="toc-text">分布式缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html"><span class="toc-text">多级缓存</span></a></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html"><span class="toc-text">Redis常见数据结构</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html"><span class="toc-text">单点Redis的问题</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html"><span class="toc-text">分布式缓存</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%82%B9Redis%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">单点Redis的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">Redis持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">RDB持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">AOF持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%94%E8%BE%83"><span class="toc-text">比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E"><span class="toc-text">Redis主从</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建主从集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%8E%9F%E7%90%86"><span class="toc-text">数据同步原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-text">全量同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-text">增量同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96"><span class="toc-text">优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html"><span class="toc-text">多级缓存</span></a></div></div></div>
 
 
 
@@ -101,11 +109,215 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-15T03:10:45.710Z">2022-11-15</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">笔记</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-17T10:30:57.820Z">2022-11-17</time></div></div>
 
   <article class='content md wiki'>
   <h1 class="article-title"><span>分布式缓存</span></h1>
-  <p class="tag-plugin quot" type="text">Redis持久化</p>
+  <h2 id="单点Redis的问题"><a href="#单点Redis的问题" class="headerlink" title="单点Redis的问题"></a>单点Redis的问题</h2><p>数据丢失问题：Redis是内存存储，服务器重启可能丢失数据</p>
+<ul>
+<li>实现Redis数据持久化</li>
+</ul>
+<p>并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景</p>
+<ul>
+<li>搭建主从集群，实现读写分离</li>
+</ul>
+<p>故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段</p>
+<ul>
+<li>利用Redis哨兵，实现健康检测和自动恢复</li>
+</ul>
+<p>存储能力问题：Redis基于内存，单节点存储的数据量难以满足海量数据需求</p>
+<ul>
+<li>搭建分片集群，利用插槽机制实现动态扩容</li>
+</ul>
+<h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><h3 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h3><p>RDB全称Redis Database Backup file（Redis数据备份文件），也叫Redis数据快照。简单来说就是把内存中的所有数据都记录到磁盘中。当Redis实例故障重启后，从磁盘读取快照文件，恢复数据。</p>
+<p>快照文件成为RDB，默认保存在当前运行目录</p>
+<ul>
+<li>save：由Redis主进程来执行RDB，会阻塞所有命令</li>
+<li>bgsave：开启子进程执行RDB，避免主进程收到影响</li>
+</ul>
+<p>Reids停机会执行一次RDB</p>
+<p>Redis内部有触发RDB的机制，可以在redis.conf文件中找到，格式如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 900秒内，如果至少有一个key被修改，则执行bgsace，如果是save &quot;&quot;则表示禁用RDB</span></span><br><span class="line">save 900 1</span><br><span class="line">save 200 10</span><br><span class="line">save 60 10000</span><br></pre></td></tr></table></figure>
+
+<p>RDB的其他配置也可以在redis.conf文件中设置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 是否压缩，不建议开启，压缩也会消耗CPU，磁盘的话不值钱</span></span><br><span class="line">rdbcompression <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># RDB文件名称</span></span><br><span class="line">dbfilename dump.rdb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件保存的路径目录</span></span><br><span class="line"><span class="built_in">dir</span> ./</span><br></pre></td></tr></table></figure>
+
+<p>bgsave开始会fork主进程得到子进程，子进程共享主进程的内存数据。完成fork后读取内存数据并写入RDB文件</p>
+<p>fork采用的是copy-on-write技术：</p>
+<ul>
+<li>当主进程执行读操作时，访问共享内存</li>
+<li>当主进程执行写操作时，则会拷贝一份数据，执行写操作。</li>
+</ul>
+<div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image31.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image31.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>总结</p>
+<p>RDB方式bgsave的基本流程</p>
+<ol>
+<li>fork主进程得到一个子进程，共享内存空间</li>
+<li>子进程读取内存数据并写入新的RDB文件</li>
+<li>用新RDB文件替换旧的RDB文件</li>
+</ol>
+<p>RDB会在什么时候执行？save 60 1000代表什么含义？</p>
+<ul>
+<li>默认时服务停止时。</li>
+<li>代表60秒内至少执行1000次修改则触发RDB</li>
+</ul>
+<p>RDB的缺点？</p>
+<ul>
+<li>RDB执行时隔时间长，两次RDB之间写数据有丢失的风险</li>
+<li>fork子进程、压缩、写出RDB文件都比较耗时</li>
+</ul>
+<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p>AOF全称为Append Only File（追加文件）。Redis处理的每一个写命令都会记录在AOF文件，可以看做是命令日志文件。恢复时，从头执行文件中的命令。</p>
+<p>AOF默认是关闭的，需要修改redis.conf配置文件来开启AOF：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 是否开启AOF功能，默认是no</span><br><span class="line">appendonly yes</span><br><span class="line"># AOF文件的名称</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br></pre></td></tr></table></figure>
+
+<p>AOF的命令记录的频率也可以通过redis.conf文件来配：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 表示每执行一次写命令，立即记录到AOF文件</span><br><span class="line">appendfsync always</span><br><span class="line"># 写命令执行完先放入AOF缓冲区，然后表示每隔1秒将缓冲区数据写到AOF文件，是默认方案</span><br><span class="line">appendfsync everysec</span><br><span class="line"># 写命令执行完先放入AOF缓冲区，由操作系统决定何时将缓冲区内容写回磁盘</span><br><span class="line">appendfsync no</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>no: don’t fsync, just let the OS flush the data when it wants. Faster.</p>
+</li>
+<li><p>always: fsync after every write to the append only log. Slow, Safest.</p>
+</li>
+<li><p>everysec: fsync only one time every second. Compromise.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">刷盘时机</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">always</td>
+<td align="center">同步刷盘</td>
+<td align="center">可靠性高，几乎不丢数据</td>
+<td align="center">性能影响大</td>
+</tr>
+<tr>
+<td align="center">everysec</td>
+<td align="center">每秒刷盘</td>
+<td align="center">性能适中</td>
+<td align="center">最多丢失1s数据</td>
+</tr>
+<tr>
+<td align="center">no</td>
+<td align="center">操作系统控制</td>
+<td align="center">性能最好</td>
+<td align="center">可靠性差，肯能丢失大量数据</td>
+</tr>
+</tbody></table>
+<p>重写</p>
+<p>因为是记录命令，AOF文件会比RDB文件大的多。而且AOF会记录对同一个key的多次写操作，但只有最后一次写操作才有意义。通过执行<code>bgrewriteaof</code>命令，可以让AOF文件执行重写功能，用最少的命令达到相同效果。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; BGREWRITEAOF</span><br><span class="line">Background append only file rewriting started</span><br></pre></td></tr></table></figure>
+
+<p>Redis也会在触发阈值时自动去重写AOF文件。阈值也可以在redis.conf中配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># AOF文件比上次文件增长超过多少百分比则触发重写</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line"># AOF文件体积最小多大以上才触发重写</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
+
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p>RDB和AOF各有自己的优缺点，如果对数据安全性要求较高，在实际开发中往往会结合两者来使用。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">RDB</th>
+<th align="center">AOF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">持久化方式</td>
+<td align="center">定时对整个内存做快照</td>
+<td align="center">记录每一次执行的命令</td>
+</tr>
+<tr>
+<td align="center">数据完整性</td>
+<td align="center">不完整，两次备份之间会丢失</td>
+<td align="center">相对完整，取决于刷盘策略</td>
+</tr>
+<tr>
+<td align="center">文件大小</td>
+<td align="center">会有压缩，文件体积小</td>
+<td align="center">记录命令，文件体积很大</td>
+</tr>
+<tr>
+<td align="center">宕机恢复速度</td>
+<td align="center">很快</td>
+<td align="center">慢</td>
+</tr>
+<tr>
+<td align="center">数据恢复优先级</td>
+<td align="center">低，因为数据完整性不如AOF</td>
+<td align="center">高，因为数据完整性更高</td>
+</tr>
+<tr>
+<td align="center">系统资源占用</td>
+<td align="center">高，大量CPU和内存消耗</td>
+<td align="center">低，主要是磁盘IO资源<br />但AOF重写时会占用大量CPU和内存</td>
+</tr>
+<tr>
+<td align="center">使用场景</td>
+<td align="center">可以容忍数分钟的数据丢失<br />追求更快的启动速度</td>
+<td align="center">对数据安全性要求较高常见</td>
+</tr>
+</tbody></table>
+<h2 id="Redis主从"><a href="#Redis主从" class="headerlink" title="Redis主从"></a>Redis主从</h2><p>单节点Redis的并发能力是有上限的，要进一步提高Redis的并发能力，就需要搭建主从集群，实现读写分离。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h3 id="搭建主从集群"><a href="#搭建主从集群" class="headerlink" title="搭建主从集群"></a>搭建主从集群</h3><p>详情查看：</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="Redis主从集群搭建" href="https://sx-code.github.io/2022/11/16/Redis安装系列教程/#Redis主从集群" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">Redis主从集群搭建</span><span class="cap link fs12">https://sx-code.github.io/2022/11/16/Redis安装系列教程/#Redis主从集群</span></div><div class="right"><div class="lazy img" data-bg="https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/link/8f277b4ee0ecd.svg"></div></div></a></div>
+
+<h3 id="数据同步原理"><a href="#数据同步原理" class="headerlink" title="数据同步原理"></a>数据同步原理</h3><h4 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h4><p>主从第一次同步是全量同步：</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image34.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image34.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>master如何判断slave是不是第一次来同步数据？这里会用到两个很重要的概念：</p>
+<ul>
+<li>Replication Id：简称replid，是数据集的标记，id一致则说明是同一数据集。每一个master都有一个唯一的replid，slave则会继承master节点的replid</li>
+<li>offset：偏移量，随记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前的offset。如果slave的offset小于master的offset，说明slave数据落后于master，需要更新。</li>
+</ul>
+<p>因此slave做数据同步，必须向master声明自己的replication id和offset，master才可以判断到底需要同步哪些数据。</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image35.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image35.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>详情可以查看打印的日志。</p>
+<p>总结</p>
+<p>简述全量同步的流程？</p>
+<ol>
+<li>slave节点请求增量同步</li>
+<li>master节点判断replid，发现不一致，拒绝增量同步</li>
+<li>master将完整内存数据生成RDB，发送RDB到slave</li>
+<li>slave清空本地数据，加载master的RDB</li>
+<li>master将RDB期间的命令记录在real_baklog，并持续将log中的命令发送给slave</li>
+<li>slave执行接受到的命令，保持与master之间的同步</li>
+</ol>
+<h4 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h4><p>如果slave重启后同步，则执行增量同步</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image36.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image36.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>repl_baklog大小有上限，写满后会覆盖最早的数据。如果slave断开时间过久，导致尚未备份的数据被覆盖，则无法基于log做数据增量同步，只能再次全量同步</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image37.png" fancybox="true" style="width:300px;"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image37.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>可以从以下几个方面来优化Redis主从集群：</p>
+<ul>
+<li>在master中配置repl-diskless-sync yes启用无磁盘复制，避免全量同步时的磁盘IO。</li>
+<li>Redis单节点的内存占用不要太大，减少RDB导致过多的磁盘IO。</li>
+<li>适当提高repl_baklog的大小，发现slave宕机时尽快故障恢复，尽可能避免全量同步。</li>
+<li>限制一个master上的slave节点数量，如果实在是太多slave，则可以采用主-从-从链式结构，减少master压力<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image38.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image38.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>简述全量同步和增量同步的区别？</p>
+<ul>
+<li>全量同步：master将完整内存数据生成RDB，发送RDB到slave。后续命令则记录在repl_baklog，逐个发送给slave。</li>
+<li>增量同步：slave提交给自己的offset到master，master获取real_baklog中从offset之后的命令给slave</li>
+</ul>
+<p>什么时候执行全量同步？</p>
+<ul>
+<li>slave节点第一次连接master节点时</li>
+<li>slave节点断开时间太久，repl_baklog中的offset已经被覆盖时</li>
+</ul>
+<p>什么时候执行增量同步？</p>
+<ul>
+<li>slave节点断开又恢复，并且在repl_baklog中能找到offset时</li>
+</ul>
+
   
 
 
