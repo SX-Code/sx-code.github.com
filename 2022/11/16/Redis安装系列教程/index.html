@@ -32,8 +32,10 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png">
 <meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image33.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image41.png">
 <meta property="article:published_time" content="2022-11-16T11:35:55.000Z">
-<meta property="article:modified_time" content="2022-11-17T09:47:37.190Z">
+<meta property="article:modified_time" content="2022-11-18T12:30:16.500Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -89,7 +91,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis安装系列教程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-text">安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85Redis"><span class="toc-text">单机安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-text">配置Redis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB"><span class="toc-text">开启主从关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis安装系列教程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-text">安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85Redis"><span class="toc-text">单机安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-text">配置Redis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB"><span class="toc-text">开启主从关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建哨兵集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE-1"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-1"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-text">测试</span></a></li></ol></li></ol></div></div></div>
 
 
 
@@ -241,6 +243,73 @@
 <p>当我们在从节点<code>set</code>时会报错	</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> num 666</span><br><span class="line">(error) READONLY You can<span class="string">&#x27;t write against a read only replica.</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="搭建哨兵集群"><a href="#搭建哨兵集群" class="headerlink" title="搭建哨兵集群"></a>搭建哨兵集群</h2><p>这里我们搭建一个三节点形成的Sentinel集群，来监督之前的Redis主从集群。如图：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>三个Sentinel实例信息如下：</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th align="center">IP</th>
+<th align="center">PORT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s1</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27001</td>
+</tr>
+<tr>
+<td>s2</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27002</td>
+</tr>
+<tr>
+<td>s3</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27003</td>
+</tr>
+</tbody></table>
+<h3 id="准备实例和配置-1"><a href="#准备实例和配置-1" class="headerlink" title="准备实例和配置"></a>准备实例和配置</h3><p>要在同一台虚拟机开启3个实例，必须准备三份不同的配置文件和目录，配置文件所在目录也就是工作目录</p>
+<p>创建三个文件夹，名字分别叫s1、s2、s3:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入/opt目录</span></span><br><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">mkdir</span> s1 s2 s3</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在s1目录创建一个<code>sentinel.conf</code>文件，添加以下内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">port 27001</span><br><span class="line">sentinel announce-ip 192.168.52.101</span><br><span class="line">sentinel monitor mymaster 192.168.52.101 7001 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 5000</span><br><span class="line">sentinel failover-timeout mymaster 60000</span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/opt/s1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li><code>port 27001</code>：是当前sentinel实例的端口</li>
+<li><code>sentinel monitor mymaster 192.168.52.101 7001 2</code>：指定主节点信息<ul>
+<li><code>mymaster</code>：主节点名称，自定义，任意写</li>
+<li><code>192.168.150.101 7001</code>：主节点的ip和端口</li>
+<li><code>2</code>：选举master时的quorum值</li>
+</ul>
+</li>
+</ul>
+<p>然后将<code>s1/sentinel</code>文件拷贝到s2、s3两个目录（在<code>/opt</code>目录执行命令）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方式一：逐个拷贝</span></span><br><span class="line"><span class="built_in">cp</span> s1/sentinel.conf s2</span><br><span class="line"><span class="built_in">cp</span> s1/sentinel.conf s3</span><br><span class="line"><span class="comment"># 方式二：管道组合命令，一键拷贝</span></span><br><span class="line"><span class="built_in">echo</span> s2 s3 | xargs -t -n 1 <span class="built_in">cp</span> s1/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<p>修改s2、s3两个文件夹内的配置文件，将端口分别修改27002、27003:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i -e <span class="string">&#x27;s/27001/27002/g&#x27;</span> -e <span class="string">&#x27;s/s1/s2/g&#x27;</span> s2/sentinel.conf</span><br><span class="line">sed -i -e <span class="string">&#x27;s/27001/27003/g&#x27;</span> -e <span class="string">&#x27;s/s1/s3/g&#x27;</span> s3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动-1"><a href="#启动-1" class="headerlink" title="启动"></a>启动</h3><p>为了方便查看日志，我们打开3个ssh窗口，分别启动3个redis实例，启动命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 第1个</span></span><br><span class="line">redis-sentinel s1/sentinel.conf</span><br><span class="line"><span class="comment"># 第2个</span></span><br><span class="line">redis-sentinel s2/sentinel.conf</span><br><span class="line"><span class="comment"># 第3个</span></span><br><span class="line">redis-sentinel s3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>启动后：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image41.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>测试前请保证redis主从集群已开启，sentinel集群也开启</p>
+<p>关闭7001，后来到sentinel窗口，可以看到窗口中有日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">+sdown master mymaster 192.168.52.101 7001</span><br><span class="line">+odown master mymaster 192.168.52.101 7001 <span class="comment">#quorum 3/2</span></span><br><span class="line">+new-epoch 6</span><br><span class="line">+try-failover master mymaster 192.168.52.101 7001</span><br><span class="line">Sentinel new configuration saved on disk</span><br><span class="line">+vote-for-leader f8060fe283e55014ffedb8129a3109917856aa72 6</span><br><span class="line">5352ec72f29b4649d332d945d38f45dac88b4784 voted <span class="keyword">for</span> f8060fe283e55014ffedb8129a3109917856aa72 6</span><br><span class="line">e3fcf15bfe26030bd793a3ebb37394f50e34702c voted <span class="keyword">for</span> f8060fe283e55014ffedb8129a3109917856aa72 6</span><br><span class="line">+elected-leader master mymaster 192.168.52.101 7001</span><br><span class="line">+failover-state-select-slave master mymaster 192.168.52.101 7001</span><br><span class="line">+selected-slave slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001</span><br><span class="line">+failover-state-send-slaveof-noone slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001</span><br><span class="line">+failover-state-wait-promotion slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001</span><br><span class="line">Sentinel new configuration saved on disk</span><br><span class="line">+promoted-slave slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001</span><br><span class="line">+failover-state-reconf-slaves master mymaster 192.168.52.101 7001</span><br><span class="line">+slave-reconf-sent slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001</span><br><span class="line">-odown master mymaster 192.168.52.101 7001</span><br><span class="line">+slave-reconf-inprog slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001</span><br><span class="line">+slave-reconf-done slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001</span><br><span class="line">+failover-end master mymaster 192.168.52.101 7001</span><br><span class="line">+switch-master mymaster 192.168.52.101 7001 192.168.52.101 7002</span><br></pre></td></tr></table></figure>
+
+<p>从日志中可以看到是<code>7002</code>被选举成为新的master</p>
+<p>再次启动<code>7001</code>，会自动成为slave</p>
 
 
 <div class="article-footer reveal fs14"><section id="references"><div class="header"><span>参考资料</span></div><div class="body"><ul><li class="post-title"><a href="https://zhuanlan.zhihu.com/p/34527270" target="_blank" rel="external nofollow noopener noreferrer">centos7安装redis</a></li><li class="post-title"><a href="https://www.cnblogs.com/xzlive/p/16112270.html" target="_blank" rel="external nofollow noopener noreferrer">Centos7安装Python3的方法</a></li><li class="post-title"><a href="https://www.cnblogs.com/richerdyoung/p/8066373.html" target="_blank" rel="external nofollow noopener noreferrer">【Redis】编译错误zmalloc.h:50:31: fatal error: jemalloc/jemalloc.h: No such file or directory</a></li></ul></div></section><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a>许可协议，转载请注明出处。</p>
