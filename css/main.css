@@ -256,7 +256,6 @@ a[onclick]:hover {
 code {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  color: var(--text-code);
   font-family: Menlo, Monaco, Consolas, system-ui, "Courier New", monospace, sans-serif;
 }
 p>code:not([class]),
@@ -265,6 +264,7 @@ li>code:not([class]) {
   background: var(--block);
   padding: 0.2em;
   border-radius: 4px;
+  color: var(--text-code);
 }
 article.md .highlight,
 pre:not([class]):has(>code) {
@@ -361,6 +361,24 @@ article.md .highlight .code pre {
 }
 article.md .highlight .gutter+.code pre {
   padding-left: 0.25em;
+}
+article.md .gist .gist-file {
+  border: 1px solid var(--block-border);
+  border-radius: 8px;
+}
+article.md .gist .gist-data {
+  border-bottom: 1px solid var(--block-border);
+}
+article.md .gist .highlight {
+  display: inherit;
+  border: none;
+  border-radius: 0;
+  background: none;
+  margin: 0;
+  padding: 1em 0;
+}
+article.md .gist .gist-meta {
+  background: var(--block-border);
 }
 table:not([class]) {
   border-collapse: collapse;
@@ -2975,6 +2993,14 @@ article.md.content h1.quot[type=text]:after {
   padding: 0.5rem 1rem;
   margin-top: 4px;
   box-shadow: 0 1px 4px 0px rgba(0,0,0,0.02), 0 2px 8px 0px rgba(0,0,0,0.02);
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  -moz-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  -webkit-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  -o-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.tag-plugin.timeline .body:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
 }
 .tag-plugin.timeline .body p {
   font-size: 0.875rem;
@@ -3004,16 +3030,8 @@ article.md.content h1.quot[type=text]:after {
 .tag-plugin.timeline[api] a.body {
   display: block;
   color: var(--text-p1);
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  -moz-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  -webkit-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  -o-transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
   line-height: 1.25;
   padding: 0.75rem 1rem;
-}
-.tag-plugin.timeline[api] a.body:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
 }
 .tag-plugin.timeline[api] .body p.title {
   font-size: 1rem;

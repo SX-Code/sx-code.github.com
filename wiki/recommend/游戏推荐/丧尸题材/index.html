@@ -20,22 +20,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Redis：笔记简介 - swcode</title>
+  <title>推荐：丧尸题材 - swcode</title>
 
   
-    <meta name="description" content="在学习Redis时，发现了黑马程序员的一个实战项目（张虎翼老师），于是跟着学习，并用笔记的方式记录学习的过程 可能是史上最懂你的Redis实战课程-2022版课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从">
+    <meta name="description" content="腐烂国度2Steam特别好评，支持多人联机 State of Decay 2: Juggernaut Edition丧尸崛起，文明陷落。在这个动作策略模拟游戏中，您的一小队幸存者将不得不前往开放世界搜刮资源，并建立可以抵挡丧尸群攻击的基地。  标签：生存 开放世界 僵尸 基地建设 多人 合作 七日杀Steam特别好评，支持多人联机 7 Days to Die《7 Days》是一款开放世界游戏，独具">
 <meta property="og:type" content="website">
-<meta property="og:title" content="笔记简介">
-<meta property="og:url" content="http://example.com/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:title" content="丧尸题材">
+<meta property="og:url" content="http://example.com/wiki/recommend/%E6%B8%B8%E6%88%8F%E6%8E%A8%E8%8D%90/%E4%B8%A7%E5%B0%B8%E9%A2%98%E6%9D%90/index.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="在学习Redis时，发现了黑马程序员的一个实战项目（张虎翼老师），于是跟着学习，并用笔记的方式记录学习的过程 可能是史上最懂你的Redis实战课程-2022版课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从">
+<meta property="og:description" content="腐烂国度2Steam特别好评，支持多人联机 State of Decay 2: Juggernaut Edition丧尸崛起，文明陷落。在这个动作策略模拟游戏中，您的一小队幸存者将不得不前往开放世界搜刮资源，并建立可以抵挡丧尸群攻击的基地。  标签：生存 开放世界 僵尸 基地建设 多人 合作 七日杀Steam特别好评，支持多人联机 7 Days to Die《7 Days》是一款开放世界游戏，独具">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg">
-<meta property="article:published_time" content="2022-11-12T03:43:50.240Z">
-<meta property="article:modified_time" content="2022-11-12T03:43:50.240Z">
+<meta property="og:image" content="https://media.st.dl.eccdnx.com/steam/apps/495420/header.jpg?t=1656875548">
+<meta property="og:image" content="https://media.st.dl.eccdnx.com/steam/apps/251570/header.jpg?t=1650477344">
+<meta property="og:image" content="https://media.st.dl.eccdnx.com/steam/apps/550/header.jpg?t=1666824129">
+<meta property="article:published_time" content="2022-11-20T12:57:15.190Z">
+<meta property="article:modified_time" content="2022-11-20T12:57:15.190Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg">
+<meta name="twitter:image" content="https://media.st.dl.eccdnx.com/steam/apps/495420/header.jpg?t=1656875548">
   
   
 
@@ -67,7 +69,7 @@
 <body>
   
 
-<div class="l_cover wiki"><article class="cover-wrap md"><div class="preview"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/redis-tm.svg" height="127px"></div><div class="cover-title"><span>Redis学习笔记</span></div><div class="description">通过学习B站的黑马程序员项目——黑马点评，学习Reids的各种技术以及其应用</div><div class="start-wrap"><a class="button theme start" href="#start">开始使用</a></div></article></div><hr>
+
 
 
   <div class='l_body' id='start'>
@@ -78,13 +80,13 @@
 
 <header class="header">
 
-<div class="logo-wrap wiki"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><div class="main" ff="title">Redis</div><div class="sub cap">通过项目学习Reids的各种应用</div></a></div>
+<div class="logo-wrap wiki"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/recommend/index.html"><div class="main" ff="title">推荐</div><div class="sub cap">博主推荐的东西</div></a></div>
 </header>
 
 
 <div class="widgets">
 
-<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html"><span class="toc-text">Redis</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Redis的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.html"><span class="toc-text">Redis常见数据结构</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/Redis%E5%AE%A2%E6%88%B7%E7%AB%AF.html"><span class="toc-text">Redis客户端</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E7%BC%93%E5%AD%98/index.html"><span class="toc-text">Redis缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/GEO%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html"><span class="toc-text">GEO数据结构</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/index.html"><span class="toc-text">单点Redis的问题</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98.html"><span class="toc-text">分布式缓存</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/redis/Redis%E9%AB%98%E7%BA%A7/Redis%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98.html"><span class="toc-text">多级缓存</span></a></div></div></div>
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">简介</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/index.html"><span class="toc-text">欢迎</span></a></div></div><div class="widget-header cap dis-select"><span class="name">网站推荐</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/01-%E8%A7%86%E9%A2%91%E7%BD%91%E7%AB%99/index.html"><span class="toc-text">视频网站</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/02-%E8%BD%AF%E4%BB%B6%E4%B8%8B%E8%BD%BD/index.html"><span class="toc-text">软件下载</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/03-%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86/index.html"><span class="toc-text">图片处理</span></a></div></div><div class="widget-header cap dis-select"><span class="name">游戏推荐</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/recommend/%E6%B8%B8%E6%88%8F%E6%8E%A8%E8%8D%90/%E4%B8%A7%E5%B0%B8%E9%A2%98%E6%9D%90/index.html"><span class="toc-text">丧尸题材</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%85%90%E7%83%82%E5%9B%BD%E5%BA%A62"><span class="toc-text">腐烂国度2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E6%97%A5%E6%9D%80"><span class="toc-text">七日杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E7%94%9F%E4%B9%8B%E8%B7%AF2"><span class="toc-text">求生之路2</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/%E6%B8%B8%E6%88%8F%E6%8E%A8%E8%8D%90/%E7%94%9F%E5%AD%98%E9%A2%98%E6%9D%90/index.html"><span class="toc-text">生存题材</span></a></div></div><div class="widget-header cap dis-select"><span class="name">公众号推荐</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/recommend/%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/05-%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/index.html"><span class="toc-text">微信公众号</span></a></div></div></div>
 
 
 
@@ -102,22 +104,29 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-12T03:43:50.240Z">2022-11-12</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/recommend/index.html">推荐</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-11-20T12:57:15.190Z">2022-11-20</time></div></div>
 
   <article class='content md wiki'>
-  <h1 class="article-title"><span>笔记简介</span></h1>
-  <p>在学习Redis时，发现了黑马程序员的一个实战项目（张虎翼老师），于是跟着学习，并用笔记的方式记录学习的过程</p>
-<div class="tag-plugin note" ><div class="body"><!-- tab 图文示例 --><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg" alt="可能是史上最懂你的Redis实战课程-2022版" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div><div class="image-meta"><span class="image-caption center">可能是史上最懂你的Redis实战课程-2022版</span></div></div>课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从、哨兵、集群等的搭建和原理，使用运维过程中的最佳实践方案。最后还会深入学习Redis底层原理、网络模型、通信模型、内存淘汰策略等内容</div></div>
+  <h1 class="article-title"><span>丧尸题材</span></h1>
+  <h2 id="腐烂国度2"><a href="#腐烂国度2" class="headerlink" title="腐烂国度2"></a>腐烂国度2</h2><p>Steam<sup class="tag-plugin sup" color="red">特别好评</sup>，支持多人联机</p>
+<div class="tag-plugin split" ><div class="cell" index="0"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://media.st.dl.eccdnx.com/steam/apps/495420/header.jpg?t=1656875548" fancybox="true"/></div></div></div><div class="cell" index="1"><p><a target="_blank" rel="noopener" href="https://store.steampowered.com/app/495420/State_of_Decay_2_Juggernaut_Edition/">State of Decay 2: Juggernaut Edition</a></p><p>丧尸崛起，文明陷落。在这个动作策略模拟游戏中，您的一小队幸存者将不得不前往开放世界搜刮资源，并建立可以抵挡丧尸群攻击的基地。</p></div></div>
 
-<p>链接地址：</p>
-<div class="tag-plugin link dis-select"><a class="link-card plain" title="黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目" href="https://www.bilibili.com/video/BV1cr4y1671t/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill=""><div class="left"><span class="title">黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目</span><span class="cap link fs12">https://www.bilibili.com/video/BV1cr4y1671t/</span></div><div class="right"><div class="lazy img" data-bg="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg"></div></div></a></div>
+<p>标签：<mark class="tag-plugin mark" color="green">生存</mark> <mark class="tag-plugin mark" color="green">开放世界</mark> <mark class="tag-plugin mark" color="green">僵尸</mark> <mark class="tag-plugin mark" color="green">基地建设</mark> <mark class="tag-plugin mark" color="green">多人</mark> <mark class="tag-plugin mark" color="green">合作</mark></p>
+<h2 id="七日杀"><a href="#七日杀" class="headerlink" title="七日杀"></a>七日杀</h2><p>Steam<sup class="tag-plugin sup" color="red">特别好评</sup>，支持多人联机</p>
+<div class="tag-plugin split" ><div class="cell" index="0"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://media.st.dl.eccdnx.com/steam/apps/251570/header.jpg?t=1650477344" fancybox="true"/></div></div></div><div class="cell" index="1"><p><a target="_blank" rel="noopener" href="https://store.steampowered.com/app/251570/7_Days_to_Die/">7 Days to Die</a></p><p>《7 Days》是一款开放世界游戏，独具特色地融合了第一人称射击、生存恐怖、塔防和角色扮演等多种游戏的特征。快来体验这款具有开创性的终极丧尸生存沙盒角色扮演游戏吧。纳维戈恩在等着你！</p></div></div>
+
+<p>标签：<mark class="tag-plugin mark" color="green">生存</mark> <mark class="tag-plugin mark" color="green">僵尸</mark> <mark class="tag-plugin mark" color="green">体素</mark> <mark class="tag-plugin mark" color="green">开放世界</mark> <mark class="tag-plugin mark" color="green">开放世界生存制作</mark></p>
+<h2 id="求生之路2"><a href="#求生之路2" class="headerlink" title="求生之路2"></a>求生之路2</h2><p>Steam<sup class="tag-plugin sup" color="red">好评如潮</sup>，支持多人联机</p>
+<div class="tag-plugin split" ><div class="cell" index="0"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://media.st.dl.eccdnx.com/steam/apps/550/header.jpg?t=1666824129" fancybox="true"/></div></div></div><div class="cell" index="1"><p><a target="_blank" rel="noopener" href="https://store.steampowered.com/app/550/Left_4_Dead_2/">Left 4 Dead 2</a></p><p>《求生之路2》游玩时玩家将扮演四名新生还者中的一名，装备有种类繁多、数量惊人的经典及先进武器。 和伙伴们从大量的丧尸以及特感中达到暂时安全的安全屋，在最终战役中死守等待救援到来…</p></div></div>
+
+<p>标签：<mark class="tag-plugin mark" color="green">僵尸</mark> <mark class="tag-plugin mark" color="green">合作</mark> <mark class="tag-plugin mark" color="green">第一人称射击</mark> <mark class="tag-plugin mark" color="green">多人</mark> <mark class="tag-plugin mark" color="green">动作</mark></p>
 
   
 
 
   </article>
   
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/redis/Redis%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">Redis</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/recommend/%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/03-%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86/index.html">图片处理</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/recommend/%E6%B8%B8%E6%88%8F%E6%8E%A8%E8%8D%90/%E7%94%9F%E5%AD%98%E9%A2%98%E6%9D%90/index.html">生存题材</a></div></section></div>
 
   
 
