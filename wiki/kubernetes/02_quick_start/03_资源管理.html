@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Kubernetes：资源管理 - swcode</title>
+
+  
+    <meta name="description" content="主要介绍yaml语法和kubernetes的资源管理方式 资源管理介绍在kubernetes中，所有的内容都抽为资源，用户需要通过操作系统资源来管理kubernetes。  kubernetes本质上就是一个集群系统，用户可以在集群中部署各种服，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将制定的程序跑在容器中 kubernetes的最小管理单元是pod而不是容器，所以">
+<meta property="og:type" content="website">
+<meta property="og:title" content="资源管理">
+<meta property="og:url" content="http://example.com/wiki/kubernetes/02_quick_start/03_%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="主要介绍yaml语法和kubernetes的资源管理方式 资源管理介绍在kubernetes中，所有的内容都抽为资源，用户需要通过操作系统资源来管理kubernetes。  kubernetes本质上就是一个集群系统，用户可以在集群中部署各种服，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将制定的程序跑在容器中 kubernetes的最小管理单元是pod而不是容器，所以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png">
+<meta property="article:published_time" content="2023-02-27T11:05:41.000Z">
+<meta property="article:modified_time" content="2023-02-27T11:51:22.000Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/kubernetes/01_introduce/index.html"><div class="main" ff="title">Kubernetes</div><div class="sub cap">Kubernetes快速入门</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/kubernetes/" placeholder="在 /wiki/kubernetes/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/kubernetes/02_quick_start/01_Kubernetes%E4%BB%8B%E7%BB%8D.html"><span class="toc-text">Kubernetes介绍</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/kubernetes/02_quick_start/02_%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.html"><span class="toc-text">集群环境搭建</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/kubernetes/02_quick_start/03_%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86.html"><span class="toc-text">资源管理</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="toc-text">资源管理介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-text">资源管理方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%BC%8F%E5%AF%B9%E8%B1%A1%E7%AE%A1%E7%90%86"><span class="toc-text">命令式对象管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#kubectl%E5%91%BD%E4%BB%A4"><span class="toc-text">kubectl命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E7%B1%BB%E5%9E%8B"><span class="toc-text">资源类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-text">操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%BC%8F%E5%AF%B9%E8%B1%A1%E9%85%8D%E7%BD%AE"><span class="toc-text">命令式对象配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E5%AF%B9%E8%B1%A1%E9%85%8D%E7%BD%AE"><span class="toc-text">声明式对象配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/kubernetes/02_quick_start/04_%E5%AE%9E%E6%88%98%E5%85%A5%E9%97%A8.html"><span class="toc-text">实战入门</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-02-27T11:51:22.000Z">2023-02-27</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>资源管理</span></h1>
+  <p>主要介绍yaml语法和kubernetes的资源管理方式</p>
+<h2 id="资源管理介绍"><a href="#资源管理介绍" class="headerlink" title="资源管理介绍"></a>资源管理介绍</h2><p>在kubernetes中，所有的内容都抽为资源，用户需要通过操作系统资源来管理kubernetes。</p>
+<blockquote>
+<p>kubernetes本质上就是一个集群系统，用户可以在集群中部署各种服，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将制定的程序跑在容器中</p>
+<p>kubernetes的最小管理单元是pod而不是容器，所以只能将容器放在<code>Pod</code>中，而kubernetes一般不也不会直接管理Pod，而是通过<code>Pod控制器</code>来管理。</p>
+<p>Pod可以提供服务之后，就要考虑如何访问Pod中的服务，kubernetes提供了<code>Service</code>资源实现这个功能。</p>
+<p>当然，如果Pod程序的数据需要持久化，kubernetes还提供了各种<code>存储</code>系统。</p>
+</blockquote>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png" fancybox="true"/></div></div>
+
+<blockquote>
+<p>学习kubernetes的核心，就是学习如何对集群上的<code>Pod、Pod控制器、Service、存储</code>等各种资源操作</p>
+</blockquote>
+<h2 id="资源管理方式"><a href="#资源管理方式" class="headerlink" title="资源管理方式"></a>资源管理方式</h2><p><strong>命令式对象管理</strong>：直接使用命令去操作kubernetes资源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl run nginx-pod --image=nginx:1.17.1 --port=80<br></code></pre></td></tr></table></figure>
+
+<p><strong>命令式对象配置</strong>：通过命令配置和配置文件去操作kubernetes资源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl create/patch -f nginx-pod.yaml<br></code></pre></td></tr></table></figure>
+
+<p><strong>声明式对象配置</strong>：通过apply命令和配置文件去操作kubetrnetes资源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl apply -f nginx-pod.yaml # 创建和更新<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>操作对象</th>
+<th>适用环境</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>命令式对象管理</td>
+<td>对象</td>
+<td>测试</td>
+<td>简单</td>
+<td>智能操作活动对象，无法审计、跟踪</td>
+</tr>
+<tr>
+<td>命令式对象配置</td>
+<td>文件</td>
+<td>开发</td>
+<td>可以审计、跟踪</td>
+<td>项目大时，配置文件多，操作麻烦</td>
+</tr>
+<tr>
+<td>声明式对象配置</td>
+<td>目录</td>
+<td>开发</td>
+<td>支持目录操作</td>
+<td>意外情况下难以调试</td>
+</tr>
+</tbody></table>
+<h3 id="命令式对象管理"><a href="#命令式对象管理" class="headerlink" title="命令式对象管理"></a>命令式对象管理</h3><h4 id="kubectl命令"><a href="#kubectl命令" class="headerlink" title="kubectl命令"></a>kubectl命令</h4><p>​	kubectl时kubernetes集群的命令行工具，通过它能够对集群本身进行管理，并能在集群上进行容器化应用的安装部署。kubectl命令的语法如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl [comand] [type] [name] [flags]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>comand：指定要对资源执行的操作，例如create、get、delete</li>
+<li>type：指定资源类型，比如deployment、pos、service</li>
+<li>name：指定资源的名称，名称大小写敏感</li>
+<li>flags：指定额外的可选参数</li>
+</ul>
+<p>例如，查看所有pod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get pods<br></code></pre></td></tr></table></figure>
+
+<p>例如，查看某个pod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get pod pod_name [-o wide]<br></code></pre></td></tr></table></figure>
+
+<p>例如，查看某个pod，以yaml&#x2F;json格式展示</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get pod pod_name -o yaml/json<br></code></pre></td></tr></table></figure>
+
+<h4 id="资源类型"><a href="#资源类型" class="headerlink" title="资源类型"></a>资源类型</h4><p>kubernetes中所有的内容都抽象为资源，可以通过下面的命令进行查看：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl api-resources<br></code></pre></td></tr></table></figure>
+
+<p>经常使用的资源有下面这些：</p>
+<table>
+  <tr>
+      <th>资源分类</th>
+    <th>资源名称</th>
+    <th>缩写</th>
+    <th>资源作用</th>
+  </tr>
+  <tr>
+      <td rowspan="2">集群级别资源</td>
+    <td>nodes</td>
+    <td>no</td>
+    <td>集群组成部分</td>
+  </tr>
+  <tr>
+    <td>namespaces</td>
+    <td>ns</td>
+    <td>隔离pod</td>
+  </tr>
+  <tr>
+      <td>pod资源</td>
+    <td>pods</td>
+    <td>po</td>
+    <td>装在容器</td>
+  </tr>
+  <tr>
+      <td rowspan="8">pod资源控制器</td>
+    <td>replicationcontrollers</td>
+    <td>rc</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>replicasets</td>
+    <td>rs</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>deployments</td>
+    <td>deploy</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>daemonsets</td>
+    <td>ds</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>jobs</td>
+    <td></td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>cronjobs</td>
+    <td>cj</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>horizontalpodautoscalers</td>
+    <td>hpa</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td>statefulsets</td>
+    <td>sts</td>
+    <td>控制pod资源</td>
+  </tr>
+  <tr>
+    <td rowspan="2">服务发现资源</td>
+    <td>services</td>
+    <td>svs</td>
+    <td>统一pod对外接口</td>
+  </tr>
+  <tr>
+    <td>ingress</td>
+    <td>ing</td>
+    <td>统一pod对外接口</td>
+  </tr>
+  <tr>
+    <td rowspan="3">存储资源</td>
+    <td>volumeattachments</td>
+    <td></td>
+    <td>存储</td>
+  </tr>
+  <tr>
+    <td>persistentvolumes</td>
+    <td>pv</td>
+    <td>存储</td>
+  </tr>
+  <tr>
+    <td>persistentvolumeclaims</td>
+    <td>pvc</td>
+    <td>存储</td>
+  </tr>
+  <tr>
+    <td rowspan="2">配置资源</td>
+    <td>configmaps</td>
+    <td>cm</td>
+    <td>配置</td>
+  </tr>
+  <tr>
+    <td>secrets</td>
+    <td></td>
+    <td>配置</td>
+  </tr>
+</table>
+
+
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>kubernetes允许对资源进行多种操作，可以通过<code>--help</code>查看详细的操作命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl --help<br></code></pre></td></tr></table></figure>
+
+<p>经常使用的操作如下：</p>
+<table>
+  <tr>
+      <th>命令分类</th>
+    <th>命令</th>
+    <th>翻译</th>
+    <th>命令作用</th>
+  </tr>
+  <tr>
+      <td rowspan="6">基本命令</td>
+    <td>create</td>
+    <td>创建</td>
+    <td>创建一个资源</td>
+  </tr>
+  <tr>
+    <td>edit</td>
+    <td>编辑</td>
+    <td>编辑一个资源</td>
+  </tr>
+  <tr>
+      <td>get</td>
+    <td>获取</td>
+    <td>获取一个资源</td>
+  </tr>
+  <tr>
+    <td>patch</td>
+    <td>更新</td>
+    <td>更新一个资源</td>
+  </tr>
+  <tr>
+    <td>delete</td>
+    <td>删除</td>
+    <td>删除一个资源</td>
+  </tr>
+  <tr>
+    <td>explain</td>
+    <td>解释</td>
+    <td>展示资源文档</td>
+  </tr>
+  <tr>	
+    <td rowspan="10">运行和调试</td>
+    <td>run</td>
+    <td>运行</td>
+    <td>在集群中运行一个指定的镜像</td>
+  </tr>
+  <tr>
+    <td>expose</td>
+    <td>暴露</td>
+    <td>暴露资源为Service</td>
+  </tr>
+  <tr>
+    <td>describe</td>
+    <td>描述</td>
+    <td>显示资源内部信息</td>
+  </tr>
+  <tr>
+    <td>logs</td>
+    <td>日志</td>
+    <td>输出容器在pod中的日志</td>
+  </tr>
+  <tr>
+    <td>attach</td>
+    <td>缠绕</td>
+    <td>进入运行中的容器</td>
+  </tr>
+  <tr>
+    <td>exec</td>
+    <td>执行</td>
+    <td>执行容器中的一个命令</td>
+  </tr>
+  <tr>
+    <td>cp</td>
+    <td>复制</td>
+    <td>在Pod内外复制文件</td>
+  </tr>
+  <tr>
+    <td>rollout</td>
+    <td>首次展示</td>
+    <td>管理资源的发布</td>
+  </tr>
+  <tr>
+    <td>scale</td>
+    <td>规模</td>
+    <td>扩(缩)容Pod的数量</td>
+  </tr>
+  <tr>
+    <td>autoscale</td>
+    <td>自动调整</td>
+    <td>自动调整Pod的数量</td>
+  </tr>
+  <tr>
+    <td rowspan="2">高级命令</td>
+    <td>apply</td>
+    <td>rc</td>
+    <td>通过文件对资源进行配置</td>
+  </tr>
+  <tr>
+    <td>label</td>
+    <td>标签</td>
+    <td>更新资源上的标签</td>
+  </tr>
+  <tr>
+    <td rowspan="2">其他命令</td>
+    <td>cluster-info</td>
+    <td>集群信息</td>
+    <td>显示集群信息</td>
+  </tr>
+  <tr>
+    <td>version</td>
+    <td>版本</td>
+    <td>显示当前Server和Client的版本</td>
+  </tr>
+</table>
+
+
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><blockquote>
+<p>下面以一个namespace &#x2F; pod的创建和删除简单演示一下命令的使用</p>
+</blockquote>
+<p>创建一个namespace</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl create namespace dev<br></code></pre></td></tr></table></figure>
+
+<p>获取namespace</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get ns<br></code></pre></td></tr></table></figure>
+
+<p>在namespace下创建并运行一个nginx的Pod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl run pod --image=nginx -n dev<br></code></pre></td></tr></table></figure>
+
+<p>查看创建的pod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get pod -n dev<br></code></pre></td></tr></table></figure>
+
+<p>删除指定的pod</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl delete pod pod-864f9875b9-dlxwz -n dev<br>pod &quot;pod-864f9875b9-dlxwz&quot; deleted<br></code></pre></td></tr></table></figure>
+
+<p>删除指定的namespace</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl delete ns dev<br></code></pre></td></tr></table></figure>
+
+<h3 id="命令式对象配置"><a href="#命令式对象配置" class="headerlink" title="命令式对象配置"></a>命令式对象配置</h3><p>命令式对象配置就是使用命令配合配置文件一起来操作kubernetes资源</p>
+<p>1）创建配置文件，内容如下</p>
+<figure class="highlight yaml"><figcaption><span>nginxpod.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">dev</span><br><span class="hljs-meta">---</span><br><span class="hljs-meta"></span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">nginxpod</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">dev</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">containers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-containers</span><br>      <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.17.1</span><br></code></pre></td></tr></table></figure>
+
+<p>2）执行create命令，创建资源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl create -f nginxpod.yaml<br></code></pre></td></tr></table></figure>
+
+<p>3）执行get命令，查看资源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl get -f nginxpod.yaml<br></code></pre></td></tr></table></figure>
+
+<p>4）执行delete命令，删除资源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl delete -f nginxpod.yaml<br></code></pre></td></tr></table></figure>
+
+<h3 id="声明式对象配置"><a href="#声明式对象配置" class="headerlink" title="声明式对象配置"></a>声明式对象配置</h3><p>声明式对象配置和命令式配置很相似，但它只有一个命令 apply</p>
+<p>创建资源</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl apply -f nginxpod.yaml<br></code></pre></td></tr></table></figure>
+
+<p>更新资源，资源没有变动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl apply -f nginxpod.yaml<br>namespace/dev unchanged<br>pod/nginxpod unchanged<br></code></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<p>扩展：kubectl可以在node节点上运行吗？</p>
+</blockquote>
+<p>​	kubectl的运行时需要进行配置的，它的配置文件是$HOME&#x2F;.kube，如果想要在node节点运行此命令，需要将master上的.kube文件复制到node节点上，即在master节点上执行下面操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">scp -r $HOME/.kube node1:$HOME/<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用推荐：三种方式应该怎么用？</p>
+</blockquote>
+<p> 创建&#x2F;更新资源		使用声明式对象配置 kubectl apply -f XXX.yaml</p>
+<p>删除资源				  使用命令式对象配置 kubectl delete -f XXX.yaml</p>
+<p>查询资源				  使用命令式对象管理 kubectl get(describe) 资源名</p>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/kubernetes/02_quick_start/02_%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.html">集群环境搭建</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/kubernetes/02_quick_start/04_%E5%AE%9E%E6%88%98%E5%85%A5%E9%97%A8.html">实战入门</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

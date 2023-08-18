@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>云尚办公：Activiti - swcode</title>
+
+  
+    <meta name="description" content="什么是工作流工作流（Workflow），就是通过计算机对业务流程自动化执行管理。它主要解决的事：使多个参与者之间按照某种预定的规则自动进行传递文档、信息或任务的过程，从而实现某个预期的业务目标，或者促使此目标的实现。通俗来讲，就是业务上一个完整的审批流程。例如员工的请假，出差，外出采购，合同审核等等，这些过程，都是一个工作流。 工作流引擎对于工作流的处理，如果采用原始的方式，我们需要拿着各种文件到">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Activiti">
+<meta property="og:url" content="http://example.com/wiki/cloudoa/03_function/activiti.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="什么是工作流工作流（Workflow），就是通过计算机对业务流程自动化执行管理。它主要解决的事：使多个参与者之间按照某种预定的规则自动进行传递文档、信息或任务的过程，从而实现某个预期的业务目标，或者促使此目标的实现。通俗来讲，就是业务上一个完整的审批流程。例如员工的请假，出差，外出采购，合同审核等等，这些过程，都是一个工作流。 工作流引擎对于工作流的处理，如果采用原始的方式，我们需要拿着各种文件到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_modeler_leave.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_modeler_assign.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_created_database.png">
+<meta property="article:published_time" content="2023-05-07T07:23:29.000Z">
+<meta property="article:modified_time" content="2023-05-08T05:24:16.000Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_modeler_leave.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/cloudoa/01_introduce/index.html"><div class="main" ff="title">云尚办公</div><div class="sub cap">云尚办公项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/cloudoa/" placeholder="在 /wiki/cloudoa/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目部署</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/02_install/source_install.html"><span class="toc-text">源码部署</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/02_install/docker_install.html"><span class="toc-text">Docker部署</span></a></div></div><div class="widget-header cap dis-select"><span class="name">关键技术</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/springsecurity.html"><span class="toc-text">Spring Security</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/cloudoa/03_function/activiti.html"><span class="toc-text">Activiti</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">什么是工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%BC%95%E6%93%8E"><span class="toc-text">工作流引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%BC%95%E6%93%8E"><span class="toc-text">常见的工作流引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activiti-7%E6%A6%82%E8%BF%B0"><span class="toc-text">Activiti 7概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti%E4%BB%8B%E7%BB%8D"><span class="toc-text">Activiti介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80BPMN"><span class="toc-text">建模语言BPMN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activiti-%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-text">Activiti 使用流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activiti-Modeler"><span class="toc-text">Activiti Modeler</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti-setup"><span class="toc-text">Activiti setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E8%AF%B7%E5%81%87%E6%B5%81%E7%A8%8B"><span class="toc-text">设计请假流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E6%A8%A1%E5%9E%8B"><span class="toc-text">导出模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Activiti-7"><span class="toc-text">Activiti 7</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti%E7%8E%AF%E5%A2%83"><span class="toc-text">Activiti环境</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96"><span class="toc-text">配置依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE"><span class="toc-text">添加配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE"><span class="toc-text">启动项目</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B%E5%AE%9A%E4%B9%89"><span class="toc-text">部署流程定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%AE%9E%E4%BE%8B"><span class="toc-text">启动流程实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%A1%E6%89%B9%E4%BB%BB%E5%8A%A1"><span class="toc-text">查看审批任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%AE%A1%E6%89%B9%E4%BB%BB%E5%8A%A1"><span class="toc-text">处理审批任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%B7%B2%E5%8F%91%E8%B5%B7%E6%B5%81%E7%A8%8B"><span class="toc-text">查询已发起流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%B7%B2%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-text">查询已处理流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%BE%85%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-text">查询待处理流程</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/wechat.html"><span class="toc-text">微信公众号</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/form-create.html"><span class="toc-text">表单设计器</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/cloudoa/01_introduce/index.html">云尚办公</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-05-08T05:24:16.000Z">2023-05-08</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>Activiti</span></h1>
+  <h2 id="什么是工作流"><a href="#什么是工作流" class="headerlink" title="什么是工作流"></a>什么是工作流</h2><p><strong>工作流（Workflow）</strong>，就是通过计算机对业务流程自动化执行管理。它主要解决的事：使多个参与者之间按照某种<strong>预定的规则</strong>自动进行传递文档、信息或任务的过程，从而实现某个预期的业务目标，或者促使此目标的实现。<strong>通俗来讲，就是业务上一个完整的审批流程。</strong>例如员工的请假，出差，外出采购，合同审核等等，这些过程，都是一个工作流。</p>
+<h2 id="工作流引擎"><a href="#工作流引擎" class="headerlink" title="工作流引擎"></a>工作流引擎</h2><p>对于工作流的处理，如果采用原始的方式，我们需要拿着各种文件到各个负责人那里去签字，需要在多个部门之间不断审批，这种方式费时费力。而我们可以借助软件系统来协助我们处理这些审批流程，这样就出现了工作流系统，使用工作流系统后可以极大的提高工作效率。</p>
+<p>在学习工作流的过程中，我们肯定看到过这个模型:填写请假单-&gt;部门经理审批-&gt;总经理审批-&gt;人事备案</p>
+<p>（1）要实现上述的流程，我们自己可以通过字段标识来实现这个审批效果，在业务表中加个字段，比如填写请假单用1标识，部门经理用2标识，总经理用3标识，人事备案用4标识，好像看起来没啥问题，也实现了审批效果。可是一旦我们的流程出现了变化，这个时候我们就需要改动我们的代码了，这显然是不可取的，那么有没有专业的方式来实现工作流的管理呢? 并且可以做到业务流程变化之后，我们的程序可以不用改变，如果可以实现这样的效果，那么我们的业务系统的适应能力就得到了极大提升。在这样的背景下，就出现了<strong>工作流引擎</strong>。</p>
+<p><strong>为什么使用工作流引擎，能实现业务流程改变，不用修改代码，流程还能自动推进?</strong></p>
+<p>（1）我们先来说说为什么流程改变，不用修改代码:我们的工作流引擎都实现了一个规范，这个规范要求我们的流程管理与状态字段无关，始终都是读取业务流程图的下一个节点。当业务更新的时候我们只需要更新业务流程图就行了。这就实现了业务流程改变，不用修改代码。</p>
+<p>（2）再来说说流程自动推进，这个原理就更简单了，就拿上面的请假模型来说，工作流引擎会用一张表来记录当前处在的节点。当填写完请假单后肯定是要轮到部门经理来审批了，所以我们一旦完成了请假单填写那么这条记录将会被从这张表删除掉，并且会把下一个节点部门经理的信息插入到这张表中，当我们用部门经理的信息去这张表中查询的时候就能查出部门经理相关的审批的信息了，以此类推，这样层层递进，就实现了流程的自动递交了。</p>
+<h2 id="常见的工作流引擎"><a href="#常见的工作流引擎" class="headerlink" title="常见的工作流引擎"></a>常见的工作流引擎</h2><p>主流的框架有：<strong>Activiti</strong>、jBPM、Camunda、Flowable、盘古BPM、云程</p>
+<h2 id="Activiti-7概述"><a href="#Activiti-7概述" class="headerlink" title="Activiti 7概述"></a>Activiti 7概述</h2><h3 id="Activiti介绍"><a href="#Activiti介绍" class="headerlink" title="Activiti介绍"></a>Activiti介绍</h3><p>activiti是一个工作流引擎，可以将业务系统中复杂的业务流程抽取出来，使用专门的建模语言BPMN进行定义，业务流程按照预先定义的流程进行执行。实现了系统的流程由activti进行管理，减少业务系统由于流程变更进行系统升级改造的工作流量，从而提高系统的健壮性，同时也减少了系统开发维护成本。</p>
+<p>官方网站: <a target="_blank" rel="noopener" href="https://www.activiti.org/">https://www.activiti.org</a></p>
+<h3 id="建模语言BPMN"><a href="#建模语言BPMN" class="headerlink" title="建模语言BPMN"></a>建模语言BPMN</h3><p>BPM (Business Process Management) 即业务流程管理，是一种规范化的构造端到端的业务流程，以持续提高<br>组织业务效率。</p>
+<p>BPM 软件就是根据企业中业务环境的变化，推进人与人之间、人与系统之间以及系统与系统之间的整理及调整的经营方法与解决方案的 T 工具。使用 BPM 软件对企业内部及外部的业务流程的整个生命周期进行建模、自动化、管理监控和优化，可以降低企业成本，提高利润。</p>
+<p>BPMN (Business Process Model AndNotation) 即业务流程模型和符号，是一套标准的业务流程建模符号，使用BPMN 提供的符号可以创建业务流程。Activit 就是使用 BPMN 进行流程建模、流程执行管理的。</p>
+<p>BPMN2.0 是业务流程建模符号 2.0 的缩写，它由 Business Process Management nitiative 这个非营利协会创建并不断发展。BPMN2.0 是使用一些符号来明确业务流程设计流程图的一套符号规范，能增进业务建模时的沟通效率。目前 BPMN2.0 是最新的版本，它用于在 BPM 上下文中进行布局和可视化的沟通。</p>
+<p>BPMN2.0 的基本符号主要包含：</p>
+<ul>
+<li>事件 Event<br>开始:表示一个流程的开始<br>中间:发生的开始和结束事件之间，影响处理的流程<br>结束:表示该过程结束</li>
+<li><strong>活动 Activities</strong><br>活动是工作或任务的一个通用术语。一个活动可以是一个任务，还可以是一个当前流程的子处理流程；其次，你还可以为活动指定不同的类型。常见的活动如下<ul>
+<li>用户任务（User Task）</li>
+<li>服务任务（Service Task）</li>
+<li>子流程（Sub Process）</li>
+</ul>
+</li>
+<li><strong>网管 GateWay</strong><br>用于表示流程的分支与合并，有几种常用的网关需要了解<ul>
+<li>排他网关（Exclusive Gateway）</li>
+<li>并行网关（Parallel Gateway）</li>
+<li>包容网关（Inclusive Gateway）</li>
+<li>事件网关（Event gateway）</li>
+</ul>
+</li>
+</ul>
+<h2 id="Activiti-使用流程"><a href="#Activiti-使用流程" class="headerlink" title="Activiti 使用流程"></a>Activiti 使用流程</h2><p><strong>第一步：</strong> 引入依赖并初始化数据库</p>
+<p>既然activiti是一个框架，那么我们肯定是需要引入对应的iar包坐标的，具体参考代码中的。</p>
+<p><strong>第二步：</strong> 通过工具绘画流程图</p>
+<p>使用activiti 流程建模工具(activity-designer)定义业务流程(.bpmn 文件)。bpmn 文件就是业务流程定义文件通过 xml 定义业务流程。</p>
+<p><strong>第三步：</strong> 流程定义部署</p>
+<p>向activiti 部署业务流程定义 (.bpmn 文件)，使用 activiti 提供的 api向activiti 中部署.bpmn 文件通俗来讲，就是让activiti认识要使用的流程</p>
+<p><strong>第四步：</strong> 启动一个流程实例 (ProcessInstance)</p>
+<p>启动一个流程实例表示开始一次业务流程的运行，比如员工请假流程部署完成，如果张三要请假就可以启动一个流程实例，如果李四要请假也启动一个流程实例，两个流程的执行互相不影响，就好比定义一个 java 类，实例化两个对象一样，部署的流程就好比 iava 类，启动一个流程实例就好比 new 一个iava 对象</p>
+<p><strong>第五步：</strong> 用户查询待办任务(Task)</p>
+<p>因为现在系统的业务流程已经交给 activiti 管理，通过 activiti 就可以查询当前流程执行到哪了，当前用户需要办理什么任务了，这些 activiti都我们管理了。实际上我们学习activiti也只是学习它的API怎么使用，因为很多功能activiti都已经封装好了，我们会调用就行了。</p>
+<p><strong>第六步：</strong>用户办理任务</p>
+<p>用户查询待办任务后，就可以办理某个任务，如果这个任务办理完成还需要其他用户办理，比如请假单创建后还需要部分经历审批，这个过程也是由 activiti 帮我们完成了，不需要我们在代码中指定。</p>
+<p><strong>第七步：</strong>流程结束</p>
+<p>当任务办理完成没有下一个任务节点了，这个流程实例就完成了。</p>
+<h2 id="Activiti-Modeler"><a href="#Activiti-Modeler" class="headerlink" title="Activiti Modeler"></a>Activiti Modeler</h2><p>Activiti官网：<a target="_blank" rel="noopener" href="https://www.activiti.org/get-started">Get started | Activiti</a>，下载Activiti 5.x</p>
+<h3 id="Activiti-setup"><a href="#Activiti-setup" class="headerlink" title="Activiti setup"></a>Activiti setup</h3><p>使用Activiti 在线设计，需要安装<a target="_blank" rel="noopener" href="http://java.sun.com/javase/downloads/index.jsp">Java</a> 运行环境和<a target="_blank" rel="noopener" href="http://tomcat.apache.org/download-70.cgi">Apache Tomcat</a>。确保你已经正确设置了 <em>JAVA_HOME</em> 系统变量，设置方式取决于操作系统。</p>
+<p>要让 Activiti Explore 和 REST Web 应用程序运行，只需将从 <a target="_blank" rel="noopener" href="https://www.activiti.org/get-started">Activiti 下载页面</a>下载的 WAR 复制到 Tomcat 安装目录中的文件夹中即可。默认情况下，Explore 使用内存中数据库以及示例进程、用户和组运行。</p>
+<p>测试账号:</p>
+<table>
+<thead>
+<tr>
+<th align="left">UserId</th>
+<th align="left">Password</th>
+<th align="left">Security roles</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">kermit</td>
+<td align="left">kermit</td>
+<td align="left">admin</td>
+</tr>
+<tr>
+<td align="left">gonzo</td>
+<td align="left">gonzo</td>
+<td align="left">manager</td>
+</tr>
+<tr>
+<td align="left">fozzie</td>
+<td align="left">fozzie</td>
+<td align="left">user</td>
+</tr>
+</tbody></table>
+<p>现在您可以访问以下Web应用程序</p>
+<table>
+<thead>
+<tr>
+<th align="left">Webapp Name</th>
+<th align="left">URL</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Activiti Explorer</td>
+<td align="left"><a target="_blank" rel="noopener" href="http://localhost:8080/activiti-explorer">http://localhost:8080/activiti-explorer</a></td>
+<td align="left">进程引擎用户控制台。使用此工具启动新流程、分配任务、查看和声明任务等。该工具还允许管理Activiti引擎。</td>
+</tr>
+</tbody></table>
+<h3 id="设计请假流程"><a href="#设计请假流程" class="headerlink" title="设计请假流程"></a>设计请假流程</h3><p><strong>创建流程</strong></p>
+<p>来到<a target="_blank" rel="noopener" href="http://localhost:8080/activiti-explorer/#processmodel/">流程设计工作区</a>，点击右上角的新建模型</p>
+<ul>
+<li>名称：leave<br>描述：请假</li>
+</ul>
+<p>设计如图的流程定义，注意图中红色部分的ID</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_modeler_leave.png" fancybox="true"/></div></div>
+
+<p><strong>设置审批人</strong></p>
+<p>点击<strong>王经理审批</strong>，找到下面的<strong>Assignment</strong>，在弹出窗户中的<strong>Assignee</strong>下填入<code>wjl</code>（<code>sys_user</code>表的用户昵称）</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_modeler_assign.png" fancybox="true"/></div></div>
+
+<p>以同样的方式设置<strong>李人事经理</strong>的<strong>Assignee</strong>为<code>lrsjl</code>。</p>
+<p><strong>保存并退出设计器</strong></p>
+<h3 id="导出模型"><a href="#导出模型" class="headerlink" title="导出模型"></a>导出模型</h3><p>在<a target="_blank" rel="noopener" href="http://localhost:8080/activiti-explorer/#processmodel/">流程设计工作区</a>的右上角，处理模型中选择<strong>导出模型</strong></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">leave.bpmn20.xml<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Activiti-7"><a href="#Activiti-7" class="headerlink" title="Activiti 7"></a>Activiti 7</h2><p>我们将activiti 7引入项目</p>
+<h3 id="Activiti环境"><a href="#Activiti环境" class="headerlink" title="Activiti环境"></a>Activiti环境</h3><h4 id="配置依赖"><a href="#配置依赖" class="headerlink" title="配置依赖"></a>配置依赖</h4><figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.activiti<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>activiti-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>7.1.0.M6<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">exclusions</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">exclusion</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">exclusion</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">exclusions</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>说明：Activiti 7与Spring Boot整合后，默认集成了Spring Security安全框架，当前我们项目已经集成过了Spring Security，后续案例设置审批人时都必须是系统用户，Activiti会检查用户是否存在。</p>
+<h4 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">activiti:</span><br>    <span class="hljs-attr">database-schema-update:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">db-history-used:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">history-level:</span> <span class="hljs-string">full</span><br>    <span class="hljs-attr">check-process-definitions:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">async-executor-activate:</span> <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h4><p>项目启动后，会自动创建数据库表</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/activiti_created_database.png" fancybox="true"/></div></div>
+
+<p>Activiti的运行支持必须要有这25张表的支持，主要是在业务流程运行过程中，记录参与流程的用户主体，用户组信息，以及流程的定义，流程执行时的信息，和流程的历史信息等等。</p>
+<h3 id="部署流程定义"><a href="#部署流程定义" class="headerlink" title="部署流程定义"></a>部署流程定义</h3><p>创建<code>resources/processes</code>，将我们<a href="#%E8%AE%BE%E8%AE%A1%E8%AF%B7%E5%81%87%E6%B5%81%E7%A8%8B">设计的请假模型</a>拷贝到此处，将<code>leave.bpmn20.xml</code>压缩成zip文件，名称为<code>leave.zip</code>，其中<code>leave</code>是流程定义的Key</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Mac使用下面命令压缩，防止加入隐藏文件</span><br>zip leave.zip leave.bpmn20.xml<br></code></pre></td></tr></table></figure>
+
+<p>可使用<code>repositoryService</code>进行流程部署</p>
+<ul>
+<li><strong>在上传流程文件zip包时，zip包名为流程定义Key</strong></li>
+</ul>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">publish</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-comment">// 修改状态</span><br>    <span class="hljs-type">ProcessTemplate</span> <span class="hljs-variable">processTemplate</span> <span class="hljs-operator">=</span> baseMapper.selectById(id);<br>    <span class="hljs-comment">// 获取定义文件的路径</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> processTemplate.getProcessDefinitionPath();<br>    <span class="hljs-keyword">if</span> (StringUtils.isEmpty(path)) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;文件路径为空&quot;</span>);<br>    &#125;<br>    deployByZip(path);<br>    processTemplate.setStatus(<span class="hljs-number">1</span>);<br>    baseMapper.updateById(processTemplate);<br>&#125;<br><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deployByZip</span><span class="hljs-params">(String path)</span> &#123;<br>    <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getClass().getClassLoader().getResourceAsStream(path);<br>    <span class="hljs-type">ZipInputStream</span> <span class="hljs-variable">zipInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ZipInputStream</span>(inputStream);<br>    <span class="hljs-comment">// 流程部署</span><br>    <span class="hljs-type">Deployment</span> <span class="hljs-variable">deployment</span> <span class="hljs-operator">=</span> repositoryService.createDeployment()<br>            .addZipInputStream(zipInputStream)<br>            .deploy();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/ProcessTemplate.java">processTemplate</a>为流程模板实体类，存放了流程定义文件的路径</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/ProcessTemplateController.java">ProcessTemplateController.publish</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-admin/src/views/process/template/template.vue">template.vue | 219行</a></p>
+</blockquote>
+<h3 id="启动流程实例"><a href="#启动流程实例" class="headerlink" title="启动流程实例"></a>启动流程实例</h3><p>启动流程实例就是新建一个审批流程，比如某个用户发起一个请假审批，这个时候就需要启动一个流程实例。</p>
+<p>除了使用<code>runtimeService</code>启动流程实例外，还需要进行流程信息的保存等操作。</p>
+<ul>
+<li>获取流程定义的Key，其被保存在processTemplate中。其实就是设计时指定的，也就是zip包的名称。</li>
+<li>流程实例可以绑定一个业务ID，这里将我们的Process.id设定为业务ID</li>
+<li>流程参数被设置为了用户填写的表单值。</li>
+<li>流程实例启动成功，获取下一个审批人信息。可能有多个，循环做消息推送。</li>
+<li>发起审批也是流程的一环节，需要记录到ProcessRecord表中。</li>
+</ul>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">startUp</span><span class="hljs-params">(ProcessFormVo processFormVo)</span> &#123;<br>    <span class="hljs-comment">// 获取用户信息</span><br>    <span class="hljs-type">SysUser</span> <span class="hljs-variable">sysUser</span> <span class="hljs-operator">=</span> sysUserService.getById(LoginUserInfoHelper.getUserId());<br>    <span class="hljs-comment">// 根据审批模版id，查询模板信息</span><br>    LambdaQueryWrapper&lt;ProcessTemplate&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>    wrapper.select(ProcessTemplate::getId, ProcessTemplate::getName, ProcessTemplate::getProcessDefinitionKey)<br>            .eq(ProcessTemplate::getId, processFormVo.getProcessTemplateId());<br>    <span class="hljs-type">ProcessTemplate</span> <span class="hljs-variable">processTemplate</span> <span class="hljs-operator">=</span> processTemplateService.getOne(wrapper);<br>    <span class="hljs-comment">// 保存流程信息</span><br>    <span class="hljs-type">Process</span> <span class="hljs-variable">process</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Process</span>();<br>    BeanUtils.copyProperties(processFormVo, process);<br>    process.setStatus(<span class="hljs-number">1</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">workNo</span> <span class="hljs-operator">=</span> String.valueOf(System.currentTimeMillis());<br>    process.setProcessCode(workNo);<br>    process.setUserId(LoginUserInfoHelper.getUserId());<br>    process.setFormValues(processFormVo.getFormValues());<br>    process.setTitle(sysUser.getName() + <span class="hljs-string">&quot;发起&quot;</span> + processTemplate.getName() + <span class="hljs-string">&quot;申请&quot;</span>);<br>    baseMapper.insert(process);<br>    <span class="hljs-comment">// 启动流程实例</span><br>    <span class="hljs-comment">// 流程定义key</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> processTemplate.getProcessDefinitionKey();<br>    <span class="hljs-comment">// 业务流程id</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">businessId</span> <span class="hljs-operator">=</span> String.valueOf(process.getId());<br>    <span class="hljs-comment">// 流程参数</span><br>    HashMap&lt;String, Object&gt; variables = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>    <span class="hljs-type">JSONObject</span> <span class="hljs-variable">jsonObject</span> <span class="hljs-operator">=</span> JSON.parseObject(processFormVo.getFormValues());<br>    <span class="hljs-type">JSONObject</span> <span class="hljs-variable">formData</span> <span class="hljs-operator">=</span> jsonObject.getJSONObject(<span class="hljs-string">&quot;formData&quot;</span>);<br>    HashMap&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(formData);<br>    variables.put(<span class="hljs-string">&quot;data&quot;</span>, map);<br>    <span class="hljs-type">ProcessInstance</span> <span class="hljs-variable">processInstance</span> <span class="hljs-operator">=</span> runtimeService.startProcessInstanceByKey(key, businessId, variables);<br>    <span class="hljs-comment">// 查询下一个审批人</span><br>    List&lt;Task&gt; taskList = <span class="hljs-built_in">this</span>.getCurrentTaskList(processInstance.getId());<br>    <span class="hljs-type">String</span> <span class="hljs-variable">names</span> <span class="hljs-operator">=</span> taskList.stream().map(task -&gt; &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">assignee</span> <span class="hljs-operator">=</span> task.getAssignee();<br>        <span class="hljs-type">SysUser</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> sysUserService.getUserByUsername(assignee);<br>        <span class="hljs-comment">// 推送消息</span><br>      	messageService.pushPendingMessage(process, user, task.getId());<br>        <span class="hljs-keyword">return</span> user.getName();<br>    &#125;).collect(Collectors.joining(<span class="hljs-string">&quot;,&quot;</span>));<br>    <span class="hljs-comment">// 业务流程关联</span><br>    process.setProcessInstanceId(processInstance.getId());<br>    process.setDescription(<span class="hljs-string">&quot;等待&quot;</span> + names + <span class="hljs-string">&quot;审批&quot;</span>);<br>    baseMapper.updateById(process);<br>    processRecordService.record(process.getId(), <span class="hljs-number">1</span>, <span class="hljs-string">&quot;发起申请&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/common/spring-security/src/main/java/com/swx/security/custom/LoginUserInfoHelper.java">LoginUserInfoHelper</a> 是 ThreadLocal 变量，负责记录登陆用户的信息。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/vo/process/ProcessFormVo.java">processFormVo </a> 是前端传过来的参数，保存了审批模板ID，表单值等数据。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/Process.java">process</a> 为流程实体类，存放了审批发起人，请假的表单数据，审批状态等过程数据。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/ProcessRecord.java">processRecord</a> 为流程记录表，负责记录每一次的审批流程。例如请假有三个流程，则审批通过后会有三条记录。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/wechat/service/impl/MessageServiceImpl.java">messageService</a> 负责推送消息给下一步的处理人。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.startUp</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/apply/apply.vue">apply.vue | 40行</a></p>
+</blockquote>
+<h3 id="查看审批任务"><a href="#查看审批任务" class="headerlink" title="查看审批任务"></a>查看审批任务</h3><p>流程参与者均可查看审批任务详情，包括填写的表单数据、审批状态、审批进度等信息。</p>
+<p>通过<code>processInstanceId</code>，即流程实例ID可以获取到当前进行的任务，从中可以获取到当前所有任务的审批人，通过循环与当前登陆用户比对，可以确定登陆用户是否是任务审批人。</p>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title function_">show</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-comment">// 获取审批信息</span><br>    <span class="hljs-type">Process</span> <span class="hljs-variable">process</span> <span class="hljs-operator">=</span> baseMapper.selectById(id);<br>    <span class="hljs-keyword">if</span> (process == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    <span class="hljs-comment">// 获取审批记录信息</span><br>    LambdaQueryWrapper&lt;ProcessRecord&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>    wrapper.eq(ProcessRecord::getProcessId, id);<br>    List&lt;ProcessRecord&gt; processRecords = processRecordService.list(wrapper);<br>    <span class="hljs-comment">// 获取审批模版</span><br>    <span class="hljs-type">ProcessTemplate</span> <span class="hljs-variable">processTemplate</span> <span class="hljs-operator">=</span> processTemplateService.getById(process.getProcessTemplateId());<br>    <span class="hljs-comment">// 是否可以审批</span><br>    List&lt;Task&gt; taskList = <span class="hljs-built_in">this</span>.getCurrentTaskList(process.getProcessInstanceId());<br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">isApprove</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">for</span> (Task task : taskList) &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> LoginUserInfoHelper.getUsername();<br>        <span class="hljs-keyword">if</span> (task.getAssignee().equals(username)) &#123;<br>            isApprove = <span class="hljs-literal">true</span>;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">// 封装map数据</span><br>    HashMap&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>    map.put(<span class="hljs-string">&quot;process&quot;</span>, process);<br>    map.put(<span class="hljs-string">&quot;processRecordList&quot;</span>, processRecords);<br>    map.put(<span class="hljs-string">&quot;processTemplate&quot;</span>, processTemplate);<br>    map.put(<span class="hljs-string">&quot;isApprove&quot;</span>, isApprove);<br>    <span class="hljs-keyword">return</span> map;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/ProcessTemplate.java">processTemplate</a>为流程模板实体类，存放了表单模版信息，便于前端展示数据用。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/Process.java">process</a> 为流程实体类，存放了审批发起人，请假的表单数据，审批状态等数据。</p>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/model/process/ProcessRecord.java">processRecord</a> 为流程记录表，负责记录每一次的审批流程。例如请假有三个流程，则审批通过后会有三条记录。用于展示审批进度。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.show</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/show/show.vue">show.vue | 84行</a></p>
+</blockquote>
+<h3 id="处理审批任务"><a href="#处理审批任务" class="headerlink" title="处理审批任务"></a>处理审批任务</h3><p>负责审批的人可以选择通过和拒绝当前审批任务</p>
+<ul>
+<li>首先，判断审批人是通过还是拒绝了当前审批任务，如果通过则直接<code>complete</code>，否则执行驳回操作；</li>
+<li>同时，将审批消息推送给发起人；</li>
+<li>更新 Process 信息，同时记录本次流程到 <code>oa_process_record</code>表；</li>
+<li>查询下一步的审批人，推送审批消息。</li>
+</ul>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">approve</span><span class="hljs-params">(ApprovalVo approvalVo)</span> &#123;<br>    <span class="hljs-comment">// 获取流程变量</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> approvalVo.getTaskId();<br>    <span class="hljs-type">Process</span> <span class="hljs-variable">process</span> <span class="hljs-operator">=</span> baseMapper.selectById(approvalVo.getProcessId());<br>    Map&lt;String, Object&gt; variables = taskService.getVariables(taskId);<br>    <span class="hljs-keyword">if</span> (approvalVo.getStatus() == <span class="hljs-number">1</span>) &#123;<br>        <span class="hljs-comment">// 审批通过</span><br>        taskService.complete(taskId);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 驳回</span><br>        <span class="hljs-built_in">this</span>.endTask(taskId);<br>    &#125;<br>    <span class="hljs-comment">// 推送给发起人</span><br>    messageService.pushProcessedMessage(process, approvalVo.getStatus());<br>    <span class="hljs-comment">// 记录审批过程信息</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">description</span> <span class="hljs-operator">=</span> approvalVo.getStatus() == <span class="hljs-number">1</span> ? <span class="hljs-string">&quot;已通过&quot;</span> : <span class="hljs-string">&quot;已拒绝&quot;</span>;<br>    processRecordService.record(approvalVo.getProcessId(), approvalVo.getStatus(), description);<br>    <span class="hljs-comment">// 查询下一个审批人</span><br>    List&lt;Task&gt; taskList = <span class="hljs-built_in">this</span>.getCurrentTaskList(process.getProcessInstanceId());<br>    <span class="hljs-keyword">if</span> (!CollectionUtils.isEmpty(taskList)) &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">names</span> <span class="hljs-operator">=</span> taskList.stream().map(task -&gt; &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">assignee</span> <span class="hljs-operator">=</span> task.getAssignee();<br>            <span class="hljs-type">SysUser</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> sysUserService.getUserByUsername(assignee);<br>            <span class="hljs-comment">// 推送消息</span><br>            messageService.pushPendingMessage(process, user, task.getId());<br>            <span class="hljs-keyword">return</span> user.getName();<br>        &#125;).collect(Collectors.joining(<span class="hljs-string">&quot;,&quot;</span>));<br>        process.setDescription(<span class="hljs-string">&quot;等待&quot;</span> + names + <span class="hljs-string">&quot;审批&quot;</span>);<br>        process.setStatus(<span class="hljs-number">1</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">if</span> (approvalVo.getStatus() == <span class="hljs-number">1</span>) &#123;<br>            process.setDescription(<span class="hljs-string">&quot;审批完成（通过）&quot;</span>);<br>            process.setStatus(<span class="hljs-number">2</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            process.setDescription(<span class="hljs-string">&quot;审批完成（通过）&quot;</span>);<br>            process.setStatus(-<span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>    baseMapper.updateById(process);<br>&#125;<br><br><span class="hljs-comment">// 结束流程</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">endTask</span><span class="hljs-params">(String taskId)</span> &#123;<br>    <span class="hljs-comment">// 获取任务对象</span><br>    <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> taskService.createTaskQuery().taskId(taskId).singleResult();<br>    <span class="hljs-comment">// 获取流程定义模型</span><br>    <span class="hljs-type">BpmnModel</span> <span class="hljs-variable">bpmnModel</span> <span class="hljs-operator">=</span> repositoryService.getBpmnModel(task.getProcessDefinitionId());<br>    <span class="hljs-comment">// 获取结束流程节点</span><br>    List&lt;EndEvent&gt; endEventList = bpmnModel.getMainProcess().findFlowElementsOfType(EndEvent.class);<br>    <span class="hljs-keyword">if</span> (CollectionUtils.isEmpty(endEventList)) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-type">FlowNode</span> <span class="hljs-variable">endFlowNode</span> <span class="hljs-operator">=</span> (FlowNode) endEventList.get(<span class="hljs-number">0</span>);<br>    <span class="hljs-comment">// 当前流向节点</span><br>    <span class="hljs-type">FlowNode</span> <span class="hljs-variable">currentFlowNode</span> <span class="hljs-operator">=</span> (FlowNode) bpmnModel.getMainProcess().getFlowElement(task.getTaskDefinitionKey());<br><br>    <span class="hljs-comment">// 临时保留当前活动的原始流向</span><br>    <span class="hljs-comment">// List&lt;SequenceFlow&gt; originalSequenceFlowList = new ArrayList&lt;&gt;(currentFlowNode.getOutgoingFlows());</span><br>    <span class="hljs-comment">// 清理当前流向节点</span><br>    currentFlowNode.getOutgoingFlows().clear();<br><br>    <span class="hljs-comment">// 创建新流向</span><br>    <span class="hljs-type">SequenceFlow</span> <span class="hljs-variable">newSequenceFlow</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SequenceFlow</span>();<br>    newSequenceFlow.setId(<span class="hljs-string">&quot;newSequenceFlow&quot;</span>);<br>    newSequenceFlow.setSourceFlowElement(currentFlowNode);<br>    newSequenceFlow.setTargetFlowElement(endFlowNode);<br><br>    <span class="hljs-comment">// 当前节点指向新方向</span><br>    ArrayList&lt;SequenceFlow&gt; newSequenceFlows = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    newSequenceFlows.add(newSequenceFlow);<br>    currentFlowNode.setOutgoingFlows(newSequenceFlows);<br><br>    taskService.complete(taskId);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/model/src/main/java/com/swx/vo/process/ApprovalVo.java">approvalVo</a> 记录 流程ID，任务ID，审批状态。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.approve</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/show/show.vue">show.vue | 106行</a></p>
+</blockquote>
+<h3 id="查询已发起流程"><a href="#查询已发起流程" class="headerlink" title="查询已发起流程"></a>查询已发起流程</h3><p>流程实例启动时，会保存到<code>oa_process</code>中，其中的用户就是发起人，直接查询<code>oa_process</code>表即可。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> IPage&lt;Process&gt; <span class="hljs-title function_">pageStarted</span><span class="hljs-params">(Page&lt;Process&gt; pageParam)</span> &#123;<br>    LambdaQueryWrapper&lt;Process&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>    wrapper.eq(Process::getUserId, LoginUserInfoHelper.getUserId());<br>    <span class="hljs-keyword">return</span> baseMapper.selectPage(pageParam, wrapper);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 pageParam  是分页信息。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.pageStarted</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/list/list.vue">list.vue | 172行</a></p>
+</blockquote>
+<h3 id="查询已处理流程"><a href="#查询已处理流程" class="headerlink" title="查询已处理流程"></a>查询已处理流程</h3><p>根据当前登陆用户的<code>uername</code>（审批人）查询其任务，在流程设计时指定了审批人为<code>sys_user.username</code>。</p>
+<p>通过<code>historyService</code>指定审批人，可查询当前审批人已经处理的任务；通过 Task 的流程实例ID关联查询流程表（<code>oa_process</code>），并转换为 ProcessVo 便于前端展示。</p>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> IPage&lt;ProcessVo&gt; <span class="hljs-title function_">pageProcessed</span><span class="hljs-params">(Page&lt;Process&gt; pageParam)</span> &#123;<br>    <span class="hljs-comment">// 封装查询信息</span><br>    <span class="hljs-type">HistoricTaskInstanceQuery</span> <span class="hljs-variable">query</span> <span class="hljs-operator">=</span> historyService.createHistoricTaskInstanceQuery()<br>            .taskAssignee(LoginUserInfoHelper.getUsername())<br>            .finished()<br>            .orderByTaskCreateTime().desc();<br>    <span class="hljs-comment">// 分页查询已完成的任务</span><br>    <span class="hljs-type">int</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) ((pageParam.getCurrent() - <span class="hljs-number">1</span>) * pageParam.getSize());<br>    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) pageParam.getSize();<br>    List&lt;HistoricTaskInstance&gt; list = query.listPage(begin, size);<br>    List&lt;ProcessVo&gt; processVoList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">for</span> (HistoricTaskInstance item : list) &#123;<br>        <span class="hljs-comment">// 根据流程实例ID获取流程信息</span><br>        LambdaQueryWrapper&lt;Process&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>        wrapper.eq(Process::getProcessInstanceId, item.getProcessInstanceId());<br>        <span class="hljs-type">Process</span> <span class="hljs-variable">process</span> <span class="hljs-operator">=</span> baseMapper.selectOne(wrapper);<br>        <span class="hljs-comment">// 转换</span><br>        <span class="hljs-type">ProcessVo</span> <span class="hljs-variable">processVo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ProcessVo</span>();<br>        BeanUtils.copyProperties(process, processVo);<br>        processVo.setTaskId(item.getId());<br>        processVoList.add(processVo);<br>    &#125;<br>    IPage&lt;ProcessVo&gt; page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(pageParam.getCurrent(), pageParam.getSize(), query.count());<br>    page.setRecords(processVoList);<br>    <span class="hljs-keyword">return</span> page;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 pageParam  是分页信息。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.pageProcessed</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/list/list.vue">list.vue | 167行</a></p>
+</blockquote>
+<h3 id="查询待处理流程"><a href="#查询待处理流程" class="headerlink" title="查询待处理流程"></a>查询待处理流程</h3><p>根据<code>username</code>分页查询当前用户的待处理任务，通过任务的流程实例ID关联查询业务Key，即<code>oa_process.id</code>，随后查询出 Process 信息。</p>
+<figure class="highlight java"><figcaption><span>ProcessServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> IPage&lt;ProcessVo&gt; <span class="hljs-title function_">pagePending</span><span class="hljs-params">(Page&lt;Process&gt; pageParam)</span> &#123;<br>    <span class="hljs-type">TaskQuery</span> <span class="hljs-variable">query</span> <span class="hljs-operator">=</span> taskService.createTaskQuery()<br>            .taskAssignee(LoginUserInfoHelper.getUsername())<br>            .orderByTaskCreateTime()<br>            .desc();<br>    <span class="hljs-type">int</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) ((pageParam.getCurrent() - <span class="hljs-number">1</span>) * pageParam.getSize());<br>    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) pageParam.getSize();<br>    List&lt;Task&gt; taskList = query.listPage(begin, size);<br>    List&lt;ProcessVo&gt; processVoList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">for</span> (Task task : taskList) &#123;<br>        <span class="hljs-type">ProcessInstance</span> <span class="hljs-variable">processInstance</span> <span class="hljs-operator">=</span> runtimeService.createProcessInstanceQuery()<br>                .processInstanceId(task.getProcessInstanceId())<br>                .singleResult();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">businessKey</span> <span class="hljs-operator">=</span> processInstance.getBusinessKey();<br>        <span class="hljs-keyword">if</span> (businessKey == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br>        <span class="hljs-type">Process</span> <span class="hljs-variable">process</span> <span class="hljs-operator">=</span> baseMapper.selectById(Long.parseLong(businessKey));<br>        <span class="hljs-type">ProcessVo</span> <span class="hljs-variable">processVo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ProcessVo</span>();<br>        BeanUtils.copyProperties(process, processVo);<br>        processVo.setTaskId(task.getId());<br>        processVoList.add(processVo);<br>    &#125;<br>    IPage&lt;ProcessVo&gt; page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(pageParam.getCurrent(), pageParam.getSize(), query.count());<br>    page.setRecords(processVoList);<br>    <span class="hljs-keyword">return</span> page;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 pageParam  是分页信息。</p>
+<p>对应的Controller接口为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/process/controller/api/ProcessApiController.java">ProcessApiController.pagePending</a></p>
+<p>对应的发起请求的前端页面为：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/list/list.vue">list.vue | 162行</a></p>
+</blockquote>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/cloudoa/03_function/springsecurity.html">Spring Security</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/cloudoa/03_function/wechat.html">微信公众号</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>头条新闻：APP端文章详情 - swcode</title>
+
+  
+    <meta name="description" content="文章详情的两种实现方案 方案一：动态渲染  方案二：静态模版展示  Freemarket概述FreeMarker 是一款 模板引擎： 即一种基于模板和要改变的数据， 并用来生成输出文本(HTML网页，电子邮件，配置文件，源代码等)的通用工具。 它不是面向最终用户的，而是一个Java类库，是一款程序员可以嵌入他们所开发产品的组件。  技术选型对比    技术 说明    Jsp Jsp  为 Ser">
+<meta property="og:type" content="website">
+<meta property="og:title" content="APP端文章详情">
+<meta property="og:url" content="http://example.com/wiki/leadnews/03_project/app_article.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="文章详情的两种实现方案 方案一：动态渲染  方案二：静态模版展示  Freemarket概述FreeMarker 是一款 模板引擎： 即一种基于模板和要改变的数据， 并用来生成输出文本(HTML网页，电子邮件，配置文件，源代码等)的通用工具。 它不是面向最终用户的，而是一个Java类库，是一款程序员可以嵌入他们所开发产品的组件。  技术选型对比    技术 说明    Jsp Jsp  为 Ser">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews11.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews12.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews13.png">
+<meta property="article:published_time" content="2023-08-17T13:18:00.000Z">
+<meta property="article:modified_time" content="2023-08-17T13:20:32.026Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews11.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/leadnews/01_introduce/index.html"><div class="main" ff="title">头条新闻</div><div class="sub cap">头条新闻项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/leadnews/" placeholder="在 /wiki/leadnews/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目实现</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/init_project.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/code_generator.html"><span class="toc-text">代码生成器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/api_doc.html"><span class="toc-text">接口文档</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_login.html"><span class="toc-text">登陆功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/add_gateway.html"><span class="toc-text">添加网关</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/auth_filter.html"><span class="toc-text">认证过滤器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_project.html"><span class="toc-text">集成前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_articles.html"><span class="toc-text">APP端文章列表</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/leadnews/03_project/app_article.html"><span class="toc-text">APP端文章详情</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Freemarket%E6%A6%82%E8%BF%B0"><span class="toc-text">Freemarket概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E8%AF%AD%E6%B3%95"><span class="toc-text">指令语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%8C%87%E4%BB%A4"><span class="toc-text">基础指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#List%E6%8C%87%E4%BB%A4"><span class="toc-text">List指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Map%E6%8C%87%E4%BB%A4"><span class="toc-text">Map指令</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#if%E6%8C%87%E4%BB%A4"><span class="toc-text">if指令</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-text">空值处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%BB%BA%E5%87%BD%E6%95%B0"><span class="toc-text">内建函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E9%9D%99%E6%80%81%E5%8C%96%E6%96%87%E4%BB%B6"><span class="toc-text">输出静态化文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MinIO%E7%AE%80%E4%BB%8B"><span class="toc-text">MinIO简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A3%9F%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-text">食用教程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%81%E8%A3%85MinIO%E4%B8%BAstarter"><span class="toc-text">封装MinIO为starter</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E6%88%90Freemarket%E5%92%8CMinIO"><span class="toc-text">集成Freemarket和MinIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E9%9D%99%E6%80%81%E6%A8%A1%E7%89%88"><span class="toc-text">生成静态模版</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/media_manage.html"><span class="toc-text">自媒体后台管理</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/delay_task.html"><span class="toc-text">延迟队列服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_search.html"><span class="toc-text">APP端文章搜索</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-17T13:20:32.026Z">2023-08-17</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>APP端文章详情</span></h1>
+  <p>文章详情的两种实现方案</p>
+<p>方案一：动态渲染</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews11.png"></p>
+<p>方案二：静态模版展示</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews12.png"></p>
+<h2 id="Freemarket概述"><a href="#Freemarket概述" class="headerlink" title="Freemarket概述"></a>Freemarket概述</h2><p>FreeMarker 是一款 模板引擎： 即一种基于模板和要改变的数据， 并用来生成输出文本(HTML网页，电子邮件，配置文件，源代码等)的通用工具。 它不是面向最终用户的，而是一个Java类库，是一款程序员可以嵌入他们所开发产品的组件。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews13.png"></p>
+<p>技术选型对比</p>
+<table>
+<thead>
+<tr>
+<th><strong>技术</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Jsp</td>
+<td>Jsp  为 Servlet 专用，不能单独进行使用</td>
+</tr>
+<tr>
+<td>Velocity</td>
+<td>Velocity从2010年更新完 2.0  版本后，7年没有更新。Spring Boot 官方在 1.4  版本后对此也不在支持</td>
+</tr>
+<tr>
+<td>thmeleaf</td>
+<td>新技术，功能较为强大，但是执行的效率比较低</td>
+</tr>
+<tr>
+<td>freemarker</td>
+<td>性能好，强大的模板语言、轻量</td>
+</tr>
+</tbody></table>
+<h3 id="指令语法"><a href="#指令语法" class="headerlink" title="指令语法"></a>指令语法</h3><h4 id="基础指令"><a href="#基础指令" class="headerlink" title="基础指令"></a>基础指令</h4><p>注释，即<code>&lt;#-- --&gt;</code>，介于其之间的内容会被freemarker忽略</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#--我是一个freemarker注释--&gt;<br></code></pre></td></tr></table></figure>
+
+<p>插值（Interpolation）：即<code>$&#123;..&#125;</code>部分,freemarker会用真实的值代替<code>$&#123;..&#125;</code></p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">Hello $&#123;name&#125; <br></code></pre></td></tr></table></figure>
+
+<p>FTL指令：和HTML标记类似，名字前加#予以区分，Freemarker会解析标签中的表达式或逻辑。</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;# &gt;FTL指令&lt;/#&gt;<br></code></pre></td></tr></table></figure>
+
+<p>文本，仅文本信息，这些不是freemarker的注释、插值、FTL指令的内容会被freemarker忽略解析，直接输出内容。</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#--freemarker中的普通文本--&gt;<br>我是一个普通的文本<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="List指令"><a href="#List指令" class="headerlink" title="List指令"></a>List指令</h4><figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#list&gt;&lt;/#list&gt;<br><br>&lt;#list stus as stu&gt;<br>    &lt;tr&gt;<br>        &lt;td&gt;$&#123;stu_index+<span class="hljs-number">1</span>&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.name&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.money&#125;&lt;/td&gt;<br>    &lt;/tr&gt;<br>&lt;/#list&gt;<br><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>$&#123;k_index&#125;</code>：得到循环的下标，使用方法是在stu后边加”_index”，它的值是从0开始</p>
+</blockquote>
+<h4 id="Map指令"><a href="#Map指令" class="headerlink" title="Map指令"></a>Map指令</h4><p>获取map中的值</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">map[<span class="hljs-string">&#x27;keyname&#x27;</span>].property<br>map.keyname.property<br><br>&lt;#list userMap?keys as key&gt;<br>	key:$&#123;key&#125;--value:$&#123;userMap[<span class="hljs-string">&quot;$&#123;key&#125;&quot;</span>]&#125;<br>&lt;/#list&gt;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h5><figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#<span class="hljs-keyword">if</span> expression&gt;<br>&lt;#<span class="hljs-keyword">else</span>&gt;<br>&lt;/#<span class="hljs-keyword">if</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>需求：在list集合中判断学生为小红的数据字体显示为红色。</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#<span class="hljs-keyword">if</span> stu.name=<span class="hljs-string">&#x27;小红&#x27;</span>&gt;<br>    &lt;tr style=<span class="hljs-string">&quot;color: red&quot;</span>&gt;<br>        &lt;td&gt;$&#123;stu_index&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.name&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.money&#125;&lt;/td&gt;<br>    &lt;/tr&gt;<br>&lt;#<span class="hljs-keyword">else</span> &gt;<br>    &lt;tr&gt;<br>        &lt;td&gt;$&#123;stu_index&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.name&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;<br>        &lt;td&gt;$&#123;stu.money&#125;&lt;/td&gt;<br>	&lt;/tr&gt;<br>&lt;/#<span class="hljs-keyword">if</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在freemarker中，判断是否相等，&#x3D;与&#x3D;&#x3D;是一样的</p>
+</blockquote>
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p><strong>算术运算符</strong></p>
+<p>FreeMarker表达式中完全支持算术运算,FreeMarker支持的算术运算符包括:</p>
+<p>① 加法： <strong>+</strong></p>
+<p>② 减法： <strong>-</strong></p>
+<p>③ 乘法： *****</p>
+<p>④ 除法： <strong>&#x2F;</strong></p>
+<p>求模 (求余)： <strong>%</strong></p>
+<p><strong>比较运算符</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>比较运算符</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;或者&#x3D;&#x3D;</td>
+<td>判断两个值是否相等</td>
+</tr>
+<tr>
+<td>!&#x3D;</td>
+<td>判断两个值是否不等</td>
+</tr>
+<tr>
+<td>&gt;或者gt</td>
+<td>判断左边值是否大于右边值</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;或者gte</td>
+<td>判断左边值是否大于等于右边值</td>
+</tr>
+<tr>
+<td>&lt;或者lt</td>
+<td>判断左边值是否小于右边值</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;或者lte</td>
+<td>判断左边值是否小于等于右边值</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>&#x3D;和!&#x3D;可以用于字符串、数值和日期来比较是否相等</p>
+</li>
+<li><p>&#x3D;和!&#x3D;两边必须是相同类型的值,否则会产生错误</p>
+</li>
+<li><p>字符串 “x” 、”x “ 、”X”比较是不等的.因为FreeMarker是精确比较</p>
+</li>
+<li><p>gt代替&gt;, FreeMarker会把&gt;解释成FTL标签的结束字符,可使用括号避免这种情况,如:&lt;#if (x&gt;y)&gt;</p>
+</li>
+</ul>
+<p><strong>逻辑运算符</strong></p>
+<ol>
+<li><p>逻辑与：**&amp;&amp;** </p>
+</li>
+<li><p>逻辑或：**||** </p>
+</li>
+<li><p>逻辑非：**!**</p>
+</li>
+</ol>
+<h4 id="空值处理"><a href="#空值处理" class="headerlink" title="空值处理"></a>空值处理</h4><p>1、判断某变量是否存在使用 “??”</p>
+<p>用法为<code>:variable??</code>,如果该变量存在,返回true,否则返回false </p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#<span class="hljs-keyword">if</span> stus??&gt;<br>	&lt;#list stus as stu&gt;<br>    	......<br>    &lt;/#list&gt;<br>&lt;/#<span class="hljs-keyword">if</span>&gt;<br><br></code></pre></td></tr></table></figure>
+
+<p>2、缺失变量默认值使用 “!”</p>
+<ul>
+<li><p>使用!要以指定一个默认值，当变量为空时显示默认值</p>
+<p>例：<code>$&#123;name!&#39;&#39;&#125;</code>表示如果name为空显示空字符串。</p>
+</li>
+<li><p>如果是嵌套对象则建议使用’()’括起来</p>
+<p>例：<code>$&#123;(stu.name)!&#39;&#39;&#125;</code>表示，如果stu或name为空默认显示空字符串。</p>
+</li>
+</ul>
+<h4 id="内建函数"><a href="#内建函数" class="headerlink" title="内建函数"></a>内建函数</h4><p>内建函数语法格式： 变量+?+函数名称</p>
+<p>1、集合的大小</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">$&#123;集合名?size&#125;<br></code></pre></td></tr></table></figure>
+
+<p>2、日期格式化</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">显示年月日: $&#123;today?date&#125;<br>显示时分秒：$&#123;today?time&#125;<br>显示日期+时间：$&#123;today?datetime&#125;<br>自定义格式化：$&#123;today?string(<span class="hljs-string">&quot;yyyy年MM月&quot;</span>)&#125;<br></code></pre></td></tr></table></figure>
+
+<p>3、内建函数c</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java">model.addAttribute(<span class="hljs-string">&quot;point&quot;</span>, <span class="hljs-number">102920122</span>);<br></code></pre></td></tr></table></figure>
+
+<p>point是数字型，使用${point}会显示这个数字的值，每三位使用逗号分隔。</p>
+<p>如果不想显示为每三位分隔的数字，可以使用c函数将数字型转成字符串输出</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">$&#123;point?c&#125;<br></code></pre></td></tr></table></figure>
+
+<p>4、将json字符串转成对象</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;#assign text=<span class="hljs-string">&quot;&#123;&#x27;bank&#x27;:&#x27;工商银行&#x27;,&#x27;account&#x27;:&#x27;10101920201920212&#x27;&#125;&quot;</span> /&gt;<br>&lt;#assign data=text?eval /&gt;<br>开户行：$&#123;data.bank&#125;  账号：$&#123;data.account&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="输出静态化文件"><a href="#输出静态化文件" class="headerlink" title="输出静态化文件"></a>输出静态化文件</h3><p>使用freemarker原生Api将页面生成html文件</p>
+<figure class="highlight yaml"><figcaption><span>application.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">suffix:</span> <span class="hljs-string">.ftl</span><br>  <span class="hljs-attr">template-loader-path:</span> <span class="hljs-string">classpath:/templates</span><br></code></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FreemarkerTest</span> &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> Configuration configuration;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-type">Template</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> configuration.getTemplate(<span class="hljs-string">&quot;test.ftl&quot;</span>);<br>        <br>        <span class="hljs-comment">// arg1: 模型数据，arg2: 输出流</span><br>        template.process(getData(), <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileWriter</span>(<span class="hljs-string">&quot;/temp/test.html&quot;</span>));<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; <span class="hljs-title function_">getData</span><span class="hljs-params">()</span> &#123;<br>        Map&lt;String, Object&gt; model = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        map.put(<span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>);<br>        map.put(<span class="hljs-string">&quot;date&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        <span class="hljs-keyword">return</span> map;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="MinIO简介"><a href="#MinIO简介" class="headerlink" title="MinIO简介"></a>MinIO简介</h2><p>对象存储的方式对比</p>
+<table>
+<thead>
+<tr>
+<th>存储方式</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>服务器磁盘</td>
+<td>开发便捷，成本低</td>
+<td>扩展困难</td>
+</tr>
+<tr>
+<td>分布式文件系统</td>
+<td>容易实现扩容</td>
+<td>复杂度高</td>
+</tr>
+<tr>
+<td>第三方存储</td>
+<td>开发简单，功能强大，免维护</td>
+<td>收费</td>
+</tr>
+</tbody></table>
+<p>分布式文件系统</p>
+<table>
+<thead>
+<tr>
+<th>存储方式</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FastDFS</td>
+<td>1. 主备服务，高可用  2. 支持主从文件，支持自定义扩展名  3. 支持动态扩容</td>
+<td>1. 没有完备官方文档，近几年没有更新  2. 环境搭建较为麻烦</td>
+</tr>
+<tr>
+<td>MinIO</td>
+<td>1. 性能高，准硬件条件下它能达到55GB&#x2F;s的读、35GB&#x2F;s的写速率  2. 部署自带管理界面  3. MinIO.Inc运营的开源项目，社区活跃度高  4. 提供了所有主流开发语言的SDK</td>
+<td>1. 不支持动态增加节点</td>
+</tr>
+</tbody></table>
+<p>MinIO基于Apache License v2.0开源协议的对象存储服务，可以做为云存储的解决方案用来保存海量的图片，视频，文档。</p>
+<p>uGolang语言实现，配置简单，单行命令可以运行起来。</p>
+<p>uMinIO兼容亚马逊S3云存储服务接口，适合于存储大容量非结构化的数据，一个对象文件可以是任意大小，从几kb到最大5T不等。</p>
+<p>u官网文档：<a target="_blank" rel="noopener" href="http://docs.minio.org.cn/docs/">http://docs.minio.org.cn/docs/</a></p>
+<h3 id="食用教程"><a href="#食用教程" class="headerlink" title="食用教程"></a>食用教程</h3><p>①：拉取镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker pull minio/minio<br></code></pre></td></tr></table></figure>
+
+<p>②：创建容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -p 9000:9000 -p 9001:9001 \<br>	--name minio \<br>	-d --restart=always \<br>	-e <span class="hljs-string">&quot;MINIO_ACCESS_KEY=minio&quot;</span> \<br>	-e <span class="hljs-string">&quot;MINIO_SECRET_KEY=minio123&quot;</span> \<br>	-v /home/data:/data \<br>	-v /home/config:/root/.minio \<br>	minio/minio server /data \<br>	--console-address <span class="hljs-string">&quot;:9001&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>③：访问minio系统</p>
+<p>   <a target="_blank" rel="noopener" href="http://ip:9001/">http://ip:9001</a> </p>
+<h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><p>目标：把list.html文件上传到minio中，并且可以在浏览器中访问</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    <span class="hljs-type">FileInputStream</span> <span class="hljs-variable">fileInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">try</span> &#123;<br>        fileInputStream =  <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(<span class="hljs-string">&quot;D:\\list.html&quot;</span>);;<br>        <span class="hljs-comment">//1.创建minio链接客户端</span><br>        <span class="hljs-type">MinioClient</span> <span class="hljs-variable">minioClient</span> <span class="hljs-operator">=</span> MinioClient.builder()<br>            .credentials(<span class="hljs-string">&quot;minio&quot;</span>, <span class="hljs-string">&quot;minio123&quot;</span>)<br>            .endpoint(<span class="hljs-string">&quot;http://192.168.200.130:9000&quot;</span>)<br>            .build();<br>        <span class="hljs-comment">//2.上传</span><br>        <span class="hljs-type">PutObjectArgs</span> <span class="hljs-variable">putObjectArgs</span> <span class="hljs-operator">=</span> PutObjectArgs.builder()<br>            .object(<span class="hljs-string">&quot;list.html&quot;</span>)<span class="hljs-comment">//文件名</span><br>            .contentType(<span class="hljs-string">&quot;text/html&quot;</span>)<span class="hljs-comment">//文件类型</span><br>            .bucket(<span class="hljs-string">&quot;leadnews&quot;</span>)<span class="hljs-comment">//桶名词  与minio创建的名词一致</span><br>            .stream(fileInputStream, fileInputStream.available(), -<span class="hljs-number">1</span>) <span class="hljs-comment">//文件流</span><br>            .build();<br>        minioClient.putObject(putObjectArgs);<br>        System.out.println(<span class="hljs-string">&quot;http://192.168.200.130:9000/leadnews/list.html&quot;</span>);<br>    &#125; <span class="hljs-keyword">catch</span> (Exception ex) &#123;<br>        ex.printStackTrace();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="封装MinIO为starter"><a href="#封装MinIO为starter" class="headerlink" title="封装MinIO为starter"></a>封装MinIO为starter</h3><p>创建子模块<code>file-starter</code></p>
+<p>引入依赖</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-autoconfigure<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.minio<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>minio<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>7.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>     <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>创建包<code>com.swx.file</code></p>
+<p>创建包<code>config</code>，并在包下创建两个配置文件</p>
+<p>MinIOConfig</p>
+<figure class="highlight java"><figcaption><span>config.MinIOConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableConfigurationProperties(&#123;MinIOConfigProperties.class&#125;)</span><br><span class="hljs-comment">//当引入FileStorageService接口时</span><br><span class="hljs-meta">@ConditionalOnClass(FileStorageService.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOConfig</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> MinIOConfigProperties minIOConfigProperties;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MinioClient <span class="hljs-title function_">buildMinioClient</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> MinioClient<br>                .builder()<br>                .credentials(minIOConfigProperties.getAccessKey(), minIOConfigProperties.getSecretKey())<br>                .endpoint(minIOConfigProperties.getEndpoint())<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>ConfigurationProperties</p>
+<figure class="highlight java"><figcaption><span>ConfigurationProperties</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;minio&quot;)</span>  <span class="hljs-comment">// 文件上传 配置前缀file.oss</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOConfigProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String accessKey;<br>    <span class="hljs-keyword">private</span> String secretKey;<br>    <span class="hljs-keyword">private</span> String bucket;<br>    <span class="hljs-keyword">private</span> String endpoint;<br>    <span class="hljs-keyword">private</span> String readPath;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>创建包<code>service</code>和<code>service.impl</code>，创建接口类<code>FileStorageService</code></p>
+<figure class="highlight java"><figcaption><span>FileStorageService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> itheima</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">FileStorageService</span> &#123;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *  上传图片文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> prefix  文件前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename  文件名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> inputStream 文件流</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">uploadImgFile</span><span class="hljs-params">(String prefix, String filename,InputStream inputStream)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *  上传html文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> prefix  文件前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename   文件名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> inputStream  文件流</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">uploadHtmlFile</span><span class="hljs-params">(String prefix, String filename,InputStream inputStream)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pathUrl  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(String pathUrl)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 下载文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pathUrl  文件全路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[]  downLoadFile(String pathUrl);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@EnableConfigurationProperties(MinIOConfigProperties.class)</span><br><span class="hljs-meta">@Import(MinIOConfig.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOFileStorageService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FileStorageService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MinioClient minioClient;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MinIOConfigProperties minIOConfigProperties;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">static</span> <span class="hljs-type">String</span> <span class="hljs-variable">separator</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/&quot;</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MinIOFileStorageService</span><span class="hljs-params">(MinioClient minioClient, MinIOConfigProperties minIOConfigProperties)</span> &#123;<br>        <span class="hljs-built_in">this</span>.minioClient = minioClient;<br>        <span class="hljs-built_in">this</span>.minIOConfigProperties = minIOConfigProperties;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dirPath</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename  yyyy/mm/dd/file.jpg</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">builderFilePath</span><span class="hljs-params">(String dirPath,String filename)</span> &#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">stringBuilder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-number">50</span>);<br>        <span class="hljs-keyword">if</span>(!StringUtils.isEmpty(dirPath))&#123;<br>            stringBuilder.append(dirPath).append(separator);<br>        &#125;<br>        <span class="hljs-type">SimpleDateFormat</span> <span class="hljs-variable">sdf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleDateFormat</span>(<span class="hljs-string">&quot;yyyy/MM/dd&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">todayStr</span> <span class="hljs-operator">=</span> sdf.format(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        stringBuilder.append(todayStr).append(separator);<br>        stringBuilder.append(filename);<br>        <span class="hljs-keyword">return</span> stringBuilder.toString();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *  上传图片文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> prefix  文件前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename  文件名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> inputStream 文件流</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">uploadImgFile</span><span class="hljs-params">(String prefix, String filename,InputStream inputStream)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> builderFilePath(prefix, filename);<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">PutObjectArgs</span> <span class="hljs-variable">putObjectArgs</span> <span class="hljs-operator">=</span> PutObjectArgs.builder()<br>                    .object(filePath)<br>                    .contentType(<span class="hljs-string">&quot;image/jpg&quot;</span>)<br>                    .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-<span class="hljs-number">1</span>)<br>                    .build();<br>            minioClient.putObject(putObjectArgs);<br>            <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">urlPath</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(minIOConfigProperties.getReadPath());<br>            urlPath.append(separator+minIOConfigProperties.getBucket());<br>            urlPath.append(separator);<br>            urlPath.append(filePath);<br>            <span class="hljs-keyword">return</span> urlPath.toString();<br>        &#125;<span class="hljs-keyword">catch</span> (Exception ex)&#123;<br>            log.error(<span class="hljs-string">&quot;minio put file error.&quot;</span>,ex);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;上传文件失败&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *  上传html文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> prefix  文件前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename   文件名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> inputStream  文件流</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">uploadHtmlFile</span><span class="hljs-params">(String prefix, String filename,InputStream inputStream)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> builderFilePath(prefix, filename);<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">PutObjectArgs</span> <span class="hljs-variable">putObjectArgs</span> <span class="hljs-operator">=</span> PutObjectArgs.builder()<br>                    .object(filePath)<br>                    .contentType(<span class="hljs-string">&quot;text/html&quot;</span>)<br>                    .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-<span class="hljs-number">1</span>)<br>                    .build();<br>            minioClient.putObject(putObjectArgs);<br>            <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">urlPath</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(minIOConfigProperties.getReadPath());<br>            urlPath.append(separator+minIOConfigProperties.getBucket());<br>            urlPath.append(separator);<br>            urlPath.append(filePath);<br>            <span class="hljs-keyword">return</span> urlPath.toString();<br>        &#125;<span class="hljs-keyword">catch</span> (Exception ex)&#123;<br>            log.error(<span class="hljs-string">&quot;minio put file error.&quot;</span>,ex);<br>            ex.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;上传文件失败&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pathUrl  文件全路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(String pathUrl)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> pathUrl.replace(minIOConfigProperties.getEndpoint()+<span class="hljs-string">&quot;/&quot;</span>,<span class="hljs-string">&quot;&quot;</span>);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> key.indexOf(separator);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">bucket</span> <span class="hljs-operator">=</span> key.substring(<span class="hljs-number">0</span>,index);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> key.substring(index+<span class="hljs-number">1</span>);<br>        <span class="hljs-comment">// 删除Objects</span><br>        <span class="hljs-type">RemoveObjectArgs</span> <span class="hljs-variable">removeObjectArgs</span> <span class="hljs-operator">=</span> RemoveObjectArgs.builder().bucket(bucket).object(filePath).build();<br>        <span class="hljs-keyword">try</span> &#123;<br>            minioClient.removeObject(removeObjectArgs);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;minio remove file error.  pathUrl:&#123;&#125;&quot;</span>,pathUrl);<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 下载文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pathUrl  文件全路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>  文件流</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] downLoadFile(String pathUrl)  &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> pathUrl.replace(minIOConfigProperties.getEndpoint()+<span class="hljs-string">&quot;/&quot;</span>,<span class="hljs-string">&quot;&quot;</span>);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> key.indexOf(separator);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">bucket</span> <span class="hljs-operator">=</span> key.substring(<span class="hljs-number">0</span>,index);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> key.substring(index+<span class="hljs-number">1</span>);<br>        <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            inputStream = minioClient.getObject(GetObjectArgs.builder().bucket(minIOConfigProperties.getBucket()).object(filePath).build());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;minio down file error.  pathUrl:&#123;&#125;&quot;</span>,pathUrl);<br>            e.printStackTrace();<br>        &#125;<br><br>        <span class="hljs-type">ByteArrayOutputStream</span> <span class="hljs-variable">byteArrayOutputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>        <span class="hljs-type">byte</span>[] buff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">100</span>];<br>        <span class="hljs-type">int</span> <span class="hljs-variable">rc</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">if</span> (!((rc = inputStream.read(buff, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>)) &gt; <span class="hljs-number">0</span>)) <span class="hljs-keyword">break</span>;<br>            &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                e.printStackTrace();<br>            &#125;<br>            byteArrayOutputStream.write(buff, <span class="hljs-number">0</span>, rc);<br>        &#125;<br>        <span class="hljs-keyword">return</span> byteArrayOutputStream.toByteArray();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>自动装配</p>
+<p>创建<code>/resources/META-INF/spring.factories</code>，写入如下内容：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span>=<span class="hljs-string">\</span><br><span class="hljs-string">  com.swx.file.service.impl.MinIOFileStorageService</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>使用教程</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOTest</span> &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> FileStorageService fileStorageService;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test</span><span class="hljs-params">()</span> thorws FileNotFoundException &#123;<br>        <span class="hljs-type">FileInputStream</span> <span class="hljs-variable">fileInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(<span class="hljs-string">&quot;/temp/test.html&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> fileStorageService.uploadHtmlFile(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;test.html&quot;</span>);<br>        System.out.println(url);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="集成Freemarket和MinIO"><a href="#集成Freemarket和MinIO" class="headerlink" title="集成Freemarket和MinIO"></a>集成Freemarket和MinIO</h2><p>1.在article微服务中添加MinIO和freemarker的支持</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>leadnews-file-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>记得在父工程的pom文件中添加版本依赖</p>
+</blockquote>
+<p>将如下配置加入到<code>leadnews-article</code>的Nacos配置中，发布：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">minio:</span><br>  <span class="hljs-attr">accessKey:</span> <span class="hljs-string">minio</span><br>  <span class="hljs-attr">secretKey:</span> <span class="hljs-string">minio123</span><br>  <span class="hljs-attr">bucket:</span> <span class="hljs-string">leadnews</span><br>  <span class="hljs-attr">endpoint:</span> <span class="hljs-string">http://ip:9000</span><br>  <span class="hljs-attr">readPath:</span> <span class="hljs-string">http://ip:9000</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>2.下载模板文件（article.ftl）拷贝到article微服务下</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://wwab.lanzoue.com/ic4iE14ki4qj">https://wwab.lanzoue.com/ic4iE14ki4qj</a></p>
+<p>3.下载模版文件，解压后将<code>plugins</code>目录手动上传到MinIO中</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://wwab.lanzoue.com/ic4iE14ki4qj">https://wwab.lanzoue.com/ic4iE14ki4qj</a></p>
+<p>在MinIO中创建<strong>Buckets</strong>名字为<code>leadnews</code>，并将<strong>Access Ploicy</strong>设置为<strong>Public</strong></p>
+<p>在<code>leadnews</code>中上传<code>plugins</code>目录</p>
+<h2 id="生成静态模版"><a href="#生成静态模版" class="headerlink" title="生成静态模版"></a>生成静态模版</h2><p>创建测试类，后续添加时会在项目中创建静态模版，这里先使用测试类生成</p>
+<figure class="highlight java"><figcaption><span>ArticleFreemarkerTest</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootTest(classes = ArticleApplication.class)</span><br><span class="hljs-meta">@RunWith(SpringRunner.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ArticleFreemarkerTest</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ApArticleContentMapper apArticleContentMapper;<br><br>    <span class="hljs-meta">@Autowired</span><br>    Configuration configuration;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> FileStorageService fileStorageService;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ApArticleMapper apArticleMapper;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createStaticUrlTest</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 1. 获取文章内容</span><br>        <span class="hljs-type">ApArticleContent</span> <span class="hljs-variable">apArticleContent</span> <span class="hljs-operator">=</span> apArticleContentMapper.selectOne(<br>                Wrappers.&lt;ApArticleContent&gt;lambdaQuery().eq(ApArticleContent::getArticleId, <span class="hljs-number">1383827787629252610L</span>));<br><br>        <span class="hljs-comment">// 文章内容通过freemarker生成html文件</span><br>        <span class="hljs-type">Template</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> configuration.getTemplate(<span class="hljs-string">&quot;article.ftl&quot;</span>);<br>        <span class="hljs-type">StringWriter</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringWriter</span>();<br>        <span class="hljs-comment">// 数据模型</span><br>        HashMap&lt;String, Object&gt; params = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        params.put(<span class="hljs-string">&quot;content&quot;</span>, JSONArray.parseArray(apArticleContent.getContent()));<br>        <span class="hljs-comment">// 合成</span><br>        template.process(params, out);<br><br>        <span class="hljs-comment">// 把html文件上传到minio中</span><br>        <span class="hljs-type">InputStream</span> <span class="hljs-variable">is</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayInputStream</span>(out.toString().getBytes());<br>        <span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> fileStorageService.uploadHtmlFile(<span class="hljs-string">&quot;&quot;</span>, apArticleContent.getArticleId() + <span class="hljs-string">&quot;.html&quot;</span>, is);<br><br>        <span class="hljs-comment">// 修改ap_article表，保存static_url字段</span><br>        <span class="hljs-type">ApArticle</span> <span class="hljs-variable">article</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApArticle</span>();<br>        article.setId(apArticleContent.getArticleId());<br>        article.setStaticUrl(url);<br>        apArticleMapper.updateById(article);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/leadnews/03_project/app_articles.html">APP端文章列表</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/leadnews/03_project/media_manage.html">自媒体后台管理</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>云尚办公：微信公众号 - swcode</title>
+
+  
+    <meta name="description" content="该部分内容包括：  公众号的申请、登陆以及绑定用户 公众号菜单的推送和删除 内网穿透工具的使用  公众号申请打开微信公众平台，登陆： https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;debug&#x2F;cgi-bin&#x2F;sandbox?t&#x3D;sandbox&#x2F;loginhttps:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;debug&#x2F;cgi-bin&#x2F;sandbox?t&#x3D;sandbox&#x2F;login  菜单推送实现效">
+<meta property="og:type" content="website">
+<meta property="og:title" content="微信公众号">
+<meta property="og:url" content="http://example.com/wiki/cloudoa/03_function/wechat.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="该部分内容包括：  公众号的申请、登陆以及绑定用户 公众号菜单的推送和删除 内网穿透工具的使用  公众号申请打开微信公众平台，登陆： https:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;debug&#x2F;cgi-bin&#x2F;sandbox?t&#x3D;sandbox&#x2F;loginhttps:&#x2F;&#x2F;mp.weixin.qq.com&#x2F;debug&#x2F;cgi-bin&#x2F;sandbox?t&#x3D;sandbox&#x2F;login  菜单推送实现效">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wechat_menu.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wecha-oauth.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wechat_template.png">
+<meta property="article:published_time" content="2023-05-08T05:25:49.000Z">
+<meta property="article:modified_time" content="2023-05-09T09:01:26.000Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wechat_menu.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/cloudoa/01_introduce/index.html"><div class="main" ff="title">云尚办公</div><div class="sub cap">云尚办公项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/cloudoa/" placeholder="在 /wiki/cloudoa/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目部署</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/02_install/source_install.html"><span class="toc-text">源码部署</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/02_install/docker_install.html"><span class="toc-text">Docker部署</span></a></div></div><div class="widget-header cap dis-select"><span class="name">关键技术</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/springsecurity.html"><span class="toc-text">Spring Security</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/activiti.html"><span class="toc-text">Activiti</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/cloudoa/03_function/wechat.html"><span class="toc-text">微信公众号</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E4%BC%97%E5%8F%B7%E7%94%B3%E8%AF%B7"><span class="toc-text">公众号申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8F%9C%E5%8D%95%E6%8E%A8%E9%80%81"><span class="toc-text">菜单推送</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%BE%9D%E8%B5%96"><span class="toc-text">工具依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE"><span class="toc-text">小程序配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#URL%E8%AE%BE%E7%BD%AE"><span class="toc-text">URL设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%88%E6%9D%83%E7%99%BB%E9%99%86"><span class="toc-text">授权登陆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%9B%9E%E8%B0%83%E9%A1%B5%E9%9D%A2%E5%9F%9F%E5%90%8D"><span class="toc-text">配置回调页面域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96code"><span class="toc-text">获取code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96openId"><span class="toc-text">获取openId</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81"><span class="toc-text">消息推送</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E8%AE%BE%E7%BD%AE"><span class="toc-text">模板设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="toc-text">代码实现</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/cloudoa/03_function/form-create.html"><span class="toc-text">表单设计器</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/cloudoa/01_introduce/index.html">云尚办公</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-05-09T09:01:26.000Z">2023-05-09</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>微信公众号</span></h1>
+  <p>该部分内容包括：</p>
+<ul>
+<li>公众号的申请、登陆以及绑定用户</li>
+<li>公众号菜单的推送和删除</li>
+<li>内网穿透工具的使用</li>
+</ul>
+<h2 id="公众号申请"><a href="#公众号申请" class="headerlink" title="公众号申请"></a>公众号申请</h2><p>打开微信公众平台，登陆：</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="" href="https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="title,icon"><div class="left"><span class="title">https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login</span><span class="cap link fs12">https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/link/8f277b4ee0ecd.svg"></div></div></a></div>
+
+<h2 id="菜单推送"><a href="#菜单推送" class="headerlink" title="菜单推送"></a>菜单推送</h2><p>实现效果</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wechat_menu.png" fancybox="true"/></div></div>
+
+<h3 id="工具依赖"><a href="#工具依赖" class="headerlink" title="工具依赖"></a>工具依赖</h3><p>使用工具完成菜单推送、消息推送等功能。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.binarywang<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>wx-java-mp-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="小程序配置"><a href="#小程序配置" class="headerlink" title="小程序配置"></a>小程序配置</h3><p>拷贝微信公众平台的 appID 和 appsecret</p>
+<figure class="highlight yaml"><figcaption><span>application-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">wx:</span><br>  <span class="hljs-attr">mp:</span><br>    <span class="hljs-attr">app-id:</span> <span class="hljs-string">wxxxxxxxxxxxxxxxxx</span><br>    <span class="hljs-attr">secret:</span> <span class="hljs-string">xxxxxxxxxxxxxxxxxxxxxx</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="URL设置"><a href="#URL设置" class="headerlink" title="URL设置"></a>URL设置</h3><p>公众号菜单的类型一共有三种：</p>
+<ul>
+<li><strong>view</strong>：表示网页类型</li>
+<li><strong>click：</strong>表示点击类型</li>
+<li><strong>miniprogram：</strong>表示小程序类型</li>
+</ul>
+<p>我们需要设置网页类型的跳转URL，可以在配置文件中固定</p>
+<figure class="highlight yaml"><figcaption><span>application-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">wechat:</span><br>  <span class="hljs-attr">prefix:</span> <span class="hljs-string">http://vvvckt.natappfree.cc/oa/#</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><figcaption><span>MenuServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MenuServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;MenuMapper, Menu&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MenuService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WxMpService wxMpService;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;wechat.prefix&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String prefix;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MenuServiceImpl</span><span class="hljs-params">(WxMpService wxMpService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.wxMpService = wxMpService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取所有菜单</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;Menu&gt; <span class="hljs-title function_">listMenu</span><span class="hljs-params">()</span> &#123;<br>        List&lt;Menu&gt; menuList = baseMapper.selectList(<span class="hljs-literal">null</span>);<br>        List&lt;Menu&gt; parents = menuList.stream()<br>                .filter(menu -&gt; menu.getParentId() == <span class="hljs-number">0</span>)<br>                .collect(Collectors.toList());<br>        ArrayList&lt;Menu&gt; menus = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Menu menu : parents) &#123;<br>            List&lt;Menu&gt; children = menuList.stream()<br>                    .filter(item -&gt; Objects.equals(item.getParentId(), menu.getId()))<br>                    .collect(Collectors.toList());<br>            menu.setChildren(children);<br>            menus.add(menu);<br>        &#125;<br>        <span class="hljs-keyword">return</span> menus;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 同步菜单到微信公众号</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">syncMenu</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> WxErrorException &#123;<br>        <span class="hljs-comment">// 查询菜单数据，封装成微信官方格式</span><br>        List&lt;Menu&gt; menuList = <span class="hljs-built_in">this</span>.listMenu();<br>        <span class="hljs-comment">// 菜单</span><br>        <span class="hljs-type">JSONArray</span> <span class="hljs-variable">buttonList</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONArray</span>();<br>        <span class="hljs-keyword">for</span> (Menu menu : menuList) &#123;<br>            <span class="hljs-type">JSONObject</span> <span class="hljs-variable">button</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONObject</span>();<br>            button.put(<span class="hljs-string">&quot;name&quot;</span>, menu.getName());<br>            <span class="hljs-keyword">if</span> (CollectionUtils.isEmpty(menu.getChildren())) &#123;<br>                button.put(<span class="hljs-string">&quot;type&quot;</span>, menu.getType());<br>                button.put(<span class="hljs-string">&quot;url&quot;</span>, prefix + menu.getUrl());<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-type">JSONArray</span> <span class="hljs-variable">subButton</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONArray</span>();<br>                <span class="hljs-keyword">for</span> (Menu child : menu.getChildren()) &#123;<br>                    <span class="hljs-type">JSONObject</span> <span class="hljs-variable">view</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONObject</span>();<br>                    <span class="hljs-type">String</span> <span class="hljs-variable">type</span> <span class="hljs-operator">=</span> child.getType();<br>                    view.put(<span class="hljs-string">&quot;type&quot;</span>, type);<br>                    view.put(<span class="hljs-string">&quot;name&quot;</span>, child.getName());<br>                    <span class="hljs-keyword">if</span> (type.equals(<span class="hljs-string">&quot;click&quot;</span>)) &#123;<br>                        <span class="hljs-comment">// 点击类型</span><br>                        view.put(<span class="hljs-string">&quot;key&quot;</span>, child.getMeunKey());<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-comment">// 网页或者小程序类型</span><br>                        view.put(<span class="hljs-string">&quot;url&quot;</span>, prefix + child.getUrl());<br>                    &#125;<br>                    subButton.add(view);<br>                &#125;<br>                button.put(<span class="hljs-string">&quot;sub_button&quot;</span>, subButton);<br>            &#125;<br>            buttonList.add(button);<br>        &#125;<br>        <span class="hljs-comment">// 菜单对象</span><br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">button</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONObject</span>();<br>        button.put(<span class="hljs-string">&quot;button&quot;</span>, buttonList);<br><br>        <span class="hljs-comment">// 推送</span><br>        wxMpService.getMenuService().menuCreate(button.toString());<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除微信公众号菜单</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeMenu</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> WxErrorException &#123;<br>        wxMpService.getMenuService().menuDelete();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/wechat/service/impl/MenuServiceImpl.java">MenuServiceImpl</a> 包括查询菜单，同步菜单，删除菜单功能。</p>
+</blockquote>
+<p>官方对<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/doc/offiaccount/Custom_Menus/Creating_Custom-Defined_Menu.html">自定义菜单</a>格式要求如下:</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;button&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span>	<br>      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;click&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;今日歌曲&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;V1001_TODAY_MUSIC&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;菜单&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;sub_button&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span>	<br>          <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;view&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;搜索&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;http://www.soso.com/&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>          <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;miniprogram&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;wxa&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;http://mp.weixin.qq.com&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;appid&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;wx286b93c14bbf93aa&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;pagepath&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;pages/lunar/index&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><br>          <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;click&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;赞一下我们&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;V1001_GOOD&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="授权登陆"><a href="#授权登陆" class="headerlink" title="授权登陆"></a>授权登陆</h2><p>创建登陆页面，负责判断是否需要授权以及获取<code>token</code>等信息。</p>
+<p>授权唤起页面：首页(无token) &gt; 登陆页 &gt; 授权页(微信官方) &gt; 登陆页 &gt; 首页。</p>
+<p>详细流程：</p>
+<ul>
+<li><p>用户尝试进入首页面（其他需要授权的页面），在路由守卫判断<code>token</code>，不存在跳转到登陆页。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">router.<span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">(<span class="hljs-params">to</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (to.<span class="hljs-property">meta</span>.<span class="hljs-property">requireAuth</span> &amp;&amp; !storage.<span class="hljs-title function_">get</span>(<span class="hljs-variable constant_">ACCESS_TOKEN</span>)) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/login&#x27;</span>,<br>      <span class="hljs-attr">query</span>: &#123; <span class="hljs-attr">redirect</span>: to.<span class="hljs-property">fullPath</span> &#125;,<br>    &#125;;<br>  &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>进入登陆页，尝试获取 URL 中的<code>code</code>参数，如果有参数，发起请求尝试获取<code>token</code>；没有参数，尝试获取<code>token</code>，如果有则说明已经登陆过（浏览器返回上一页导致），没有则请求授权URL。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> code = <span class="hljs-title function_">getRouteQuery</span>().<span class="hljs-property">code</span>;<br><span class="hljs-keyword">if</span> (code) &#123;<br>  <span class="hljs-title function_">getUserInfo</span>(code).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123; token, openId &#125; = res;<br>    <span class="hljs-keyword">if</span> (!token &amp;&amp; openId) &#123;<br>      <span class="hljs-comment">// 未绑定</span><br>      bindPhoneVo.<span class="hljs-property">openId</span> = openId;<br>      show.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-comment">// 记录token</span><br>      storage.<span class="hljs-title function_">set</span>(<span class="hljs-variable constant_">ACCESS_TOKEN</span>, res.<span class="hljs-property">token</span>);<br>      <span class="hljs-keyword">const</span> redirect = storage.<span class="hljs-title function_">get</span>(<span class="hljs-variable constant_">LAND_PAGE</span>) || <span class="hljs-string">&#x27;/&#x27;</span>;<br>      <span class="hljs-title function_">redirectTo</span>(redirect);<br>    &#125;<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">handleLogin</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> token = storage.<span class="hljs-title function_">get</span>(<span class="hljs-variable constant_">ACCESS_TOKEN</span>);<br>  <span class="hljs-comment">// 记录上一个页面地址</span><br>  <span class="hljs-keyword">const</span> &#123; redirect &#125; = <span class="hljs-title function_">getRouteQuery</span>();<br>  <span class="hljs-keyword">if</span> (redirect) &#123;<br>    storage.<span class="hljs-title function_">set</span>(<span class="hljs-variable constant_">LAND_PAGE</span>, redirect);<br>  &#125;<br>  <span class="hljs-keyword">if</span> (!token) &#123;<br>    <span class="hljs-comment">// 跳转授权</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">REDIRECT_URI</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">href</span>;<br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">REDIRECT_URI_EC</span> = <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-variable constant_">REDIRECT_URI</span>);<br>    <span class="hljs-title function_">jump2Auth</span>(<span class="hljs-variable constant_">REDIRECT_URI_EC</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>      <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-title function_">replace</span>(res.<span class="hljs-property">redirectUrl</span>);<br>    &#125;);<br>  &#125;<br>  <span class="hljs-comment">// 点击返回进入的该页面，此时无code</span><br>  <span class="hljs-title function_">redirectTo</span>(redirect);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>完整的代码如下：</p>
+<blockquote>
+<p>Controller：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/server/service-oa/src/main/java/com/swx/wechat/controller/WechatController.java">WechatController</a></p>
+<p>Vue：<a target="_blank" rel="noopener" href="https://github.com/SX-Code/cloud-oa/blob/main/guigu-oa-web/src/views/login.vue">login.vue</a></p>
+</blockquote>
+<h3 id="配置回调页面域名"><a href="#配置回调页面域名" class="headerlink" title="配置回调页面域名"></a>配置回调页面域名</h3><p>在<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox">公众平台</a> &gt; 网页服务 &gt; 网页账号 &gt; 修改，我们回调的页面是前端的登陆页面，这里填写前端页面的URI。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wecha-oauth.png" fancybox="true"/></div></div>
+
+<div class="tag-plugin note" color="orange"><div class="body"><p>注意不要写http</p></div></div>
+
+<h3 id="获取code"><a href="#获取code" class="headerlink" title="获取code"></a>获取code</h3><p>按照官方要求向其服务发送请求，携带<code>redirect_url</code>等参数，该请求会返回<code>code</code>等信息。</p>
+<p>请求 URL 这里交给服务器进行拼接，Controller代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/authorize&quot;)</span><br><span class="hljs-keyword">public</span> Map&lt;String, String&gt; <span class="hljs-title function_">authorize</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;redirect_url&quot;)</span> String returnUrl)</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">redirectURL</span> <span class="hljs-operator">=</span> wxMpService.getOAuth2Service()<br>            .buildAuthorizationUrl(URLDecoder.decode(returnUrl),<br>                    WxConsts.OAuth2Scope.SNSAPI_USERINFO,<br>                    <span class="hljs-literal">null</span>);<br>    HashMap&lt;String, String&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>    map.put(<span class="hljs-string">&quot;redirectUrl&quot;</span>, redirectURL);<br>    <span class="hljs-keyword">return</span> map;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>前端拿到<code>redirectUrl</code>之后，直接发起请求即可</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">REDIRECT_URI</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">href</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">REDIRECT_URI_EC</span> = <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-variable constant_">REDIRECT_URI</span>);<br><span class="hljs-title function_">jump2Auth</span>(<span class="hljs-variable constant_">REDIRECT_URI_EC</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-title function_">replace</span>(res.<span class="hljs-property">redirectUrl</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>这里直接将<code>redirect_url</code>设置为登陆页，即请求成功后重定向到登陆页。</li>
+</ul>
+<h3 id="获取openId"><a href="#获取openId" class="headerlink" title="获取openId"></a>获取openId</h3><p>有了<code>code</code>就可以获取<code>openId</code>和<code>userInfo</code>等信息：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">@<span class="hljs-title class_">GetMapping</span>(<span class="hljs-string">&quot;/userInfo&quot;</span>)<br>public <span class="hljs-title class_">Map</span>&lt;<span class="hljs-title class_">String</span>, <span class="hljs-title class_">String</span>&gt; <span class="hljs-title function_">userInfo</span>(@<span class="hljs-title class_">RequestParam</span>(<span class="hljs-string">&quot;code&quot;</span>) <span class="hljs-title class_">String</span> code) throws <span class="hljs-title class_">WxErrorException</span> &#123;<br>    <span class="hljs-title class_">WxOAuth2AccessToken</span> accessToken = wxMpService.<span class="hljs-title function_">getOAuth2Service</span>().<span class="hljs-title function_">getAccessToken</span>(code);<br>    <span class="hljs-title class_">String</span> openId = accessToken.<span class="hljs-title function_">getOpenId</span>();<br>    <span class="hljs-title class_">WxOAuth2UserInfo</span> wxMpUser = wxMpService.<span class="hljs-title function_">getOAuth2Service</span>().<span class="hljs-title function_">getUserInfo</span>(accessToken, <span class="hljs-literal">null</span>);<br><br>    <span class="hljs-title class_">SysUser</span> sysUser = sysUserService.<span class="hljs-title function_">getOne</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;<span class="hljs-title class_">SysUser</span>&gt;().<span class="hljs-title function_">eq</span>(<span class="hljs-title class_">SysUser</span>::getOpenId, openId));<br>    <span class="hljs-title class_">String</span> token = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != sysUser) &#123;<br>        <span class="hljs-comment">// 已经绑定过了</span><br>        token = <span class="hljs-title class_">JwtHelper</span>.<span class="hljs-title function_">createToken</span>(sysUser.<span class="hljs-title function_">getId</span>(), sysUser.<span class="hljs-title function_">getUsername</span>());<br>    &#125;<br>    <span class="hljs-title class_">HashMap</span>&lt;<span class="hljs-title class_">String</span>, <span class="hljs-title class_">String</span>&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>    map.<span class="hljs-title function_">put</span>(<span class="hljs-string">&quot;token&quot;</span>, token);<br>    map.<span class="hljs-title function_">put</span>(<span class="hljs-string">&quot;openId&quot;</span>, openId);<br>    <span class="hljs-keyword">return</span> map;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin note" color="green"><div class="body"><p>如果绑定过了，会携带token返回</p></div></div>
+
+<p>前端通过是否有 token 判断是否绑定，唤起绑定功能：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">getUserInfo</span>(code).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> &#123; token, openId &#125; = res;<br>  <span class="hljs-keyword">if</span> (!token &amp;&amp; openId) &#123;<br>    <span class="hljs-comment">// 未绑定</span><br>    bindPhoneVo.<span class="hljs-property">openId</span> = openId;<br>    show.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    loading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;<br>    <span class="hljs-comment">// 记录token</span><br>    storage.<span class="hljs-title function_">set</span>(<span class="hljs-variable constant_">ACCESS_TOKEN</span>, res.<span class="hljs-property">token</span>);<br>    <span class="hljs-keyword">const</span> redirect = storage.<span class="hljs-title function_">get</span>(<span class="hljs-variable constant_">LAND_PAGE</span>) || <span class="hljs-string">&#x27;/&#x27;</span>;<br>    <span class="hljs-title function_">redirectTo</span>(redirect);<br>  &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="消息推送"><a href="#消息推送" class="headerlink" title="消息推送"></a>消息推送</h2><p>微信消息推送需要安装官方提供的模板，点击新增测试模板</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/cloudoa/wechat_template.png" fancybox="true"/></div></div>
+
+<h3 id="模板设置"><a href="#模板设置" class="headerlink" title="模板设置"></a>模板设置</h3><p><strong>待处理审批</strong></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">&#123;&#123;first.DATA&#125;&#125;<br>审批编号: &#123;&#123;keyword1.DATA&#125;&#125;<br>提交时间: &#123;&#123;keyword2.DATA&#125;&#125;<br>&#123;&#123;content.DATA&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>审批已处理</strong></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">&#123;&#123;first.DATA&#125;&#125; <br>审批编号：&#123;&#123;keyword1.DATA&#125;&#125;<br>提交时间：&#123;&#123;keyword2.DATA&#125;&#125;<br>审批状态：&#123;&#123;keyword3.DATA&#125;&#125;<br>当前审批人：&#123;&#123;keyword4.DATA&#125;&#125;<br>&#123;&#123;content.DATA&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><figcaption><span>MessageServiceImpl.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MessageService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WxMpService wxMpService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ProcessTemplateService processTemplateService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> SysUserService sysUserService;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;wechat.prefix&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String prefix;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MessageServiceImpl</span><span class="hljs-params">(WxMpService wxMpService, ProcessTemplateService processTemplateService, SysUserService sysUserService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.wxMpService = wxMpService;<br>        <span class="hljs-built_in">this</span>.processTemplateService = processTemplateService;<br>        <span class="hljs-built_in">this</span>.sysUserService = sysUserService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 推送待审批人员</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> process 流程ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> user    用户ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> taskId  任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@SneakyThrows</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushPendingMessage</span><span class="hljs-params">(Process process, SysUser user, String taskId)</span> &#123;<br>        <span class="hljs-comment">// 根据这些ID查询数据</span><br>        <span class="hljs-type">ProcessTemplate</span> <span class="hljs-variable">processTemplate</span> <span class="hljs-operator">=</span> processTemplateService.getOne(<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;ProcessTemplate&gt;()<br>                        .select(ProcessTemplate::getName)<br>                        .eq(ProcessTemplate::getId, process.getProcessTemplateId()));<br>        <span class="hljs-type">SysUser</span> <span class="hljs-variable">submitUser</span> <span class="hljs-operator">=</span> sysUserService.getOne(<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;SysUser&gt;()<br>                        .select(SysUser::getName)<br>                        .eq(SysUser::getId, LoginUserInfoHelper.getUserId()));<br>        <span class="hljs-type">String</span> <span class="hljs-variable">openId</span> <span class="hljs-operator">=</span> user.getOpenId();<br>        <span class="hljs-keyword">if</span> (openId == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 构建模板消息</span><br>        <span class="hljs-type">WxMpTemplateMessage</span> <span class="hljs-variable">templateMessage</span> <span class="hljs-operator">=</span> WxMpTemplateMessage.builder()<br>                .toUser(openId) <span class="hljs-comment">// 消息接受人的openId</span><br>                .templateId(<span class="hljs-string">&quot;PJaBg1zM5JeOsyc8T-2YVrYchQawCTT6etOhrpVequU&quot;</span>) <span class="hljs-comment">// 模板ID</span><br>                .url(prefix + <span class="hljs-string">&quot;/show/&quot;</span> + process.getId() + <span class="hljs-string">&quot;/&quot;</span> + taskId + <span class="hljs-string">&quot;/0&quot;</span>)<br>                .build();<br><br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">jsonObject</span> <span class="hljs-operator">=</span> JSON.parseObject(process.getFormValues());<br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">formShowData</span> <span class="hljs-operator">=</span> jsonObject.getJSONObject(<span class="hljs-string">&quot;formShowData&quot;</span>);<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">content</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : formShowData.entrySet()) &#123;<br>            content.append(entry.getKey()).append(<span class="hljs-string">&quot;: &quot;</span>).append(entry.getValue()).append(<span class="hljs-string">&quot;\n&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 设置模板变量值</span><br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;first&quot;</span>, submitUser.getName() + <span class="hljs-string">&quot;提交&quot;</span> + processTemplate.getName() + <span class="hljs-string">&quot;审批申请, 请注意查看。&quot;</span>, <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword1&quot;</span>, process.getProcessCode(), <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword2&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">DateTime</span>(process.getCreateTime()).toString(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>), <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;content&quot;</span>, content.toString(), <span class="hljs-string">&quot;#272727&quot;</span>));<br><br>        <span class="hljs-comment">// 发送消息</span><br>        wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 推送给审批发起人</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> process 流程ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> status  任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@SneakyThrows</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushProcessedMessage</span><span class="hljs-params">(Process process, Integer status)</span> &#123;<br>        <span class="hljs-type">ProcessTemplate</span> <span class="hljs-variable">processTemplate</span> <span class="hljs-operator">=</span> processTemplateService.getOne(<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;ProcessTemplate&gt;()<br>                        .select(ProcessTemplate::getName)<br>                        .eq(ProcessTemplate::getId, process.getProcessTemplateId()));<br>        <span class="hljs-type">SysUser</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> sysUserService.getById(process.getUserId());<br>        <span class="hljs-type">SysUser</span> <span class="hljs-variable">currentUser</span> <span class="hljs-operator">=</span> sysUserService.getById(LoginUserInfoHelper.getUserId());<br>        <span class="hljs-type">String</span> <span class="hljs-variable">openId</span> <span class="hljs-operator">=</span> user.getOpenId();<br>        <span class="hljs-keyword">if</span> (openId == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 构建模板消息</span><br>        <span class="hljs-type">WxMpTemplateMessage</span> <span class="hljs-variable">templateMessage</span> <span class="hljs-operator">=</span> WxMpTemplateMessage.builder()<br>                .toUser(openId) <span class="hljs-comment">// 消息接受人的openId</span><br>                .templateId(<span class="hljs-string">&quot;FUinAm420s82h7nHRFB-cuZFgOxdVJTtv4faWn2xA74&quot;</span>) <span class="hljs-comment">// 模板ID</span><br>                .url(prefix + <span class="hljs-string">&quot;/show/&quot;</span> + process.getId() + <span class="hljs-string">&quot;/0/0&quot;</span>)<br>                .build();<br><br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">jsonObject</span> <span class="hljs-operator">=</span> JSON.parseObject(process.getFormValues());<br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">formShowData</span> <span class="hljs-operator">=</span> jsonObject.getJSONObject(<span class="hljs-string">&quot;formShowData&quot;</span>);<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">content</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : formShowData.entrySet()) &#123;<br>            content.append(entry.getKey()).append(<span class="hljs-string">&quot;: &quot;</span>).append(entry.getValue()).append(<span class="hljs-string">&quot;\n&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 设置模板变量值</span><br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;first&quot;</span>, user.getName() + <span class="hljs-string">&quot;你发起的&quot;</span> + processTemplate.getName() + <span class="hljs-string">&quot;审批申请已经被处理了，请注意查看。&quot;</span>, <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword1&quot;</span>, process.getProcessCode(), <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword2&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">DateTime</span>(process.getCreateTime()).toString(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>), <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword3&quot;</span>, status == <span class="hljs-number">1</span> ? <span class="hljs-string">&quot;审批通过&quot;</span> : <span class="hljs-string">&quot;审批拒绝&quot;</span>, status == <span class="hljs-number">1</span> ? <span class="hljs-string">&quot;#009966&quot;</span> : <span class="hljs-string">&quot;#FF0033&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;keyword4&quot;</span>, currentUser.getName(), <span class="hljs-string">&quot;#272727&quot;</span>));<br>        templateMessage.addData(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WxMpTemplateData</span>(<span class="hljs-string">&quot;content&quot;</span>, content.toString(), <span class="hljs-string">&quot;#272727&quot;</span>));<br><br>        <span class="hljs-comment">// 发送消息</span><br>        wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/cloudoa/03_function/activiti.html">Activiti</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/cloudoa/03_function/form-create.html">表单设计器</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

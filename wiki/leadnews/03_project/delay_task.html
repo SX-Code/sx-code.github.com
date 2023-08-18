@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>头条新闻：延迟队列服务 - swcode</title>
+
+  
+    <meta name="description" content="延迟任务 什么是延迟任务定时任务：有固定周期的，有明确的触发时间 延迟任务：没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件，任务可以立即执行，也可以延迟  场景一：订单下单之后30分钟后，如果用户没有付钱，则系统自动取消订单；如果期间下单成功，任务取消  场景二：接口对接出现网络问题，1分钟后重试，如果失败，2分钟重试，直到出现阈值终止   技术对比D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="延迟队列服务">
+<meta property="og:url" content="http://example.com/wiki/leadnews/03_project/delay_task.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="延迟任务 什么是延迟任务定时任务：有固定周期的，有明确的触发时间 延迟任务：没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件，任务可以立即执行，也可以延迟  场景一：订单下单之后30分钟后，如果用户没有付钱，则系统自动取消订单；如果期间下单成功，任务取消  场景二：接口对接出现网络问题，1分钟后重试，如果失败，2分钟重试，直到出现阈值终止   技术对比D">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews20.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews21.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews22.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews23.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews24.png">
+<meta property="article:published_time" content="2023-08-17T13:34:00.000Z">
+<meta property="article:modified_time" content="2023-08-17T13:36:50.923Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews20.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/leadnews/01_introduce/index.html"><div class="main" ff="title">头条新闻</div><div class="sub cap">头条新闻项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/leadnews/" placeholder="在 /wiki/leadnews/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目实现</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/init_project.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/code_generator.html"><span class="toc-text">代码生成器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/api_doc.html"><span class="toc-text">接口文档</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_login.html"><span class="toc-text">登陆功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/add_gateway.html"><span class="toc-text">添加网关</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/auth_filter.html"><span class="toc-text">认证过滤器</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_project.html"><span class="toc-text">集成前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_articles.html"><span class="toc-text">APP端文章列表</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_article.html"><span class="toc-text">APP端文章详情</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/media_manage.html"><span class="toc-text">自媒体后台管理</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/leadnews/03_project/delay_task.html"><span class="toc-text">延迟队列服务</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1"><span class="toc-text">延迟任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1"><span class="toc-text">什么是延迟任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AF%B9%E6%AF%94"><span class="toc-text">技术对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1"><span class="toc-text">创建服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90"><span class="toc-text">代码生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Blob%E6%95%B0%E6%8D%AE"><span class="toc-text">Blob数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E9%94%81"><span class="toc-text">乐观锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%AE%9E%E7%8E%B0%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1"><span class="toc-text">Redis实现延迟任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-text">实现思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90Redis"><span class="toc-text">集成Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%B8%B8%E9%87%8F"><span class="toc-text">枚举常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%BB%BB%E5%8A%A1"><span class="toc-text">添加任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E6%B6%88%E4%BB%BB%E5%8A%A1"><span class="toc-text">取消任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E4%BB%BB%E5%8A%A1"><span class="toc-text">消费任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E5%88%B7%E6%96%B0"><span class="toc-text">定时刷新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E4%BB%BB%E5%8A%A1%E6%8A%A2%E5%8D%A0"><span class="toc-text">延迟任务抢占</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%BB%E5%8A%A1%E5%90%8C%E6%AD%A5%E5%88%B0Redis"><span class="toc-text">数据库任务同步到Redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E6%9C%8D%E5%8A%A1"><span class="toc-text">对外提供服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="toc-text">异步调用服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%B7%BB%E5%8A%A0%E4%BB%BB%E5%8A%A1"><span class="toc-text">调用添加任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%8B%89%E5%8F%96%E4%BB%BB%E5%8A%A1"><span class="toc-text">调用拉取任务</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/leadnews/03_project/app_search.html"><span class="toc-text">APP端文章搜索</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-17T13:36:50.923Z">2023-08-17</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>延迟队列服务</span></h1>
+  <h2 id="延迟任务"><a href="#延迟任务" class="headerlink" title="延迟任务"></a>延迟任务</h2><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews20.png"></p>
+<h3 id="什么是延迟任务"><a href="#什么是延迟任务" class="headerlink" title="什么是延迟任务"></a>什么是延迟任务</h3><p>定时任务：有固定周期的，有明确的触发时间</p>
+<p>延迟任务：没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件，任务可以立即执行，也可以延迟</p>
+<ul>
+<li><p>场景一：订单下单之后30分钟后，如果用户没有付钱，则系统自动取消订单；如果期间下单成功，任务取消</p>
+</li>
+<li><p>场景二：接口对接出现网络问题，1分钟后重试，如果失败，2分钟重试，直到出现阈值终止</p>
+</li>
+</ul>
+<h3 id="技术对比"><a href="#技术对比" class="headerlink" title="技术对比"></a>技术对比</h3><p><strong>DelayQueue</strong></p>
+<p>JDK自带DelayQueue 是一个支持延时获取元素的阻塞队列， 内部采用优先队列 PriorityQueue 存储元素，同时元素必须实现 Delayed 接口；在创建元素时可以指定多久才可以从队列中获取当前元素，只有在延迟期满时才能从队列中提取元素</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews21.png"></p>
+<p>使用DelayQueue作为延迟任务，如果程序挂掉之后，任务都是放在内存，消息会丢失，如何保证数据不丢失</p>
+<p><strong>RabbitMQ实现延迟任务</strong></p>
+<ul>
+<li><p>TTL：Time To Live (消息存活时间)</p>
+</li>
+<li><p>死信队列：Dead Letter Exchange(死信交换机)，当消息成为Dead message后，可以重新发送另一个交换机（死信交换机）</p>
+</li>
+</ul>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews22.png"></p>
+<p><strong>redis实现</strong></p>
+<p>zset数据类型的去重有序（分数排序）特点进行延迟。例如：时间戳(毫秒值)作为score进行排序</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews23.png"></p>
+<p>例如：</p>
+<p>生产者添加到4个任务到延迟队列中，时间毫秒值分别为97、98、99、100。当前时间的毫秒值为90，消费者端进行监听，如果当前时间的毫秒值匹配到了延迟队列中的毫秒值就立即消费。</p>
+<h2 id="创建服务"><a href="#创建服务" class="headerlink" title="创建服务"></a>创建服务</h2><p>首先创建<code>leadnews-schedule</code>模块，在模块中创建<code>com.swx.schedule</code>包</p>
+<p>创建启动类</p>
+<figure class="highlight java"><figcaption><span>ScheduleApplication</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduleApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(ScheduleApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>配置文件</p>
+<figure class="highlight yaml"><figcaption><span>bootstrap.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">51701</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">leadnews-schedule</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">discovery:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-string">xxx.xxx.xxx.xxx:8848</span><br>      <span class="hljs-attr">config:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-string">xxx.xxx.xxx.xxx:8848</span><br>        <span class="hljs-attr">file-extension:</span> <span class="hljs-string">yml</span><br></code></pre></td></tr></table></figure>
+
+<p>在Nacos配置中心添加如下配置：<a target="_blank" rel="noopener" href="http://ip:8848/nacos">http://ip:8848/nacos</a></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/leadnews_schedule?serverTimezone=GMT%2B8&amp;useSSL=false&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">xxxxxxxx</span><br><span class="hljs-attr">mybatis-plus:</span><br>  <span class="hljs-attr">mapper-locations:</span> <span class="hljs-string">classpath*:mapper/*.xml</span><br>  <span class="hljs-attr">type-aliases-package:</span> <span class="hljs-string">com.swx.model.schedule.pojo</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h2><p>使用代码生成器生成基础代码：</p>
+<figure class="highlight java"><figcaption><span>CodeGenerate</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CodeGenerate</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">OnMac</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 代码生成器</span><br>        <span class="hljs-type">AutoGenerator</span> <span class="hljs-variable">mpg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AutoGenerator</span>();<br><br>        <span class="hljs-comment">// 全局配置</span><br>        <span class="hljs-type">GlobalConfig</span> <span class="hljs-variable">gc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GlobalConfig</span>();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">projectPath</span> <span class="hljs-operator">=</span> System.getProperty(<span class="hljs-string">&quot;user.dir&quot;</span>);<br>        gc.setAuthor(<span class="hljs-string">&quot;sw-code&quot;</span>);<br>        gc.setOpen(<span class="hljs-literal">false</span>); <span class="hljs-comment">// 是否打开文件资源管理器</span><br>        gc.setFileOverride(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 是否覆盖</span><br>        gc.setServiceName(<span class="hljs-string">&quot;%sService&quot;</span>); <span class="hljs-comment">// 去Service的I前缀</span><br>        gc.setSwagger2(<span class="hljs-literal">false</span>); <span class="hljs-comment">// 实体属性 Swagger2 注解</span><br>        gc.setIdType(IdType.ASSIGN_ID); <span class="hljs-comment">// 主键策略</span><br>        gc.setDateType(DateType.ONLY_DATE); <span class="hljs-comment">// 定义生成的实体类中日期类型</span><br>        mpg.setGlobalConfig(gc);<br><br>        <span class="hljs-comment">// 数据源配置</span><br>        <span class="hljs-type">DataSourceConfig</span> <span class="hljs-variable">dsc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataSourceConfig</span>();<br>        dsc.setUrl(<span class="hljs-string">&quot;jdbc:mysql:///leadnews_schedule?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;nullCatalogMeansCurrent=true&quot;</span>);<br>        <span class="hljs-comment">// dsc.setSchemaName(&quot;public&quot;);</span><br>        dsc.setDriverName(<span class="hljs-string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);<br>        dsc.setUsername(<span class="hljs-string">&quot;root&quot;</span>);<br>        dsc.setPassword(<span class="hljs-string">&quot;swx852345&quot;</span>);<br>        mpg.setDataSource(dsc);<br><br><br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">         * 包配置</span><br><span class="hljs-comment">         * 简单来讲 就是写绝对路径</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-type">PackageConfig</span> <span class="hljs-variable">pc</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PackageConfig</span>();<br>        <span class="hljs-comment">//  pc.setModuleName(&quot;code&quot;);</span><br>        pc.setParent(<span class="hljs-string">&quot;com.swx&quot;</span>);<br>        <span class="hljs-comment">//指定生成文件的绝对路径</span><br>        Map&lt;String, String&gt; pathInfo  = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">packageName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;schedule&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">parentPath</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/src/main/java/com/swx&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">otherPath</span> <span class="hljs-operator">=</span><span class="hljs-string">&quot;/leadnews-service/leadnews-schedule/src/main/java/com/swx/&quot;</span> + packageName;<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">entityPackageName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;schedule&quot;</span>;<br>        pc.setEntity(<span class="hljs-string">&quot;model.&quot;</span> + entityPackageName + <span class="hljs-string">&quot;.pojo&quot;</span>);<br>        pc.setMapper(packageName + <span class="hljs-string">&quot;.mapper&quot;</span>);<br>        pc.setService(packageName + <span class="hljs-string">&quot;.service&quot;</span>);<br>        pc.setServiceImpl(packageName + <span class="hljs-string">&quot;.service.impl&quot;</span>);<br>        pc.setController(packageName + <span class="hljs-string">&quot;.controller.v1&quot;</span>);<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">entityPath</span> <span class="hljs-operator">=</span> projectPath.concat(<span class="hljs-string">&quot;/leadnews-model&quot;</span>).concat(parentPath).concat(<span class="hljs-string">&quot;/model/&quot;</span> + entityPackageName + <span class="hljs-string">&quot;/pojo&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">mapper_path</span> <span class="hljs-operator">=</span> projectPath.concat(otherPath).concat(<span class="hljs-string">&quot;/mapper&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">mapper_xml_path</span> <span class="hljs-operator">=</span> projectPath.concat(<span class="hljs-string">&quot;/leadnews-service/leadnews-schedule&quot;</span>).concat(<span class="hljs-string">&quot;/src/main/resources/mapper&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">service_path</span> <span class="hljs-operator">=</span> projectPath.concat(otherPath).concat(<span class="hljs-string">&quot;/service&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">service_impl_path</span> <span class="hljs-operator">=</span> projectPath.concat(otherPath).concat(<span class="hljs-string">&quot;/service/impl&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">controller_path</span> <span class="hljs-operator">=</span> projectPath.concat(otherPath).concat(<span class="hljs-string">&quot;/controller/v1&quot;</span>);<br><br>        pathInfo.put(<span class="hljs-string">&quot;entity_path&quot;</span>,entityPath);<br>        pathInfo.put(<span class="hljs-string">&quot;mapper_path&quot;</span>,mapper_path);<br>        pathInfo.put(<span class="hljs-string">&quot;xml_path&quot;</span>,mapper_xml_path);<br>        pathInfo.put(<span class="hljs-string">&quot;service_path&quot;</span>,service_path);<br>        pathInfo.put(<span class="hljs-string">&quot;service_impl_path&quot;</span>,service_impl_path);<br>        pathInfo.put(<span class="hljs-string">&quot;controller_path&quot;</span>,controller_path);<br>        pc.setPathInfo(pathInfo);<br>        mpg.setPackageInfo(pc);<br><br>        <span class="hljs-comment">// 策略配置</span><br>        <span class="hljs-type">StrategyConfig</span> <span class="hljs-variable">strategy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StrategyConfig</span>();<br>        strategy.setInclude(<span class="hljs-string">&quot;taskinfo&quot;</span>, <span class="hljs-string">&quot;taskinfo_logs&quot;</span>);<br>        strategy.setNaming(NamingStrategy.underline_to_camel);<br>        strategy.setColumnNaming(NamingStrategy.underline_to_camel);<br>        strategy.setEntityLombokModel(<span class="hljs-literal">true</span>);<br>        <span class="hljs-comment">// 字段注解</span><br>        strategy.setEntityTableFieldAnnotationEnable(<span class="hljs-literal">true</span>);<br>        strategy.setRestControllerStyle(<span class="hljs-literal">true</span>);<br>        strategy.setControllerMappingHyphenStyle(<span class="hljs-literal">true</span>);<br>        mpg.setStrategy(strategy);<br><br>        mpg.execute();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        OnMac();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>生成之后，可以把Service全部删掉，用不到</p>
+</blockquote>
+<h2 id="Blob数据"><a href="#Blob数据" class="headerlink" title="Blob数据"></a>Blob数据</h2><p>注意修改数据库BLOB类似数据对应的java类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 参数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@TableField(&quot;parameters&quot;)</span><br><span class="hljs-keyword">private</span> <span class="hljs-type">byte</span>[] parameters;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>添加<code>TaskinfoLogs</code>实体类的乐观锁注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@EqualsAndHashCode(callSuper = false)</span><br><span class="hljs-meta">@TableName(&quot;taskinfo_logs&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TaskinfoLogs</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    ....;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 版本号,用乐观锁</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Version</span><br>    <span class="hljs-meta">@TableField(&quot;version&quot;)</span><br>    <span class="hljs-keyword">private</span> Integer version;<br>    <br>    ....;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>添加配置文件</p>
+<figure class="highlight java"><figcaption><span>config.MyBatisPlusConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@MapperScan(&quot;com.swx.schedule.mapper&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyBatisPlusConfig</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 乐观所支持</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">optimisticLockerInnerInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br>        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimisticLockerInnerInterceptor</span>());<br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Redis实现延迟任务"><a href="#Redis实现延迟任务" class="headerlink" title="Redis实现延迟任务"></a>Redis实现延迟任务</h2><h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/images/leadnews24.png"></p>
+<h3 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h3><p>使用Docker安装redis</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker pull redis<br></code></pre></td></tr></table></figure>
+
+<p>创建容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d --name redis --restart=always -p 6379:6379 redis --requirepass <span class="hljs-string">&quot;leadnews&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="集成Redis"><a href="#集成Redis" class="headerlink" title="集成Redis"></a>集成Redis</h3><p>引入Redis相关依赖</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--redis依赖commons-pool这个依赖一定要添加 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-pool2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在Nacos中添加配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">host:</span> <span class="hljs-string">xxx.xxx.xxx.xxx</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">leadnews</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="枚举常量"><a href="#枚举常量" class="headerlink" title="枚举常量"></a>枚举常量</h3><p>任务状态枚举类</p>
+<figure class="highlight java"><figcaption><span>TaskLogStatus</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TaskLogStatus</span> &#123;<br>    SCHEDULED(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;初始化状态&quot;</span>),<br>    EXECUTED(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;已执行状态&quot;</span>),<br>    CANCELLED(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;已取消状态&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> status;<br>    <span class="hljs-keyword">private</span> String desc;<br><br>    TaskLogStatus(<span class="hljs-type">int</span> status, String desc) &#123;<br>        <span class="hljs-built_in">this</span>.status = status;<br>        <span class="hljs-built_in">this</span>.desc = desc;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">status</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> status;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">desc</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> desc;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>常量类</p>
+<figure class="highlight java"><figcaption><span>ScheduleConstants</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduleConstants</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">REDIS_KEY_FUTURE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;future_&quot;</span>; <span class="hljs-comment">// 延迟任务的Redis前缀</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">REDIS_KEY_TOPIC</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;topic_&quot;</span>; <span class="hljs-comment">// 立即执行的Redis前缀</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">FUTURE_TASK_SYNC</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;FUTURE_TASK_SYNC&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">DEFAULT_TIME_MINUTE</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>; <span class="hljs-comment">// 预设任务时间</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">LOCK_TIME_MILLISECONDS</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span> * <span class="hljs-number">30</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="添加任务"><a href="#添加任务" class="headerlink" title="添加任务"></a>添加任务</h3><blockquote>
+<ul>
+<li>添加小于当前时间的到List中，即立即审核</li>
+<li>添加大于当前时间但小于当前时间加5分钟的放到ZSet中，即延迟审核</li>
+<li>所有的任务均保存到数据库中，当大于当前时间加5分钟只会在数据库中，后期刷新到Redis中</li>
+</ul>
+</blockquote>
+<p>创建TaskService接口，定义添加任务方法：</p>
+<figure class="highlight java"><figcaption><span>TaskService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TaskService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加延迟任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">addTask</span><span class="hljs-params">(Task task)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现该接口和添加任务的方法：</p>
+<figure class="highlight java"><figcaption><span>TaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TaskServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">TaskService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TaskinfoMapper taskinfoMapper;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TaskinfoLogsMapper taskinfoLogsMapper;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CacheService cacheService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">TaskServiceImpl</span><span class="hljs-params">(TaskinfoMapper taskinfoMapper, TaskinfoLogsMapper taskinfoLogsMapper, CacheService cacheService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.taskinfoMapper = taskinfoMapper;<br>        <span class="hljs-built_in">this</span>.taskinfoLogsMapper = taskinfoLogsMapper;<br>        <span class="hljs-built_in">this</span>.cacheService = cacheService;<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加延迟任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = RuntimeException.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">addTask</span><span class="hljs-params">(Task task)</span> &#123;<br>        <span class="hljs-comment">// 添加任务到数据库中</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">success</span> <span class="hljs-operator">=</span> addTaskToDb(task);<br>        <span class="hljs-keyword">if</span> (!success) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;事务添加到数据库失败&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// 添加任务到Redis</span><br>        addTaskToRedis(task);<br><br>        <span class="hljs-keyword">return</span> task.getTaskId();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 把任务添加到Redis中</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addTaskToRedis</span><span class="hljs-params">(Task task)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> task.getTaskType() + <span class="hljs-string">&quot;_&quot;</span> + task.getPriority();<br>        <span class="hljs-comment">// 获取5分钟之后的时间</span><br>        <span class="hljs-type">Calendar</span> <span class="hljs-variable">instance</span> <span class="hljs-operator">=</span> Calendar.getInstance();<br>        instance.add(Calendar.MINUTE, ScheduleConstants.DEFAULT_TIME_MINUTE);<br>        <span class="hljs-type">long</span> <span class="hljs-variable">nextScheduleTime</span> <span class="hljs-operator">=</span> instance.getTimeInMillis();<br><br>        <span class="hljs-comment">// 执行时间小于等于当前时间，即立即执行</span><br>        <span class="hljs-keyword">if</span> (task.getExecuteTime() &lt;= System.currentTimeMillis()) &#123;<br>            cacheService.lLeftPush(ScheduleConstants.REDIS_KEY_TOPIC + key, JSON.toJSONString(task));<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (task.getExecuteTime() &lt;= nextScheduleTime) &#123;<br>            <span class="hljs-comment">// 如果任务的执行时间大于当前时间 &amp;&amp; 小于预设时间（未来5分钟），存入zset中</span><br>            cacheService.zAdd(ScheduleConstants.REDIS_KEY_FUTURE + key, JSON.toJSONString(task), task.getExecuteTime());<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加任务到数据库</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 是否添加成功</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">addTaskToDb</span><span class="hljs-params">(Task task)</span> &#123;<br>        <span class="hljs-comment">// 保存任务表</span><br>        <span class="hljs-type">Taskinfo</span> <span class="hljs-variable">taskinfo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Taskinfo</span>();<br>        BeanUtils.copyProperties(task, taskinfo);<br>        taskinfo.setExecuteTime(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(task.getExecuteTime()));<br>        <span class="hljs-type">int</span> <span class="hljs-variable">insert</span> <span class="hljs-operator">=</span> taskinfoMapper.insert(taskinfo);<br>        <span class="hljs-comment">// 回填taskID</span><br>        task.setTaskId(taskinfo.getTaskId());<br><br>        <span class="hljs-comment">// 保存日志数据</span><br>        <span class="hljs-type">TaskinfoLogs</span> <span class="hljs-variable">taskinfoLogs</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TaskinfoLogs</span>();<br>        BeanUtils.copyProperties(taskinfo, taskinfoLogs);<br>        taskinfoLogs.setVersion(<span class="hljs-number">1</span>);<br>        taskinfoLogs.setStatus(TaskLogStatus.SCHEDULED.status());<br>        <span class="hljs-type">int</span> <span class="hljs-variable">insert1</span> <span class="hljs-operator">=</span> taskinfoLogsMapper.insert(taskinfoLogs);<br><br>        <span class="hljs-keyword">return</span> insert &gt; <span class="hljs-number">0</span> &amp;&amp; insert1 &gt; <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="取消任务"><a href="#取消任务" class="headerlink" title="取消任务"></a>取消任务</h3><p>场景：第三接口网络不通，使用延迟任务进行重试，当达到阈值以后，取消任务。</p>
+<ol>
+<li><p>根据taskid删除任务,修改任务日志状态为 2(取消)</p>
+</li>
+<li><p>删除redis中对应的任务数据，包括list和zset</p>
+</li>
+</ol>
+<p>定义抽象方法</p>
+<figure class="highlight java"><figcaption><span>TaskService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 取消任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> taskId 任务ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 是否取消成功</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">cancelTask</span><span class="hljs-params">(<span class="hljs-type">long</span> taskId)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>实现该方法</p>
+<figure class="highlight java"><figcaption><span>TaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 取消任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> taskId 任务ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 是否取消成功</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">cancelTask</span><span class="hljs-params">(<span class="hljs-type">long</span> taskId)</span> &#123;<br>    <span class="hljs-comment">// 删除任务更新日志</span><br>    <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> updateDb(taskId, TaskLogStatus.CANCELLED.status());<br><br>    <span class="hljs-keyword">if</span> (task == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-comment">// 删除redis数据</span><br>    removeTaskFromCache(task);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 删除任务，更新任务日志</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> taskId 任务ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> status 状态</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">private</span> Task <span class="hljs-title function_">updateDb</span><span class="hljs-params">(<span class="hljs-type">long</span> taskId, <span class="hljs-type">int</span> status)</span> &#123;<br>    <span class="hljs-comment">// 删除任务</span><br>    taskinfoMapper.deleteById(taskId);<br><br>    <span class="hljs-comment">// 更新任务日志</span><br>    <span class="hljs-type">TaskinfoLogs</span> <span class="hljs-variable">taskinfoLogs</span> <span class="hljs-operator">=</span> taskinfoLogsMapper.selectById(taskId);<br>    <span class="hljs-keyword">if</span> (taskinfoLogs == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    taskinfoLogs.setStatus(status);<br>    taskinfoLogsMapper.updateById(taskinfoLogs);<br><br>    <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Task</span>();<br>    BeanUtils.copyProperties(taskinfoLogs, task);<br>    task.setExecuteTime(taskinfoLogs.getExecuteTime().getTime());<br><br>    <span class="hljs-keyword">return</span> task;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 删除Redis中的数据</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeTaskFromCache</span><span class="hljs-params">(Task task)</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> task.getTaskType() + <span class="hljs-string">&quot;_&quot;</span> + task.getPriority();<br>    <span class="hljs-comment">// 执行时间小于等于当前时间，即立即执行</span><br>    <span class="hljs-keyword">if</span> (task.getExecuteTime() &lt;= System.currentTimeMillis()) &#123;<br>        cacheService.lRemove(ScheduleConstants.REDIS_KEY_TOPIC + key, <span class="hljs-number">0</span>, JSON.toJSONString(task));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        cacheService.zRemove(ScheduleConstants.REDIS_KEY_FUTURE + key);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="消费任务"><a href="#消费任务" class="headerlink" title="消费任务"></a>消费任务</h3><ol>
+<li>从Redis的list中pop数据</li>
+<li>删除任务并且修改日志状态</li>
+</ol>
+<p>定义抽象方法</p>
+<figure class="highlight java"><figcaption><span>TaskService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 按照类型和优先级拉取任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> type     类型</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> priority 优先级</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 任务</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> Task <span class="hljs-title function_">poll</span><span class="hljs-params">(<span class="hljs-type">int</span> type, <span class="hljs-type">int</span> priority)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>实现抽象方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 按照类型和优先级拉取任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> type     类型</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> priority 优先级</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 任务</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br><span class="hljs-keyword">public</span> Task <span class="hljs-title function_">poll</span><span class="hljs-params">(<span class="hljs-type">int</span> type, <span class="hljs-type">int</span> priority)</span> &#123;<br>    <span class="hljs-comment">// 从Redis中拉取数据</span><br><br>    <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> type + <span class="hljs-string">&quot;_&quot;</span> + priority;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">taskJson</span> <span class="hljs-operator">=</span> cacheService.lRightPop(ScheduleConstants.REDIS_KEY_TOPIC + key);<br>    <span class="hljs-keyword">if</span> (!StringUtils.hasText(taskJson)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> JSON.parseObject(taskJson, Task.class);<br>    <span class="hljs-comment">// 修改数据库信息</span><br>    updateDb(task.getTaskId(), TaskLogStatus.EXECUTED.status());<br>    <span class="hljs-keyword">return</span> task;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="定时刷新"><a href="#定时刷新" class="headerlink" title="定时刷新"></a>定时刷新</h3><p>将ZSet中的数据定时刷新到List中去，进行消费</p>
+<figure class="highlight java"><figcaption><span>TaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 未来数据定时刷新，每分钟一次</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Scheduled(cron = &quot;0 */1 * * * ?&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">refresh</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> cacheService.tryLock(ScheduleConstants.FUTURE_TASK_SYNC, ScheduleConstants.LOCK_TIME_MILLISECONDS);<br>    <span class="hljs-keyword">if</span> (StringUtils.hasText(token)) &#123;<br>        log.info(<span class="hljs-string">&quot;未来数据定时刷新--定时任务&quot;</span>);<br>        <span class="hljs-comment">// 获取所有未来数据的集合key</span><br>        Set&lt;String&gt; futureKeys = cacheService.scan(ScheduleConstants.REDIS_KEY_FUTURE + <span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-keyword">for</span> (String futureKey : futureKeys) &#123;<br>            <span class="hljs-comment">// 获取当前数据的key</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">topicKey</span> <span class="hljs-operator">=</span> ScheduleConstants.REDIS_KEY_TOPIC + futureKey.split(ScheduleConstants.REDIS_KEY_FUTURE)[<span class="hljs-number">1</span>];<br>            <span class="hljs-comment">// 按照key和分值查询符合条件的数据</span><br>            Set&lt;String&gt; tasks = cacheService.zRangeByScore(futureKey, <span class="hljs-number">0</span>, System.currentTimeMillis());<br>            <span class="hljs-keyword">if</span> (!tasks.isEmpty()) &#123;<br>                cacheService.refreshWithPipeline(futureKey, topicKey, tasks);<br>                log.info(<span class="hljs-string">&quot;成功的将&quot;</span> + futureKey + <span class="hljs-string">&quot;刷新到了&quot;</span> + topicKey);<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="延迟任务抢占"><a href="#延迟任务抢占" class="headerlink" title="延迟任务抢占"></a>延迟任务抢占</h2><p>如果有两个schedule服务启动，没太服务器都会去执行refresh定时任务，会出现任务抢占的现象。</p>
+<p>分布式锁：控制分布式系统有序的去对共享资源进行操作，通过互斥来保证数据的一致性</p>
+<p>分布式锁的解决方案：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库</td>
+<td>基于表的唯一索引</td>
+</tr>
+<tr>
+<td>zookeeper</td>
+<td>根据zookeeper中的临时有序节点排序</td>
+</tr>
+<tr>
+<td>redis</td>
+<td>使用SETNX命令完成</td>
+</tr>
+</tbody></table>
+<p>使用Redis实现锁</p>
+<figure class="highlight java"><figcaption><span>CacheService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 加锁</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> name   key</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> expire 过期时间</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">tryLock</span><span class="hljs-params">(String name, <span class="hljs-type">long</span> expire)</span> &#123;<br>    name = name + <span class="hljs-string">&quot;_lock&quot;</span>;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();<br>    <span class="hljs-type">RedisConnectionFactory</span> <span class="hljs-variable">factory</span> <span class="hljs-operator">=</span> stringRedisTemplate.getConnectionFactory();<br>    <span class="hljs-type">RedisConnection</span> <span class="hljs-variable">connection</span> <span class="hljs-operator">=</span> factory.getConnection();<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// set key value [Ex seconds] [PX milliseconds] [NX/XX]</span><br>        <span class="hljs-type">Boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> connection.set(<br>                name.getBytes(),<br>                token.getBytes(),<br>                Expiration.from(expire, TimeUnit.MILLISECONDS),<br>                RedisStringCommands.SetOption.SET_IF_ABSENT <span class="hljs-comment">// NX</span><br>        );<br>        <span class="hljs-keyword">if</span> (result != <span class="hljs-literal">null</span> &amp;&amp; result) &#123;<br>            <span class="hljs-keyword">return</span> token;<br>        &#125;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        RedisConnectionUtils.releaseConnection(connection, factory, <span class="hljs-literal">false</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改定时刷新逻辑</p>
+<figure class="highlight java"><figcaption><span>TaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 未来数据定时刷新，每分钟一次</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Scheduled(cron = &quot;0 */1 * * * ?&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">refresh</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> cacheService.tryLock(ScheduleConstants.FUTURE_TASK_SYNC, ScheduleConstants.LOCK_TIME_MILLISECONDS);<br>    <span class="hljs-keyword">if</span> (StringUtils.hasText(token)) &#123;<br>        log.info(<span class="hljs-string">&quot;未来数据定时刷新--定时任务&quot;</span>);<br>        <span class="hljs-comment">// 获取所有未来数据的集合key</span><br>        Set&lt;String&gt; futureKeys = cacheService.scan(ScheduleConstants.REDIS_KEY_FUTURE + <span class="hljs-string">&quot;*&quot;</span>);<br>        <span class="hljs-keyword">for</span> (String futureKey : futureKeys) &#123;<br>            <span class="hljs-comment">// 获取当前数据的key</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">topicKey</span> <span class="hljs-operator">=</span> ScheduleConstants.REDIS_KEY_TOPIC + futureKey.split(ScheduleConstants.REDIS_KEY_FUTURE)[<span class="hljs-number">1</span>];<br>            <span class="hljs-comment">// 按照key和分值查询符合条件的数据</span><br>            Set&lt;String&gt; tasks = cacheService.zRangeByScore(futureKey, <span class="hljs-number">0</span>, System.currentTimeMillis());<br>            <span class="hljs-keyword">if</span> (!tasks.isEmpty()) &#123;<br>                cacheService.refreshWithPipeline(futureKey, topicKey, tasks);<br>                log.info(<span class="hljs-string">&quot;成功的将&quot;</span> + futureKey + <span class="hljs-string">&quot;刷新到了&quot;</span> + topicKey);<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>常量定义</p>
+<figure class="highlight java"><figcaption><span>ScheduleConstants</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">FUTURE_TASK_SYNC</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;FUTURE_TASK_SYNC;</span><br><span class="hljs-string">public static final Integer LOCK_TIME_MILLISECONDS = 1000 * 30;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="数据库任务同步到Redis"><a href="#数据库任务同步到Redis" class="headerlink" title="数据库任务同步到Redis"></a>数据库任务同步到Redis</h2><figure class="highlight java"><figcaption><span>TaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 数据库任务定时同步到Redis</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@PostConstruct</span><br><span class="hljs-meta">@Scheduled(cron = &quot;0 */5 * * * ?&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reloadData</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// 清除缓存中的数据</span><br>    clearCache();<br>    <span class="hljs-comment">// 查询符合条件的任务，小于未来5分钟的数据</span><br>    <span class="hljs-type">Calendar</span> <span class="hljs-variable">instance</span> <span class="hljs-operator">=</span> Calendar.getInstance();<br>    instance.add(Calendar.MINUTE, ScheduleConstants.DEFAULT_TIME_MINUTE);<br>    List&lt;Taskinfo&gt; taskinfos = taskinfoMapper.selectList(Wrappers.&lt;Taskinfo&gt;lambdaQuery().lt(Taskinfo::getExecuteTime, instance.getTime()));<br>    <span class="hljs-comment">// 把任务添加到redis</span><br>    <span class="hljs-keyword">if</span> (taskinfos!=<span class="hljs-literal">null</span>&amp;&amp; !taskinfos.isEmpty()) &#123;<br>        <span class="hljs-keyword">for</span> (Taskinfo taskinfo : taskinfos) &#123;<br>            <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Task</span>();<br>            BeanUtils.copyProperties(taskinfo, task);<br>            task.setExecuteTime(taskinfo.getExecuteTime().getTime());<br>            addTaskToRedis(task);<br>        &#125;<br>    &#125;<br><br>    log.info(<span class="hljs-string">&quot;数据库的任务同步到了Redis&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 清理缓存中的数据</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clearCache</span><span class="hljs-params">()</span> &#123;<br>    Set&lt;String&gt; topicKeys = cacheService.scan(ScheduleConstants.REDIS_KEY_TOPIC + <span class="hljs-string">&quot;*&quot;</span>);<br>    Set&lt;String&gt; futureKeys = cacheService.scan(ScheduleConstants.REDIS_KEY_FUTURE + <span class="hljs-string">&quot;*&quot;</span>);<br>    cacheService.delete(topicKeys);<br>    cacheService.delete(futureKeys);<br>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="对外提供服务"><a href="#对外提供服务" class="headerlink" title="对外提供服务"></a>对外提供服务</h2><p>在<code>leadnews-feign-api</code>模块中创建包<code>com.swx.apis.schedule</code></p>
+<p>在该包下创建<code>IScheduleClient</code>接口，内容如下：</p>
+<figure class="highlight java"><figcaption><span>IScheduleClient</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(&quot;leadnews-schedule&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">IScheduleClient</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加延迟任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@PostMapping(&quot;/api/v1/task/add&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">addTask</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Task task)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 取消任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> taskId 任务ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 是否取消成功</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@GetMapping(&quot;/api/v1/task/&#123;taskId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">cancelTask</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;taskId&quot;)</span> <span class="hljs-type">long</span> taskId)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 按照类型和优先级拉取任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type     类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> priority 优先级</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@GetMapping(&quot;/api/v1/task/&#123;type&#125;/&#123;priority&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">poll</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;type&quot;)</span> <span class="hljs-type">int</span> type, <span class="hljs-meta">@PathVariable(&quot;priority&quot;)</span> <span class="hljs-type">int</span> priority)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在<code>leadnews-schedule</code>模块中实现该方法</p>
+<figure class="highlight java"><figcaption><span>feign.ScheduleClient</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduleClient</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">IScheduleClient</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TaskService taskService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ScheduleClient</span><span class="hljs-params">(TaskService taskService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.taskService = taskService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加延迟任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> task 任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@PostMapping(&quot;/api/v1/task/add&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">addTask</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Task task)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.success(taskService.addTask(task));<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 取消任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> taskId 任务ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 是否取消成功</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@GetMapping(&quot;/api/v1/task/&#123;taskId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">cancelTask</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;taskId&quot;)</span> <span class="hljs-type">long</span> taskId)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.success(taskService.cancelTask(taskId));<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 按照类型和优先级拉取任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> type     类型</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> priority 优先级</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 任务</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@GetMapping(&quot;/api/v1/task/&#123;type&#125;/&#123;priority&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">poll</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;type&quot;)</span> <span class="hljs-type">int</span> type, <span class="hljs-meta">@PathVariable(&quot;priority&quot;)</span> <span class="hljs-type">int</span> priority)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.success(taskService.poll(type, priority));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="异步调用服务"><a href="#异步调用服务" class="headerlink" title="异步调用服务"></a>异步调用服务</h2><h3 id="调用添加任务"><a href="#调用添加任务" class="headerlink" title="调用添加任务"></a>调用添加任务</h3><p>调用之前，在<code>leadnews-wemedia</code>模块中定义<code>WmNewsTaskService</code></p>
+<figure class="highlight java"><figcaption><span>WmNewsTaskService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">WmNewsTaskService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加任务到延迟队列中</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id          文章ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> publishTime 发布时间，即任务执行时间</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNewsToTask</span><span class="hljs-params">(Integer id, Date publishTime)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现这个接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WmNewsTaskServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WmNewsTaskService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> IScheduleClient scheduleClient;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">WmNewsTaskServiceImpl</span><span class="hljs-params">(IScheduleClient scheduleClient)</span> &#123;<br>        <span class="hljs-built_in">this</span>.scheduleClient = scheduleClient;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 添加任务到延迟队列中</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id          文章ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> publishTime 发布时间，即任务执行时间</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Async</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNewsToTask</span><span class="hljs-params">(Integer id, Date publishTime)</span> &#123;<br><br>        log.info(<span class="hljs-string">&quot;添加任务到延迟服务中----begin&quot;</span>);<br><br>        <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Task</span>();<br>        task.setExecuteTime(publishTime.getTime());<br>        task.setTaskType(TaskTypeEnum.NEWS_SCAN_TIME.taskType());<br>        task.setPriority(TaskTypeEnum.NEWS_SCAN_TIME.priority());<br>        <span class="hljs-type">WmNews</span> <span class="hljs-variable">wmNews</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">WmNews</span>();<br>        wmNews.setId(id);<br>        task.setParameters(ProtostuffUtil.serialize(wmNews));<br>        scheduleClient.addTask(task);<br><br>        log.info(<span class="hljs-string">&quot;添加任务到延迟服务中----end&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>找到发布文章的方法，将调用异步审核改为调用异步添加队列</p>
+<figure class="highlight java"><figcaption><span>WmNewsSubmitServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">submitNews</span><span class="hljs-params">(WmNewsDTO dto)</span> &#123;<br>    ....;<br>    <span class="hljs-comment">// 异步调用自动审核</span><br>    <span class="hljs-comment">// wmNewsAutoScanService.autoScanWmNews(wmNews.getId());</span><br>    <span class="hljs-comment">// 添加到任务队列中</span><br>    wmNewsTaskService.addNewsToTask(wmNews.getId(), wmNews.getPublishTime());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="调用拉取任务"><a href="#调用拉取任务" class="headerlink" title="调用拉取任务"></a>调用拉取任务</h3><p>在<code>WmNewsTaskService</code>接口中添加如下方法：</p>
+<figure class="highlight java"><figcaption><span>WmNewsTaskService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 消费任务</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">scanNewsByTask</span><span class="hljs-params">()</span>;<br></code></pre></td></tr></table></figure>
+
+<p>实现该方法，这个方法没有主动调用，使用定时任务：</p>
+<figure class="highlight java"><figcaption><span>WmNewsTaskServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 消费任务，每秒拉取一次</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-meta">@Scheduled(fixedRate = 1000)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">scanNewsByTask</span><span class="hljs-params">()</span> &#123;<br><br>    log.info(<span class="hljs-string">&quot;消费任务，审核文章&quot;</span>);<br><br>    <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> scheduleClient.poll(TaskTypeEnum.NEWS_SCAN_TIME.taskType(), TaskTypeEnum.NEWS_SCAN_TIME.priority());<br>    <span class="hljs-keyword">if</span> (result == <span class="hljs-literal">null</span>) &#123;<br>        log.error(<span class="hljs-string">&quot;拉取任务失败&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (result.getCode().equals(ResultCodeEnum.SUCCESS.code()) &amp;&amp; result.getData() != <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> JSON.parseObject(JSON.toJSONString(result.getData()), Task.class);<br>        <span class="hljs-type">WmNews</span> <span class="hljs-variable">wmNews</span> <span class="hljs-operator">=</span> ProtostuffUtil.deserialize(task.getParameters(), WmNews.class);<br>        wmNewsAutoScanService.autoScanWmNews(wmNews.getId());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在<code>WemediaApplication</code>添加注解<code>@EnableScheduling</code></p>
+<figure class="highlight java"><figcaption><span>WemediaApplication</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@EnableDiscoveryClient</span><br><span class="hljs-meta">@MapperScan(&quot;com.swx.wemedia.mapper&quot;)</span><br><span class="hljs-meta">@EnableFeignClients(basePackages = &quot;com.swx.apis&quot;)</span><br><span class="hljs-meta">@EnableAsync</span> <span class="hljs-comment">// 开启异步任务</span><br><span class="hljs-meta">@EnableScheduling</span> <span class="hljs-comment">// 开启调度任务</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WemediaApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(WemediaApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/leadnews/03_project/media_manage.html">自媒体后台管理</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/leadnews/03_project/app_search.html">APP端文章搜索</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

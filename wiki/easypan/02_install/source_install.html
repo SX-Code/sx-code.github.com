@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Easy云盘：源码部署 - swcode</title>
+
+  
+    <meta name="description" content="从 GitHub 获取代码git clone https:&#x2F;&#x2F;github.com&#x2F;SX-Code&#x2F;naive-ui-admin-js.git  目录说明.├── guigu-oa-admin # 管理端├── guigu-oa-web # 员工端├── server # 后端服务├── Dockerfile # 后端docerfile└── docker-compose.yaml # 后端doc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="源码部署">
+<meta property="og:url" content="http://example.com/wiki/easypan/02_install/source_install.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="从 GitHub 获取代码git clone https:&#x2F;&#x2F;github.com&#x2F;SX-Code&#x2F;naive-ui-admin-js.git  目录说明.├── guigu-oa-admin # 管理端├── guigu-oa-web # 员工端├── server # 后端服务├── Dockerfile # 后端docerfile└── docker-compose.yaml # 后端doc">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-17T05:01:00.000Z">
+<meta property="article:modified_time" content="2023-08-17T05:01:47.712Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/easypan/01_introduce/index.html"><div class="main" ff="title">Easy云盘</div><div class="sub cap">Easy网盘项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/easypan/" placeholder="在 /wiki/easypan/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目部署</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/easypan/02_install/source_install.html"><span class="toc-text">源码部署</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E-GitHub-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81"><span class="toc-text">从 GitHub 获取代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E"><span class="toc-text">目录说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2"><span class="toc-text">项目部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Node-js"><span class="toc-text">安装 Node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%83%A8%E7%BD%B2"><span class="toc-text">数据库部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="toc-text">服务器部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE"><span class="toc-text">启动项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8"><span class="toc-text">测试启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E-1"><span class="toc-text">目录说明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="toc-text">管理端部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#npm-script"><span class="toc-text">npm script</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE-1"><span class="toc-text">启动项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E-2"><span class="toc-text">目录说明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%98%E5%B7%A5%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="toc-text">员工端部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E-3"><span class="toc-text">目录说明</span></a></li></ol></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/02_install/docker_install.html"><span class="toc-text">Docker部署</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/easypan/01_introduce/index.html">Easy云盘</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-17T05:01:47.712Z">2023-08-17</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>源码部署</span></h1>
+  <h2 id="从-GitHub-获取代码"><a href="#从-GitHub-获取代码" class="headerlink" title="从 GitHub 获取代码"></a>从 GitHub 获取代码</h2><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/SX-Code/naive-ui-admin-js.git<br></code></pre></td></tr></table></figure>
+
+<h2 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h2><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">.<br>├── guigu-oa-admin <span class="hljs-comment"># 管理端</span><br>├── guigu-oa-web <span class="hljs-comment"># 员工端</span><br>├── server <span class="hljs-comment"># 后端服务</span><br>├── Dockerfile <span class="hljs-comment"># 后端docerfile</span><br>└── docker-compose.yaml <span class="hljs-comment"># 后端docker部署</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><h3 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h3><p>如果您电脑未安装<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a>，请安装它。</p>
+<p><strong>验证</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 出现相应npm版本即可</span><br>npm -v<br><span class="hljs-comment"># 出现相应node版本即可</span><br>node -v<br></code></pre></td></tr></table></figure>
+
+<p>如果你需要同时存在多个 node 版本，可以使用 <a target="_blank" rel="noopener" href="https://github.com/nvm-sh/nvm">Nvm</a> 或者其他工具进行 Node.js 进行版本管理。</p>
+<h3 id="数据库部署"><a href="#数据库部署" class="headerlink" title="数据库部署"></a>数据库部署</h3><p>创建数据库<code>guigu-oa</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> gugui<span class="hljs-operator">-</span>oa;<br></code></pre></td></tr></table></figure>
+
+<p>使用sql文件导入表结构和数据</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql">guigu<span class="hljs-operator">-</span>oa.sql<br></code></pre></td></tr></table></figure>
+
+<h3 id="服务器部署"><a href="#服务器部署" class="headerlink" title="服务器部署"></a>服务器部署</h3><p>服务器源码为<code>server</code>文件，使用IDEA工具编写，还请使用IDEA打开项目，包管理工具为Maven。</p>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>打开<code>servuce-oa/src/main/resources/application-dev.yaml</code>，修改配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">application-dev.yamlspring:</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">xxxxxxxx</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">xxxxxxxx</span><br><span class="hljs-attr">wx:</span><br>  <span class="hljs-attr">mp:</span><br>    <span class="hljs-attr">app-id:</span> <span class="hljs-string">xxxxxxxxxxxxxxxxxx</span><br>    <span class="hljs-attr">secret:</span> <span class="hljs-string">xxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="hljs-attr">wechat:</span><br>  <span class="hljs-attr">prefix:</span> <span class="hljs-string">http://xxxxxx.yyy.cn</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>app-id</strong>：微信公众号的appId</li>
+<li><strong>secret</strong>：微信公众号的secret</li>
+<li><strong>prefix</strong>：微信公众号的授权回调页面域名</li>
+</ul>
+<p>👈获取方式：微信公众号测试申请</p>
+<h4 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h4><p>找到<code>ServiceAuthApplication.java</code>或者使用IDEA工具启动项目</p>
+<h4 id="测试启动"><a href="#测试启动" class="headerlink" title="测试启动"></a>测试启动</h4><p>访问项目使用的Swagger文档地址：<a target="_blank" rel="noopener" href="http://localhost:8800/doc.html">http://localhost:8800/doc.html</a></p>
+<h4 id="目录说明-1"><a href="#目录说明-1" class="headerlink" title="目录说明"></a>目录说明</h4><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">.<br>├── server <span class="hljs-comment"># 打包脚本相关</span><br>│   ├── common <span class="hljs-comment"># 项目common模块</span><br>│   ├── model <span class="hljs-comment"># 项目model模块</span><br>│   ├── service-oa <span class="hljs-comment"># 项目主服务模块</span><br>│   └── pom.xml <span class="hljs-comment"># 依赖管理文件</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="管理端部署"><a href="#管理端部署" class="headerlink" title="管理端部署"></a>管理端部署</h3><p>管理端的源码为<code>guigu-oa-admin</code>文件，为Vue CLI项目，可以使用Visual Studio Code打开。</p>
+<p>该项目基于<a target="_blank" rel="noopener" href="https://docs.naiveadmin.com/guide/introduction.html">Naive Ui Admin</a>修改开发，更多可以参考其官方文档</p>
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>使用npm安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">npm i<br></code></pre></td></tr></table></figure>
+
+<h4 id="npm-script"><a href="#npm-script" class="headerlink" title="npm script"></a>npm script</h4><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service serve&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service build&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;lint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service lint&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;lint-fix&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eslint --fix --ext .js --ext .jsx --ext .vue src/&quot;</span><br><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><p>修改<code>vue.config.js</code>，更改服务器的代理地址</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123; defineConfig &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@vue/cli-service&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">transpileDependencies</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-comment">// 基本路径</span><br>  <span class="hljs-attr">publicPath</span>: <span class="hljs-string">&#x27;/&#x27;</span>,<br>  <span class="hljs-attr">outputDir</span>: <span class="hljs-string">&#x27;dist&#x27;</span>,<br>  <span class="hljs-comment">// 开发环境配置</span><br>  <span class="hljs-attr">devServer</span>: &#123;<br>    <span class="hljs-attr">proxy</span>: &#123;<br>      [process.<span class="hljs-property">env</span>.<span class="hljs-property">VUE_APP_API_URL_PREFIX</span>]: &#123;<br>        <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;http://localhost:8800/&#x27;</span>,<br>        <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">pathRewrite</span>: &#123;<br>          [<span class="hljs-string">&#x27;^&#x27;</span> + process.<span class="hljs-property">env</span>.<span class="hljs-property">VUE_APP_API_URL_PREFIX</span>]: <span class="hljs-string">&#x27;&#x27;</span><br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h4 id="启动项目-1"><a href="#启动项目-1" class="headerlink" title="启动项目"></a>启动项目</h4><p>使用npm启动项目</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">guigu-oa-adminnpm run serve<br></code></pre></td></tr></table></figure>
+
+<h4 id="目录说明-2"><a href="#目录说明-2" class="headerlink" title="目录说明"></a>目录说明</h4><p>详细目录说明可参考：<a target="_blank" rel="noopener" href="https://docs.naiveadmin.com/guide/#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E">Naive Ui Admin | 目录说明</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">.<br>├── views <span class="hljs-comment"># 页面文件</span><br>│   ├── login <span class="hljs-comment"># 登陆页面</span><br>│   ├── process <span class="hljs-comment"># 审批流程</span><br>│   │   ├── list <span class="hljs-comment"># 流程列表</span><br>│   │   ├── <span class="hljs-built_in">set</span> <span class="hljs-comment"># 审批模版设计</span><br>│   │   ├── template <span class="hljs-comment"># 审批模版</span><br>│   │   └── <span class="hljs-built_in">type</span> <span class="hljs-comment"># 审批类型</span><br>│   ├── system <span class="hljs-comment"># 系统管理</span><br>│   │   ├── menu <span class="hljs-comment"># 菜单管理</span><br>│   │   ├── role <span class="hljs-comment"># 角色管理</span><br>│   │   └── user <span class="hljs-comment"># 用户管理</span><br>│   └── wechat <span class="hljs-comment"># 微信公众号</span><br>│   │   └── menu <span class="hljs-comment"># 微信公众号菜单</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="员工端部署"><a href="#员工端部署" class="headerlink" title="员工端部署"></a>员工端部署</h3><p>部署方式和管理端一样</p>
+<h4 id="目录说明-3"><a href="#目录说明-3" class="headerlink" title="目录说明"></a>目录说明</h4><p>详细目录说明可参考：<a target="_blank" rel="noopener" href="https://docs.naiveadmin.com/guide/#%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E">Naive Ui Admin | 目录说明</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">.<br>├── views <span class="hljs-comment"># 页面文件</span><br>│   ├── apply <span class="hljs-comment"># 发起审批页面</span><br>│   ├── debug <span class="hljs-comment"># 测试页面</span><br>│   ├── list <span class="hljs-comment"># 流程页面</span><br>│   ├── process <span class="hljs-comment"># 首页面</span><br>│   └── show <span class="hljs-comment"># 流程详情页面</span><br>└── login.vue <span class="hljs-comment"># 登陆授权页面</span><br></code></pre></td></tr></table></figure>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/easypan/01_introduce/index.html">笔记简介</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/easypan/02_install/docker_install.html">Docker部署</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

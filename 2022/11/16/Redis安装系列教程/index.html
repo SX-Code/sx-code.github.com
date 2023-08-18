@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Redis安装系列教程 - swcode</title>
+
+  
+    <meta name="description" content="此系列包括Redis的单机安装，Redis主从集群搭建...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis安装系列教程">
+<meta property="og:url" content="http://example.com/2022/11/16/Redis%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="此系列包括Redis的单机安装，Redis主从集群搭建...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image33.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image41.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image42.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image43.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image44.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image45.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image46.png">
+<meta property="article:published_time" content="2022-11-16T11:35:55.000Z">
+<meta property="article:modified_time" content="2022-11-20T08:12:54.000Z">
+<meta property="article:author" content="swcode">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Redis安装系列教程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E"><span class="toc-text">安装说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85Redis"><span class="toc-text">单机安装Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Redis"><span class="toc-text">安装Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-text">配置Redis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis主从集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB"><span class="toc-text">开启主从关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建哨兵集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE-1"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-1"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建分片集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%BB%93%E6%9E%84"><span class="toc-text">集群结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%AE%9E%E4%BE%8B%E5%92%8C%E9%85%8D%E7%BD%AE-2"><span class="toc-text">准备实例和配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-2"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-text">创建集群</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89Redis5-0%E4%B9%8B%E5%89%8D"><span class="toc-text">1）Redis5.0之前</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89Redis5-0%E4%B9%8B%E5%90%8E"><span class="toc-text">2）Redis5.0之后</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-2"><span class="toc-text">测试</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-11-16T11:35:55.000Z">2022-11-16</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>Redis安装系列教程</span></h1>
+<h2 id="安装说明"><a href="#安装说明" class="headerlink" title="安装说明"></a>安装说明</h2><p>安装选用的Linux版本为CentOS 7</p>
+<p>Redis的官网地址：<a target="_blank" rel="noopener" href="http://redis.io/">http://redis.io/</a></p>
+<h2 id="单机安装Redis"><a href="#单机安装Redis" class="headerlink" title="单机安装Redis"></a>单机安装Redis</h2><h3 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h3><p>下载源文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">wget https://download.redis.io/redis-stable.tar.gz<br></code></pre></td></tr></table></figure>
+
+<p>解压到<code>/opt</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">tar -xzvf redis-stable.tar.gz -C /opt<br></code></pre></td></tr></table></figure>
+
+<p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt/redis-stable<br>make<br>make install<br></code></pre></td></tr></table></figure>
+
+
+
+<details class="tag-plugin folding" color="yellow"><summary><span>编译遇到Python 3错误</span></summary><div class="body"><p>编译时如果遇到Python3报错，需要先安装Python3，当然默认的Python2是不能卸载的。</p><p>安装依赖包</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">yum -y groupinstall <span class="hljs-string">&quot;Development tools&quot;</span><br>yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel<br></code></pre></td></tr></table></figure><p>下载Python</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz<br></code></pre></td></tr></table></figure><p>新建空文件夹</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> /usr/local/python3<br></code></pre></td></tr></table></figure><p>解压并安装</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">tar -xvJf  Python-3.6.2.tar.xz<br><span class="hljs-built_in">cd</span> Python-3.6.2<br>./configure --prefix=/usr/local/python3<br>make &amp;&amp; make install<br></code></pre></td></tr></table></figure><p>最后创建软链接</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ln</span> -s /usr/local/python3/bin/python3 /usr/bin/python3<br><span class="hljs-built_in">ln</span> -s /usr/local/python3/bin/pip3 /usr/bin/pip3<br></code></pre></td></tr></table></figure></div></details>
+
+
+
+<details class="tag-plugin folding" color="yellow"><summary><span>编译错误zmalloc.h:50:31: fatal error: jemalloc/jemalloc.h: No such file or directory</span></summary><div class="body"><p>编译错误zmalloc.h:50:31: fatal error: jemalloc&#x2F;jemalloc.h: No such file or directory</p><p>使用下面的命令：</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">make MALLOC-libc<br></code></pre></td></tr></table></figure><p>然后再安装</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">make install<br></code></pre></td></tr></table></figure></div></details>
+
+
+
+<p>默认会安装在<code>/usr/local/bin</code>中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /usr/local/bin<br>ll<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="配置Redis"><a href="#配置Redis" class="headerlink" title="配置Redis"></a>配置Redis</h3><p>配置文件位置在<code>/etc/redis.conf</code>，使用下面命令编辑</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">vi /etc/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 监听的地址，默认是127.0.0.1，会导致只能在本地访问，修改为0.0.0.0可在任意地址访问</span><br><span class="hljs-built_in">bind</span> 0.0.0.0<br><span class="hljs-comment"># 设置守护进程，后台运行</span><br>daemonize <span class="hljs-built_in">yes</span><br><span class="hljs-comment"># 设置密码</span><br>requirepass 123123<br></code></pre></td></tr></table></figure>
+
+<p>其他常见配置，可不修改</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 监听的端口</span><br>prot 6397<br><span class="hljs-comment"># 工作目录</span><br><span class="hljs-built_in">dir</span> ./<br><span class="hljs-comment"># 数据库数量</span><br>databases 16<br><span class="hljs-comment"># 设置redis能够使用的最大内存</span><br>maxmemory 512mb<br><span class="hljs-comment"># 日志文件，默认为空 </span><br>logfile <span class="hljs-string">&quot;redis.log&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>重启redis</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">sudo systemctl restart redis<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Redis主从集群"><a href="#Redis主从集群" class="headerlink" title="Redis主从集群"></a>Redis主从集群</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image32.png" fancybox="true"/></div></div>
+
+<p>共包含三个节点，一个主节点，两个从节点。</p>
+<p>这里我们会在同一台虚拟机中开启3个redis实例，模拟主从集群，信息如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">IP</th>
+<th align="center">PORT</th>
+<th align="center">角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7001</td>
+<td align="center">master</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7002</td>
+<td align="center">slave</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7003</td>
+<td align="center">slave</td>
+</tr>
+</tbody></table>
+<h3 id="准备实例和配置"><a href="#准备实例和配置" class="headerlink" title="准备实例和配置"></a>准备实例和配置</h3><p>要在同一台虚拟机开启3个实例，必须准备三份不同的配置文件和目录，配置文件所在目录也就是工作目录。</p>
+<p>1）创建目录</p>
+<p>我们创建三个文件夹，名字分别叫7001、7002、7003:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入/opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 创建目录</span><br><span class="hljs-built_in">mkdir</span> 7001 7002 7003<br></code></pre></td></tr></table></figure>
+
+<p>2）修改配置文件</p>
+<p>开启RDB（默认开启），关闭AOF（默认关闭）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 开启RDB</span><br><span class="hljs-comment"># save &quot;&quot;</span><br>save 3600 1<br>save 300 100<br>save 60 10000<br><br><span class="hljs-comment"># 关闭AOF</span><br>appendonly no<br></code></pre></td></tr></table></figure>
+
+<p>3）拷贝配置文件到每个实例目录</p>
+<p>将<code>/etc/redis.conf</code>文件拷贝到三个目录中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-built_in">echo</span> 7001 7002 7003 | xargs -t -n 1 <span class="hljs-built_in">cp</span> /opt/redis-stable/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>4）修改每个实例的端口、工作目录</p>
+<p>修改每个文件夹中的配置文件，将端口分别修改为7001、7002、7003，将rdb文件保存位置修改到自己所在的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt<br>sed -i -e <span class="hljs-string">&#x27;s/6379/7001/g&#x27;</span> -e <span class="hljs-string">&#x27;s/dir \/var\/lib\/redis/dir \/tmp\/7001\//g&#x27;</span> 7001/redis.conf<br>sed -i -e <span class="hljs-string">&#x27;s/6379/7002/g&#x27;</span> -e <span class="hljs-string">&#x27;s/dir \/var\/lib\/redis/dir \/tmp\/7002\//g&#x27;</span> 7002/redis.conf<br>sed -i -e <span class="hljs-string">&#x27;s/6379/7003/g&#x27;</span> -e <span class="hljs-string">&#x27;s/dir \/var\/lib\/redis/dir \/tmp\/7003\//g&#x27;</span> 7003/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>5）修改每个实例的声明IP</p>
+<p>虚拟机本身有多个IP，为了避免混乱，我们需要在redis.conf文件中指定每一个实例的绑定ip信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 逐一执行</span><br>sed -i <span class="hljs-string">&#x27;1a replica-announce-ip 192.168.52.101&#x27;</span> 7001/redis.conf<br>sed -i <span class="hljs-string">&#x27;1a replica-announce-ip 192.168.52.101&#x27;</span> 7002/redis.conf<br>sed -i <span class="hljs-string">&#x27;1a replica-announce-ip 192.168.52.101&#x27;</span> 7003/redis.conf<br><br><span class="hljs-comment"># 一键修改</span><br><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;%s\n&#x27;</span> 7001 7002 7003 | xargs -I&#123;&#125; -t sed -i <span class="hljs-string">&#x27;1a replica-announce-ip 192.168.52.101&#x27;</span> &#123;&#125;/redis.conf<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>为了方便查看日志，可以启动3个ssh窗口，分别启动3个redis实例。启动命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt<br>redis-server 7001/redis.conf<br>redis-server 7002/redis.conf<br>redis-server 7003/redis.conf<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image33.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="开启主从关系"><a href="#开启主从关系" class="headerlink" title="开启主从关系"></a>开启主从关系</h3><p>现在三个实例还没有任何关系，要配置主从可以使用replicaof或者slaceof（5.0以前）命令。</p>
+<p>有临时和永久两种模式：</p>
+<ul>
+<li><p>修改配置文件（永久生效）</p>
+<p>在redis.conf中添加一行配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs conf">slaveof &lt;masterip&gt; &lt;masterport&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用redis-cli客户端连接到redis服务，执行命令slaveof命令（重启后失效）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">slaveof &lt;masterip&gt; &lt;masterport&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>注意：在5.0以后新增命令replicaof，与slaveof效果一致。</p>
+<p>使用客户端方式：</p>
+<p>再打开一个终端，用于客户端连接</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 7002</span><br>redis-cli -p 7002<br>SLAVEOF 192.168.52.101 7001<br><br><span class="hljs-comment"># 7003</span><br>redis-cli -p 7003<br>SLAVEOF 192.168.52.101 7001<br></code></pre></td></tr></table></figure>
+
+<p>当看到7001出现下面提示，即成功。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">104351:M 15 Nov 2022 21:57:38.427 * Ready to accept connections<br>104351:M 15 Nov 2022 21:57:54.722 * Replica 192.168.52.101:7002 asks <span class="hljs-keyword">for</span> synchronization<br>104351:M 15 Nov 2022 21:57:54.722 * Partial resynchronization not accepted: Replication ID mismatch (Replica asked <span class="hljs-keyword">for</span> <span class="hljs-string">&#x27;f05f17dfba099a756e9a2fced1a1444fbc9fb60e&#x27;</span>, my replication IDs are <span class="hljs-string">&#x27;c33ebaeb03975554c7e534413fbd136b47ab377b&#x27;</span> and <span class="hljs-string">&#x27;0000000000000000000000000000000000000000&#x27;</span>)<br>104351:M 15 Nov 2022 21:57:54.722 * Replication backlog created, my new replication IDs are <span class="hljs-string">&#x27;72984f6fa2a4549194b49eba1df261c33d73fdfa&#x27;</span> and <span class="hljs-string">&#x27;0000000000000000000000000000000000000000&#x27;</span><br>104351:M 15 Nov 2022 21:57:54.722 * Delay next BGSAVE <span class="hljs-keyword">for</span> diskless SYNC<br>104351:M 15 Nov 2022 21:57:59.299 * Starting BGSAVE <span class="hljs-keyword">for</span> SYNC with target: replicas sockets<br>104351:M 15 Nov 2022 21:57:59.299 * Background RDB transfer started by pid 104362<br>104362:C 15 Nov 2022 21:57:59.302 * Fork CoW <span class="hljs-keyword">for</span> RDB: current 0 MB, peak 0 MB, average 0 MB<br>104351:M 15 Nov 2022 21:57:59.302 <span class="hljs-comment"># Diskless rdb transfer, done reading from pipe, 1 replicas still up.</span><br>104351:M 15 Nov 2022 21:57:59.304 * Background RDB transfer terminated with success<br></code></pre></td></tr></table></figure>
+
+
+
+<details class="tag-plugin folding" color="yellow"><summary><span>出现 Error condition on socket for SYNC: Connection refused</span></summary><div class="body"><p>出现 Error condition on socket for SYNC: Connection refused</p><p>问题描述</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">104319:S 15 Nov 2022 21:43:43.662 * Connecting to MASTER 192.168.52.101:7001<br>104319:S 15 Nov 2022 21:43:43.662 * MASTER &lt;-&gt; REPLICA <span class="hljs-built_in">sync</span> started<br>104319:S 15 Nov 2022 21:43:43.662 <span class="hljs-comment"># Error condition on socket for SYNC: Connection refused</span><br></code></pre></td></tr></table></figure><p>解决方案</p><p>修改配置文件中的bind字段</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">bind</span> 0.0.0.0<br></code></pre></td></tr></table></figure></div></details>
+
+
+
+<details class="tag-plugin folding" color="yellow"><summary><span>出现 -DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.</span></summary><div class="body"><p>出现 -DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.</p><p>问题描述</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">Error reply to PING from master: <span class="hljs-string">&#x27;-DENIED Redis is running in protected mode because protected mode is enabled and no password is set for the default user.&#x27;</span><br></code></pre></td></tr></table></figure><p>解决方案1</p><p>因为主服务器开启了保护模式或者设置了密码，关闭保护模式</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">protected-mode no<br></code></pre></td></tr></table></figure><p>解决方案2</p><p>设置密码</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">CONFIG SET masterauth 123123<br></code></pre></td></tr></table></figure></div></details>
+
+
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用客户端连接7001，查看主从信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">redis-cli -p 7001<br><br>127.0.0.1:7001&gt; INFO replication<br><span class="hljs-comment"># Replication</span><br>role:master<br>connected_slaves:2<br>slave0:ip=192.168.52.101,port=7002,state=online,offset=504,lag=0<br>slave1:ip=192.168.52.101,port=7003,state=online,offset=504,lag=0<br>master_failover_state:no-failover<br>master_replid:72984f6fa2a4549194b49eba1df261c33d73fdfa<br>master_replid2:0000000000000000000000000000000000000000<br>master_repl_offset:504<br>second_repl_offset:-1<br>repl_backlog_active:1<br>repl_backlog_size:1048576<br>repl_backlog_first_byte_offset:1<br>repl_backlog_histlen:504<br></code></pre></td></tr></table></figure>
+
+<p>在7001中<code>set</code>一个数据，在其他Redis<code>get</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># set</span><br>redis-cli -p 7001<br><span class="hljs-built_in">set</span> num 123<br><br><span class="hljs-comment">#get</span><br>redis-cli -p 7002<br>get num<br></code></pre></td></tr></table></figure>
+
+<p>当我们在从节点<code>set</code>时会报错	</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> num 666<br>(error) READONLY You can<span class="hljs-string">&#x27;t write against a read only replica.</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="搭建哨兵集群"><a href="#搭建哨兵集群" class="headerlink" title="搭建哨兵集群"></a>搭建哨兵集群</h2><p>这里我们搭建一个三节点形成的Sentinel集群，来监督之前的Redis主从集群。如图：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image39.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>三个Sentinel实例信息如下：</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th align="center">IP</th>
+<th align="center">PORT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s1</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27001</td>
+</tr>
+<tr>
+<td>s2</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27002</td>
+</tr>
+<tr>
+<td>s3</td>
+<td align="center">192.168.52.101</td>
+<td align="center">27003</td>
+</tr>
+</tbody></table>
+<h3 id="准备实例和配置-1"><a href="#准备实例和配置-1" class="headerlink" title="准备实例和配置"></a>准备实例和配置</h3><p>要在同一台虚拟机开启3个实例，必须准备三份不同的配置文件和目录，配置文件所在目录也就是工作目录</p>
+<p>创建三个文件夹，名字分别叫s1、s2、s3:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入/opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 创建目录</span><br><span class="hljs-built_in">mkdir</span> s1 s2 s3<br></code></pre></td></tr></table></figure>
+
+<p>然后我们在s1目录创建一个<code>sentinel.conf</code>文件，添加以下内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">port 27001<br>sentinel announce-ip 192.168.52.101<br>sentinel monitor mymaster 192.168.52.101 7001 2<br>sentinel down-after-milliseconds mymaster 5000<br>sentinel failover-timeout mymaster 60000<br><span class="hljs-built_in">dir</span> <span class="hljs-string">&quot;/opt/s1&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li><code>port 27001</code>：是当前sentinel实例的端口</li>
+<li><code>sentinel monitor mymaster 192.168.52.101 7001 2</code>：指定主节点信息<ul>
+<li><code>mymaster</code>：主节点名称，自定义，任意写</li>
+<li><code>192.168.150.101 7001</code>：主节点的ip和端口</li>
+<li><code>2</code>：选举master时的quorum值</li>
+</ul>
+</li>
+</ul>
+<p>然后将<code>s1/sentinel</code>文件拷贝到s2、s3两个目录（在<code>/opt</code>目录执行命令）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 方式一：逐个拷贝</span><br><span class="hljs-built_in">cp</span> s1/sentinel.conf s2<br><span class="hljs-built_in">cp</span> s1/sentinel.conf s3<br><span class="hljs-comment"># 方式二：管道组合命令，一键拷贝</span><br><span class="hljs-built_in">echo</span> s2 s3 | xargs -t -n 1 <span class="hljs-built_in">cp</span> s1/sentinel.conf<br></code></pre></td></tr></table></figure>
+
+
+
+<p>修改s2、s3两个文件夹内的配置文件，将端口分别修改27002、27003:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">sed -i -e <span class="hljs-string">&#x27;s/27001/27002/g&#x27;</span> -e <span class="hljs-string">&#x27;s/s1/s2/g&#x27;</span> s2/sentinel.conf<br>sed -i -e <span class="hljs-string">&#x27;s/27001/27003/g&#x27;</span> -e <span class="hljs-string">&#x27;s/s1/s3/g&#x27;</span> s3/sentinel.conf<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动-1"><a href="#启动-1" class="headerlink" title="启动"></a>启动</h3><p>为了方便查看日志，我们打开3个ssh窗口，分别启动3个redis实例，启动命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 第1个</span><br>redis-sentinel s1/sentinel.conf<br><span class="hljs-comment"># 第2个</span><br>redis-sentinel s2/sentinel.conf<br><span class="hljs-comment"># 第3个</span><br>redis-sentinel s3/sentinel.conf<br></code></pre></td></tr></table></figure>
+
+<p>启动后：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image41.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>测试前请保证redis主从集群已开启，sentinel集群也开启</p>
+<p>关闭7001，后来到sentinel窗口，可以看到窗口中有日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">+sdown master mymaster 192.168.52.101 7001<br>+odown master mymaster 192.168.52.101 7001 <span class="hljs-comment">#quorum 3/2</span><br>+new-epoch 6<br>+try-failover master mymaster 192.168.52.101 7001<br>Sentinel new configuration saved on disk<br>+vote-for-leader f8060fe283e55014ffedb8129a3109917856aa72 6<br>5352ec72f29b4649d332d945d38f45dac88b4784 voted <span class="hljs-keyword">for</span> f8060fe283e55014ffedb8129a3109917856aa72 6<br>e3fcf15bfe26030bd793a3ebb37394f50e34702c voted <span class="hljs-keyword">for</span> f8060fe283e55014ffedb8129a3109917856aa72 6<br>+elected-leader master mymaster 192.168.52.101 7001<br>+failover-state-select-slave master mymaster 192.168.52.101 7001<br>+selected-slave slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001<br>+failover-state-send-slaveof-noone slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001<br>+failover-state-wait-promotion slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001<br>Sentinel new configuration saved on disk<br>+promoted-slave slave 192.168.52.101:7002 192.168.52.101 7002 @ mymaster 192.168.52.101 7001<br>+failover-state-reconf-slaves master mymaster 192.168.52.101 7001<br>+slave-reconf-sent slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001<br>-odown master mymaster 192.168.52.101 7001<br>+slave-reconf-inprog slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001<br>+slave-reconf-done slave 192.168.52.101:7003 192.168.52.101 7003 @ mymaster 192.168.52.101 7001<br>+failover-end master mymaster 192.168.52.101 7001<br>+switch-master mymaster 192.168.52.101 7001 192.168.52.101 7002<br></code></pre></td></tr></table></figure>
+
+<p>从日志中可以看到是<code>7002</code>被选举成为新的master</p>
+<p>再次启动<code>7001</code>，会自动成为slave</p>
+<h2 id="搭建分片集群"><a href="#搭建分片集群" class="headerlink" title="搭建分片集群"></a>搭建分片集群</h2><blockquote>
+<p>主从模式、哨兵集群感觉没啥用，就不搭建了，这里直接搭建真·Redis集群</p>
+</blockquote>
+<h3 id="集群结构"><a href="#集群结构" class="headerlink" title="集群结构"></a>集群结构</h3><p>分片集群需要的节点数量较多，这里我们搭建了一个最小的分片集群，包含3个master节点，每个master包含一个slave节点，结构如下：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image42.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image42.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>这里我们会在同一台虚拟机中开启6个redis实例，模拟分片集群，信息如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">IP</th>
+<th align="center">PORT</th>
+<th align="center">角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7001</td>
+<td align="center">master</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7002</td>
+<td align="center">master</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">7003</td>
+<td align="center">master</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">8001</td>
+<td align="center">slave</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">8002</td>
+<td align="center">slave</td>
+</tr>
+<tr>
+<td align="center">192.168.52.101</td>
+<td align="center">8003</td>
+<td align="center">slave</td>
+</tr>
+</tbody></table>
+<h3 id="准备实例和配置-2"><a href="#准备实例和配置-2" class="headerlink" title="准备实例和配置"></a>准备实例和配置</h3><p>删除之前的7001、7002、7003这几个目录，重新创建出7001、7002、7003、8001、8002、8003目录：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 进入opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 删除旧的，避免配置干扰</span><br><span class="hljs-built_in">rm</span> -rf 7001 7002 7003<br><span class="hljs-comment"># 创建目录</span><br><span class="hljs-built_in">mkdir</span> 7001 7002 7003 8001 8002 8003<br></code></pre></td></tr></table></figure>
+
+<p>在&#x2F;tmp下准备一个新的redis.conf文件，内容如下：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini">port 6379<br><span class="hljs-comment"># 开启集群功能</span><br>cluster-enabled yes<br><span class="hljs-comment"># 集群的配置文件名称，不需要我们创建，由redis自己维护</span><br>cluster-config-file /opt/6379/nodes.conf<br><span class="hljs-comment"># 节点心跳失败的超时时间</span><br>cluster-node-timeout 5000<br><span class="hljs-comment"># 持久化文件存放目录</span><br>dir /opt/6379<br><span class="hljs-comment"># 绑定地址</span><br>bind 0.0.0.0<br><span class="hljs-comment"># 让redis后台运行</span><br>daemonize yes<br><span class="hljs-comment"># 注册的实例ip</span><br>replica-announce-ip 129.168.52.101<br><span class="hljs-comment"># 保护模式</span><br>protected-mode no<br><span class="hljs-comment"># 数据库数量</span><br>databases 1<br><span class="hljs-comment"># 日志</span><br>logfile /opt/6379/run.log<br></code></pre></td></tr></table></figure>
+
+<p>将这个文件拷贝到每个目录下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入/opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 执行拷贝</span><br><span class="hljs-built_in">echo</span> 7001 7002 7003 8001 8002 8003 | xargs -t -n 1 <span class="hljs-built_in">cp</span> redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>修改每个目录下的redis.conf，将其中的6379修改为与所在目录一致：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 进入/opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 修改配置文件</span><br><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;%s\n&#x27;</span> 7001 7002 7003 8001 8002 8003 | xargs -I&#123;&#125; -t sed -i <span class="hljs-string">&#x27;s/6379/&#123;&#125;/g&#x27;</span> &#123;&#125;/redis.conf<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动-2"><a href="#启动-2" class="headerlink" title="启动"></a>启动</h3><p>因为已经配置了后台启动模式，所以可以直接启动服务：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 进入/opt目录</span><br><span class="hljs-built_in">cd</span> /opt<br><span class="hljs-comment"># 一键启动所有服务</span><br><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;%s\n&#x27;</span> 7001 7002 7003 8001 8002 8003 | xargs -I&#123;&#125; -t redis-server &#123;&#125;/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>通过ps查看状态：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">ps -ef | grep redis<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image43.png" fancybox="true"/></div></div>
+
+
+
+<p>如果要关闭所有进程，可以执行命令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">ps -ef | grep redis | awk <span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="hljs-built_in">kill</span><br></code></pre></td></tr></table></figure>
+
+<p>或者（推荐这种方式）：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;%s\n&#x27;</span> 7001 7002 7003 8001 8002 8003 | xargs -I&#123;&#125; -t redis-cli -p &#123;&#125; shutdown<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><p>虽然服务启动了，但是目前每个服务之间都是独立的，没有任何关联。</p>
+<p>我们需要执行命令来创建集群，在Redis5.0之前创建集群比较麻烦，5.0之后集群管理命令都集成到了redis-cli中。</p>
+<h4 id="1）Redis5-0之前"><a href="#1）Redis5-0之前" class="headerlink" title="1）Redis5.0之前"></a>1）Redis5.0之前</h4><p>Redis5.0之前集群命令都是用redis安装包下的src&#x2F;redis-trib.rb来实现的。因为redis-trib.rb是有rubby语法编写所以需要安装ruby环境。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">yum -y install zlib ruby rubygems<br>gem install redis<br></code></pre></td></tr></table></figure>
+
+<p>然后通过命令来管理集群：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 进入redis的src目录</span><br><span class="hljs-built_in">cd</span> /opt/redis-stable/src<br><span class="hljs-comment"># 创建集群</span><br>./redis-trib.rb create --teplicas 1 192.168.52.101:7001 192.168.52.101:7002 192.168.52.101:7003 192.168.52.101:8001 192.168.52.101:8002 192.168.52.101:8003<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2）Redis5-0之后"><a href="#2）Redis5-0之后" class="headerlink" title="2）Redis5.0之后"></a>2）Redis5.0之后</h4><p>我们使用的是Redis7.0.5版本，集群管理已经集成到了redis-cli中，格式如下：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster create --cluster-replicas 1 192.168.52.101:7001 192.168.52.101:7002 192.168.52.101:7003 192.168.52.101:8001 192.168.52.101:8002 192.168.52.101:8003<br></code></pre></td></tr></table></figure>
+
+<p>命令说明：</p>
+<ul>
+<li><code>redid-cli --cluster</code>或者<code>./redis-trib.rb</code>：代表集群操作命令</li>
+<li><code>create</code>：代表是创建集群</li>
+<li><code>--replicas 1</code>或者<code>--cluster-replicas 1</code>：指定集群中每个master的副本个数为1，此时<code>节点总数 / (replicas + 1)</code>得到的就是master的数量。因此节点列表中的前n个就是master，其他节点都是slave节点，随机分配到不同master</li>
+</ul>
+<p>运行后的样子：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image44.png" fancybox="true"/></div></div>
+
+<p>这里输入yes</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image45.png" fancybox="true"/></div></div>
+
+<p>通过命令可以查看集群状态：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image46.png" fancybox="true"/></div></div>
+
+<h3 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h3><p>使用下面命令连接Redis集群</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -c -p 7001<br></code></pre></td></tr></table></figure>
+
+<p>set一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">127.0.0.1:7001&gt; <span class="hljs-built_in">set</span> num 123<br>OK<br></code></pre></td></tr></table></figure>
+
+<p>再set一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">set</span> a 1<br>-&gt; Redirected to slot [15495] located at 192.168.52.101:7003<br>OK<br>192.168.52.101:7003&gt;<br></code></pre></td></tr></table></figure>
+
+<p>a计算得到的hash值为15495，该值所在的节点为7003</p>
+<p>get一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">192.168.52.101:7003&gt; get a<br><span class="hljs-string">&quot;1&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>再get一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">192.168.52.101:7003&gt; get num<br>-&gt; Redirected to slot [2765] located at 192.168.52.101:7001<br><span class="hljs-string">&quot;123&quot;</span><br>192.168.52.101:7001&gt; <br></code></pre></td></tr></table></figure>
+
+<p>可以看到已经切换到7001了</p>
+
+
+<div class="article-footer reveal fs14"><section id="references"><div class="header"><span>参考资料</span></div><div class="body"><ul><li class="post-title"><a href="https://zhuanlan.zhihu.com/p/34527270" target="_blank" rel="external nofollow noopener noreferrer">centos7安装redis</a></li><li class="post-title"><a href="https://www.cnblogs.com/xzlive/p/16112270.html" target="_blank" rel="external nofollow noopener noreferrer">Centos7安装Python3的方法</a></li><li class="post-title"><a href="https://www.cnblogs.com/richerdyoung/p/8066373.html" target="_blank" rel="external nofollow noopener noreferrer">【Redis】编译错误zmalloc.h:50:31: fatal error: jemalloc/jemalloc.h: No such file or directory</a></li></ul></div></section><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/02/18/Mybatis-Plus%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81/">Mybatis-Plus自动生成代码</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/11/14/Redis%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E5%BA%97%E9%93%BA%E5%8A%9F%E8%83%BD/">Redis实现附近店铺功能</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

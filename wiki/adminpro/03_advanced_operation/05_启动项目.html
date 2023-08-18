@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>AdminPro JS版搭建流程：启动项目 - swcode</title>
+
+  
+    <meta name="description" content="我们已将完成了骨架大部分功能的实现，现在只需要一点小操作就可以让项目跑起来。  首先在我们需要登陆获取Token， 在路由守卫中如果有Token就会去请求用户信息，获取该用户的权限列表， 然后和路由中配置的权限进行匹配，剔除该用户没有权限访问的路由， 之后动态添加过滤之后的路由到总的路由中，此时用户就能重定向到可以访问的路由。 进入系统前，回根据路由信息动态生成菜单  通过上面步骤我们可知，必须要">
+<meta property="og:type" content="website">
+<meta property="og:title" content="启动项目">
+<meta property="og:url" content="http://example.com/wiki/adminpro/03_advanced_operation/05_%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="我们已将完成了骨架大部分功能的实现，现在只需要一点小操作就可以让项目跑起来。  首先在我们需要登陆获取Token， 在路由守卫中如果有Token就会去请求用户信息，获取该用户的权限列表， 然后和路由中配置的权限进行匹配，剔除该用户没有权限访问的路由， 之后动态添加过滤之后的路由到总的路由中，此时用户就能重定向到可以访问的路由。 进入系统前，回根据路由信息动态生成菜单  通过上面步骤我们可知，必须要">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-06T09:55:11.000Z">
+<meta property="article:modified_time" content="2023-03-06T13:51:30.000Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/adminpro/01_introduce/index.html"><div class="main" ff="title">AdminPro JS版搭建流程</div><div class="sub cap">AdminPro项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/adminpro/" placeholder="在 /wiki/adminpro/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目准备</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/01_%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA.html"><span class="toc-text">项目搭建</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/02_%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85.html"><span class="toc-text">依赖安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/03_%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.html"><span class="toc-text">资源文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/04_%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.html"><span class="toc-text">项目设置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/05_%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6.html"><span class="toc-text">常量字符</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/06_%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95.html"><span class="toc-text">工具方法</span></a></div></div><div class="widget-header cap dis-select"><span class="name">高级修改</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/01_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86.html"><span class="toc-text">状态管理</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/02_VUE%E9%A1%B5%E9%9D%A2.html"><span class="toc-text">VUE页面</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/03_%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE.html"><span class="toc-text">路由配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/04_%E9%A1%B9%E7%9B%AE%E5%B8%83%E5%B1%80.html"><span class="toc-text">项目布局</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/adminpro/03_advanced_operation/05_%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE.html"><span class="toc-text">启动项目</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E4%BB%A3%E7%A0%81"><span class="toc-text">更改代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-text">格式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE"><span class="toc-text">启动项目</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/06_%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.html"><span class="toc-text">网络配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/07_%E8%AF%B7%E6%B1%82API.html"><span class="toc-text">请求API</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/adminpro/01_introduce/index.html">AdminPro JS版搭建流程</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-03-06T13:51:30.000Z">2023-03-06</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>启动项目</span></h1>
+  <p>我们已将完成了骨架大部分功能的实现，现在只需要一点小操作就可以让项目跑起来。</p>
+<ol>
+<li>首先在我们需要登陆获取Token，</li>
+<li>在路由守卫中如果有Token就会去请求用户信息，获取该用户的权限列表，</li>
+<li>然后和路由中配置的权限进行匹配，剔除该用户没有权限访问的路由，</li>
+<li>之后动态添加过滤之后的路由到总的路由中，此时用户就能重定向到可以访问的路由。</li>
+<li>进入系统前，回根据路由信息动态生成菜单</li>
+</ol>
+<p>通过上面步骤我们可知，必须要有Token，需要有用户信息且包含权限列表。</p>
+<h2 id="更改代码"><a href="#更改代码" class="headerlink" title="更改代码"></a>更改代码</h2><div class="tag-plugin note" color="green"><div class="body"><p>使用token2绕过Token检查，注释掉获取用户信息步骤，自定义用户信息。</p></div></div>
+
+<p>修改<code>src/router/router-guards.js</code>，内容如下：</p>
+<figure class="highlight js"><figcaption><span>router/router-guards.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">PageEnum</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/enums/pageEnum&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; useAsyncRouteStoreWidthOut &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/modules/asyncRoute&#x27;</span>;<br><span class="hljs-comment">// import &#123; useUserStoreWidthOut &#125; from &#x27;@/store/modules/user&#x27;;</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">ACCESS_TOKEN</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/mutation-types&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; storage &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/Storage&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; isNavigationFailure &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue-router&#x27;</span>;<br><span class="hljs-comment">// import &#123; ErrorPageRoute &#125; from &#x27;./base&#x27;;</span><br><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">LOGIN_PATH</span> = <span class="hljs-title class_">PageEnum</span>.<span class="hljs-property">BASE_LOGIN</span>;<br><br><span class="hljs-comment">// 路由守卫白名单，即不进行重定向</span><br><span class="hljs-keyword">const</span> whitePathList = [<span class="hljs-variable constant_">LOGIN_PATH</span>];<br><br><span class="hljs-comment">// 创建路由守卫</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createRouterGuards</span>(<span class="hljs-params">router</span>) &#123;<br>  <span class="hljs-comment">// const userStore = useUserStoreWidthOut();</span><br>  <span class="hljs-keyword">const</span> asyncRouteStore = <span class="hljs-title function_">useAsyncRouteStoreWidthOut</span>();<br>  router.<span class="hljs-title function_">beforeEach</span>(<span class="hljs-keyword">async</span> (to, <span class="hljs-keyword">from</span>, next) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-title class_">Loading</span> = <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$loading&#x27;</span>] || <span class="hljs-literal">null</span>;<br>    <span class="hljs-title class_">Loading</span> &amp;&amp; <span class="hljs-title class_">Loading</span>.<span class="hljs-title function_">start</span>();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">from</span>.<span class="hljs-property">path</span> === <span class="hljs-variable constant_">LOGIN_PATH</span> &amp;&amp; to.<span class="hljs-property">name</span> === <span class="hljs-string">&#x27;errorPage&#x27;</span>) &#123;<br>      <span class="hljs-title function_">next</span>(<span class="hljs-title class_">PageEnum</span>.<span class="hljs-property">BASE_HOME</span>);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 白名单直接进入</span><br>    <span class="hljs-keyword">if</span> (whitePathList.<span class="hljs-title function_">includes</span>(to.<span class="hljs-property">path</span>)) &#123;<br>      <span class="hljs-title function_">next</span>();<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 获取登录的TOKEN</span><br>    <span class="hljs-keyword">const</span> token = storage.<span class="hljs-title function_">get</span>(<span class="hljs-variable constant_">ACCESS_TOKEN</span>);<br>    <span class="hljs-keyword">const</span> token2 = <span class="hljs-string">&#x27;token&#x27;</span> + token;<br>    <span class="hljs-keyword">if</span> (!token2) &#123;<br>      <span class="hljs-comment">// You can access without permissions. You need to set the routing meta.ignoreAuth to true</span><br>      <span class="hljs-keyword">if</span> (to.<span class="hljs-property">meta</span>.<span class="hljs-property">ignoreAuth</span>) &#123;<br>        <span class="hljs-title function_">next</span>();<br>        <span class="hljs-keyword">return</span>;<br>      &#125;<br>      <span class="hljs-comment">// 重定向到登录页，带跳转前的路径</span><br>      <span class="hljs-keyword">const</span> redirectData = &#123;<br>        <span class="hljs-attr">path</span>: <span class="hljs-variable constant_">LOGIN_PATH</span>,<br>        <span class="hljs-attr">replace</span>: <span class="hljs-literal">true</span>,<br>      &#125;;<br>      <span class="hljs-keyword">if</span> (to.<span class="hljs-property">path</span>) &#123;<br>        redirectData.<span class="hljs-property">query</span> = &#123;<br>          ...redirectData.<span class="hljs-property">query</span>,<br>          <span class="hljs-attr">redirect</span>: to.<span class="hljs-property">path</span>,<br>        &#125;;<br>      &#125;<br>      <span class="hljs-title function_">next</span>(redirectData);<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// 动态路由添加完成后，由此放行</span><br>    <span class="hljs-keyword">if</span> (asyncRouteStore.<span class="hljs-property">getIsDynamicAddedRoute</span>) &#123;<br>      <span class="hljs-title function_">next</span>();<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">const</span> userInfo = &#123;<br>      <span class="hljs-attr">userId</span>: <span class="hljs-string">&#x27;1&#x27;</span>,<br>      <span class="hljs-attr">username</span>: <span class="hljs-string">&#x27;admin&#x27;</span>,<br>      <span class="hljs-attr">realName</span>: <span class="hljs-string">&#x27;Admin&#x27;</span>,<br>      <span class="hljs-attr">desc</span>: <span class="hljs-string">&#x27;manager&#x27;</span>,<br>      token,<br>      <span class="hljs-attr">permissions</span>: [<br>        &#123;<br>          <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;主控台&#x27;</span>,<br>          <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;dashboard_console&#x27;</span>,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;工作台&#x27;</span>,<br>          <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;dashboard_workplace&#x27;</span>,<br>        &#125;,<br>      ],<br>    &#125;;<br>    <span class="hljs-comment">// const userInfo = await userStore.GetInfo();</span><br>    <span class="hljs-keyword">const</span> routes = asyncRouteStore.<span class="hljs-title function_">generateRoutes</span>(userInfo);<br>    <span class="hljs-comment">// 动态添加可访问路由表, 将过滤之后的动态路由添加到路由表形成完整的路由</span><br>    routes.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>      router.<span class="hljs-title function_">addRoute</span>(item);<br>    &#125;);<br><br>    <span class="hljs-keyword">const</span> redirectPath = <span class="hljs-keyword">from</span>.<span class="hljs-property">query</span>.<span class="hljs-property">redirect</span> || to.<span class="hljs-property">path</span>;<br>    <span class="hljs-keyword">const</span> redirect = <span class="hljs-built_in">decodeURIComponent</span>(redirectPath);<br>    <span class="hljs-comment">// 解决动态路由白屏问题，https://blog.csdn.net/qq_41912398/article/details/109231418</span><br>    <span class="hljs-keyword">const</span> nextData =<br>      to.<span class="hljs-property">path</span> === redirect ? &#123; ...to, <span class="hljs-attr">replace</span>: <span class="hljs-literal">true</span> &#125; : &#123; <span class="hljs-attr">path</span>: redirect &#125;;<br>    <span class="hljs-comment">// 动态路由添加完成，放行的出口</span><br>    asyncRouteStore.<span class="hljs-title function_">setDynamicAddedRoute</span>(<span class="hljs-literal">true</span>);<br>    <span class="hljs-title function_">next</span>(nextData);<br>    <span class="hljs-title class_">Loading</span> &amp;&amp; <span class="hljs-title class_">Loading</span>.<span class="hljs-title function_">finish</span>();<br>  &#125;);<br><br>  router.<span class="hljs-title function_">afterEach</span>(<span class="hljs-function">(<span class="hljs-params">to, _, failure</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">title</span> = to?.<span class="hljs-property">meta</span>?.<span class="hljs-property">title</span> || <span class="hljs-variable language_">document</span>.<span class="hljs-property">title</span>;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isNavigationFailure</span>(failure)) &#123;<br>      <span class="hljs-comment">//console.log(&#x27;failed navigation&#x27;, failure)</span><br>    &#125;<br>    <span class="hljs-keyword">const</span> asyncRouteStore = <span class="hljs-title function_">useAsyncRouteStoreWidthOut</span>();<br>    <span class="hljs-comment">// 在这里设置需要缓存的组件名称</span><br>    <span class="hljs-keyword">const</span> keepAliveComponents = asyncRouteStore.<span class="hljs-property">keepAliveComponents</span>;<br>    <span class="hljs-keyword">const</span> currentComName = to.<span class="hljs-property">matched</span>.<span class="hljs-title function_">find</span>(<br>      <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item.<span class="hljs-property">name</span> == to.<span class="hljs-property">name</span><br>    )?.<span class="hljs-property">name</span>;<br>    <span class="hljs-keyword">if</span> (<br>      currentComName &amp;&amp;<br>      !keepAliveComponents.<span class="hljs-title function_">includes</span>(currentComName) &amp;&amp;<br>      to.<span class="hljs-property">meta</span>?.<span class="hljs-property">keepAlive</span><br>    ) &#123;<br>      <span class="hljs-comment">// 需要缓存的组件</span><br>      keepAliveComponents.<span class="hljs-title function_">push</span>(currentComName);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!to.<span class="hljs-property">meta</span>?.<span class="hljs-property">keepAlive</span> || to.<span class="hljs-property">name</span> == <span class="hljs-string">&#x27;Redirect&#x27;</span>) &#123;<br>      <span class="hljs-comment">// 不需要缓存的组件</span><br>      <span class="hljs-keyword">const</span> index = asyncRouteStore.<span class="hljs-property">keepAliveComponents</span>.<span class="hljs-title function_">findIndex</span>(<br>        <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> name == currentComName<br>      );<br>      <span class="hljs-keyword">if</span> (index != -<span class="hljs-number">1</span>) &#123;<br>        keepAliveComponents.<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);<br>      &#125;<br>    &#125;<br>    asyncRouteStore.<span class="hljs-title function_">setKeepAliveComponents</span>(keepAliveComponents);<br>    <span class="hljs-keyword">const</span> <span class="hljs-title class_">Loading</span> = <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$loading&#x27;</span>] || <span class="hljs-literal">null</span>;<br>    <span class="hljs-title class_">Loading</span> &amp;&amp; <span class="hljs-title class_">Loading</span>.<span class="hljs-title function_">finish</span>();<br>  &#125;);<br><br>  router.<span class="hljs-title function_">onError</span>(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(error, <span class="hljs-string">&#x27;路由错误&#x27;</span>);<br>  &#125;);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="格式问题"><a href="#格式问题" class="headerlink" title="格式问题"></a>格式问题</h2><p>修改<code>.eslintrc.js</code>，代码检查工具eslint的配置信息，</p>
+<figure class="highlight js"><figcaption><span>.eslintrc.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">root</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">env</span>: &#123;<br>    <span class="hljs-attr">node</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>  <span class="hljs-attr">extends</span>: [<br>    <span class="hljs-string">&quot;plugin:vue/vue3-essential&quot;</span>,<br>    <span class="hljs-string">&quot;eslint:recommended&quot;</span>,<br>    <span class="hljs-string">&quot;plugin:prettier/recommended&quot;</span>,<br>  ],<br>  <span class="hljs-attr">parserOptions</span>: &#123;<br>    <span class="hljs-attr">parser</span>: <span class="hljs-string">&quot;@babel/eslint-parser&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">rules</span>: &#123;<br>    <span class="hljs-string">&quot;no-console&quot;</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&quot;production&quot;</span> ? <span class="hljs-string">&quot;warn&quot;</span> : <span class="hljs-string">&quot;off&quot;</span>,<br>    <span class="hljs-string">&quot;no-debugger&quot;</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&quot;production&quot;</span> ? <span class="hljs-string">&quot;warn&quot;</span> : <span class="hljs-string">&quot;off&quot;</span>,<br>    <span class="hljs-comment">// 关闭名称校验</span><br>    <span class="hljs-string">&quot;vue/multi-word-component-names&quot;</span>: <span class="hljs-string">&quot;off&quot;</span>,<br>    <span class="hljs-string">&#x27;vue/no-mutating-props&#x27;</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-string">&#x27;linebreak-style&#x27;</span>: [ <span class="hljs-number">0</span>,<span class="hljs-string">&#x27;error&#x27;</span>,<span class="hljs-string">&#x27;windows&#x27;</span>,],<br>    <span class="hljs-string">&#x27;quotes&#x27;</span>: [<span class="hljs-number">0</span>, <span class="hljs-string">&quot;single&quot;</span>],<br>    <span class="hljs-string">&#x27;prettier/prettier&#x27;</span>: [<br>      <span class="hljs-string">&#x27;warn&#x27;</span>,&#123;<br>        <span class="hljs-attr">singleQuote</span>: <span class="hljs-literal">true</span><br>      &#125;<br>    ]<br>  &#125;,<br>&#125;;<br><br></code></pre></td></tr></table></figure>
+
+<p>添加修复命令</p>
+<p>修改<code>package.json</code>文件，添加<code>lint-fix</code>，如下：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service serve&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service build&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;lint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue-cli-service lint&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;lint-fix&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eslint --fix --ext .js --ext .jsx --ext .vue src/&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br><br></code></pre></td></tr></table></figure>
+
+<p>在终端使用下面命令修复代码报错</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm run lint-fix<br></code></pre></td></tr></table></figure>
+
+<h2 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h2><p>终端运行下面命令启动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">npm run serve<br></code></pre></td></tr></table></figure>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/adminpro/03_advanced_operation/04_%E9%A1%B9%E7%9B%AE%E5%B8%83%E5%B1%80.html">项目布局</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/adminpro/03_advanced_operation/06_%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.html">网络配置</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Docker：Docker网络 - swcode</title>
+
+  
+    <meta name="description" content="docker network使用--help查看network使用方式 [root@swcode ~]# docker network --helpUsage:  docker network COMMANDManage networksCommands:  connect     Connect a container to a network  create      Create a net">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Docker网络">
+<meta property="og:url" content="http://example.com/wiki/docker/03_advance/Docker%E7%BD%91%E7%BB%9C.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="docker network使用--help查看network使用方式 [root@swcode ~]# docker network --helpUsage:  docker network COMMANDManage networksCommands:  connect     Connect a container to a network  create      Create a net">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png">
+<meta property="article:published_time" content="2023-08-17T05:37:29.935Z">
+<meta property="article:modified_time" content="2023-02-20T08:32:34.000Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/docker/01_introduce/index.html"><div class="main" ff="title">Docker</div><div class="sub cap">Docker快速入门</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/docker/" placeholder="在 /wiki/docker/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">快速入门</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/02_quick_start/Docker%E7%9A%84%E5%AE%89%E8%A3%85.html"><span class="toc-text">Docker的安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/02_quick_start/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html"><span class="toc-text">Docker常用命令</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/02_quick_start/Docker%E9%95%9C%E5%83%8F.html"><span class="toc-text">Dockers镜像</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/02_quick_start/%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7.html"><span class="toc-text">容器数据卷</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/02_quick_start/Docker%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7.html"><span class="toc-text">Docker可视化工具</span></a></div></div><div class="widget-header cap dis-select"><span class="name">Docker进阶</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/03_advance/DockerFile.html"><span class="toc-text">DockerFile</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/docker/03_advance/Docker%E7%BD%91%E7%BB%9C.html"><span class="toc-text">Docker网络</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-network"><span class="toc-text">docker network</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%A7%A3docker0"><span class="toc-text">理解docker0</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E5%AE%B9%E5%99%A8%E8%BF%9E%E9%80%9A"><span class="toc-text">容器与容器连通</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%BA%92%E8%81%94%E2%80%93link"><span class="toc-text">容器互联–link</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9C"><span class="toc-text">自定义网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="toc-text">创建网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8%E5%88%B0%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C"><span class="toc-text">启动容器到指定网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BA%92%E8%81%94"><span class="toc-text">测试互联</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E9%80%9A"><span class="toc-text">网络连通</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-text">启动容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E7%BD%91%E5%AE%B9%E5%99%A8%E8%BF%9E%E9%80%9A"><span class="toc-text">异网容器连通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-text">测试</span></a></li></ol></li></ol></div></div><div class="widget-header cap dis-select"><span class="name">Docker高级</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/04_high_level/Docker%20Compose.html"><span class="toc-text">Docker Compose</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/04_high_level/Kubernetes.html"><span class="toc-text">Kubernetes(K8S)</span></a></div></div><div class="widget-header cap dis-select"><span class="name">实战</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/05_practical/Redis%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2.html"><span class="toc-text">Redis集群部署</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/docker/05_practical/SpringBoot%E9%83%A8%E7%BD%B2.html"><span class="toc-text">SpringBoot部署</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">头条新闻项目使用微服务方式开发。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-02-20T08:32:34.000Z">2023-02-20</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>Docker网络</span></h1>
+  <h2 id="docker-network"><a href="#docker-network" class="headerlink" title="docker network"></a>docker network</h2><p>使用<code>--help</code>查看network使用方式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network --help</span><br><br>Usage:  docker network COMMAND<br><br>Manage networks<br><br>Commands:<br>  connect     Connect a container to a network<br>  create      Create a network<br>  disconnect  Disconnect a container from a network<br>  inspect     Display detailed information on one or more networks<br>  <span class="hljs-built_in">ls</span>          List networks<br>  prune       Remove all unused networks<br>  <span class="hljs-built_in">rm</span>          Remove one or more networks<br></code></pre></td></tr></table></figure>
+
+<p>使用<code>ls</code>查看所有网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network ls</span><br>NETWORK ID     NAME      DRIVER    SCOPE<br>0bfe49ec372b   bridge    bridge    <span class="hljs-built_in">local</span><br>4f6ec0890427   host      host      <span class="hljs-built_in">local</span><br>2ca07ec568c5   none      null      <span class="hljs-built_in">local</span><br></code></pre></td></tr></table></figure>
+
+<p>使用<code>inspect</code>查看docker0</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network inspect 0bfe49ec372b<br></code></pre></td></tr></table></figure>
+
+<details class="tag-plugin folding" color="green" child="codeblock"><summary><span>可以看到docker0的网络详情，其包含了tomcat01、tomcat02、tomcat03</span></summary><div class="body"><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span><br>  <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bridge&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;IPAM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Config&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><br>          <span class="hljs-attr">&quot;Subnet&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.0/16&quot;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-attr">&quot;Gateway&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.1&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><br>      <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;Containers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;062f1a9677094d08ce8bddc6e0d41b6b1a395afe95fd1fbccbc129e912e6dab7&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat03&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.4/16&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;c1add455e03f33968ab0be978ea4d533c922cd9a4146c6a97f1c6b78e4dd511d&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat02&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.3/16&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;f3d377a46406a15d05b45e4ee67492ac81043fd76d20c4d397f36ae0cb7fe7d2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat01&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.2/16&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;Options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;com.docker.network.bridge.name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;docker0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">]</span><br></code></pre></td></tr></table></figure></div></details>
+
+<h2 id="理解docker0"><a href="#理解docker0" class="headerlink" title="理解docker0"></a>理解docker0</h2><p>清空所有环境</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker rmi -f $(docker images -qa)<br></code></pre></td></tr></table></figure>
+
+<p>docker0网卡</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode tomcat]<span class="hljs-comment"># ip addr</span><br>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000<br>    <span class="hljs-built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00<br>    inet 127.0.0.1/8 scope host lo<br>       valid_lft forever preferred_lft forever<br>2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000<br>    <span class="hljs-built_in">link</span>/ether 00:16:3e:03:09:f5 brd ff:ff:ff:ff:ff:ff<br>    inet 172.31.193.36/20 brd 172.31.207.255 scope global dynamic eth0<br>       valid_lft 315198125sec preferred_lft 315198125sec<br>3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default <br>    <span class="hljs-built_in">link</span>/ether 02:42:47:54:0e:ef brd ff:ff:ff:ff:ff:ff<br>    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0<br>       valid_lft forever preferred_lft forever<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>1 是本机地址</li>
+<li>2 是阿里云内网地址</li>
+<li>3 是docker0地址</li>
+</ul>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>启动一个tomcat</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat01 tomcat<br></code></pre></td></tr></table></figure>
+
+<p>查看网卡，其中<code>eth0@if31</code>就是docker分配的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode tomcat]<span class="hljs-comment"># docker exec tomcat01 ip addr</span><br>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000<br>    <span class="hljs-built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00<br>    inet 127.0.0.1/8 scope host lo<br>       valid_lft forever preferred_lft forever<br>30: eth0@if31: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default <br>    <span class="hljs-built_in">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0<br>    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0<br>       valid_lft forever preferred_lft forever<br></code></pre></td></tr></table></figure>
+
+<p>如果报错，先安装<code>iproute2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> tomcat01 apt update<br>docker <span class="hljs-built_in">exec</span> tomcat01 apt install -y iproute2<br></code></pre></td></tr></table></figure>
+
+<p>Linux可以ping通容器内部</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode tomcat]<span class="hljs-comment"># ping 172.17.0.2</span><br>PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.<br>64 bytes from 172.17.0.2: icmp_seq=1 ttl=64 time=0.064 ms<br>64 bytes from 172.17.0.2: icmp_seq=2 ttl=64 time=0.049 ms<br>64 bytes from 172.17.0.2: icmp_seq=3 ttl=64 time=0.045 ms<br></code></pre></td></tr></table></figure>
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li><p>我们每启动一个docker容器，docker就会给容器分配一个ip</p>
+</li>
+<li><p>每一个安装了Docker的Linux主机都有一个网卡docker0</p>
+</li>
+<li><p>桥接模式，使用技术是veth-pair技术</p>
+</li>
+</ul>
+<p>再次使用<code>ip addr</code>查看网卡信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode tomcat]<span class="hljs-comment"># ip addr</span><br>1: ...<br>2: ...<br>3: ...<br>31: vethd439d37@if30: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP group default <br>    <span class="hljs-built_in">link</span>/ether 1a:6c:aa:da:11:3b brd ff:ff:ff:ff:ff:ff link-netnsid 0<br></code></pre></td></tr></table></figure>
+
+<p>当启动容器时，容器内和主机上会出现相对应的一对网卡信息，<code>veth-pair</code>充当一个桥梁，连接各种虚拟网络设备。</p>
+<h3 id="容器与容器连通"><a href="#容器与容器连通" class="headerlink" title="容器与容器连通"></a>容器与容器连通</h3><p>创建tomcat02容器，<code>ping</code>容器tomcat01</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat02 tomcat<br>docker <span class="hljs-built_in">exec</span> tomcat02 apt update<br>docker <span class="hljs-built_in">exec</span> tomcat02 apt install -y iputils-ping<br><br>[root@swcode tomcat]<span class="hljs-comment"># docker exec tomcat02 ping 172.17.0.2</span><br>PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.<br>64 bytes from 172.17.0.2: icmp_seq=1 ttl=64 time=0.070 ms<br>64 bytes from 172.17.0.2: icmp_seq=2 ttl=64 time=0.066 ms<br>64 bytes from 172.17.0.2: icmp_seq=3 ttl=64 time=0.050 ms<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png" fancybox="true"/></div></div>
+
+<p>结论：tomcat01和tomcat02是共用的一个路由器，docker0</p>
+<p>所有容器不指定网络的情况下，都是docker0路由的，docker会给我们的容器分配一个默认的可用IP</p>
+<p>容器删除，对应的网桥就没了！</p>
+<h2 id="容器互联–link"><a href="#容器互联–link" class="headerlink" title="容器互联–link"></a>容器互联–link</h2><blockquote>
+<p>使用容器名连通，而非ip</p>
+</blockquote>
+<p>启动tomcat03容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat03 --<span class="hljs-built_in">link</span> tomcat02 tomcat<br></code></pre></td></tr></table></figure>
+
+<p>安装<code>iproute2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> tomcat03 apt update<br>docker <span class="hljs-built_in">exec</span> tomcat03 apt install -y iputils-ping<br></code></pre></td></tr></table></figure>
+
+<p>尝试tomcat03 ping tomcat02，成功</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec -it tomcat03 ping tomcat02</span><br>PING tomcat02 (172.17.0.3) 56(84) bytes of data.<br>64 bytes from tomcat02 (172.17.0.3): icmp_seq=1 ttl=64 time=0.075 ms<br>64 bytes from tomcat02 (172.17.0.3): icmp_seq=2 ttl=64 time=0.044 ms<br>64 bytes from tomcat02 (172.17.0.3): icmp_seq=3 ttl=64 time=0.048 ms<br>64 bytes from tomcat02 (172.17.0.3): icmp_seq=4 ttl=64 time=0.048 ms<br></code></pre></td></tr></table></figure>
+
+<p>当我们使用tomcat02 ping tomcat03，失败</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec -it tomcat02 ping tomcat03</span><br>ping: tomcat03: Name or service not known<br></code></pre></td></tr></table></figure>
+
+<p>原因如下：</p>
+<details class="tag-plugin folding" color="red"><summary><span>查看容器容器信息</span></summary><div class="body"><p>查看tomcat03的信息，有对应的Links信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker inspect tomcat03<br></code></pre></td></tr></table></figure><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;Links&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;/tomcat02:/tomcat03/tomcat02&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure><p>查看tomcat02的信息，没有对应的信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker inspect tomcat02<br></code></pre></td></tr></table></figure><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;Links&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure></div></details>
+
+<details class="tag-plugin folding" color="red"><summary><span>查看host信息</span></summary><div class="body"><p>查看tomcat03的host信息，可以看到tomcat02有域名的映射</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec tomcat03 cat /etc/hosts</span><br>127.0.0.1       localhost<br>172.17.0.3      tomcat02 c1add455e03f<br>172.17.0.4      062f1a967709<br></code></pre></td></tr></table></figure><p>查看tomcat02的host信息，发现没有tomcat03的域名的映射</p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec tomcat02 cat /etc/hosts</span><br>127.0.0.1       localhost<br>172.17.0.3      c1add455e03f<br></code></pre></td></tr></table></figure></div></details>
+
+<p><code>--link</code>就是在host配置中增加了一个<code>172.17.0.3 tomcat02 c1add455e03f</code>映射，不建议使用！</p>
+<h2 id="自定义网络"><a href="#自定义网络" class="headerlink" title="自定义网络"></a>自定义网络</h2><blockquote>
+<p>使用自定义网络实现容器互联</p>
+</blockquote>
+<p>查看所有网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network ls</span><br>NETWORK ID     NAME      DRIVER    SCOPE<br>0bfe49ec372b   bridge    bridge    <span class="hljs-built_in">local</span><br>4f6ec0890427   host      host      <span class="hljs-built_in">local</span><br>2ca07ec568c5   none      null      <span class="hljs-built_in">local</span><br></code></pre></td></tr></table></figure>
+
+<p>网络模式</p>
+<p>bridge：桥接模式</p>
+<p>none：不配置网络</p>
+<p>host：和宿主机共享网络</p>
+<p>container：容器网络连通（用的少，局限大）</p>
+<p>清空容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">rm</span> -f $(docker ps -aq)<br></code></pre></td></tr></table></figure>
+
+<h3 id="创建网络"><a href="#创建网络" class="headerlink" title="创建网络"></a>创建网络</h3><blockquote>
+<p>docker network create</p>
+</blockquote>
+<p>使用帮助命令查看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network create --<span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+
+<p>创建命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network ls</span><br>NETWORK ID     NAME      DRIVER    SCOPE<br>0bfe49ec372b   bridge    bridge    <span class="hljs-built_in">local</span><br>4f6ec0890427   host      host      <span class="hljs-built_in">local</span><br>f5c2b322c217   mynet     bridge    <span class="hljs-built_in">local</span><br>2ca07ec568c5   none      null      <span class="hljs-built_in">local</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network inspect f5c2b322c217</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mynet&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;f5c2b322c217623e9f4418fabe425fda8d958325d2af6a8b614afe2d92b6d584&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Created&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2023-02-16T19:55:37.392894743+08:00&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Scope&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;local&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Driver&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bridge&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;EnableIPv6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;IPAM&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;Driver&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;default&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;Options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;Config&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>                <span class="hljs-punctuation">&#123;</span><br>                    <span class="hljs-attr">&quot;Subnet&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.0/16&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;Gateway&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.1&quot;</span><br>                <span class="hljs-punctuation">&#125;</span><br>            <span class="hljs-punctuation">]</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Internal&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Attachable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Ingress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;ConfigFrom&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;Network&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;ConfigOnly&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Containers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;Labels&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">]</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="启动容器到指定网络"><a href="#启动容器到指定网络" class="headerlink" title="启动容器到指定网络"></a>启动容器到指定网络</h3><p>默认的启动命令，使用的是默认的网络<code>bridge</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat01 tomcat<br>docker run -d -P --name tomcat01 -net bridge tomcat<br></code></pre></td></tr></table></figure>
+
+<p>指定自定义的网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat-net-01 --net mynet tomcat<br>docker run -d -P --name tomcat-net-02 --net mynet tomcat<br></code></pre></td></tr></table></figure>
+
+<p>查看自定义网络信息，其中已经有了两个容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network inspect mynet<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;Containers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;60587bfd1a22715bc9b02ef0820358e4633603898902308541b4d33b713aad39&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat-net-02&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;EndpointID&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;f1fb35b2a348ba7dc6a251d78871529fd42fb3615c382ab146e705aaaa038a90&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;MacAddress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;02:42:c0:a8:00:03&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.3/16&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv6Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;9b8257928b66d11f9c3c2e6269ea3fd7df275b62e02c4b9504609648e54d0ad1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat-net-01&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;EndpointID&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;50e1a1eb9123cd5271e84fda995b89989356861ddefbd127f1c2875648b2118d&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;MacAddress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;02:42:c0:a8:00:02&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.2/16&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv6Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="测试互联"><a href="#测试互联" class="headerlink" title="测试互联"></a>测试互联</h3><p>安装ping工具，有的忽略</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 01</span><br>docker <span class="hljs-built_in">exec</span> -it tomcat-net-01 apt update<br>docker <span class="hljs-built_in">exec</span> -it tomcat-net-01 apt install -y iputils-ping<br><span class="hljs-comment"># 02</span><br>docker <span class="hljs-built_in">exec</span> -it tomcat-net-02 apt update<br>docker <span class="hljs-built_in">exec</span> -it tomcat-net-02 apt install -y iputils-ping<br></code></pre></td></tr></table></figure>
+
+<p>01连通02</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec tomcat-net-01 ping tomcat-net-02</span><br>PING tomcat-net-02 (192.168.0.3) 56(84) bytes of data.<br>64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=1 ttl=64 time=0.079 ms<br>64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=2 ttl=64 time=0.045 ms<br>64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=3 ttl=64 time=0.060 ms<br>64 bytes from tomcat-net-02.mynet (192.168.0.3): icmp_seq=4 ttl=64 time=0.048 ms<br></code></pre></td></tr></table></figure>
+
+<p>02连通01</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec tomcat-net-02 ping tomcat-net-01</span><br>PING tomcat-net-01 (192.168.0.2) 56(84) bytes of data.<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=1 ttl=64 time=0.031 ms<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=2 ttl=64 time=0.071 ms<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=3 ttl=64 time=0.049 ms<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="网络连通"><a href="#网络连通" class="headerlink" title="网络连通"></a>网络连通</h2><blockquote>
+<p>自定义网络之间的连接</p>
+</blockquote>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><p>启动到默认网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat01 tomcat<br>docker run -d -P --name tomcat02 tomcat<br></code></pre></td></tr></table></figure>
+
+<p>查看默认网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network inspect bridge<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;Containers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;42f031f8dfb55a1bd6d29c60bf2ca59a070bedff2a3628f5dc7911810f922363&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat02&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.3/16&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;6c5896c588bf848c1a7eda4086f66d8ae056c794a2de0b80a39d441b0f40ed0d&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat01&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;172.17.0.2/16&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="异网容器连通"><a href="#异网容器连通" class="headerlink" title="异网容器连通"></a>异网容器连通</h3><blockquote>
+<p>不同网络中容器之间连通</p>
+</blockquote>
+<p>测试两个网络中容器之间的互联，失败。。。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it tomcat-net-01 ping 172.17.0.2<br>docker <span class="hljs-built_in">exec</span> -it tomcat01 ping 192.168.0.2<br></code></pre></td></tr></table></figure>
+
+<p><strong>docker network connect</strong></p>
+<p>查看帮助文档</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker network connect --help</span><br><br>Usage:  docker network connect [OPTIONS] NETWORK CONTAINER<br><br>Connect a container to a network<br><br>Options:<br>      --<span class="hljs-built_in">alias</span> strings           Add network-scoped <span class="hljs-built_in">alias</span> <span class="hljs-keyword">for</span> the container<br>      --driver-opt strings      driver options <span class="hljs-keyword">for</span> the network<br>      --ip string               IPv4 address (e.g., 172.30.100.104)<br>      --ip6 string              IPv6 address (e.g., 2001:db8::33)<br>      --<span class="hljs-built_in">link</span> list               Add <span class="hljs-built_in">link</span> to another container<br>      --link-local-ip strings   Add a link-local address <span class="hljs-keyword">for</span> the container<br></code></pre></td></tr></table></figure>
+
+<p>使用命令连通网络</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network connect mynet tomcat01<br></code></pre></td></tr></table></figure>
+
+<p>查看mynet的变化，直接将tomcat01加到了mynet中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker network inspect mynet<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;Containers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;60587bfd1a22715bc9b02ef0820358e4633603898902308541b4d33b713aad39&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat-net-02&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.3/16&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;6c5896c588bf848c1a7eda4086f66d8ae056c794a2de0b80a39d441b0f40ed0d&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat01&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.4/16&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;9b8257928b66d11f9c3c2e6269ea3fd7df275b62e02c4b9504609648e54d0ad1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;Name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tomcat-net-01&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;IPv4Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;192.168.0.2/16&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>查看tomcat01的hosts，发现tomcat01可通往mynat</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec tomcat01 cat /etc/hosts</span><br>127.0.0.1       localhost<br>172.17.0.2      6c5896c588bf<br>192.168.0.4     6c5896c588bf<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>tomcat-net-01 <code>ping</code> tomcat01</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec -it tomcat-net-01 ping tomcat01</span><br>PING tomcat01 (192.168.0.4) 56(84) bytes of data.<br>64 bytes from tomcat01.mynet (192.168.0.4): icmp_seq=1 ttl=64 time=0.033 ms<br>64 bytes from tomcat01.mynet (192.168.0.4): icmp_seq=2 ttl=64 time=0.034 ms<br>64 bytes from tomcat01.mynet (192.168.0.4): icmp_seq=3 ttl=64 time=0.043 ms<br></code></pre></td></tr></table></figure>
+
+<p>tomcat01 <code>ping</code> tomcat-net-01</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode ~]<span class="hljs-comment"># docker exec -it tomcat01 ping tomcat-net-01</span><br>PING tomcat-net-01 (192.168.0.2) 56(84) bytes of data.<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=1 ttl=64 time=0.031 ms<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=2 ttl=64 time=0.045 ms<br>64 bytes from tomcat-net-01.mynet (192.168.0.2): icmp_seq=3 ttl=64 time=0.050 ms<br></code></pre></td></tr></table></figure>
+
+
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/docker/03_advance/DockerFile.html">DockerFile</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/docker/04_high_level/Docker%20Compose.html">Docker Compose</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
