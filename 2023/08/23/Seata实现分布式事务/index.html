@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Seata实现分布式事务 - swcode</title>
+
+  
+    <meta name="description" content="本文基于Seata 1.7.0搭建分布式事务Demo，实现简单的转账业务。使用Nacos作为配置中心和注册中心，使用Feign远程调用微服务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Seata实现分布式事务">
+<meta property="og:url" content="http://example.com/2023/08/23/Seata%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/index.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="本文基于Seata 1.7.0搭建分布式事务Demo，实现简单的转账业务。使用Nacos作为配置中心和注册中心，使用Feign远程调用微服务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png">
+<meta property="article:published_time" content="2023-08-23T08:39:27.000Z">
+<meta property="article:modified_time" content="2023-08-23T08:40:19.616Z">
+<meta property="article:author" content="swcode">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="微服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Seata实现分布式事务</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B"><span class="toc-text">业务流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E8%B4%A6%E6%B5%81%E7%A8%8B"><span class="toc-text">转账流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Seata%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-text">Seata执行流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Seata-Server%E6%90%AD%E5%BB%BA"><span class="toc-text">Seata Server搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD-Seata"><span class="toc-text">下载 Seata</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Seata"><span class="toc-text">配置 Seata</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">初始化数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-TC-Server"><span class="toc-text">启动 TC Server</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">准备数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE"><span class="toc-text">准备微服务项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="toc-text">版本控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E8%BD%AC%E8%B4%A6%E6%9C%8D%E5%8A%A1"><span class="toc-text">完善转账服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E4%BF%A1%E6%81%AF"><span class="toc-text">依赖信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">配置信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="toc-text">启动类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">实体类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAO%E5%B1%82"><span class="toc-text">DAO层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FeignClient"><span class="toc-text">FeignClient</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service%E5%B1%82"><span class="toc-text">Service层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Controller%E5%B1%82"><span class="toc-text">Controller层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E8%BD%AC%E8%B4%A6%E6%9C%8D%E5%8A%A1"><span class="toc-text">复制转账服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%BA%8B%E5%8A%A1"><span class="toc-text">测试事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%B5%81%E7%A8%8B"><span class="toc-text">正常流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E8%80%85%E5%BC%82%E5%B8%B8"><span class="toc-text">调用者异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A2%AB%E8%B0%83%E8%80%85%E5%BC%82%E5%B8%B8"><span class="toc-text">被调者异常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%8D%E5%8A%A1%E5%A4%B1%E6%95%88"><span class="toc-text">分布式服务失效</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Feign%E5%AF%BC%E8%87%B4XID%E4%B8%BAnull"><span class="toc-text">Feign导致XID为null</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Seata/">Seata</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/Seata/Nacos/">Nacos</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-08-23T08:39:27.000Z">2023-08-23</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>Seata实现分布式事务</span></h1>
+<p>本文基于Seata 1.7.0搭建分布式事务Demo，实现简单的转账业务。使用Nacos作为配置中心和注册中心，使用Feign远程调用微服务。</p>
+<p>本Demo工程的Git地址为：<a target="_blank" rel="noopener" href="https://gitee.com/SX-Code/dtx-seata-demo">https://gitee.com/SX-Code/dtx-seata-demo</a></p>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><h3 id="转账流程"><a href="#转账流程" class="headerlink" title="转账流程"></a>转账流程</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png"></p>
+<h3 id="Seata执行流程"><a href="#Seata执行流程" class="headerlink" title="Seata执行流程"></a>Seata执行流程</h3><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png"/>
+
+<p>其中，TC 为单独部署的 <strong>Server</strong> 服务端，TM 和 RM 为嵌入到应用中的 <strong>Client</strong> 客户端。</p>
+<p>细节说明：</p>
+<ul>
+<li><p>TM 请求 TC 开启一个全局事务。TC 会生成一个 <strong>XID</strong> 作为该全局事务的编号。</p>
+<blockquote>
+<p><strong>XID</strong>，会在微服务的调用链路中传播，保证将多个微服务的子事务关联在一起。</p>
+</blockquote>
+</li>
+<li><p>RM 请求 TC 将本地事务注册为全局事务的分支事务，通过全局事务的 <strong>XID</strong> 进行关联。</p>
+</li>
+<li><p>TM 请求 TC 告诉 <strong>XID</strong> 对应的全局事务是进行提交还是回滚。</p>
+</li>
+<li><p>TC 驱动 RM 们将 <strong>XID</strong> 对应的自己的本地事务进行提交还是回滚。</p>
+</li>
+</ul>
+<h2 id="Seata-Server搭建"><a href="#Seata-Server搭建" class="headerlink" title="Seata Server搭建"></a>Seata Server搭建</h2><p>服务端使用Nacos作为配置中心和注册中心，数据库则选择mysql。</p>
+<h3 id="下载-Seata"><a href="#下载-Seata" class="headerlink" title="下载 Seata"></a>下载 Seata</h3><p>Seata TC服务源码下载地址：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/seata/seata/releases">https://github.com/seata/seata/releases</a></p>
+<p>选择想要的 Seata 版本。这里，我们选择 <a target="_blank" rel="noopener" href="https://github.com/seata/seata/releases/tag/v1.7.0">v1.7.0</a> 最新版本。</p>
+<p>进入<code>/opt</code>目录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt<br></code></pre></td></tr></table></figure>
+
+<p>下载文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">wget https://download.yzuu.cf/seata/seata/releases/download/v1.7.0/seata-server-1.7.0.tar.gz<br></code></pre></td></tr></table></figure>
+
+<p>解压：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">tar -zxvf seata-server-1.7.0.tar.gz<br></code></pre></td></tr></table></figure>
+
+<p>查看目录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> seata<br>$ <span class="hljs-built_in">ls</span> -<span class="hljs-built_in">ls</span><br>total 32<br>-rw-r--r--@   1 502   staff   1388  1  6  2023 Dockerfile<br>-rw-r--r--@   1 502   staff  12079  1  6  2023 LICENSE<br>drwxr-xr-x    5 root  wheel    160  8 22 21:58 bin <span class="hljs-comment"># 执行脚本</span><br>drwxr-xr-x    6 root  wheel    192  8 22 21:58 conf <span class="hljs-comment"># 配置文件</span><br>drwxr-xr-x    3 root  wheel     96  8 22 21:58 ext<br>drwxr-xr-x@ 225 502   staff   7200  7 11 16:46 lib <span class="hljs-comment">#  seata-*.jar + 依赖库 </span><br>drwxr-xr-x@  14 502   staff    448  8 23 10:52 logs<br>drwxr-xr-x    5 root  wheel    160  8 22 21:58 script <span class="hljs-comment"># 数据库脚本等配置文件</span><br>drwxr-xr-x    3 root  wheel     96  8 22 21:58 target<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="配置-Seata"><a href="#配置-Seata" class="headerlink" title="配置 Seata"></a>配置 Seata</h3><p>进入<code>/opt/seata/conf/</code>目录编辑配置文件<code>application.yml</code>，参考配置信息在<code>application.example.yml</code>中，可以参考着配置。</p>
+<figure class="highlight yml"><figcaption><span>application.yml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">7091</span><br><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">seata-tc-server</span><br><br><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">config:</span> <span class="hljs-string">classpath:logback-spring.xml</span><br>  <span class="hljs-attr">file:</span><br>    <span class="hljs-attr">path:</span> <span class="hljs-string">$&#123;user.home&#125;/logs/seata</span><br>  <span class="hljs-attr">extend:</span><br>    <span class="hljs-attr">logstash-appender:</span><br>      <span class="hljs-attr">destination:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-string">:4560</span><br>    <span class="hljs-attr">kafka-appender:</span><br>      <span class="hljs-attr">bootstrap-servers:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-string">:9092</span><br>      <span class="hljs-attr">topic:</span> <span class="hljs-string">logback_to_logstash</span><br><br><span class="hljs-attr">console:</span><br>  <span class="hljs-attr">user:</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">seata</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">seata</span><br><span class="hljs-attr">seata:</span><br>  <span class="hljs-attr">config:</span><br>    <span class="hljs-comment"># support: nacos, consul, apollo, zk, etcd3</span><br>    <span class="hljs-attr">type:</span> <span class="hljs-string">nacos</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">server-addr:</span> <span class="hljs-string">xxx.xxx.xxx.xxx:8848</span><br>      <span class="hljs-attr">namespace:</span><br>      <span class="hljs-attr">group:</span> <span class="hljs-string">SEATA_GROUP</span> <br>      <span class="hljs-attr">username:</span> <span class="hljs-string">nacos</span><br>      <span class="hljs-attr">password:</span> <span class="hljs-string">nacos</span><br>      <span class="hljs-attr">data-id:</span> <span class="hljs-string">seataServer.properties</span> <span class="hljs-comment"># nacos配置中心文件ID</span><br>  <span class="hljs-attr">registry:</span><br>    <span class="hljs-comment"># support: nacos, eureka, redis, zk, consul, etcd3, sofa</span><br>    <span class="hljs-attr">type:</span> <span class="hljs-string">nacos</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">application:</span> <span class="hljs-string">seata-tc-server</span><br>      <span class="hljs-attr">server-addr:</span> <span class="hljs-string">xxx.xxx.xxx.xxx:8848</span> <span class="hljs-comment"># nacos地址</span><br>      <span class="hljs-attr">group:</span> <span class="hljs-string">SEATA_GROUP</span> <span class="hljs-comment"># 组</span><br>      <span class="hljs-attr">namespace:</span><br>      <span class="hljs-attr">cluster:</span> <span class="hljs-string">SH</span> <span class="hljs-comment"># 集群</span><br>      <span class="hljs-attr">username:</span> <span class="hljs-string">nacos</span><br>      <span class="hljs-attr">password:</span> <span class="hljs-string">nacos</span><br><span class="hljs-comment">#  server:</span><br><span class="hljs-comment">#    service-port: 8091 #If not configured, the default is &#x27;$&#123;server.port&#125; + 1000&#x27;</span><br>  <span class="hljs-attr">security:</span><br>    <span class="hljs-attr">secretKey:</span> <span class="hljs-string">SeataSecretKey0c382ef121d778043159209298fd40bf3850a017</span><br>    <span class="hljs-attr">tokenValidityInMilliseconds:</span> <span class="hljs-number">1800000</span><br>    <span class="hljs-attr">ignore:</span><br>      <span class="hljs-attr">urls:</span> <span class="hljs-string">/,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.jpeg,/**/*.ico,/api/v1/auth/login%</span><br></code></pre></td></tr></table></figure>
+
+<p>剩余的配置我们放在Nacos配置中心</p>
+<blockquote>
+<p>所有可配置内容都在<code>/opt/seata/script/config-center/config.txt</code></p>
+</blockquote>
+<ul>
+<li><p><strong>Data ID</strong>：seataServer.properties</p>
+</li>
+<li><p><strong>Group</strong>：SEATA_GROUP</p>
+</li>
+<li><p>配置内容：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">store.mode</span>=<span class="hljs-string">db</span><br><span class="hljs-attr">store.db.datasource</span>=<span class="hljs-string">druid</span><br><span class="hljs-attr">store.db.dbType</span>=<span class="hljs-string">mysql</span><br><span class="hljs-attr">store.db.driverClassName</span>=<span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br><span class="hljs-attr">store.db.url</span>=<span class="hljs-string">jdbc:mysql://127.0.0.1:3306/seata?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true</span><br><span class="hljs-attr">store.db.user</span>=<span class="hljs-string">root</span><br><span class="hljs-attr">store.db.password</span>=<span class="hljs-string">root</span><br><span class="hljs-attr">store.db.minConn</span>=<span class="hljs-string">10</span><br><span class="hljs-attr">store.db.maxConn</span>=<span class="hljs-string">100</span><br><span class="hljs-attr">store.db.globalTable</span>=<span class="hljs-string">global_table</span><br><span class="hljs-attr">store.db.branchTable</span>=<span class="hljs-string">branch_table</span><br><span class="hljs-attr">store.db.lockTable</span>=<span class="hljs-string">lock_table</span><br><span class="hljs-attr">store.db.distributedLockTable</span>=<span class="hljs-string">distributed_lock</span><br><span class="hljs-attr">store.db.queryLimit</span>=<span class="hljs-string">1000</span><br><span class="hljs-attr">store.db.maxWait</span>=<span class="hljs-string">5000</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h3><p>创建数据库<code>seata</code>，并使用 <a target="_blank" rel="noopener" href="https://github.com/seata/seata/blob/1.7.0/script/server/db/mysql.sql"><code>mysql.sql</code></a> 脚本，初始化 Seata TC Server 的 db 数据库。脚本内容如下：</p>
+<blockquote>
+<p>数据库脚本文件在<code>/opt/seata/script/server/db/mysql.sql</code></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- -------------------------------- The script used when storeMode is &#x27;db&#x27; --------------------------------</span><br><span class="hljs-comment">-- the table to store GlobalSession data</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> `global_table`<br>(<br>    `xid`                       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">128</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `transaction_id`            <span class="hljs-type">BIGINT</span>,<br>    `status`                    TINYINT      <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `application_id`            <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">32</span>),<br>    `transaction_service_group` <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">32</span>),<br>    `transaction_name`          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">128</span>),<br>    `timeout`                   <span class="hljs-type">INT</span>,<br>    `begin_time`                <span class="hljs-type">BIGINT</span>,<br>    `application_data`          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">2000</span>),<br>    `gmt_create`                DATETIME,<br>    `gmt_modified`              DATETIME,<br>    <span class="hljs-keyword">PRIMARY</span> KEY (`xid`),<br>    KEY `idx_status_gmt_modified` (`status` , `gmt_modified`),<br>    KEY `idx_transaction_id` (`transaction_id`)<br>) ENGINE <span class="hljs-operator">=</span> InnoDB<br>  <span class="hljs-keyword">DEFAULT</span> CHARSET <span class="hljs-operator">=</span> utf8mb4;<br><br><span class="hljs-comment">-- the table to store BranchSession data</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> `branch_table`<br>(<br>    `branch_id`         <span class="hljs-type">BIGINT</span>       <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `xid`               <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">128</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `transaction_id`    <span class="hljs-type">BIGINT</span>,<br>    `resource_group_id` <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">32</span>),<br>    `resource_id`       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">256</span>),<br>    `branch_type`       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">8</span>),<br>    `status`            TINYINT,<br>    `client_id`         <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">64</span>),<br>    `application_data`  <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">2000</span>),<br>    `gmt_create`        DATETIME(<span class="hljs-number">6</span>),<br>    `gmt_modified`      DATETIME(<span class="hljs-number">6</span>),<br>    <span class="hljs-keyword">PRIMARY</span> KEY (`branch_id`),<br>    KEY `idx_xid` (`xid`)<br>) ENGINE <span class="hljs-operator">=</span> InnoDB<br>  <span class="hljs-keyword">DEFAULT</span> CHARSET <span class="hljs-operator">=</span> utf8mb4;<br><br><span class="hljs-comment">-- the table to store lock data</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> `lock_table`<br>(<br>    `row_key`        <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">128</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `xid`            <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">128</span>),<br>    `transaction_id` <span class="hljs-type">BIGINT</span>,<br>    `branch_id`      <span class="hljs-type">BIGINT</span>       <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `resource_id`    <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">256</span>),<br>    `table_name`     <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">32</span>),<br>    `pk`             <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">36</span>),<br>    `status`         TINYINT      <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;0&#x27;</span> COMMENT <span class="hljs-string">&#x27;0:locked ,1:rollbacking&#x27;</span>,<br>    `gmt_create`     DATETIME,<br>    `gmt_modified`   DATETIME,<br>    <span class="hljs-keyword">PRIMARY</span> KEY (`row_key`),<br>    KEY `idx_status` (`status`),<br>    KEY `idx_branch_id` (`branch_id`),<br>    KEY `idx_xid` (`xid`)<br>) ENGINE <span class="hljs-operator">=</span> InnoDB<br>  <span class="hljs-keyword">DEFAULT</span> CHARSET <span class="hljs-operator">=</span> utf8mb4;<br><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> `distributed_lock`<br>(<br>    `lock_key`       <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `lock_value`     <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>    `expire`         <span class="hljs-type">BIGINT</span>,<br>    <span class="hljs-keyword">primary</span> key (`lock_key`)<br>) ENGINE <span class="hljs-operator">=</span> InnoDB<br>  <span class="hljs-keyword">DEFAULT</span> CHARSET <span class="hljs-operator">=</span> utf8mb4;<br><br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `distributed_lock` (lock_key, lock_value, expire) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;AsyncCommitting&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `distributed_lock` (lock_key, lock_value, expire) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;RetryCommitting&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `distributed_lock` (lock_key, lock_value, expire) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;RetryRollbacking&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0</span>);<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `distributed_lock` (lock_key, lock_value, expire) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;TxTimeoutCheck&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="启动-TC-Server"><a href="#启动-TC-Server" class="headerlink" title="启动 TC Server"></a>启动 TC Server</h3><p>进入到<code>/opt/seata/bin</code>，执行如下命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">sudo ./seata-server.sh <br></code></pre></td></tr></table></figure>
+
+<p>使用下面命令查看日志：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> check the /opt/seata/logs/start.out<br></code></pre></td></tr></table></figure>
+
+<p>可以在Nacos中查看服务，集群也是正常的</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png"></p>
+<h2 id="准备数据库"><a href="#准备数据库" class="headerlink" title="准备数据库"></a>准备数据库</h2><p>准备2个数据：<code>bank1</code>和<code>bank2</code>，两个数据库都有两个表<code>account_info</code>和<code>undo_log</code>，表结构一致。</p>
+<p>数据库<code>bank1</code>表的脚本文件：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `account_info` (<br>  `id` <span class="hljs-type">bigint</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `account_name` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;户主姓名&#x27;</span>,<br>  `account_no` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;银行卡号&#x27;</span>,<br>  `account_password` <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;账户密码&#x27;</span>,<br>  `account_balance` <span class="hljs-type">decimal</span>(<span class="hljs-number">10</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;账户余额&#x27;</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">2</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_general_ci;<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `account_info` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;张三的账户&#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-number">1000.00</span>);<br></code></pre></td></tr></table></figure>
+
+<p>数据库<code>bank2</code>表的脚本文件</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `account_info` (<br>  `id` <span class="hljs-type">bigint</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `account_name` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;户主姓名&#x27;</span>,<br>  `account_no` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;银行卡号&#x27;</span>,<br>  `account_password` <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;账户密码&#x27;</span>,<br>  `account_balance` <span class="hljs-type">decimal</span>(<span class="hljs-number">10</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;账户余额&#x27;</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">2</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_general_ci;<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `account_info` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;李四的账户&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-number">0.00</span>);<br></code></pre></td></tr></table></figure>
+
+<p>两个数据的<code>undo_log</code>表如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">CREATE TABLE `undo_log` (<br>  `<span class="hljs-built_in">id</span>` bigint NOT NULL AUTO_INCREMENT,<br>  `branch_id` bigint NOT NULL,<br>  `xid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,<br>  `context` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,<br>  `rollback_info` longblob NOT NULL,<br>  `log_status` int NOT NULL,<br>  `log_created` datetime NOT NULL,<br>  `log_modified` datetime NOT NULL,<br>  `ext` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,<br>  PRIMARY KEY (`<span class="hljs-built_in">id</span>`),<br>  UNIQUE KEY `ux_undo_log` (`branch_id`,`xid`)<br>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="准备微服务项目"><a href="#准备微服务项目" class="headerlink" title="准备微服务项目"></a>准备微服务项目</h2><p>项目使用微服务分模块开发方式，两个服务之间通过Feign进行远程调用。</p>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>创建一个父工程<code>dtx-seata-demo</code>作版本控制，在其下创建两个子模块提供服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">dtx-seata-demo<br>├── dtx-seata-bank1<br>└── dtx-seata-bank2<br></code></pre></td></tr></table></figure>
+
+<h3 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h3><p>在父工程<code>dtx-seata-demo</code>的pom文件中添加版本控制信息</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>dtx-seata-demo<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">packaging</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">packaging</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modules</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>dtx-seata-bank1<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>dtx-seata-bank2<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">modules</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.source</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.source</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.target</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.target</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.9.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>Hoxton.SR10<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2.5.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>8.0.23<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.4.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-alibaba-seata<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2.0.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="完善转账服务"><a href="#完善转账服务" class="headerlink" title="完善转账服务"></a>完善转账服务</h3><p>打开子模块<code>dtx-seata-bank1</code>，该模块操作数据库<code>bank1</code>。在减去自身金额时，使用Feign远程调用服务增加<code>bank2</code>的金额。</p>
+<h4 id="依赖信息"><a href="#依赖信息" class="headerlink" title="依赖信息"></a>依赖信息</h4><p>添加服务所需依赖信息：</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- lombok --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 微服务服务上下文 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-context<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Feign远程调用 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Feign连接池 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.github.openfeign<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>feign-httpclient<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Nacos注册中心 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 数据库连接 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- mybatis --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- seata 分布式事务 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-alibaba-seata<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h4><p>在<code>dtx-seata-bank1</code>模块的<code>resources</code>下创建<code>bootstrap.yml</code>，其中配置项目端口和路径、数据库源、Nacos注册中心、开启Feign熔断降级、配置Seata，以便找到Seata TC。</p>
+<figure class="highlight yml"><figcaption><span>bootstrap.yml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">56081</span><br>  <span class="hljs-attr">servlet:</span><br>    <span class="hljs-attr">context-path:</span> <span class="hljs-string">/bank1</span><br><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">seata-demo-bank1</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql:///bank1?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">swx852345</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">discovery:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-number">124.221</span><span class="hljs-number">.23</span><span class="hljs-number">.47</span><span class="hljs-string">:8848</span><br><br><span class="hljs-attr">feign:</span><br>  <span class="hljs-attr">hystrix:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">httpclient:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-attr">seata:</span><br>  <span class="hljs-attr">registry:</span><br>    <span class="hljs-attr">type:</span> <span class="hljs-string">nacos</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">application:</span> <span class="hljs-string">seata-tc-server</span><br>      <span class="hljs-attr">server-addr:</span> <span class="hljs-number">124.221</span><span class="hljs-number">.23</span><span class="hljs-number">.47</span><span class="hljs-string">:8848</span><br>      <span class="hljs-attr">namespace:</span> <span class="hljs-string">&quot;&quot;</span><br>      <span class="hljs-attr">group:</span> <span class="hljs-string">SEATA_GROUP</span><br>      <span class="hljs-attr">username:</span> <span class="hljs-string">nacos</span><br>      <span class="hljs-attr">password:</span> <span class="hljs-string">nacos</span><br>  <span class="hljs-comment"># 使用事务组 seata-bank 和 组映射可以找到集群 SH</span><br>  <span class="hljs-attr">tx-service-group:</span> <span class="hljs-string">seata-bank</span><br>  <span class="hljs-attr">service:</span><br>    <span class="hljs-attr">vgroup-mapping:</span><br>      <span class="hljs-attr">seata-bank:</span> <span class="hljs-string">SH</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h4><p>在包<code>com.swx.bank1</code>下创建启动类</p>
+<figure class="highlight java"><figcaption><span>Bank1Application</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@EnableTransactionManagement</span><br><span class="hljs-meta">@EnableFeignClients(basePackages = &#123;&quot;com.swx.bank1.spring&quot;&#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Bank1Application</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(Bank1Application.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h4><p>在包<code>com.swx.bank1.entry</code>下创建<code>AccountInfo</code>实体类</p>
+<figure class="highlight java"><figcaption><span>AccountInfo</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@TableName(&quot;account_info&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountInfo</span> &#123;<br><br>    <span class="hljs-meta">@TableId(value = &quot;id&quot;, type = IdType.AUTO)</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-meta">@TableField(&quot;account_name&quot;)</span><br>    <span class="hljs-keyword">private</span> String accountName;<br><br>    <span class="hljs-meta">@TableField(&quot;account_no&quot;)</span><br>    <span class="hljs-keyword">private</span> String accountNo;<br><br>    <span class="hljs-meta">@TableField(&quot;account_password&quot;)</span><br>    <span class="hljs-keyword">private</span> String accountPassword;<br><br>    <span class="hljs-meta">@TableField(&quot;account_balance&quot;)</span><br>    <span class="hljs-keyword">private</span> Double accountBalance;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="DAO层"><a href="#DAO层" class="headerlink" title="DAO层"></a>DAO层</h4><p>该层负责操作数据库，在包<code>com.swx.bank1.mapper</code>下创建<code>AccountInfoMapper</code>接口</p>
+<figure class="highlight java"><figcaption><span>AccountInfoMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountInfoMapper</span> &#123;<br>    <span class="hljs-meta">@Update(&quot;UPDATE account_info SET account_balance = account_balance + #&#123;amount&#125; WHERE account_no = #&#123;accountNo&#125;&quot;)</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">updateAccountBalance</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;accountNo&quot;)</span> String accountNo, <span class="hljs-meta">@Param(&quot;amount&quot;)</span> Double amount)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个增加金额的SQL语句漏洞百出，但这不影响测试Seata分布式事务，请忽略！</p>
+</blockquote>
+<h4 id="FeignClient"><a href="#FeignClient" class="headerlink" title="FeignClient"></a>FeignClient</h4><p>该层负责远程调用，在包<code>com.swx.bank1.spring</code>下创建<code>Bank2Client</code>接口</p>
+<figure class="highlight java"><figcaption><span>Bank2Client</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Feign整合了Ribbon，会从注册中心获取实例，这里写实例名就行了</span><br><span class="hljs-meta">@FeignClient(value = &quot;seata-demo-bank2&quot;, fallback = Bank2ClientFallback.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Bank2Client</span> &#123;<br>    <span class="hljs-comment">// 远程调用李四的微服务</span><br>    <span class="hljs-meta">@GetMapping(&quot;/bank2/transfer&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">transfer</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;amount&quot;)</span> Double amount)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>添加熔断降级，请求失败时的操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Bank2ClientFallback</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Bank2Client</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">transfer</span><span class="hljs-params">(Double amount)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;error fallback&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="Service层"><a href="#Service层" class="headerlink" title="Service层"></a>Service层</h4><p>该层负责操作事务，在包<code>com.swx.bank1.service</code>下创建<code>AccountInfoService</code>接口</p>
+<figure class="highlight java"><figcaption><span>AccountInfoService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateAccountBalance</span><span class="hljs-params">(String accountNo, Double amount)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在包<code>com.swx.bank1.service.impl</code>下实现该接口：</p>
+<blockquote>
+<p>@Transactional(rollbackFor &#x3D; Exception.class)为开启本地事务<br>@GlobalTransactional为开启全局事务，Seata事务</p>
+</blockquote>
+<figure class="highlight java"><figcaption><span>AccountInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountInfoServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AccountInfoMapper accountInfoMapper;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Bank2Client bank2Client;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">AccountInfoServiceImpl</span><span class="hljs-params">(AccountInfoMapper accountInfoMapper, Bank2Client bank2Client)</span> &#123;<br>        <span class="hljs-built_in">this</span>.accountInfoMapper = accountInfoMapper;<br>        <span class="hljs-built_in">this</span>.bank2Client = bank2Client;<br>    &#125;<br><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-meta">@GlobalTransactional</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateAccountBalance</span><span class="hljs-params">(String accountNo, Double amount)</span> &#123;<br>        log.info(<span class="hljs-string">&quot;bank1 service begin, XID: &#123;&#125;&quot;</span>, RootContext.getXID());<br>        <span class="hljs-comment">// 扣减张三的金额</span><br>        accountInfoMapper.updateAccountBalance(accountNo, amount * -<span class="hljs-number">1</span>);<br>        <span class="hljs-comment">// 调用李四微服务，转账</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">transfer</span> <span class="hljs-operator">=</span> bank2Client.transfer(amount);<br>        <span class="hljs-keyword">if</span> (transfer.equals(<span class="hljs-string">&quot;error fallback&quot;</span>)) &#123;<br>            <span class="hljs-comment">// 调用李四微服务异常</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;调用李四微服务异常&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (amount == <span class="hljs-number">2</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;bank1 make exception.&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Controller层"><a href="#Controller层" class="headerlink" title="Controller层"></a>Controller层</h4><figure class="highlight java"><figcaption><span>Bank1Controller</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Bank1Controller</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AccountInfoService accountInfoService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Bank1Controller</span><span class="hljs-params">(AccountInfoService accountInfoService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.accountInfoService = accountInfoService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/transfer&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">transfer</span><span class="hljs-params">(Double amount)</span> &#123;<br>        <span class="hljs-comment">// 张三转账</span><br>        accountInfoService.updateAccountBalance(<span class="hljs-string">&quot;1&quot;</span>, amount);<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;bank1：&quot;</span> + amount;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="复制转账服务"><a href="#复制转账服务" class="headerlink" title="复制转账服务"></a>复制转账服务</h3><p>将转账业务复制一份到<code>dtx-seata-bank2</code>中，将所有 bank1 更改为 bank2 </p>
+<p>例如配置文件更该为如下：</p>
+<figure class="highlight yml"><figcaption><span>bootstrap.yml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">56082</span><br>  <span class="hljs-attr">servlet:</span><br>    <span class="hljs-attr">context-path:</span> <span class="hljs-string">/bank2</span><br><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">seata-demo-bank2</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql:///bank2?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">swx852345</span><br></code></pre></td></tr></table></figure>
+
+<p>Service更改如下：</p>
+<figure class="highlight java"><figcaption><span>AccountInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountInfoServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AccountInfoMapper accountInfoMapper;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">AccountInfoServiceImpl</span><span class="hljs-params">(AccountInfoMapper accountInfoMapper)</span> &#123;<br>        <span class="hljs-built_in">this</span>.accountInfoMapper = accountInfoMapper;<br>    &#125;<br><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateAccountBalance</span><span class="hljs-params">(String accountNo, Double amount)</span> &#123;<br>        log.info(<span class="hljs-string">&quot;bank2 service begin, XID: &#123;&#125;&quot;</span>, RootContext.getXID());<br>        <span class="hljs-comment">// 增加李四的金额</span><br>        accountInfoMapper.updateAccountBalance(accountNo, amount);<br>        <span class="hljs-keyword">if</span> (amount == <span class="hljs-number">3</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;bank2 make exception.&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="测试事务"><a href="#测试事务" class="headerlink" title="测试事务"></a>测试事务</h2><h3 id="正常流程"><a href="#正常流程" class="headerlink" title="正常流程"></a>正常流程</h3><p>浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:56081/bank1/transfer?amount=100">http://localhost:56081/bank1/transfer?amount=100</a></p>
+<h3 id="调用者异常"><a href="#调用者异常" class="headerlink" title="调用者异常"></a>调用者异常</h3><p>浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:56081/bank1/transfer?amount=2">http://localhost:56081/bank1/transfer?amount=2</a></p>
+<h3 id="被调者异常"><a href="#被调者异常" class="headerlink" title="被调者异常"></a>被调者异常</h3><p>浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:56081/bank1/transfer?amount=3">http://localhost:56081/bank1/transfer?amount=3</a></p>
+<h2 id="分布式服务失效"><a href="#分布式服务失效" class="headerlink" title="分布式服务失效"></a>分布式服务失效</h2><h3 id="Feign导致XID为null"><a href="#Feign导致XID为null" class="headerlink" title="Feign导致XID为null"></a>Feign导致XID为null</h3><p>使用Feign远程调用，被调方法打印的XID为null。检查自己的Maven依赖，确保引入的是</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- seata 分布式事务 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-alibaba-seata<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/17/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6%E4%BA%91%E5%86%85%E5%AE%B9%E5%AE%A1%E6%A0%B8/">如何使用百度云内容审核</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
