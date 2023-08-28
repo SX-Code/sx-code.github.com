@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>学成在线：完善Base工程 - swcode</title>
+
+  
+    <meta name="description" content="Base工程是用来放公共组件的 依赖信息引入如下依赖： pom.xml&lt;dependency&gt;    &lt;groupId&gt;org.projectlombok&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;lombok&lt;&#x2F;artifactId&gt;&lt;&#x2F;dependency&gt;&lt;dependency&gt;    &lt;gro">
+<meta property="og:type" content="website">
+<meta property="og:title" content="完善Base工程">
+<meta property="og:url" content="http://example.com/wiki/learning-online/04-project-tools/base.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="Base工程是用来放公共组件的 依赖信息引入如下依赖： pom.xml&lt;dependency&gt;    &lt;groupId&gt;org.projectlombok&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;lombok&lt;&#x2F;artifactId&gt;&lt;&#x2F;dependency&gt;&lt;dependency&gt;    &lt;gro">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-28T11:46:00.000Z">
+<meta property="article:modified_time" content="2023-08-28T11:49:29.877Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/learning-online/01-introduce/index.html"><div class="main" ff="title">学成在线</div><div class="sub cap">学成在线项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/learning-online/" placeholder="在 /wiki/learning-online/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目框架</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/deploy-web.html"><span class="toc-text">导入前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/create-server.html"><span class="toc-text">创建后端项目</span></a></div></div><div class="widget-header cap dis-select"><span class="name">项目工具</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/code-generator.html"><span class="toc-text">代码生成工具</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/learning-online/04-project-tools/base.html"><span class="toc-text">完善Base工程</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E4%BF%A1%E6%81%AF"><span class="toc-text">依赖信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LocalDateTime%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">LocalDateTime格式化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Knife4j%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-text">Knife4j配置类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C"><span class="toc-text">统一返回结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C"><span class="toc-text">返回结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-text">自定义异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="toc-text">自定义注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">注解拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E5%A4%84%E7%90%86"><span class="toc-text">返回结果处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">全局异常处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-text">自动装配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSR303%E6%A0%A1%E9%AA%8C"><span class="toc-text">JSR303校验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%9F%E4%B8%80%E6%A0%A1%E9%AA%8C"><span class="toc-text">实现统一校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%A0%A1%E9%AA%8C"><span class="toc-text">分组校验</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/nacos.html"><span class="toc-text">注册配置中心</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/gateway.html"><span class="toc-text">增加网关工程</span></a></div></div><div class="widget-header cap dis-select"><span class="name">系统信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/select.html"><span class="toc-text">查询系统字典</span></a></div></div><div class="widget-header cap dis-select"><span class="name">内容管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/category.html"><span class="toc-text">课程类别服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/market.html"><span class="toc-text">课程营销服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/course.html"><span class="toc-text">课程信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/plan.html"><span class="toc-text">课程计划服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/publish.html"><span class="toc-text">课程发布服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">媒资管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/course.html"><span class="toc-text">分布式文件系统</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/file.html"><span class="toc-text">媒资信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/picture.html"><span class="toc-text">图片上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-upload.html"><span class="toc-text">视频上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-transcoding.html"><span class="toc-text">视频转码服务</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-28T11:49:29.877Z">2023-08-28</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>完善Base工程</span></h1>
+  <p>Base工程是用来放公共组件的</p>
+<h2 id="依赖信息"><a href="#依赖信息" class="headerlink" title="依赖信息"></a>依赖信息</h2><p>引入如下依赖：</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.xiaoymin<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>knife4j-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-databind<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-annotations<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-autoconfigure<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.datatype<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-datatype-jsr310<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h2><p>在<code>learning-online-base</code>工程下创建包<code>com.swx.base.model</code>，并在该包下创建两个实体类</p>
+<p>分页查询参数</p>
+<figure class="highlight java"><figcaption><span>PageParam</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 分页查询参数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ApiModel(&quot;分页查询参数&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PageParam</span> &#123;<br><br>    <span class="hljs-comment">// 当前页</span><br>    <span class="hljs-meta">@ApiModelProperty(&quot;当前页码&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Long</span> <span class="hljs-variable">pageNo</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br>    <span class="hljs-comment">// 每页记录数</span><br>    <span class="hljs-meta">@ApiModelProperty(&quot;每页记录数&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Long</span> <span class="hljs-variable">pageSize</span> <span class="hljs-operator">=</span> <span class="hljs-number">10L</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PageParam</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PageParam</span><span class="hljs-params">(Long pageNo, Long pageSize)</span> &#123;<br>        <span class="hljs-built_in">this</span>.pageNo = pageNo;<br>        <span class="hljs-built_in">this</span>.pageSize = pageSize;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>分页查询结果</p>
+<figure class="highlight java"><figcaption><span>PageResult</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 分页查询结果模型类</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &lt;T&gt; 范型</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PageResult</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-comment">// 数据列表</span><br>    <span class="hljs-keyword">private</span> List&lt;T&gt; items;<br>    <span class="hljs-comment">// 总记录数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> counts;<br>    <span class="hljs-comment">// 当前页数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> page;<br>    <span class="hljs-comment">// 每页记录数</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> pageSize;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PageResult</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PageResult</span><span class="hljs-params">(List&lt;T&gt; items, <span class="hljs-type">long</span> counts, <span class="hljs-type">long</span> page, <span class="hljs-type">long</span> pageSize)</span> &#123;<br>        <span class="hljs-built_in">this</span>.items = items;<br>        <span class="hljs-built_in">this</span>.counts = counts;<br>        <span class="hljs-built_in">this</span>.page = page;<br>        <span class="hljs-built_in">this</span>.pageSize = pageSize;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PageResult</span><span class="hljs-params">(List&lt;T&gt; items, <span class="hljs-type">long</span> counts, PageParam pageParam)</span> &#123;<br>        <span class="hljs-built_in">this</span>.items = items;<br>        <span class="hljs-built_in">this</span>.counts = counts;<br>        <span class="hljs-built_in">this</span>.page = pageParam.getPageNo();<br>        <span class="hljs-built_in">this</span>.pageSize = pageParam.getPageSize();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="LocalDateTime格式化"><a href="#LocalDateTime格式化" class="headerlink" title="LocalDateTime格式化"></a>LocalDateTime格式化</h2><p>在<code>com.swx.base.config</code>创建配置类<code>LocalDateTimeConfig</code></p>
+<figure class="highlight java"><figcaption><span>LocalDateTimeConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LocalDateTimeConfig</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 序列化内容</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LocalDateTimeSerializer <span class="hljs-title function_">localDateTimeSerializer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateTimeSerializer</span>(DateTimeFormatter.ofPattern(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>));<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> LocalDateTimeDeserializer <span class="hljs-title function_">localDateTimeDeserializer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateTimeDeserializer</span>(DateTimeFormatter.ofPattern(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>));<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> Jackson2ObjectMapperBuilderCustomizer <span class="hljs-title function_">jackson2ObjectMapperBuilderCustomizer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> builder -&gt; &#123;<br>            builder.serializerByType(LocalDateTime.class, localDateTimeSerializer());<br>            builder.deserializerByType(LocalDateTime.class, localDateTimeDeserializer());<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Knife4j配置类"><a href="#Knife4j配置类" class="headerlink" title="Knife4j配置类"></a>Knife4j配置类</h2><p>在<code>com.swx.base.config</code>创建配置类<code>Knife4jConfiguration</code></p>
+<figure class="highlight java"><figcaption><span>Knife4jConfiguration</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableSwagger2</span><br><span class="hljs-meta">@EnableKnife4j</span><br><span class="hljs-meta">@Import(BeanValidatorPluginsConfiguration.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Knife4jConfiguration</span> &#123;<br><br>    <span class="hljs-meta">@Bean(value = &quot;defaultApi2&quot;)</span><br>    <span class="hljs-keyword">public</span> Docket <span class="hljs-title function_">defaultApi2</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Docket</span>(DocumentationType.SWAGGER_2)<br>                .apiInfo(apiInfo())<br>                .groupName(<span class="hljs-string">&quot;1.0&quot;</span>)<br>                .select()<br>                .apis(RequestHandlerSelectors.basePackage(<span class="hljs-string">&quot;com.swx&quot;</span>))<br>                .paths(PathSelectors.any())<br>                .build();<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> ApiInfo <span class="hljs-title function_">apiInfo</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiInfoBuilder</span>()<br>                .title(<span class="hljs-string">&quot;学成在线API文档&quot;</span>)<br>                .description(<span class="hljs-string">&quot;学成在线API文档&quot;</span>)<br>                .version(<span class="hljs-string">&quot;1.0&quot;</span>)<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="统一返回结果"><a href="#统一返回结果" class="headerlink" title="统一返回结果"></a>统一返回结果</h2><p>为了让前端接受到统一的返回结果，需要使用拦截器自动包装Controller返回结果，同时全局拦截异常处理，并一起包装返回统一结果。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    code<span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span><br>    message<span class="hljs-punctuation">:</span> &#x27;成功&#x27;<span class="hljs-punctuation">,</span><br>    data<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p>在<code>learning-online-base</code>工程的<code>com.swx.base.model</code>包下创建如下几个实体类</p>
+<p><strong>返回结果</strong></p>
+<figure class="highlight java"><figcaption><span>R</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 返回结果实体类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">R</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 返回码</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Integer code;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 返回消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String message;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 返回数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Object data;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">R</span><span class="hljs-params">()</span> &#123;<br><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">R</span><span class="hljs-params">(ResultCodeEnum resultCode, Object data)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = resultCode.code();<br>        <span class="hljs-built_in">this</span>.message = resultCode.message();<br>        <span class="hljs-built_in">this</span>.data = data;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setResultCode</span><span class="hljs-params">(ResultCodeEnum resultCode)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = resultCode.code();<br>        <span class="hljs-built_in">this</span>.message = resultCode.message();<br>    &#125;<br><br>    <span class="hljs-comment">// 返回成功</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> R <span class="hljs-title function_">success</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>();<br>        result.setResultCode(ResultCodeEnum.SUCCESS);<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>    <span class="hljs-comment">// 返回成功</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> R <span class="hljs-title function_">success</span><span class="hljs-params">(Object data)</span> &#123;<br>        <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>();<br>        result.setResultCode(ResultCodeEnum.SUCCESS);<br>        result.setData(data);<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 返回失败</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> R <span class="hljs-title function_">fail</span><span class="hljs-params">(Integer code, String message)</span> &#123;<br>        <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>();<br>        result.setCode(code);<br>        result.setMessage(message);<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>    <span class="hljs-comment">// 返回失败</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> R <span class="hljs-title function_">fail</span><span class="hljs-params">(ResultCodeEnum resultCode)</span> &#123;<br>        <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>();<br>        result.setResultCode(resultCode);<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+<p><strong>异常结果</strong></p>
+<figure class="highlight java"><figcaption><span>ErrorResult</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 异常结果包装类</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sw-code</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ErrorResult</span> &#123;<br><br>    <span class="hljs-keyword">private</span> Integer code;<br><br>    <span class="hljs-keyword">private</span> String message;<br><br>    <span class="hljs-keyword">private</span> String exception;<br><br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getCode</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> code;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCode</span><span class="hljs-params">(Integer code)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getMessage</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMessage</span><span class="hljs-params">(String message)</span> &#123;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getException</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> exception;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setException</span><span class="hljs-params">(String exception)</span> &#123;<br>        <span class="hljs-built_in">this</span>.exception = exception;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ErrorResult <span class="hljs-title function_">fail</span><span class="hljs-params">(ResultCodeEnum resultCode, Throwable e, String message)</span> &#123;<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">errorResult</span> <span class="hljs-operator">=</span> ErrorResult.fail(resultCode, e);<br>        errorResult.setMessage(message);<br>        <span class="hljs-keyword">return</span> errorResult;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ErrorResult <span class="hljs-title function_">fail</span><span class="hljs-params">(ResultCodeEnum resultCode, Throwable e)</span> &#123;<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">errorResult</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ErrorResult</span>();<br>        errorResult.setCode(resultCode.code());<br>        errorResult.setMessage(resultCode.message());<br>        errorResult.setException(e.getClass().getName());<br>        <span class="hljs-keyword">return</span> errorResult;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ErrorResult <span class="hljs-title function_">fail</span><span class="hljs-params">(Integer code, String message)</span> &#123;<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">errorResult</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ErrorResult</span>();<br>        errorResult.setCode(code);<br>        errorResult.setMessage(message);<br>        <span class="hljs-keyword">return</span> errorResult;<br>    &#125;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+<p><strong>异常枚举类</strong></p>
+<figure class="highlight java"><figcaption><span>ResultCodeEnum</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ResultCodeEnum</span> &#123;<br><br>    <span class="hljs-comment">/* 成功状态码 */</span><br>    SUCCESS(<span class="hljs-number">200</span>, <span class="hljs-string">&quot;成功&quot;</span>),<br>    <span class="hljs-comment">/* Token 50~100 */</span><br>    TOKEN_INVALID(<span class="hljs-number">50</span>, <span class="hljs-string">&quot;无效TOKEN&quot;</span>),<br>    TOKEN_EXPIRE(<span class="hljs-number">51</span>, <span class="hljs-string">&quot;TOKEN已过期&quot;</span>),<br>    TOKEN_REQUIRE(<span class="hljs-number">50</span>, <span class="hljs-string">&quot;TOKEN是必须的&quot;</span>),<br>    <span class="hljs-comment">/* 参数错误 500~1000 */</span><br>    SERVER_ERROR(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;服务器内部错误&quot;</span>),<br>    PARAM_REQUIRE(<span class="hljs-number">501</span>, <span class="hljs-string">&quot;缺少参数&quot;</span>),<br>    PARAM_INVALID(<span class="hljs-number">502</span>, <span class="hljs-string">&quot;无效参数&quot;</span>),<br>    PARAM_TIMAGE_FORMAT_ERROR(<span class="hljs-number">503</span>, <span class="hljs-string">&quot;图片格式有误&quot;</span>),<br>    <span class="hljs-comment">/* 数据错误 1000~2000 */</span><br>    DATA_EXIST(<span class="hljs-number">1000</span>, <span class="hljs-string">&quot;数据已经存在&quot;</span>),<br>    AP_USER_DATA_NOT_EXIST(<span class="hljs-number">1001</span>, <span class="hljs-string">&quot;ApUser数据不存在&quot;</span>),<br>    DATA_NOT_EXIST(<span class="hljs-number">1002</span>, <span class="hljs-string">&quot;数据不存在&quot;</span>),<br>    <span class="hljs-comment">/* 数据错误 300~3500 */</span><br>    NO_OPERATOR_AUTH(<span class="hljs-number">3000</span>, <span class="hljs-string">&quot;无权操作&quot;</span>),<br>    NEED_ADMIN(<span class="hljs-number">3001</span>, <span class="hljs-string">&quot;需要管理员权限&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> Integer code;<br>    <span class="hljs-keyword">private</span> String message;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">ResultCodeEnum</span><span class="hljs-params">(Integer code, String message)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">code</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.code;<br>    &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">message</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.message;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h3><p>在<code>learning-online-base</code>工程的<code>com.swx.base.excpetion</code>包下创建自定义异常</p>
+<figure class="highlight java"><figcaption><span>BizException</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BizException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 错误码</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Integer code;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 错误信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String message;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">(ResultCodeEnum resultCode)</span> &#123;<br>        <span class="hljs-built_in">super</span>(resultCode.message());<br>        <span class="hljs-built_in">this</span>.code = resultCode.code();<br>        <span class="hljs-built_in">this</span>.message = resultCode.message();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">(ResultCodeEnum resultCode, Throwable cause)</span> &#123;<br>        <span class="hljs-built_in">super</span>(resultCode.message(), cause);<br>        <span class="hljs-built_in">this</span>.code = resultCode.code();<br>        <span class="hljs-built_in">this</span>.message = resultCode.message();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">(String message)</span> &#123;<br>        <span class="hljs-built_in">super</span>(message);<br>        <span class="hljs-built_in">this</span>.code = -<span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">(Integer code, String message)</span> &#123;<br>        <span class="hljs-built_in">super</span>(message);<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BizException</span><span class="hljs-params">(Integer code, String message, Throwable cause)</span> &#123;<br>        <span class="hljs-built_in">super</span>(message, cause);<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> Throwable <span class="hljs-title function_">fillInStackTrace</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getCode</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> code;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCode</span><span class="hljs-params">(Integer code)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getMessage</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setMessage</span><span class="hljs-params">(String message)</span> &#123;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h3><p>添加了该注解的Controller的方法的返回结果将被我们统一包装</p>
+<figure class="highlight java"><figcaption><span>ResponseResult</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(&#123; ElementType.TYPE, ElementType.METHOD&#125;)</span><br><span class="hljs-meta">@Documented</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> ResponseResult &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="注解拦截器"><a href="#注解拦截器" class="headerlink" title="注解拦截器"></a>注解拦截器</h3><p>创建自定义的拦截器，判断方法是否使用了<code>@ResponseResult</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ResponseResultInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HandlerInterceptor</span> &#123;<br>    <span class="hljs-comment">//标记名称</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">RESPONSE_RESULT_ANN</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;RESPONSE-RESULT-ANN&quot;</span>;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span><br>            <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// TODO Auto-generated method stub</span><br>        <span class="hljs-keyword">if</span> (handler <span class="hljs-keyword">instanceof</span> HandlerMethod) &#123;<br>            <span class="hljs-keyword">final</span> <span class="hljs-type">HandlerMethod</span> <span class="hljs-variable">handlerMethod</span> <span class="hljs-operator">=</span> (HandlerMethod) handler;<br>            <span class="hljs-keyword">final</span> Class&lt;?&gt; clazz = handlerMethod.getBeanType();<br>            <span class="hljs-keyword">final</span> <span class="hljs-type">Method</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> handlerMethod.getMethod();<br>            <span class="hljs-comment">// 判断是否在类对象上添加了注解</span><br>            <span class="hljs-keyword">if</span> (clazz.isAnnotationPresent(ResponseResult.class)) &#123;<br>                <span class="hljs-comment">// 设置此请求返回体，需要包装，往下传递，在ResponseBodyAdvice接口进行判断</span><br>                request.setAttribute(RESPONSE_RESULT_ANN, clazz.getAnnotation(ResponseResult.class));<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (method.isAnnotationPresent(ResponseResult.class)) &#123;<br>                request.setAttribute(RESPONSE_RESULT_ANN, method.getAnnotation(ResponseResult.class));<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="返回结果处理"><a href="#返回结果处理" class="headerlink" title="返回结果处理"></a>返回结果处理</h3><p>使用<code>@ControllerAdvice</code>可以拦截Controller方法返回参数，自动包装成为统一返回结果：</p>
+<figure class="highlight java"><figcaption><span>ResponseResultHandler</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 使用 <span class="hljs-doctag">@ControllerAdvice</span> &amp; ResponseBodyAdvice</span><br><span class="hljs-comment"> * 拦截Controller方法默认返回参数，统一处理返回值/响应体</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@ControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ResponseResultHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ResponseBodyAdvice</span>&lt;Object&gt; &#123;<br><br>    <span class="hljs-comment">// 标记名称</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">RESPONSE_RESULT_ANN</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;RESPONSE-RESULT-ANN&quot;</span>;<br><br><br>    <span class="hljs-comment">// 判断是否要执行 beforeBodyWrite 方法，true为执行，false不执行，有注解标记的时候处理返回值</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">supports</span><span class="hljs-params">(MethodParameter arg0, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; arg1)</span> &#123;<br>        <span class="hljs-type">ServletRequestAttributes</span> <span class="hljs-variable">sra</span> <span class="hljs-operator">=</span> (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();<br>        <span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">request</span> <span class="hljs-operator">=</span> sra.getRequest();<br>        <span class="hljs-comment">// 判断请求是否有包装标记</span><br>        <span class="hljs-type">ResponseResult</span> <span class="hljs-variable">responseResultAnn</span> <span class="hljs-operator">=</span> (ResponseResult) request.getAttribute(RESPONSE_RESULT_ANN);<br>        <span class="hljs-keyword">return</span> responseResultAnn == <span class="hljs-literal">null</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;<br>    &#125;<br><br><br>    <span class="hljs-comment">// 对返回值做包装处理，如果属于异常结果，则需要再包装</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">beforeBodyWrite</span><span class="hljs-params">(Object body, MethodParameter arg1, MediaType arg2,</span><br><span class="hljs-params">                                  Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; arg3, ServerHttpRequest arg4, ServerHttpResponse arg5)</span> &#123;<br>        <span class="hljs-keyword">if</span> (body <span class="hljs-keyword">instanceof</span> ErrorResult) &#123;<br>            <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">error</span> <span class="hljs-operator">=</span> (ErrorResult) body;<br>            <span class="hljs-keyword">return</span> R.fail(error.getCode(), error.getMessage());<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (body <span class="hljs-keyword">instanceof</span> R) &#123;<br>            <span class="hljs-keyword">return</span> (R) body;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>  (body <span class="hljs-keyword">instanceof</span> String) &#123;<br>            <span class="hljs-keyword">return</span> body;<br>        &#125;<br>        <span class="hljs-keyword">return</span> R.success(body);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h3><p>正常返回的结果<code>R</code>被自动包装，那么异常结果也应该被自动包装，因此使用<code>@RestControllerAdvice</code>注解做全局的异常处理，返回错误结果<code>ErrorResult</code></p>
+<figure class="highlight java"><figcaption><span>GlobalExceptionHandler</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 全局异常处理类</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@RestControllerAdvice</span>(<span class="hljs-doctag">@ControllerAdvice</span>)，拦截异常并统一处理</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sw-code</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GlobalExceptionHandler</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">logger</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(<span class="hljs-string">&quot;GlobalExceptionHandler.class&quot;</span>);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理自定义的业务异常</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> e	异常对象</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> request	request</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span>	错误结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ExceptionHandler(BizException.class)</span><br>    <span class="hljs-keyword">public</span> ErrorResult <span class="hljs-title function_">bizExceptionHandler</span><span class="hljs-params">(BizException e, HttpServletRequest request)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;发生业务异常！原因是: &#123;&#125;&quot;</span>, e.getMessage());<br>        <span class="hljs-keyword">return</span> ErrorResult.fail(e.getCode(), e.getMessage());<br>    &#125;<br><br>    <span class="hljs-comment">// 拦截抛出的异常，@ResponseStatus：用来改变响应状态码</span><br>    <span class="hljs-meta">@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)</span><br>    <span class="hljs-meta">@ExceptionHandler(Throwable.class)</span><br>    <span class="hljs-keyword">public</span> ErrorResult <span class="hljs-title function_">handlerThrowable</span><span class="hljs-params">(Throwable e, HttpServletRequest request)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;发生未知异常！原因是: &quot;</span>, e);<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">error</span> <span class="hljs-operator">=</span> ErrorResult.fail(ResultCodeEnum.SERVER_ERROR, e);<br>        <span class="hljs-keyword">return</span> error;<br>    &#125;<br><br>    <span class="hljs-comment">// 参数校验异常</span><br>    <span class="hljs-meta">@ExceptionHandler(BindException.class)</span><br>    <span class="hljs-keyword">public</span> ErrorResult <span class="hljs-title function_">handleBindExcpetion</span><span class="hljs-params">(BindException e, HttpServletRequest request)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;发生参数校验异常！原因是：&quot;</span>,e);<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">error</span> <span class="hljs-operator">=</span> ErrorResult.fail(ResultCodeEnum.PARAM_INVALID, e, e.getAllErrors().get(<span class="hljs-number">0</span>).getDefaultMessage());<br>        <span class="hljs-keyword">return</span> error;<br>    &#125;<br><br>    <span class="hljs-meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span><br>    <span class="hljs-keyword">public</span> ErrorResult <span class="hljs-title function_">handleMethodArgumentNotValidException</span><span class="hljs-params">(MethodArgumentNotValidException e, HttpServletRequest request)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;发生参数校验异常！原因是：&quot;</span>,e);<br>        <span class="hljs-type">ErrorResult</span> <span class="hljs-variable">error</span> <span class="hljs-operator">=</span> ErrorResult.fail(ResultCodeEnum.PARAM_INVALID,e,e.getBindingResult().getAllErrors().get(<span class="hljs-number">0</span>).getDefaultMessage());<br>        <span class="hljs-keyword">return</span> error;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><strong>系统如何处理异常？</strong></p>
+<p>使用控制器增强注解@RestControllerAdvice捕获处理不同的异常，可以返回一个自定义的异常结果。同时还可以使用增强注解@ControllerAdvice拦截Controller方法的返回，并在beforeBodyWrite方法包装对象和异常结果为统一结果。</p>
+</blockquote>
+<h2 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h2><p>为了让引入base模块的项目能够自动装配配置类，需要在<code>resources</code>下创建目录<code>META-INF</code>并在目录下创建文件<code>spring.factories</code>，内容如下：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span> = <span class="hljs-string">\</span><br><span class="hljs-string">  com.swx.base.config.LocalDateTimeConfig, \</span><br><span class="hljs-string">  com.swx.base.config.Knife4jConfiguration, \</span><br><span class="hljs-string">  com.swx.base.config.WebAppConfig, \</span><br><span class="hljs-string">  com.swx.base.exception.GlobalExceptionHandler, \</span><br><span class="hljs-string">  com.swx.base.exception.ResponseResultHandler</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>所有的配置类都要在这里声明一下。</strong></p>
+<h2 id="JSR303校验"><a href="#JSR303校验" class="headerlink" title="JSR303校验"></a>JSR303校验</h2><blockquote>
+<p><strong>请求参数的合法校验如何做？</strong></p>
+<p>使用基于JSR303的校验框架实现，Spring Boot提供了JSR-303的支持，它就是spring-boot-starter-validation，它包括了很多校验规则，只需要在模型类中通过注解指定校验规则，在Controller方法上开启校验。</p>
+</blockquote>
+<h3 id="实现统一校验"><a href="#实现统一校验" class="headerlink" title="实现统一校验"></a>实现统一校验</h3><p>引入依赖信息</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在实体类中加入校验信息，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ApiModel(value = &quot;AddCourseDTO&quot;, description = &quot;新增课程基本信息&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AddCourseDTO</span> &#123;<br><br>    <span class="hljs-meta">@NotEmpty(message = &quot;课程名称不能为空&quot;)</span><br>    <span class="hljs-meta">@ApiModelProperty(value = &quot;课程名称&quot;, required = true)</span><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@NotEmpty(message = &quot;适用人群不能为空&quot;)</span><br>    <span class="hljs-meta">@Size(message = &quot;适用人群内容过少&quot;, min = 10)</span><br>    <span class="hljs-meta">@ApiModelProperty(value = &quot;适用人群&quot;, required = true)</span><br>    <span class="hljs-keyword">private</span> String users;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="分组校验"><a href="#分组校验" class="headerlink" title="分组校验"></a>分组校验</h3><p>修改和新增的校验规则不同，此时可以使用分组来解决。</p>
+<p>在base模块的<code>com.swx.base.exception</code>包下创建分组类：</p>
+<figure class="highlight java"><figcaption><span>ValidationGroup</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 用于分组校验</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ValidationGroup</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Insert</span>&#123;&#125;;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Update</span>&#123;&#125;;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Delete</span>&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改校验规则</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@NotEmpty(message = &quot;新增课程名称不能为空&quot;, groups = &#123;ValidationGroup.Insert.class&#125;)</span><br><span class="hljs-meta">@NotEmpty(message = &quot;修改课程名称不能为空&quot;, groups = &#123;ValidationGroup.Update.class&#125;)</span><br><span class="hljs-meta">@ApiModelProperty(value = &quot;课程名称&quot;, required = true)</span><br><span class="hljs-keyword">private</span> String name;<br></code></pre></td></tr></table></figure>
+
+<p>增加分组信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ApiOperation(&quot;新增课程&quot;)</span><br><span class="hljs-meta">@PostMapping(&quot;&quot;)</span><br><span class="hljs-keyword">public</span> CourseBaseInfoVO <span class="hljs-title function_">createCourseBase</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> <span class="hljs-meta">@Validated(ValidationGroup.Insert.class)</span> AddCourseDTO dto)</span> &#123;<br>    <span class="hljs-type">Long</span> <span class="hljs-variable">companyId</span> <span class="hljs-operator">=</span> <span class="hljs-number">1232141425L</span>;<br>    <span class="hljs-keyword">return</span> courseBaseService.createCourseBase(companyId, dto);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/learning-online/04-project-tools/code-generator.html">代码生成工具</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/learning-online/04-project-tools/nacos.html">注册配置中心</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

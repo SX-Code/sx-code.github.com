@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>学成在线：课程发布服务 - swcode</title>
+
+  
+    <meta name="description" content="课程信息编辑完毕即可发布课程，发布课程相当于—个确认操作，课程发布后学习者在网站可以搜索到课程，然后查看课程的详细信息，进一步选课、支付、在线学习。 下边是课程编辑与发布的整体流程：   为了课程内容没有违规信息、课程内容安排合理，在课程发布之前运营方会进行课程审核，审核通过后课程方可发布。 作为课程制作方即教学机构，在课程发布前通过课程预览功能可以看到课程发布后的效果，哪里的课程信息存在问题方便">
+<meta property="og:type" content="website">
+<meta property="og:title" content="课程发布服务">
+<meta property="og:url" content="http://example.com/wiki/learning-online/06-content/publish.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="课程信息编辑完毕即可发布课程，发布课程相当于—个确认操作，课程发布后学习者在网站可以搜索到课程，然后查看课程的详细信息，进一步选课、支付、在线学习。 下边是课程编辑与发布的整体流程：   为了课程内容没有违规信息、课程内容安排合理，在课程发布之前运营方会进行课程审核，审核通过后课程方可发布。 作为课程制作方即教学机构，在课程发布前通过课程预览功能可以看到课程发布后的效果，哪里的课程信息存在问题方便">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online18.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online24.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online21.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online22.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online23.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online25.png">
+<meta property="article:published_time" content="2023-08-28T12:36:00.000Z">
+<meta property="article:modified_time" content="2023-08-28T13:02:31.534Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online18.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/learning-online/01-introduce/index.html"><div class="main" ff="title">学成在线</div><div class="sub cap">学成在线项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/learning-online/" placeholder="在 /wiki/learning-online/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目框架</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/deploy-web.html"><span class="toc-text">导入前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/create-server.html"><span class="toc-text">创建后端项目</span></a></div></div><div class="widget-header cap dis-select"><span class="name">项目工具</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/code-generator.html"><span class="toc-text">代码生成工具</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/base.html"><span class="toc-text">完善Base工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/nacos.html"><span class="toc-text">注册配置中心</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/gateway.html"><span class="toc-text">增加网关工程</span></a></div></div><div class="widget-header cap dis-select"><span class="name">系统信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/select.html"><span class="toc-text">查询系统字典</span></a></div></div><div class="widget-header cap dis-select"><span class="name">内容管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/category.html"><span class="toc-text">课程类别服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/market.html"><span class="toc-text">课程营销服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/course.html"><span class="toc-text">课程信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/plan.html"><span class="toc-text">课程计划服务</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/learning-online/06-content/publish.html"><span class="toc-text">课程发布服务</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Freemarker"><span class="toc-text">Freemarker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E9%A2%84%E8%A7%88%E6%9C%8D%E5%8A%A1"><span class="toc-text">课程预览服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF%E5%A6%82%E4%B8%8B"><span class="toc-text">接口信息如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89CoursePreviewVO"><span class="toc-text">定义CoursePreviewVO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Service"><span class="toc-text">定义Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Controller"><span class="toc-text">定义Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Push%E5%88%B0Git"><span class="toc-text">Push到Git</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E9%A2%84%E8%A7%88%E6%9C%8D%E5%8A%A1"><span class="toc-text">视频预览服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF%E5%A6%82%E4%B8%8B-1"><span class="toc-text">接口信息如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Controller-1"><span class="toc-text">定义Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Push%E5%88%B0Git-1"><span class="toc-text">Push到Git</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E5%AE%A1%E6%A0%B8%E6%9C%8D%E5%8A%A1"><span class="toc-text">课程审核服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"></span></a></li></ol></div></div><div class="widget-header cap dis-select"><span class="name">媒资管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/course.html"><span class="toc-text">分布式文件系统</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/file.html"><span class="toc-text">媒资信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/picture.html"><span class="toc-text">图片上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-upload.html"><span class="toc-text">视频上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-transcoding.html"><span class="toc-text">视频转码服务</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-28T13:02:31.534Z">2023-08-28</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>课程发布服务</span></h1>
+  <p>课程信息编辑完毕即可发布课程，发布课程相当于—个确认操作，课程发布后学习者在网站可以搜索到课程，然后查看课程的详细信息，进一步选课、支付、在线学习。</p>
+<p>下边是课程编辑与发布的整体流程：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online18.png" fancybox="true"/></div></div>
+
+<p>为了课程内容没有违规信息、课程内容安排合理，在课程发布之前运营方会进行课程审核，审核通过后课程方可发布。</p>
+<p>作为课程制作方即教学机构，在课程发布前通过课程预览功能可以看到课程发布后的效果，哪里的课程信息存在问题方便查看，及时修改。</p>
+<h2 id="Freemarker"><a href="#Freemarker" class="headerlink" title="Freemarker"></a>Freemarker</h2><p>课程预览页面使用Freemarker技术，后端填充数据返回给前端</p>
+<p>在Nacos中添加Freemarker配置，创建内容管理工程配置：<code>content-api-dev.yaml</code></p>
+<ul>
+<li><p><strong>ID</strong>：freemarker-config-dev.yaml</p>
+</li>
+<li><p><strong>Group</strong>：learning-online-common</p>
+</li>
+<li><p><strong>描述</strong>：静态模版引擎Freemarker</p>
+</li>
+<li><p>配置内容：</p>
+<figure class="highlight yaml"><figcaption><span>freemarker-config-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">freemarker:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">cache:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 关闭模版缓存，方便测试</span><br>    <span class="hljs-attr">settings:</span><br>      <span class="hljs-attr">template_update_delay:</span> <span class="hljs-number">0</span><br>    <span class="hljs-attr">suffix:</span> <span class="hljs-string">.ftl</span><br>    <span class="hljs-attr">charset:</span> <span class="hljs-string">UTF-8</span><br>    <span class="hljs-attr">template-loader-path:</span> <span class="hljs-string">classpath:/templates/</span><br>    <span class="hljs-attr">resources:</span><br>      <span class="hljs-attr">add-mappings:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 关闭项目中的静态资源映射</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>在内容管理工程的<code>learning-online-content-api</code>模块的pom文件中添加依赖：</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 静态模版引擎Freemarker --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>修改<code>learning-online-content-api</code>模块的配置文件，引入freemarker配置</p>
+<figure class="highlight yaml"><figcaption><span>bootstrap.yml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">content-api</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">discovery:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-number">124.221</span><span class="hljs-number">.23</span><span class="hljs-number">.47</span><span class="hljs-string">:8848</span><br>        <span class="hljs-attr">namespace:</span> <span class="hljs-string">learning-online-dev</span><br>        <span class="hljs-attr">group:</span> <span class="hljs-string">learning-online-project</span><br>      <span class="hljs-attr">config:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-number">124.221</span><span class="hljs-number">.23</span><span class="hljs-number">.47</span><span class="hljs-string">:8848</span><br>        <span class="hljs-attr">namespace:</span> <span class="hljs-string">learning-online-dev</span><br>        <span class="hljs-attr">group:</span> <span class="hljs-string">learning-online-project</span><br>        <span class="hljs-attr">file-extension:</span> <span class="hljs-string">yaml</span><br>        <span class="hljs-attr">refresh-enabled:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">extension-configs:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">content-service-$&#123;spring.profiles.active&#125;.yaml</span><br>            <span class="hljs-attr">group:</span> <span class="hljs-string">learning-online-project</span><br>            <span class="hljs-attr">refresh:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">shared-configs:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">logging-$&#123;spring.profiles.active&#125;.yaml</span><br>            <span class="hljs-attr">group:</span> <span class="hljs-string">learning-online-common</span><br>            <span class="hljs-attr">refresh:</span> <span class="hljs-literal">true</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">freemarker-config-$&#123;spring.profiles.active&#125;.yaml</span><br>            <span class="hljs-attr">group:</span> <span class="hljs-string">learning-online-common</span><br>            <span class="hljs-attr">refresh:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">profiles:</span><br>    <span class="hljs-attr">active:</span> <span class="hljs-string">dev</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="课程预览服务"><a href="#课程预览服务" class="headerlink" title="课程预览服务"></a>课程预览服务</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online24.png" fancybox="true"/></div></div>
+
+<p>在<code>resources</code>目录下创建<code>templates</code>目录，并在目录下放入<code>course_template.ftl</code>模版文件，该文件下载地址：</p>
+<h3 id="接口信息如下"><a href="#接口信息如下" class="headerlink" title="接口信息如下"></a>接口信息如下</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:63040/content/coursepreview/267">http://localhost:63040/content/coursepreview/267</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>ModelAndView</td>
+</tr>
+</tbody></table>
+<h3 id="定义CoursePreviewVO"><a href="#定义CoursePreviewVO" class="headerlink" title="定义CoursePreviewVO"></a>定义CoursePreviewVO</h3><figure class="highlight java"><figcaption><span>CoursePreviewVO</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 课程预览</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CoursePreviewVO</span> &#123;<br><br>    <span class="hljs-comment">// 课程基本信息, 营销信息</span><br>    <span class="hljs-keyword">private</span> CourseBaseInfoVO courseBase;<br><br>    <span class="hljs-comment">// 课程计划信息</span><br>    <span class="hljs-keyword">private</span> List&lt;TeachPlanVO&gt; teachplans;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="定义Service"><a href="#定义Service" class="headerlink" title="定义Service"></a>定义Service</h3><p>找到<code>CoursePublishService</code>接口，定义计划查询接口</p>
+<figure class="highlight java"><figcaption><span>CoursePublishService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * &lt;p&gt;</span><br><span class="hljs-comment"> * 课程发布 服务类</span><br><span class="hljs-comment"> * &lt;/p&gt;</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sw-code</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 2023-08-18</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CoursePublishService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;CoursePublish&gt; &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取课程预览信息</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> courseId 课程ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> CoursePreviewVO 预览信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> CoursePreviewVO <span class="hljs-title function_">getCoursePreviewInfo</span><span class="hljs-params">(Long courseId)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现该方法，找到其实现类<code>CoursePublishServiceImpl</code></p>
+<figure class="highlight java"><figcaption><span>CoursePublishServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * &lt;p&gt;</span><br><span class="hljs-comment"> * 课程发布 服务实现类</span><br><span class="hljs-comment"> * &lt;/p&gt;</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sw-code</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 2023-08-18</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CoursePublishServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;CoursePublishMapper, CoursePublish&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CoursePublishService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CourseBaseService courseBaseService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> TeachPlanService teachPlanService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CoursePublishServiceImpl</span><span class="hljs-params">(CourseBaseService courseBaseService, TeachPlanService teachPlanService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.courseBaseService = courseBaseService;<br>        <span class="hljs-built_in">this</span>.teachPlanService = teachPlanService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取课程预览信息</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> courseId 课程ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> CoursePreviewVO 预览信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> CoursePreviewVO <span class="hljs-title function_">getCoursePreviewInfo</span><span class="hljs-params">(Long courseId)</span> &#123;<br>        <span class="hljs-comment">// 课程基本信息, 营销信息</span><br>        <span class="hljs-type">CourseBaseInfoVO</span> <span class="hljs-variable">courseBaseInfo</span> <span class="hljs-operator">=</span> courseBaseService.getCourseBaseInfo(courseId);<br>        <span class="hljs-comment">// 课程计划信息</span><br>        List&lt;TeachPlanVO&gt; teachPlans = teachPlanService.getTreeNodes(courseId);<br>        <span class="hljs-comment">// 封装VO</span><br>        <span class="hljs-type">CoursePreviewVO</span> <span class="hljs-variable">previewVO</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CoursePreviewVO</span>();<br>        previewVO.setCourseBase(courseBaseInfo);<br>        previewVO.setTeachplans(teachPlans);<br>        <span class="hljs-keyword">return</span> previewVO;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="定义Controller"><a href="#定义Controller" class="headerlink" title="定义Controller"></a>定义Controller</h3><p>注意返回的是ModelView模版数据，不能使用<code>@RestController</code></p>
+<figure class="highlight java"><figcaption><span>TeachPlanController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CoursePublishController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CoursePublishService coursePublishService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CoursePublishController</span><span class="hljs-params">(CoursePublishService coursePublishService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.coursePublishService = coursePublishService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/coursepreview/&#123;courseId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title function_">preview</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;courseId&quot;)</span> <span class="hljs-meta">@NotNull(message = &quot;课程ID不能为空&quot;)</span> Long courseId)</span> &#123;<br>        <span class="hljs-type">ModelAndView</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelAndView</span>();<br>        <span class="hljs-type">CoursePreviewVO</span> <span class="hljs-variable">previewInfo</span> <span class="hljs-operator">=</span> coursePublishService.getCoursePreviewInfo(courseId);<br>        data.addObject(<span class="hljs-string">&quot;model&quot;</span>, previewInfo);<br>        data.setViewName(<span class="hljs-string">&quot;course_template&quot;</span>);<br>        <span class="hljs-keyword">return</span> data;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>课程预览服务以提供，打开前端项目查看是否成功</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online21.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="Push到Git"><a href="#Push到Git" class="headerlink" title="Push到Git"></a>Push到Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">commit <span class="hljs-string">&quot;完成课程预览功能&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="视频预览服务"><a href="#视频预览服务" class="headerlink" title="视频预览服务"></a>视频预览服务</h2><h3 id="接口信息如下-1"><a href="#接口信息如下-1" class="headerlink" title="接口信息如下"></a>接口信息如下</h3><p>查询课程信息，无需登陆操作</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:63040/content/open/course/whole/2">http://localhost:63040/content/open/course/whole/2</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>CoursePreviewVO</td>
+</tr>
+</tbody></table>
+<p>查询视频URL</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:63040/content/open/preview/mediaId">http://localhost:63040/content/open/preview/mediaId</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>String</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>R</td>
+</tr>
+</tbody></table>
+<h3 id="定义Controller-1"><a href="#定义Controller-1" class="headerlink" title="定义Controller"></a>定义Controller</h3><p>找到<code>learning-online-content-api</code>模块，创建如下Controller</p>
+<figure class="highlight java"><figcaption><span>CourseOpenController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/open&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseOpenController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CoursePublishService coursePublishService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CourseOpenController</span><span class="hljs-params">(CoursePublishService coursePublishService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.coursePublishService = coursePublishService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/course/whole/&#123;courseId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> CoursePreviewVO <span class="hljs-title function_">preview</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;courseId&quot;)</span> <span class="hljs-meta">@NotNull(message = &quot;课程ID不能为空&quot;)</span> Long courseId)</span> &#123;<br>        <span class="hljs-keyword">return</span> coursePublishService.getCoursePreviewInfo(courseId);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>找到<code>learning-online-media-api</code>模块，创建如下Controller</p>
+<figure class="highlight java"><figcaption><span>MediaOpenController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 视频播放页面，openapi</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@ResponseResult</span><br><span class="hljs-meta">@RequestMapping(&quot;/open&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MediaOpenController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaFilesService mediaFilesService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MediaOpenController</span><span class="hljs-params">(MediaFilesService mediaFilesService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.mediaFilesService = mediaFilesService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/preview/&#123;mediaId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">getPlayUrlByMediaId</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;mediaId&quot;)</span> String mediaId)</span> &#123;<br>        <span class="hljs-type">MediaFiles</span> <span class="hljs-variable">mediaFiles</span> <span class="hljs-operator">=</span> mediaFilesService.getById(mediaId);<br>        <span class="hljs-keyword">if</span> (mediaFiles == <span class="hljs-literal">null</span> || StringUtils.isEmpty(mediaFiles.getUrl())) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;视频还没有转码处理&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> R.success(mediaFiles.getUrl());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>课程预览服务以提供，打开前端项目查看是否成功</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online22.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="Push到Git-1"><a href="#Push到Git-1" class="headerlink" title="Push到Git"></a>Push到Git</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">commit <span class="hljs-string">&quot;完成视频预览功能&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="课程审核服务"><a href="#课程审核服务" class="headerlink" title="课程审核服务"></a>课程审核服务</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online23.png" fancybox="true"/></div></div>
+
+<p>在课程基本表course_base表设置课程审核状态字段，包括：未提交、已提交(未审核)、审核通过、审核不通过。</p>
+<p>下边是课程状态的转化关系：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online25.png" fancybox="true"/></div></div>
+
+<p>说明如下：</p>
+<p>1、一门课程新增后它的审核状为”未提交“，发布状态为”未发布“。</p>
+<p>2、课程信息编辑完成，教学机构人员执行”提交审核“操作。此时课程的审核状态为”已提交“。</p>
+<p>3、当课程状态为已提交时运营平台人员对课程进行审核。</p>
+<p>4、运营平台人员审核课程，结果有两个：审核通过、审核不通过。</p>
+<p>5、课程审核过后不管状态是通过还是不通过，教学机构可以<strong>再次修改</strong>课程并提交审核，此时课程状态为”已提交“。此时运营平台人员再次审核课程。</p>
+<p>6、课程审核通过，教学机构人员可以发布课程，发布成功后课程的发布状态为”已发布“。</p>
+<p>7、课程发布后通过”下架“操作可以更改课程发布状态为”下架“</p>
+<p>8、课程下架后通过”上架“操作可以再次发布课程，上架后课程发布状态为“发布”。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/learning-online/06-content/plan.html">课程计划服务</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/learning-online/07-media/nacos.html">Nacos配置</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
