@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>学成在线：分布式文件系统 - swcode</title>
+
+  
+    <meta name="description" content="分布式文件系統 (Distributed File System, DFS) 是指文件系統管理的物理存储资源不一定直接连接在本地节点上，而是通过计算机网络与节点(可简单的理解为一台计算机）相连；或是若干不同的逻辑磁盘分区或卷标组合在一起而形成的完整的有层次的文件系统。DFS为分布在网络上任意位置的资源提供一个逻镇上的树形文件系统结构，从而使用户访问分布在网络上的共享文件更加简便。单独的DFS共享文">
+<meta property="og:type" content="website">
+<meta property="og:title" content="分布式文件系统">
+<meta property="og:url" content="http://example.com/wiki/learning-online/07-media/minio.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="分布式文件系統 (Distributed File System, DFS) 是指文件系統管理的物理存储资源不一定直接连接在本地节点上，而是通过计算机网络与节点(可简单的理解为一台计算机）相连；或是若干不同的逻辑磁盘分区或卷标组合在一起而形成的完整的有层次的文件系统。DFS为分布在网络上任意位置的资源提供一个逻镇上的树形文件系统结构，从而使用户访问分布在网络上的共享文件更加简便。单独的DFS共享文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png">
+<meta property="article:published_time" content="2023-08-28T12:40:00.000Z">
+<meta property="article:modified_time" content="2023-09-07T07:52:34.063Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/learning-online/01-introduce/index.html"><div class="main" ff="title">学成在线</div><div class="sub cap">学成在线项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/learning-online/" placeholder="在 /wiki/learning-online/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+<widget class="widget-wrapper ghrepo"><div class="widget-body"><div class="items stellar-ghinfo-api" api="https://api.github.com/repos/SX-Code/learning-online"><a class="repo" href="https://github.com/SX-Code/learning-online" target="_blank" rel="external nofollow noopener noreferrer"><div class="repo-name flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>SX-Code/learning-online</div><div class="repo-desc"><span type="text" id="description">&nbsp;</span></div><div class="grid"><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg><span type="text" id="stargazers_count"></span></div><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg><span type="text" id="forks_count"></span></div><div class="flex-row stellar-ghinfo-api" index="0" api="https://api.github.com/repos/SX-Code/learning-online/tags"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg><span type="text" id="latest-tag-name">0</span></div></div></a></div></div></widget>
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目框架</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/deploy-web.html"><span class="toc-text">导入前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/create-server.html"><span class="toc-text">创建后端项目</span></a></div></div><div class="widget-header cap dis-select"><span class="name">项目工具</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/code-generator.html"><span class="toc-text">代码生成工具</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/base.html"><span class="toc-text">完善Base工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/nacos.html"><span class="toc-text">注册配置中心</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/gateway.html"><span class="toc-text">增加网关工程</span></a></div></div><div class="widget-header cap dis-select"><span class="name">系统信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/select.html"><span class="toc-text">查询系统字典</span></a></div></div><div class="widget-header cap dis-select"><span class="name">内容管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/category.html"><span class="toc-text">课程类别服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/market.html"><span class="toc-text">课程营销服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/course.html"><span class="toc-text">课程信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/plan.html"><span class="toc-text">课程计划服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/publish.html"><span class="toc-text">课程发布服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">媒资管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/course.html"><span class="toc-text">分布式文件系统</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/learning-online/07-media/minio.html"><span class="toc-text">分布式文件系统</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E4%BA%A7%E5%93%81"><span class="toc-text">相关产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MinIO"><span class="toc-text">MinIO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MinIO"><span class="toc-text">安装MinIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEMinIO"><span class="toc-text">配置MinIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MinIO-Service"><span class="toc-text">MinIO Service</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/file.html"><span class="toc-text">媒资信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/picture.html"><span class="toc-text">文件上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-upload.html"><span class="toc-text">视频上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-media/video-transcoding.html"><span class="toc-text">视频转码服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">验证码工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-checkcode/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-checkcode/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-checkcode/project.html"><span class="toc-text">工程代码</span></a></div></div><div class="widget-header cap dis-select"><span class="name">认证授权工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/bizpro.html"><span class="toc-text">业务流程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/springsecurity.html"><span class="toc-text">Spring Security</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/unifyauth.html"><span class="toc-text">统一认证</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/gatewayauth.html"><span class="toc-text">网关认证</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-auth/authorize.html"><span class="toc-text">微服务授权</span></a></div></div><div class="widget-header cap dis-select"><span class="name">学习中心工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-learning/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-learning/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-learning/coursetable.html"><span class="toc-text">课程表服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-learning/learning.html"><span class="toc-text">获取章节视频</span></a></div></div><div class="widget-header cap dis-select"><span class="name">订单管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/alipay.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/createorder.html"><span class="toc-text">生成支付二维码</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/payreq.html"><span class="toc-text">扫码支付服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/queryresult.html"><span class="toc-text">查询支付结果</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-orders/notifyresult.html"><span class="toc-text">查询异步通知</span></a></div></div></widget>
+
+<widget class="widget-wrapper timeline"><div class="widget-body fs14"><div class="tag-plugin timeline stellar-timeline-api" api="https://api.github.com/repos/SX-Code/learning-online/issues?per_page=3"></div></div></widget>
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-07T07:52:34.063Z">2023-09-07</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>分布式文件系统</span></h1>
+  <p>分布式文件系統 (Distributed File System, DFS) 是指文件系統管理的物理存储资源不一定直接连接在本地节点上，而是通过<strong>计算机网络</strong>与节点(可简单的理解为一台计算机）相连；或是若干不同的逻辑磁盘分区或卷标组合在一起而形成的完整的有层次的文件系统。DFS为分布在网络上任意位置的资源提供一个逻镇上的树形文件系统结构，从而使用户访问分布在网络上的共享文件更加简便。单独的DFS共享文件夹的作用是相对于通过网络上的其他共享文件夹的访问点 。</p>
+<p>通过概念可以简单理解为：一个计算机无法存储海量的文件，通过网络将若干计算机組织起来共同去存储海量的文件，去接收海量用户的请求，这些组织起来的计算机通过网络进行通信，如下图：</p>
+<h2 id="相关产品"><a href="#相关产品" class="headerlink" title="相关产品"></a>相关产品</h2><p>1、NFS</p>
+<p><em>NFS</em>一般指网络文件系统。 网络文件系统，英文Network File System(<em>NFS</em>)，是由SUN公司研制的UNIX表示层协议(presentation layer protocol)，能使使用者访问网络上别处的文件就像在使用自己的计算机一样。</p>
+<p>特点：</p>
+<p>1）在客户端映射NFS服务器的驱动器。</p>
+<p>2）客户端通过网络访问NFS服务器的硬盘完全透明。</p>
+<p>2、GFS</p>
+<p><em>GFS</em>是一个可扩展的分布式文件系统，用于大型的、分布式的、对大量数据进行访问的应用。它运行于廉价的普通硬件上，并提供容错功能。它可以给大量的用户提供总体性能较高的服务</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png" fancybox="true"/></div></div>
+
+<p>1）GFS采用主从结构，一个GFS集群由一个master和大量的chunkserver组成。<br>2）master存储了数据文件的元数据，一个文件被分成了若干块存储在多个chunkserver中。<br>3）用户从master中获取数据元信息，向chunkserver存储数据。</p>
+<p>3、HDFS</p>
+<p>HDFS，Hadoop Distribute File System（Hadoop分布式文件系统）的简称，它是Hadoop核心组件之一，是大数据生态圈最底层的分布式存储服务。将计算靠近数据，而不是将数据移动到离计算更近的地方，使得应用的计算更有效率。</p>
+<p>HDFS遵循主从架构（master&#x2F;slave）。通常包括一个主节点和多个从节点。主节点为NameNode，从节点为DataNode。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png" fancybox="true"/></div></div>
+
+<p>4、云计算厂家</p>
+<p>阿里云对象存储服务（Object Storage Service，简称OSS）</p>
+<p>百度云对象存储服务（Baidu Object Storage，简称BOS）</p>
+<h2 id="MinIO"><a href="#MinIO" class="headerlink" title="MinIO"></a>MinIO</h2><p>MinIO基于Apache License v2.0开源协议的对象存储服务，可以做为云存储的解决方案用来保存海量的图片，视频，文档。</p>
+<p>uGolang语言实现，配置简单，单行命令可以运行起来。</p>
+<p>uMinIO兼容亚马逊S3云存储服务接口，适合于存储大容量非结构化的数据，一个对象文件可以是任意大小，从几kb到最大5T不等。</p>
+<p>官网文档：<a target="_blank" rel="noopener" href="http://docs.minio.org.cn/docs/">http://docs.minio.org.cn/docs/</a></p>
+<h3 id="安装MinIO"><a href="#安装MinIO" class="headerlink" title="安装MinIO"></a>安装MinIO</h3><p>①：拉取镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker pull minio/minio<br></code></pre></td></tr></table></figure>
+
+<p>②：创建容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -p 9000:9000 -p 9001:9001 \<br>	--name minio \<br>	-d --restart=always \<br>	-e <span class="hljs-string">&quot;MINIO_ACCESS_KEY=minio&quot;</span> \<br>	-e <span class="hljs-string">&quot;MINIO_SECRET_KEY=minio123&quot;</span> \<br>	-v /home/data:/data \<br>	-v /home/config:/root/.minio \<br>	minio/minio server /data \<br>	--console-address <span class="hljs-string">&quot;:9001&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>③：访问minio系统</p>
+<p>   <a target="_blank" rel="noopener" href="http://ip:9001/">http://ip:9001</a> </p>
+<h3 id="配置MinIO"><a href="#配置MinIO" class="headerlink" title="配置MinIO"></a>配置MinIO</h3><p>找到<code>learning-online-media-service</code>工程，添加MinIO的配置类</p>
+<p>创建配置属性<code>MinIOConfigProperties</code>类，内容如下：</p>
+<figure class="highlight java"><figcaption><span>MinIOConfigProperties</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@ConfigurationProperties(prefix = &quot;minio&quot;)</span>  <span class="hljs-comment">// 文件上传 配置前缀file.oss</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOConfigProperties</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> String accessKey;<br>    <span class="hljs-keyword">private</span> String secretKey;<br>    <span class="hljs-keyword">private</span> String endpoint;<br>    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; bucket;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在Nacos中配置这些属性：</p>
+<figure class="highlight yml"><figcaption><span>media-service-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">minio:</span><br>  <span class="hljs-attr">endpoint:</span> <span class="hljs-string">http://124.221.23.47:9000</span><br>  <span class="hljs-attr">accessKey:</span> <span class="hljs-string">minio</span><br>  <span class="hljs-attr">secretKey:</span> <span class="hljs-string">minio123</span><br>  <span class="hljs-attr">bucket:</span><br>    <span class="hljs-attr">files:</span> <span class="hljs-string">mediafiles</span><br>    <span class="hljs-attr">video:</span> <span class="hljs-string">video</span><br></code></pre></td></tr></table></figure>
+
+<p>创建MinIO客户端配置类</p>
+<figure class="highlight java"><figcaption><span>MinIOConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableConfigurationProperties(&#123;MinIOConfigProperties.class&#125;)</span><br><span class="hljs-comment">//当引入FileStorageService接口时</span><br><span class="hljs-meta">@ConditionalOnClass(FileStorageService.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOConfig</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> MinIOConfigProperties minIOConfigProperties;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MinioClient <span class="hljs-title function_">buildMinioClient</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> MinioClient<br>                .builder()<br>                .credentials(minIOConfigProperties.getAccessKey(), minIOConfigProperties.getSecretKey())<br>                .endpoint(minIOConfigProperties.getEndpoint())<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="MinIO-Service"><a href="#MinIO-Service" class="headerlink" title="MinIO Service"></a>MinIO Service</h3><p>找到<code>learning-online-media-service</code>工程，在包<code>com.swx.media.service</code>下创建接口类<code>MinIOFileStorageService</code></p>
+<figure class="highlight java"><figcaption><span>MinIOFileStorageService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">FileStorageService</span> &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在包<code>com.swx.media.service.impl</code>下实现该接口</p>
+<figure class="highlight java"><figcaption><span>MinIOFileStorageService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@EnableConfigurationProperties(MinIOConfigProperties.class)</span><br><span class="hljs-meta">@Import(MinIOConfig.class)</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinIOFileStorageService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FileStorageService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">static</span> <span class="hljs-type">String</span> <span class="hljs-variable">separator</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/&quot;</span>;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dirPath</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename yyyy/mm/dd/file.jpg</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">builderFilePath</span><span class="hljs-params">(String dirPath, String filename)</span> &#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">stringBuilder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-number">50</span>);<br>        <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(dirPath)) &#123;<br>            stringBuilder.append(dirPath).append(separator);<br>        &#125;<br>        <span class="hljs-type">SimpleDateFormat</span> <span class="hljs-variable">sdf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleDateFormat</span>(<span class="hljs-string">&quot;yyyy/MM/dd&quot;</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">todayStr</span> <span class="hljs-operator">=</span> sdf.format(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        stringBuilder.append(todayStr).append(separator);<br>        stringBuilder.append(filename);<br>        <span class="hljs-keyword">return</span> stringBuilder.toString();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/learning-online/07-media/course.html">分布式文件系统</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/learning-online/07-media/file.html">媒资信息服务</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
