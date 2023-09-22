@@ -30,13 +30,13 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="分布式文件系統 (Distributed File System, DFS) 是指文件系統管理的物理存储资源不一定直接连接在本地节点上，而是通过计算机网络与节点(可简单的理解为一台计算机）相连；或是若干不同的逻辑磁盘分区或卷标组合在一起而形成的完整的有层次的文件系统。DFS为分布在网络上任意位置的资源提供一个逻镇上的树形文件系统结构，从而使用户访问分布在网络上的共享文件更加简便。单独的DFS共享文">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png">
 <meta property="article:published_time" content="2023-08-28T12:40:00.000Z">
-<meta property="article:modified_time" content="2023-09-07T07:52:34.063Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.980Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png">
   
   
 
@@ -108,7 +108,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-07T07:52:34.063Z">2023-09-07</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.980Z">2023-09-22</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>分布式文件系统</span></h1>
@@ -121,13 +121,13 @@
 <p>2）客户端通过网络访问NFS服务器的硬盘完全透明。</p>
 <p>2、GFS</p>
 <p><em>GFS</em>是一个可扩展的分布式文件系统，用于大型的、分布式的、对大量数据进行访问的应用。它运行于廉价的普通硬件上，并提供容错功能。它可以给大量的用户提供总体性能较高的服务</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online10.png" fancybox="true"/></div></div>
 
 <p>1）GFS采用主从结构，一个GFS集群由一个master和大量的chunkserver组成。<br>2）master存储了数据文件的元数据，一个文件被分成了若干块存储在多个chunkserver中。<br>3）用户从master中获取数据元信息，向chunkserver存储数据。</p>
 <p>3、HDFS</p>
 <p>HDFS，Hadoop Distribute File System（Hadoop分布式文件系统）的简称，它是Hadoop核心组件之一，是大数据生态圈最底层的分布式存储服务。将计算靠近数据，而不是将数据移动到离计算更近的地方，使得应用的计算更有效率。</p>
 <p>HDFS遵循主从架构（master&#x2F;slave）。通常包括一个主节点和多个从节点。主节点为NameNode，从节点为DataNode。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online11.png" fancybox="true"/></div></div>
 
 <p>4、云计算厂家</p>
 <p>阿里云对象存储服务（Object Storage Service，简称OSS）</p>

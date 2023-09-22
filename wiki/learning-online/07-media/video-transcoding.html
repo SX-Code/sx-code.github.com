@@ -30,14 +30,14 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="AVI 是一种比较老的视频格式，现代浏览器通常不直接支持 AVI 格式，因此在网页上播放 AVI 视频时，您需要将视频转换为一种更常见的格式（如 MP4），或使用一些第三方的 JavaScript 播放器库。 下面是整个转码服务的运行过程     FFmpeg处理视频使用FFmpeg进行视频转码操作 分布式任务调度XXL-JOB是一个分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online15.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online16.png">
-<meta property="article:published_time" content="2023-09-07T07:50:16.279Z">
-<meta property="article:modified_time" content="2023-09-07T07:50:16.274Z">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online15.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online16.png">
+<meta property="article:published_time" content="2023-09-22T02:57:19.982Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.982Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
   
   
 
@@ -109,13 +109,13 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-07T07:50:16.274Z">2023-09-07</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.982Z">2023-09-22</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>视频转码服务</span></h1>
   <p>AVI 是一种比较老的视频格式，现代浏览器通常不直接支持 AVI 格式，因此在网页上播放 AVI 视频时，您需要将视频转换为一种更常见的格式（如 MP4），或使用一些第三方的 JavaScript 播放器库。</p>
 <p>下面是整个转码服务的运行过程</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online17.png" fancybox="true"/></div></div>
 
 
 
@@ -145,7 +145,7 @@
 </blockquote>
 <p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/">http://localhost:8080/xxl-job-admin/</a></p>
 <h3 id="创建执行器"><a href="#创建执行器" class="headerlink" title="创建执行器"></a>创建执行器</h3><p>进入后台管理，点击右侧<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobgroup">执行器管理</a>，新建一个执行器</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online15.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online15.png" fancybox="true"/></div></div>
 
 <h3 id="注册执行器"><a href="#注册执行器" class="headerlink" title="注册执行器"></a>注册执行器</h3><p>进入Nacos后台，找到<code>media-service-dev.yaml</code>，添加xxl-Job的配置：</p>
 <figure class="highlight yaml"><figcaption><span>media-service-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># xxl-job配置</span><br><span class="hljs-attr">xxl:</span><br>  <span class="hljs-attr">job:</span><br>    <span class="hljs-attr">admin:</span><br>      <span class="hljs-comment"># 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行&quot;执行器心跳注册&quot;和&quot;任务结果回调&quot;；为空则关闭自动注册；</span><br>      <span class="hljs-attr">addresses:</span> <span class="hljs-string">http://127.0.0.1:8080/xxl-job-admin</span><br>    <span class="hljs-attr">executor:</span><br>      <span class="hljs-comment"># 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。</span><br>      <span class="hljs-attr">address:</span><br>      <span class="hljs-comment"># 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册</span><br>      <span class="hljs-attr">appname:</span> <span class="hljs-string">media-process-executor</span><br>      <span class="hljs-comment"># 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 &quot;执行器注册&quot; 和 &quot;调度中心请求并触发任务&quot;；</span><br>      <span class="hljs-attr">ip:</span><br>      <span class="hljs-comment"># 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">9999</span><br>      <span class="hljs-comment"># 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；</span><br>      <span class="hljs-attr">logpath:</span> <span class="hljs-string">/Users/swcode/data/applogs/xxl-job/jobhandler</span><br>      <span class="hljs-comment"># 执行器日志文件保存天数 [选填] ： 过期日志自动清理, 限制值大于等于3时生效; 否则, 如-1, 关闭自动清理功能；</span><br>      <span class="hljs-attr">logretentiondays:</span> <span class="hljs-number">30</span><br>    <span class="hljs-comment"># 执行器通讯TOKEN [选填]：非空时启用；</span><br>    <span class="hljs-attr">accessToken:</span><br></code></pre></td></tr></table></figure>
@@ -155,7 +155,7 @@
 
 <p>启动<code>learning-online-media</code>服务，在<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobgroup">执行器管理</a>页面可以看到自动注册了一个服务。</p>
 <h3 id="添加任务管理"><a href="#添加任务管理" class="headerlink" title="添加任务管理"></a>添加任务管理</h3><p>进入后台管理，点击右侧<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobinfo">任务管理</a>，新建一个任务</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online16.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online16.png" fancybox="true"/></div></div>
 
 <h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>买现分布式锁的方案有很多，常用的如下：<br>1、基于数据库实现分布锁<br>利用数据库主键唯一性的特点，或利用数据库唯一索号l、行级锁的特点，比如：多个线程同时向数据库插入主键相同的同一条记录，谁插入成功谁就获取锁，多个线程同时去更新相同的记录，谁更新成功谁就抢到锁。</p>
 <p>2、基于redis实现锁<br>redis提供了分布式锁的实现方案，比如：SETNX、set nx、redisson等。<br>拿SETNX举例说明，SETNX命令的工作过程是去set一个不存在的key，多个线程去设置同一个key只会有一个线程设置成功，设置成功的的线程拿到锁。</p>

@@ -30,16 +30,16 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="什么是Mybatis-Plus Mybatis-Plus：为简化开发而生  1.MyBatis-Plus（简称 MP）是一个基于 MyBatis 的增强工具，它对 Mybatis 的基础功能进行了增强，但未做任何改变。 使得我们可以可以在 Mybatis 开发的项目上直接进行升级为 Mybatis-plus，正如它对自己的定位，它能够帮助我们进一步简化开发过程，提高开发效率。 2.Mybatis-">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/mp1.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/mp2.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/mp1.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/mp2.png">
 <meta property="article:published_time" content="2023-02-18T06:39:55.000Z">
-<meta property="article:modified_time" content="2023-02-19T05:53:04.000Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.922Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Spring Boot">
 <meta property="article:tag" content="Mybatis Plus">
 <meta property="article:tag" content="Swagger">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/mp1.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/mp1.png">
   
   
 
@@ -136,7 +136,7 @@
 
 <p>可根据自己的情况修改生成规则。</p>
 <h3 id="开始生成代码"><a href="#开始生成代码" class="headerlink" title="开始生成代码"></a>开始生成代码</h3><p>编辑完成，点击开始生成代码</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/mp1.png" fancybox="true" style="width:400px;"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/mp1.png" fancybox="true" style="width:400px;"/></div></div>
 
 <p>生成的目录包括：<code>pojo</code>、<code>mapper</code>、<code>service</code>、<code>controller</code>，即代表成功。</p>
 <p>注意：自动生成的<code>mapper.xml</code>在<code>mapper</code>下，如果需要可移动到<code>resource</code>目录下，并修改yml文件。</p>
@@ -157,7 +157,7 @@
 <figure class="highlight java"><figcaption><span>controller/UserController.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Api(&quot;用户User接口&quot;)</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/user&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserService userService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserController</span><span class="hljs-params">(UserService userService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.userService = userService;<br>    &#125;<br><br>    <span class="hljs-meta">@ApiOperation(&quot;添加用户&quot;)</span><br>    <span class="hljs-meta">@PostMapping(&quot;/add&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addUser</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> User user)</span> &#123;<br>        userService.save(user);<br>    &#125;<br><br>    <span class="hljs-meta">@ApiOperation(&quot;添加用户&quot;)</span><br>    <span class="hljs-meta">@PostMapping(&quot;/get/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Integer id)</span> &#123;<br>        userService.getById(id);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="测试项目"><a href="#测试项目" class="headerlink" title="测试项目"></a>测试项目</h2><p>使用Swagger测试接口，地址栏访问：<a target="_blank" rel="noopener" href="http://localhost:8080/swagger-ui/index.html">http://localhost:8080/swagger-ui/index.html</a></p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/mp2.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/mp2.png" fancybox="true"/></div></div>
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>

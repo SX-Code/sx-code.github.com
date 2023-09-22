@@ -30,15 +30,15 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="Redis实战案例，基于Redis实现优惠券秒杀，使用Redis解决秒杀中出现的各种情况和问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image20.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image24.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image25.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image20.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image24.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image25.png">
 <meta property="article:published_time" content="2022-11-09T10:13:52.000Z">
-<meta property="article:modified_time" content="2022-11-09T11:15:46.000Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.906Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image20.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image20.png">
   
   
 
@@ -129,7 +129,7 @@
 </ol>
 <h2 id="全局唯一ID"><a href="#全局唯一ID" class="headerlink" title="全局唯一ID"></a>全局唯一ID</h2><p>使用Reids自定义全局ID生成器，要在分布式系统中使用需要满足：<mark class="tag-plugin mark" color="green">唯一性</mark>、<mark class="tag-plugin mark" color="green">高可用</mark>、<mark class="tag-plugin mark" color="green">高性能</mark>、<mark class="tag-plugin mark" color="green">递增型</mark>、<mark class="tag-plugin mark" color="green">安全性</mark>。</p>
 <p>为了增加ID安全性，不可直接使用Redis自增的数值，而是拼接一些其他信息</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image20.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image20.png" fancybox="true"/></div></div>
 
 <p>ID的组成部分：</p>
 <ul>
@@ -142,7 +142,7 @@
 
 
 <h2 id="超卖问题"><a href="#超卖问题" class="headerlink" title="超卖问题"></a>超卖问题</h2><h3 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h3><p>假设当券剩下最后一张时，有三个线程（用户）同时抢购，线程1先查询结果有1个，这时线程2和3在1扣减之前先查询了结果也是1，此时线程1先去执行扣减操作，这是数据库中券为0。由于线程2和3查询也是1，所以也去扣减，超卖问题出现了。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image24.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image24.png" fancybox="true"/></div></div>
 
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>超买问题就是典型的多线程安全问题，针对这一问题的常见解决方案就是加锁：</p>
 <p>悲观锁</p>
@@ -212,7 +212,7 @@
 </li>
 </ol>
 <h2 id="一人一单"><a href="#一人一单" class="headerlink" title="一人一单"></a>一人一单</h2><p>每个用户只能抢购一个优惠券</p>
-<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/redis/image25.png" fancybox="true"/></div></div>
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image25.png" fancybox="true"/></div></div>
 
 <p>我们可以看到是先查询订单，之后再进行判断和扣减库操作，也存在线程安全问题。</p>
 <p>这里我们直接使用Redisson，进行加锁处理。</p>

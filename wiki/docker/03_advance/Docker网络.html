@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="docker network使用--help查看network使用方式 [root@swcode ~]# docker network --helpUsage:  docker network COMMANDManage networksCommands:  connect     Connect a container to a network  create      Create a net">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png">
-<meta property="article:published_time" content="2023-08-17T05:37:29.935Z">
-<meta property="article:modified_time" content="2023-02-20T08:32:34.000Z">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p4.png">
+<meta property="article:published_time" content="2023-09-22T02:57:20.017Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:20.017Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p4.png">
   
   
 
@@ -107,7 +107,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-02-20T08:32:34.000Z">2023-02-20</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.017Z">2023-09-22</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>Docker网络</span></h1>
@@ -160,7 +160,7 @@
 <h3 id="容器与容器连通"><a href="#容器与容器连通" class="headerlink" title="容器与容器连通"></a>容器与容器连通</h3><p>创建tomcat02容器，<code>ping</code>容器tomcat01</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -d -P --name tomcat02 tomcat<br>docker <span class="hljs-built_in">exec</span> tomcat02 apt update<br>docker <span class="hljs-built_in">exec</span> tomcat02 apt install -y iputils-ping<br><br>[root@swcode tomcat]<span class="hljs-comment"># docker exec tomcat02 ping 172.17.0.2</span><br>PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.<br>64 bytes from 172.17.0.2: icmp_seq=1 ttl=64 time=0.070 ms<br>64 bytes from 172.17.0.2: icmp_seq=2 ttl=64 time=0.066 ms<br>64 bytes from 172.17.0.2: icmp_seq=3 ttl=64 time=0.050 ms<br></code></pre></td></tr></table></figure>
 
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/docker/p4.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p4.png" fancybox="true"/></div></div>
 
 <p>结论：tomcat01和tomcat02是共用的一个路由器，docker0</p>
 <p>所有容器不指定网络的情况下，都是docker0路由的，docker会给我们的容器分配一个默认的可用IP</p>

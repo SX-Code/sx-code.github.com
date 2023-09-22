@@ -30,14 +30,14 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="所有的微服务应该将自己注册到注册中心，然后相互之间通过远程调用。使用注册中心统一管理微服务的访问地址，也便于其他服务，例如网关服务，无须记录每个微服务地址。   注意本地配置信息优先级最低，包括-Dserver.port 搭建Nacos本项目使用阿里巴巴推出的Nacos作为注册中心和配置中心 使用Docker安装Nacos docker pull nacos&#x2F;nacos-server:1.2.0">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online08.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online09.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online08.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online09.png">
 <meta property="article:published_time" content="2023-08-28T11:50:00.000Z">
-<meta property="article:modified_time" content="2023-09-07T07:19:27.460Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.954Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png">
   
   
 
@@ -109,12 +109,12 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-07T07:19:27.460Z">2023-09-07</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.954Z">2023-09-22</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>注册配置中心</span></h1>
   <p>所有的微服务应该将自己注册到注册中心，然后相互之间通过远程调用。使用注册中心统一管理微服务的访问地址，也便于其他服务，例如网关服务，无须记录每个微服务地址。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/micro-service/micro-service19.png" fancybox="true"/></div></div>
 
 <p><strong>注意本地配置信息优先级最低，包括<code>-Dserver.port</code></strong></p>
 <h3 id="搭建Nacos"><a href="#搭建Nacos" class="headerlink" title="搭建Nacos"></a>搭建Nacos</h3><p>本项目使用阿里巴巴推出的Nacos作为注册中心和配置中心</p>
@@ -141,7 +141,7 @@
 <figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">命名空间名称:生产环境——学成在线<br>命名空间ID:learning-online-prod<br>描述:学成在线生产环境<br></code></pre></td></tr></table></figure>
 
 <h3 id="创建配置信息"><a href="#创建配置信息" class="headerlink" title="创建配置信息"></a>创建配置信息</h3><p>进入到Nacos控制后台界面，在右侧找到配置管理，点击配置列表，选择开发环境。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online08.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online08.png" fancybox="true"/></div></div>
 
 <p>创建公共配置：<code>logging-dev.yaml</code></p>
 <ul>
@@ -180,7 +180,7 @@
 
 
 <h3 id="重新启动微服务"><a href="#重新启动微服务" class="headerlink" title="重新启动微服务"></a>重新启动微服务</h3><p>重新启动后即可以在Nacos中看到服务列表：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/learning-online/learning-online09.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online09.png" fancybox="true"/></div></div>
 
 
   

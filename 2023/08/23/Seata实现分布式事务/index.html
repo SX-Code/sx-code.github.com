@@ -30,16 +30,16 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="本文基于Seata 1.7.0搭建分布式事务Demo，实现简单的转账业务。使用Nacos作为配置中心和注册中心，使用Feign远程调用微服务。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png">
 <meta property="article:published_time" content="2023-08-23T08:39:27.000Z">
-<meta property="article:modified_time" content="2023-08-23T08:43:52.308Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.911Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="后端开发">
 <meta property="article:tag" content="微服务">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png">
   
   
 
@@ -117,9 +117,9 @@
 <h1 class="article-title"><span>Seata实现分布式事务</span></h1>
 <p>本文基于Seata 1.7.0搭建分布式事务Demo，实现简单的转账业务。使用Nacos作为配置中心和注册中心，使用Feign远程调用微服务。</p>
 <p>本Demo工程的Git地址为：<a target="_blank" rel="noopener" href="https://gitee.com/SX-Code/dtx-seata-demo">https://gitee.com/SX-Code/dtx-seata-demo</a></p>
-<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><h3 id="转账流程"><a href="#转账流程" class="headerlink" title="转账流程"></a>转账流程</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png" fancybox="true"/></div></div>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><h3 id="转账流程"><a href="#转账流程" class="headerlink" title="转账流程"></a>转账流程</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction10.png" fancybox="true"/></div></div>
 
-<h3 id="Seata执行流程"><a href="#Seata执行流程" class="headerlink" title="Seata执行流程"></a>Seata执行流程</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png"" fancybox="true"/></div></div>
+<h3 id="Seata执行流程"><a href="#Seata执行流程" class="headerlink" title="Seata执行流程"></a>Seata执行流程</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction11.png"" fancybox="true"/></div></div>
 
 <p>其中，TC 为单独部署的 <strong>Server</strong> 服务端，TM 和 RM 为嵌入到应用中的 <strong>Client</strong> 客户端。</p>
 <p>细节说明：</p>
@@ -182,7 +182,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> check the /opt/seata/logs/start.out<br></code></pre></td></tr></table></figure>
 
 <p>可以在Nacos中查看服务，集群也是正常的</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/dtx/distributed-transaction12.png" fancybox="true"/></div></div>
 
 <h2 id="准备数据库"><a href="#准备数据库" class="headerlink" title="准备数据库"></a>准备数据库</h2><p>准备2个数据：<code>bank1</code>和<code>bank2</code>，两个数据库都有两个表<code>account_info</code>和<code>undo_log</code>，表结构一致。</p>
 <p>数据库<code>bank1</code>表的脚本文件：</p>

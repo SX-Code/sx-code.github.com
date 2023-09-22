@@ -30,16 +30,16 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="延迟任务  什么是延迟任务定时任务：有固定周期的，有明确的触发时间 延迟任务：没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件，任务可以立即执行，也可以延迟  场景一：订单下单之后30分钟后，如果用户没有付钱，则系统自动取消订单；如果期间下单成功，任务取消  场景二：接口对接出现网络问题，1分钟后重试，如果失败，2分钟重试，直到出现阈值终止   技术对比">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews21.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews22.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews23.png">
-<meta property="og:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews24.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews21.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews22.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews23.png">
+<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews24.png">
 <meta property="article:published_time" content="2023-08-17T13:34:00.000Z">
-<meta property="article:modified_time" content="2023-08-28T13:49:50.327Z">
+<meta property="article:modified_time" content="2023-09-22T02:57:19.936Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png">
+<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png">
   
   
 
@@ -111,11 +111,11 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-08-28T13:49:50.327Z">2023-08-28</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.936Z">2023-09-22</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>延迟队列服务</span></h1>
-  <h2 id="延迟任务"><a href="#延迟任务" class="headerlink" title="延迟任务"></a>延迟任务</h2><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png" fancybox="true"/></div></div>
+  <h2 id="延迟任务"><a href="#延迟任务" class="headerlink" title="延迟任务"></a>延迟任务</h2><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews20.png" fancybox="true"/></div></div>
 
 <h3 id="什么是延迟任务"><a href="#什么是延迟任务" class="headerlink" title="什么是延迟任务"></a>什么是延迟任务</h3><p>定时任务：有固定周期的，有明确的触发时间</p>
 <p>延迟任务：没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件，任务可以立即执行，也可以延迟</p>
@@ -127,7 +127,7 @@
 </ul>
 <h3 id="技术对比"><a href="#技术对比" class="headerlink" title="技术对比"></a>技术对比</h3><p><strong>DelayQueue</strong></p>
 <p>JDK自带DelayQueue 是一个支持延时获取元素的阻塞队列， 内部采用优先队列 PriorityQueue 存储元素，同时元素必须实现 Delayed 接口；在创建元素时可以指定多久才可以从队列中获取当前元素，只有在延迟期满时才能从队列中提取元素</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews21.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews21.png" fancybox="true"/></div></div>
 
 <p>使用DelayQueue作为延迟任务，如果程序挂掉之后，任务都是放在内存，消息会丢失，如何保证数据不丢失</p>
 <p><strong>RabbitMQ实现延迟任务</strong></p>
@@ -137,11 +137,11 @@
 <li><p>死信队列：Dead Letter Exchange(死信交换机)，当消息成为Dead message后，可以重新发送另一个交换机（死信交换机）</p>
 </li>
 </ul>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews22.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews22.png" fancybox="true"/></div></div>
 
 <p><strong>redis实现</strong></p>
 <p>zset数据类型的去重有序（分数排序）特点进行延迟。例如：时间戳(毫秒值)作为score进行排序</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews23.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews23.png" fancybox="true"/></div></div>
 
 <p>例如：</p>
 <p>生产者添加到4个任务到延迟队列中，时间毫秒值分别为97、98、99、100。当前时间的毫秒值为90，消费者端进行监听，如果当前时间的毫秒值匹配到了延迟队列中的毫秒值就立即消费。</p>
@@ -172,7 +172,7 @@
 <p>添加配置文件</p>
 <figure class="highlight java"><figcaption><span>config.MyBatisPlusConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@MapperScan(&quot;com.swx.schedule.mapper&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyBatisPlusConfig</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 乐观所支持</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">optimisticLockerInnerInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br>        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimisticLockerInnerInterceptor</span>());<br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="Redis实现延迟任务"><a href="#Redis实现延迟任务" class="headerlink" title="Redis实现延迟任务"></a>Redis实现延迟任务</h2><h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@main/leadnews/leadnews24.png" fancybox="true"/></div></div>
+<h2 id="Redis实现延迟任务"><a href="#Redis实现延迟任务" class="headerlink" title="Redis实现延迟任务"></a>Redis实现延迟任务</h2><h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews24.png" fancybox="true"/></div></div>
 
 <h3 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h3><p>使用Docker安装redis</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker pull redis<br></code></pre></td></tr></table></figure>
