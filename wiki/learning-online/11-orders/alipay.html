@@ -30,13 +30,13 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="沙箱账号申请项目使用阿里提供的沙箱环境做开发，首先需要申请沙箱账号，使用沙箱账号登录安装的沙箱版支付宝  手机网站支付快速接入文档 申请沙箱账号    在沙箱应用中可以找到：APPID、应用私钥、支付宝公钥、支付宝网关地址     配置文件配置基本的参数： AlipayConfig&#x2F;** * 支付宝配置参数 *&#x2F;public class AlipayConfig &amp;#123;    &#x2F;&#x2F; 服务器异">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online43.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online44.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online43.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online44.png">
 <meta property="article:published_time" content="2023-09-07T08:36:00.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:19.998Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.446Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online43.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online43.png">
   
   
 
@@ -50,7 +50,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -66,7 +66,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -108,7 +108,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.998Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.446Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>集成阿里支付</span></h1>
@@ -117,10 +117,10 @@
 <p><a target="_blank" rel="noopener" href="https://opendocs.alipay.com/open/203/105285?pathHash=ada1de5b">手机网站支付快速接入</a>文档</p>
 <p>申请<a target="_blank" rel="noopener" href="https://open.alipay.com/develop/sandbox/account">沙箱账号</a></p>
 </blockquote>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online43.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online43.png" fancybox="true"/></div></div>
 
 <p>在沙箱应用中可以找到：APPID、应用私钥、支付宝公钥、支付宝网关地址</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online44.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online44.png" fancybox="true"/></div></div>
 
 
 

@@ -30,21 +30,21 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="此系列包括Redis的单机安装，Redis主从集群搭建...">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image32.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image33.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image39.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image41.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image42.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image43.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image44.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image45.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image46.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image33.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image41.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image42.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image43.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image44.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image45.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png">
 <meta property="article:published_time" content="2022-11-16T11:35:55.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:19.920Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.400Z">
 <meta property="article:author" content="swcode">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image32.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png">
   
   
 
@@ -58,7 +58,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -74,7 +74,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -91,7 +91,7 @@
 
   
 
-<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
 
 <nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
 </header>
@@ -107,7 +107,7 @@
 
 
 </div>
-<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
 
     </aside>
     <div class='l_main'>
@@ -160,7 +160,7 @@
 
 
 
-<h2 id="Redis主从集群"><a href="#Redis主从集群" class="headerlink" title="Redis主从集群"></a>Redis主从集群</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image32.png" fancybox="true"/></div></div>
+<h2 id="Redis主从集群"><a href="#Redis主从集群" class="headerlink" title="Redis主从集群"></a>Redis主从集群</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png" fancybox="true"/></div></div>
 
 <p>共包含三个节点，一个主节点，两个从节点。</p>
 <p>这里我们会在同一台虚拟机中开启3个redis实例，模拟主从集群，信息如下：</p>
@@ -212,7 +212,7 @@
 <h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>为了方便查看日志，可以启动3个ssh窗口，分别启动3个redis实例。启动命令：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /opt<br>redis-server 7001/redis.conf<br>redis-server 7002/redis.conf<br>redis-server 7003/redis.conf<br></code></pre></td></tr></table></figure>
 
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image33.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image33.png" fancybox="true"/></div></div>
 
 
 
@@ -254,7 +254,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> num 666<br>(error) READONLY You can<span class="hljs-string">&#x27;t write against a read only replica.</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="搭建哨兵集群"><a href="#搭建哨兵集群" class="headerlink" title="搭建哨兵集群"></a>搭建哨兵集群</h2><p>这里我们搭建一个三节点形成的Sentinel集群，来监督之前的Redis主从集群。如图：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image39.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image39.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
 
 <p>三个Sentinel实例信息如下：</p>
 <table>
@@ -310,7 +310,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 第1个</span><br>redis-sentinel s1/sentinel.conf<br><span class="hljs-comment"># 第2个</span><br>redis-sentinel s2/sentinel.conf<br><span class="hljs-comment"># 第3个</span><br>redis-sentinel s3/sentinel.conf<br></code></pre></td></tr></table></figure>
 
 <p>启动后：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image41.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image41.png" fancybox="true"/></div></div>
 
 
 
@@ -324,7 +324,7 @@
 <p>主从模式、哨兵集群感觉没啥用，就不搭建了，这里直接搭建真·Redis集群</p>
 </blockquote>
 <h3 id="集群结构"><a href="#集群结构" class="headerlink" title="集群结构"></a>集群结构</h3><p>分片集群需要的节点数量较多，这里我们搭建了一个最小的分片集群，包含3个master节点，每个master包含一个slave节点，结构如下：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image42.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image42.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image42.png" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image42.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
 
 <p>这里我们会在同一台虚拟机中开启6个redis实例，模拟分片集群，信息如下：</p>
 <table>
@@ -384,7 +384,7 @@
 <p>通过ps查看状态：</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">ps -ef | grep redis<br></code></pre></td></tr></table></figure>
 
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image43.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image43.png" fancybox="true"/></div></div>
 
 
 
@@ -416,15 +416,15 @@
 <li><code>--replicas 1</code>或者<code>--cluster-replicas 1</code>：指定集群中每个master的副本个数为1，此时<code>节点总数 / (replicas + 1)</code>得到的就是master的数量。因此节点列表中的前n个就是master，其他节点都是slave节点，随机分配到不同master</li>
 </ul>
 <p>运行后的样子：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image44.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image44.png" fancybox="true"/></div></div>
 
 <p>这里输入yes</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image45.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image45.png" fancybox="true"/></div></div>
 
 <p>通过命令可以查看集群状态：</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
 
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/redis/image46.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png" fancybox="true"/></div></div>
 
 <h3 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h3><p>使用下面命令连接Redis集群</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -c -p 7001<br></code></pre></td></tr></table></figure>

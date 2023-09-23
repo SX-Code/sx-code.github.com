@@ -30,15 +30,15 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="对Namespace、Pod、Label、Deployment、Service资源的使用及介绍，意在边使用边了解、学习。 NamespaceNamespace是kubernentes系统中的一种非常重要的资源。它的主要作用是用来实现多套环境的资源隔离或者多租户的资源隔离。 默认情况下，kubernetes集群中的所有Pod都是可以相互访问的。但是在实际中，可能不想让两个Pod之间进行相互的访问，那">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_09.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_10.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_11.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_12.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_09.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_10.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_11.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_12.png">
 <meta property="article:published_time" content="2023-02-27T11:06:51.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.043Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.485Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_09.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_09.png">
   
   
 
@@ -52,7 +52,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -68,7 +68,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -110,7 +110,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.043Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.485Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>实战入门</span></h1>
@@ -118,7 +118,7 @@
 <h2 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a>Namespace</h2><p>Namespace是kubernentes系统中的一种非常重要的资源。它的主要作用是用来实现多套环境的资源隔离或者多租户的资源隔离。</p>
 <p>默认情况下，kubernetes集群中的所有Pod都是<strong>可以相互访问</strong>的。但是在实际中，可能不想让两个Pod之间进行相互的访问，那此时就可以将两个Pod划分到不同的namespace下。kubernetes通过将集群内部的资源分配到不同的Namespace中，可以形成逻辑上的“组”，以方便不同的组的资源<strong>进行隔离</strong>使用和管理。</p>
 <p>可以通过kubernetes的授权机制，将不同的namespace交给不同租户进行管理，这样就实现了<strong>多租户的资源隔离</strong>。此时还能结合kubernetes的<strong>资源配额</strong>机制，限定不同租户能占用的资源，例如CPU使用量、内存使用量等等，来实现租户可用资源的管理。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_09.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_09.png" fancybox="true"/></div></div>
 
 <p>kubernetes子集群启动之后，会默认创建几个namespace</p>
 <p>查看namespace</p>
@@ -144,7 +144,7 @@
 
 <h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p>Pod是kubernetes集群进行管理的最小单元，程序要运行必须部署在容器中，而容器必须存在于Pod中</p>
 <p>Pod可以认为是容器的封装，一个Pod中可以存在一个或者多个容器。</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:white;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_10.png" fancybox="true" style="width:400px;"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:white;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_10.png" fancybox="true" style="width:400px;"/></div></div>
 
 <p>kubernetes在集群启动之后，集群中的个组件也都是以Pod方式运行的。可以通过下面命令查看：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl get pods -n kube-system<br>NAME                             READY   STATUS    RESTARTS   AGE<br>coredns-6955765f44-67n2l         1/1     Running   3          2d20h<br>coredns-6955765f44-6w2pt         1/1     Running   3          2d20h<br>etcd-master                      1/1     Running   3          2d20h<br>kube-apiserver-master            1/1     Running   3          2d20h<br>kube-controller-manager-master   1/1     Running   3          2d20h<br>kube-proxy-v6hr4                 1/1     Running   3          2d20h<br>kube-proxy-w4jm2                 1/1     Running   3          2d20h<br>kube-proxy-xdvtr                 1/1     Running   3          2d20h<br>kube-scheduler-master            1/1     Running   3          2d20h<br></code></pre></td></tr></table></figure>
@@ -259,7 +259,7 @@
 
 <h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><p>​	在kubernetes中，Pod是最小的控制单元，但是kubernetes很少直接控制Pod，一般都是控制器来完成的。Pod控制器用于pod的管理，确保pod资源符合预期的状态，当pod的资源出现故障时，会尝试重启或重建pod。</p>
 <p>​	在kubernetes中Pod控制器到的种类有很多，这里只介绍一种：Deployment</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_11.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_11.png" fancybox="true"/></div></div>
 
 <h3 id="命令操作"><a href="#命令操作" class="headerlink" title="命令操作"></a>命令操作</h3><p>命令格式</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl run deployment名称 [参数]<br><span class="hljs-meta prompt_"># </span><span class="language-bash">--image		指定pod的镜像</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">--port		指定端口</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">--replicas	指定创建pod数量</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">--namespace</span>	<br></code></pre></td></tr></table></figure>
@@ -295,7 +295,7 @@
 </ul>
 <p>这样对于访问这个服务带来了难度。因此，kubernetes设计了Service来解决这个问题。</p>
 <p>Service可以看作是一组同类Pod对外访问接口。借助Service，应用可以方便地实现服务发现和负载均衡。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_12.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_12.png" fancybox="true"/></div></div>
 
 <h3 id="创建集群内部能访问的Service"><a href="#创建集群内部能访问的Service" class="headerlink" title="创建集群内部能访问的Service"></a>创建集群内部能访问的Service</h3><p>暴露Service</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">kubectl expose deploy nginx --name=svc-nginx1 --type=ClusterIP --port=80 --target-port=80 -n dev<br></code></pre></td></tr></table></figure>

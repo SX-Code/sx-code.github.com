@@ -30,14 +30,14 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="Dockerfile就是用来创建docker镜像的构建文件——命令脚本。  案例 CentOS  FROM scratchADD centos-7-x86_64-docker.tar.xz &#x2F; LABEL \    org.label-schema.schema-version&#x3D;&quot;1.0&quot; \    org.label-schema.name&#x3D;&quot;CentOS Base">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p1.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p2.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p3.png">
-<meta property="article:published_time" content="2023-09-22T02:57:20.016Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.016Z">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p1.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p2.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p3.png">
+<meta property="article:published_time" content="2023-09-23T14:19:32.458Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.458Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p1.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p1.png">
   
   
 
@@ -51,7 +51,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -67,7 +67,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -109,7 +109,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.016Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.458Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>DockerFile</span></h1>
@@ -201,7 +201,7 @@
 <p>查看镜像构建过程</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">history</span> <br></code></pre></td></tr></table></figure>
 
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p1.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p1.png" fancybox="true"/></div></div>
 
 <h3 id="CMD和ENTRYPOINT"><a href="#CMD和ENTRYPOINT" class="headerlink" title="CMD和ENTRYPOINT"></a>CMD和ENTRYPOINT</h3><blockquote>
 <p>CMD 和 ENTRYPOINT 区别</p>
@@ -241,7 +241,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[root@swcode dockerfile]<span class="hljs-comment"># docker run -it entrypoint-test -l</span><br>total 64<br>drwxr-xr-x   1 root root  4096 Feb 15 08:17 .<br>drwxr-xr-x   1 root root  4096 Feb 15 08:17 ..<br>-rwxr-xr-x   1 root root     0 Feb 15 08:17 .dockerenv<br>-rw-r--r--   1 root root 12114 Nov 13  2020 anaconda-post.log<br>lrwxrwxrwx   1 root root     7 Nov 13  2020 bin -&gt; usr/bin<br></code></pre></td></tr></table></figure>
 
 <h2 id="构建Tomcat"><a href="#构建Tomcat" class="headerlink" title="构建Tomcat"></a>构建Tomcat</h2><p>1、准备镜像文件 tomcat 压缩包，jdk的压缩包</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p2.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p2.png" fancybox="true"/></div></div>
 
 <p>2、编写dockerfile文件，官方命名<code>Dockerfile</code>，build会自动寻找这个文件，就不需要<code>-f</code>。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> readme.txt<br>vim Dokcerfile<br></code></pre></td></tr></table></figure>
@@ -278,7 +278,7 @@
 <p>2、提交自己的镜像</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker push swcode/diytomcat:1.0<br></code></pre></td></tr></table></figure>
 
-<h3 id="发布到阿里云"><a href="#发布到阿里云" class="headerlink" title="发布到阿里云"></a>发布到阿里云</h3><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p3.png" fancybox="true"/></div></div>
+<h3 id="发布到阿里云"><a href="#发布到阿里云" class="headerlink" title="发布到阿里云"></a>发布到阿里云</h3><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p3.png" fancybox="true"/></div></div>
 
   
 

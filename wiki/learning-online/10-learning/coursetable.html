@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="在learning-online-learning-api工程的com.swx.learning.api包下创建控制类 @Api(value &#x3D; &quot;我的课程表接口&quot;, tags &#x3D; &quot;我的课程表接口&quot;)@RestController@RequestMapping(&quot;&#x2F;choosecourse&quot;)public class MyCourseT">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online42.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online42.png">
 <meta property="article:published_time" content="2023-09-07T08:30:00.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:19.953Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.423Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online42.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online42.png">
   
   
 
@@ -49,7 +49,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -65,7 +65,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -107,7 +107,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.953Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.423Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>课程表服务</span></h1>
@@ -170,7 +170,7 @@
 <h3 id="查询资格Controller"><a href="#查询资格Controller" class="headerlink" title="查询资格Controller"></a>查询资格Controller</h3><figure class="highlight java"><figcaption><span>MyCourseTablesController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Api(value = &quot;我的课程表接口&quot;, tags = &quot;我的课程表接口&quot;)</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/choosecourse&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCourseTablesController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MyCourseTablesService myCourseTablesService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyCourseTablesController</span><span class="hljs-params">(MyCourseTablesService myCourseTablesService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.myCourseTablesService = myCourseTablesService;<br>    &#125;<br><br>    <span class="hljs-meta">@ApiOperation(&quot;查询学习资格&quot;)</span><br>    <span class="hljs-meta">@PostMapping(&quot;/learnstatus/&#123;courseId&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> XcCourseTablesVO <span class="hljs-title function_">getLearningStatus</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;courseId&quot;)</span> Long courseId)</span> &#123;<br>        <span class="hljs-comment">// 获取userId</span><br>        SecurityUtil.<span class="hljs-type">XcUser</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> SecurityUtil.getUser();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">userId</span> <span class="hljs-operator">=</span> user.getId();<br>        <span class="hljs-keyword">return</span> myCourseTablesService.getLearningStatus(userId, courseId);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="添加选课信息"><a href="#添加选课信息" class="headerlink" title="添加选课信息"></a>添加选课信息</h2><p>要判断课程是否收费以及详细信息，远程调用内容微服务，查询已发布的课程信息。具体业务流程如下：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/learning-online/learning-online42.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online42.png" fancybox="true"/></div></div>
 
 
 

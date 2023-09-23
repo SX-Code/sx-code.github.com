@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="在学习Redis时，发现了黑马程序员的一个实战项目（张虎翼老师），于是跟着学习，并用笔记的方式记录学习的过程 可能是史上最懂你的Redis实战课程-2022版课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg">
-<meta property="article:published_time" content="2023-09-22T02:57:20.033Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.033Z">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/hmdp.jpg">
+<meta property="article:published_time" content="2023-09-23T14:19:32.474Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.474Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/hmdp.jpg">
   
   
 
@@ -49,7 +49,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -65,7 +65,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -107,15 +107,15 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.033Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html">Redis</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.474Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>笔记简介</span></h1>
   <p>在学习Redis时，发现了黑马程序员的一个实战项目（张虎翼老师），于是跟着学习，并用笔记的方式记录学习的过程</p>
-<div class="tag-plugin note" ><div class="body"><!-- tab 图文示例 --><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg" alt="可能是史上最懂你的Redis实战课程-2022版" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div><div class="image-meta"><span class="image-caption center">可能是史上最懂你的Redis实战课程-2022版</span></div></div>课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从、哨兵、集群等的搭建和原理，使用运维过程中的最佳实践方案。最后还会深入学习Redis底层原理、网络模型、通信模型、内存淘汰策略等内容</div></div>
+<div class="tag-plugin note" ><div class="body"><!-- tab 图文示例 --><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/hmdp.jpg" alt="可能是史上最懂你的Redis实战课程-2022版" fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" rel="noopener" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/hmdp.jpg"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div><div class="image-meta"><span class="image-caption center">可能是史上最懂你的Redis实战课程-2022版</span></div></div>课程分为四大篇章，涵盖了Redis的各种数据结构和命令，Redis的各种常见Java客户端的应用和最佳实践。还有Redis在企业中的应用方案，例如共享session、缓存及缓存更新策略、分布式锁、消息队列、秒杀等场景。另外还有Redis的主从、哨兵、集群等的搭建和原理，使用运维过程中的最佳实践方案。最后还会深入学习Redis底层原理、网络模型、通信模型、内存淘汰策略等内容</div></div>
 
 <p>链接地址：</p>
-<div class="tag-plugin link dis-select"><a class="link-card plain" title="黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目" href="https://www.bilibili.com/video/BV1cr4y1671t/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill=""><div class="left"><span class="title">黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目</span><span class="cap link fs12">https://www.bilibili.com/video/BV1cr4y1671t/</span></div><div class="right"><div class="lazy img" data-bg="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/icon/hmdp.jpg"></div></div></a></div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目" href="https://www.bilibili.com/video/BV1cr4y1671t/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill=""><div class="left"><span class="title">黑马程序员Redis入门到实战教程，深度透析redis底层原理+redis分布式锁+企业解决方案+黑马点评实战项目</span><span class="cap link fs12">https://www.bilibili.com/video/BV1cr4y1671t/</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/hmdp.jpg"></div></div></a></div>
 
   
 

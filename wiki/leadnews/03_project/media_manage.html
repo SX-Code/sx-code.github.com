@@ -30,19 +30,19 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="数据库下载数据库文件，创建leadnews_wemedia数据库，执行下载的SQL脚本 leadnews_wemedia.sqlhttps:&#x2F;&#x2F;wwab.lanzoue.com&#x2F;iGNOX14n4s9a  或，使用脚本创建leadnews_wemedia数据库 &#x2F;*Navicat MySQL Data TransferSource Server         : localhostSource">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews14.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews15.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews16.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews18.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews17.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews19.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews26.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews25.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews14.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews15.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews16.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews18.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews17.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews19.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews26.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews25.png">
 <meta property="article:published_time" content="2023-08-17T13:18:00.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:19.943Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.416Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews14.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews14.png">
   
   
 
@@ -56,7 +56,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -72,7 +72,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -114,7 +114,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:19.943Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/leadnews/01_introduce/index.html">头条新闻</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.416Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>自媒体后台管理</span></h1>
@@ -175,7 +175,7 @@
 <p>对应sql表为<code>wm_material</code>，表结构如下：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `wm_material` (<br>  `id` <span class="hljs-type">int</span> unsigned <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT COMMENT <span class="hljs-string">&#x27;主键&#x27;</span>,<br>  `user_id` <span class="hljs-type">int</span> unsigned <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;自媒体用户ID&#x27;</span>,<br>  `url` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;图片地址&#x27;</span>,<br>  `type` tinyint unsigned <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;素材类型 0图片 1视频&#x27;</span>,<br>  `is_collection` tinyint(<span class="hljs-number">1</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;是否收藏&#x27;</span>,<br>  `created_time` datetime <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span> COMMENT <span class="hljs-string">&#x27;创建时间&#x27;</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`) <span class="hljs-keyword">USING</span> BTREE<br>) ENGINE<span class="hljs-operator">=</span>InnoDB COMMENT<span class="hljs-operator">=</span><span class="hljs-string">&#x27;自媒体图文素材信息表&#x27;</span>;<br></code></pre></td></tr></table></figure>
 
-<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews14.png" fancybox="true"/></div></div>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews14.png" fancybox="true"/></div></div>
 
 <p>修改网关的过滤器，在放行前添加如下代码</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 获取用户信息</span><br><span class="hljs-type">Object</span> <span class="hljs-variable">userId</span> <span class="hljs-operator">=</span> claimsBody.get(<span class="hljs-string">&quot;id&quot;</span>);<br><span class="hljs-type">ServerHttpRequest</span> <span class="hljs-variable">serverHttpRequest</span> <span class="hljs-operator">=</span> request.mutate().headers(httpHeaders -&gt; &#123;<br>    httpHeaders.add(<span class="hljs-string">&quot;userId&quot;</span>, userId + <span class="hljs-string">&quot;&quot;</span>);<br>&#125;).build();<br><span class="hljs-comment">// 重置请求</span><br>exchange.mutate().request(serverHttpRequest);<br></code></pre></td></tr></table></figure>
@@ -358,7 +358,7 @@
 
 
 <h2 id="文章发布、修改、保存草稿"><a href="#文章发布、修改、保存草稿" class="headerlink" title="文章发布、修改、保存草稿"></a>文章发布、修改、保存草稿</h2><p>该功能为保存、修改（是否有id）、保存草稿的共有方法</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews15.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews15.png" fancybox="true"/></div></div>
 
 <p><strong>接口定义</strong></p>
 <table>
@@ -415,7 +415,7 @@
 
 
 <h2 id="文章审核"><a href="#文章审核" class="headerlink" title="文章审核"></a>文章审核</h2><p>自媒体保存的文章，用户查询到需要经历审核步骤：包括文本审核和图片审核。</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews16.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews16.png" fancybox="true"/></div></div>
 
 
 
@@ -429,13 +429,13 @@
 </ol>
 <p><strong>自动审核</strong>：文章发布之后，系统自动审核，主要是通过第三方接口对文章内容进行审核（成功、失败、不确定）。</p>
 <p><strong>人工审核</strong>：待自动审核返回不确定信息时，转到人工审核，由平台管理员进行审核。</p>
-<h3 id="自动审核的流程"><a href="#自动审核的流程" class="headerlink" title="自动审核的流程"></a>自动审核的流程</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews18.png" fancybox="true"/></div></div>
+<h3 id="自动审核的流程"><a href="#自动审核的流程" class="headerlink" title="自动审核的流程"></a>自动审核的流程</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews18.png" fancybox="true"/></div></div>
 
 
 
 <p>阿里云的内容审核需要企业认证，这里直接跳过</p>
 <h3 id="APP端文章保存"><a href="#APP端文章保存" class="headerlink" title="APP端文章保存"></a>APP端文章保存</h3><p>随着业务的增长，文章表可能要占用很大的物理存储空间，为了解决该问题，后期使用数据库分片技术。将一个数据库进行拆分，通过数据库中间件连接。如果数据库中该表选用ID自增策略，则可能产生重复的ID，此时应该使用分布式ID生成策略来生成ID。</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews17.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews17.png" fancybox="true"/></div></div>
 
 
 
@@ -634,7 +634,7 @@
 
 
 <h3 id="APP端静态模版"><a href="#APP端静态模版" class="headerlink" title="APP端静态模版"></a>APP端静态模版</h3><p>文章保存之后，应该调用生成静态模版并上传至MinIO的逻辑，可以使用异步调用，不干扰文章的保存进度。</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews19.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews19.png" fancybox="true"/></div></div>
 
 <blockquote>
 <p>为了防止循环依赖，这里将保存APP端文章的逻辑提取到ApArticleSaveService中</p>
@@ -658,7 +658,7 @@
 
 <h3 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h3><p>自媒体微服务异步调用文章微服务，如果文章微服务出现了问题，自媒体微服务并不知道，一致性无法保证，这时候就需要使用分布式事务。</p>
 <h2 id="文章下架"><a href="#文章下架" class="headerlink" title="文章下架"></a>文章下架</h2><p>这部分使用<strong>消息队列</strong>实现微服务间的异步远程调用，使用消息队列可以解耦</p>
-<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews26.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews26.png" fancybox="true"/></div></div>
 
 <h3 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h3><p>中间件技术对比</p>
 <table>
@@ -728,7 +728,7 @@
 <td>性能较好，社区活跃度高，数据量没有那么大，优先选择功能比较完备的RabbitMQ</td>
 </tr>
 </tbody></table>
-<h3 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@main/leadnews/leadnews25.png" fancybox="true"/></div></div>
+<h3 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h3><div class="tag-plugin image"><div class="image-bg" style="background:#ffffff;padding:10px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/leadnews/leadnews25.png" fancybox="true"/></div></div>
 
 <ul>
 <li><p>producer：发布消息的对象称之为主题生产者（Kafka topic producer）</p>

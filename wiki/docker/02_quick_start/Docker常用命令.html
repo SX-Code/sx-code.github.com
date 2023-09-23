@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="帮助命令docker version		 # 显示docker的版本docker info			 # 显示docker的系统信息，也包括镜像和容器的数量docker [命令] --help	# 帮助命令  帮助文档地址：https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;reference&#x2F;commandline 镜像命令docker images docker images | Doc">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p5.png">
-<meta property="article:published_time" content="2023-09-22T02:57:20.020Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.020Z">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p5.png">
+<meta property="article:published_time" content="2023-09-23T14:19:32.462Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.462Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p5.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p5.png">
   
   
 
@@ -49,7 +49,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -65,7 +65,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -107,7 +107,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.020Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.462Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>Docker常用命令</span></h1>
@@ -359,7 +359,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">[root@swcode ~]# docker ps<br>CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS          PORTS     NAMES<br>3e275c8c6acd   centos    &quot;/bin/bash&quot;   23 minutes ago   Up 23 minutes             competent_johnson<br><span class="hljs-meta prompt_"># </span><span class="language-bash">进入docker容器</span><br>[root@swcode ~]# docker attach 3e275c8c6acd<br><span class="hljs-meta prompt_"># </span><span class="language-bash">在容器内创建文件</span><br>[root@3e275c8c6acd home]# touch test.java<br>[root@3e275c8c6acd home]# exit<br>exit<br><span class="hljs-meta prompt_"># </span><span class="language-bash">将文件拷贝到主机上</span><br>[root@swcode ~]# docker cp 3e275c8c6acd:/home/test.java /home<br>[root@swcode ~]# ll /home/<br>total 0<br>-rw-r--r-- 1 root root 0 Jan 29 17:12 test.java<br></code></pre></td></tr></table></figure>
 
 <p>拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p5.png" fancybox="true"/></div></div>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p5.png" fancybox="true"/></div></div>
   
 
 

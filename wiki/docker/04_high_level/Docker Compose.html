@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="Docker Compose是Docker官方的开源项目，负责实现对Docker容器集群的快速编排。 定义一个YAML格式的配置文件docker-compose.yml，写好对个容器之间的调用关系。然后，只要一个命令就能同时启动&#x2F;关闭这些容器。 Docker建议我们每个容器中只运行一个服务，因此需要docker compose多服务部署的工具。 安装ComposeReference地址：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p6.png">
-<meta property="article:published_time" content="2023-09-22T02:57:20.016Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.016Z">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p6.png">
+<meta property="article:published_time" content="2023-09-23T14:19:32.458Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.458Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p6.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p6.png">
   
   
 
@@ -49,7 +49,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -65,7 +65,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -107,7 +107,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.016Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/docker/01_introduce/index.html">Docker</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.458Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>Docker Compose</span></h1>
@@ -219,7 +219,7 @@
 <figure class="highlight dockerfile"><figcaption><span>Dockerfile</span></figcaption><table><tr><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> openjdk:<span class="hljs-number">8</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> *.jar /app.jar</span><br><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;--server.port=8080&quot;</span>]</span><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8080</span><br><br><span class="hljs-keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app.jar&quot;</span>]</span><br></code></pre></td></tr></table></figure>
 
 <p>使用maven打包项目，将Dockerfile和jar一块上传到服务器</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/docker/p6.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/docker/p6.png" fancybox="true"/></div></div>
 
 <p>打包镜像</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker build -t docker-spring-boot .<br></code></pre></td></tr></table></figure>

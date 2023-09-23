@@ -30,13 +30,13 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="应用部署方式演变 传统部署：直接将应用程序部署在物理机上  虚拟化部署：可以在一台物理机上运行多个虚拟机，每个虚拟机都是独立的一个环境  容器化部署：与虚拟化类似，但是共享了操作系统    容器化部署方式带来很多的便利，但是也出现了一些问题，不如说：  一个容器故障停机了，怎么样让另外一个容器立刻启动替补停机的容器 当并发访问量变大的时候，怎么样做到横向扩展容器数量  这些容器管理问题被统称为容器">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_01.png">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_02.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_01.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_02.png">
 <meta property="article:published_time" content="2023-02-27T11:00:31.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.044Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.485Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_01.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_01.png">
   
   
 
@@ -50,7 +50,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -66,7 +66,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -108,7 +108,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.044Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.485Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>Kubernetes介绍</span></h1>
@@ -156,7 +156,7 @@
 <li>KubeProxy：负责提供集群内部的服务发现和负责均衡</li>
 <li>Docker：负责节点上容器的各种操作</li>
 </ul>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_01.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_01.png" fancybox="true"/></div></div>
 
 <p>下面，以部署一个Nginx服务来说明Kubernetes系统各个组件调用关系。</p>
 <ol>
@@ -183,7 +183,7 @@
 <p><strong>Service</strong>：pod对外服务的统一入口，下面可以维护着同一类的多个pod</p>
 <p><strong>Label</strong>：标签，用于对pod进行分类，同一类pod会拥有相同的标签</p>
 <p><strong>NameSpace</strong>：命名空间，用来隔离pod的运行环境</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_02.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_02.png" fancybox="true"/></div></div>
 
   
 

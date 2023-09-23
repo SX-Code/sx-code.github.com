@@ -30,12 +30,12 @@
 <meta property="og:site_name" content="swcode">
 <meta property="og:description" content="主要介绍yaml语法和kubernetes的资源管理方式 资源管理介绍在kubernetes中，所有的内容都抽为资源，用户需要通过操作系统资源来管理kubernetes。  kubernetes本质上就是一个集群系统，用户可以在集群中部署各种服，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将制定的程序跑在容器中 kubernetes的最小管理单元是pod而不是容器，所以">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_08.png">
 <meta property="article:published_time" content="2023-02-27T11:05:41.000Z">
-<meta property="article:modified_time" content="2023-09-22T02:57:20.045Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.486Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_08.png">
   
   
 
@@ -49,7 +49,7 @@
   
 
   
-    <link rel="shortcut icon" href="https://cdn.staticaly.com/gh/sx-code/tuchuang@master/icon/avatar-fav.png">
+    <link rel="shortcut icon" href="https://cdn2.chuqis.com/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
   
 
   
@@ -65,7 +65,7 @@
     
       <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
     
-      <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css">
+      <link rel="stylesheet" href="https://cdn2.staticfile.org/font-awesome/6.2.1/css/all.min.css">
     
   
 </head>
@@ -107,7 +107,7 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-22T02:57:20.045Z">2023-09-22</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/kubernetes/01_introduce/index.html">Kubernetes</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.486Z">2023-09-23</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>资源管理</span></h1>
@@ -119,7 +119,7 @@
 <p>Pod可以提供服务之后，就要考虑如何访问Pod中的服务，kubernetes提供了<code>Service</code>资源实现这个功能。</p>
 <p>当然，如果Pod程序的数据需要持久化，kubernetes还提供了各种<code>存储</code>系统。</p>
 </blockquote>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.chuqis.com/gh/sx-code/tuchuang@master/kubernetes/k8s_08.png" fancybox="true"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/kubernetes/k8s_08.png" fancybox="true"/></div></div>
 
 <blockquote>
 <p>学习kubernetes的核心，就是学习如何对集群上的<code>Pod、Pod控制器、Service、存储</code>等各种资源操作</p>
