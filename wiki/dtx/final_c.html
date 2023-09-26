@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>分布式事务：可靠消息最终一致性 - swcode</title>
+
+  
+    <meta name="description" content="可靠消息最终一致性是AP的解决方案  是什么？可靠消息最终一致性方案是指当事务发起方执行完成本地事务后并发出一条消息，事务参与方(消息消费者）一定能够接收消息并处理事务成功，此方案强调的是只要消息发给事务参与方最终事务要达到一致 此方案是利用消息中间件完成： 如下图： 事务发起方（消息生产方）将消息发给消息中间件，事务参与方从消息中间件接收消息，事务发起方和消 息中间件之间，事务参与方（消息消费方">
+<meta property="og:type" content="website">
+<meta property="og:title" content="可靠消息最终一致性">
+<meta property="og:url" content="http://example.com/wiki/dtx/final_c.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="可靠消息最终一致性是AP的解决方案  是什么？可靠消息最终一致性方案是指当事务发起方执行完成本地事务后并发出一条消息，事务参与方(消息消费者）一定能够接收消息并处理事务成功，此方案强调的是只要消息发给事务参与方最终事务要达到一致 此方案是利用消息中间件完成： 如下图： 事务发起方（消息生产方）将消息发给消息中间件，事务参与方从消息中间件接收消息，事务发起方和消 息中间件之间，事务参与方（消息消费方">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction15.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction16.png">
+<meta property="og:image" content="http://example.com/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%8F%91/images/distributed-transaction/distributed-transaction16.png">
+<meta property="article:published_time" content="2023-09-26T02:28:00.000Z">
+<meta property="article:modified_time" content="2023-09-26T05:09:41.261Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction15.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/dtx/index.html"><div class="main" ff="title">分布式事务</div><div class="sub cap">分布式事务学习笔记</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/dtx/" placeholder="在 /wiki/dtx/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">基础理论</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/cap.html"><span class="toc-text">CAP理论</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/base.html"><span class="toc-text">BASE理论</span></a></div></div><div class="widget-header cap dis-select"><span class="name">2PC</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/2pc.html"><span class="toc-text">解决方案之2PC</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/seata-2pc.html"><span class="toc-text">Seata实现2PC事务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">TCC</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/tcc.html"><span class="toc-text">解决方案之TCC</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/tcc_pt.html"><span class="toc-text">实现TCC</span></a></div></div><div class="widget-header cap dis-select"><span class="name">消息队列</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/dtx/final_c.html"><span class="toc-text">可靠消息最终一致性</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E6%96%B9%E6%A1%88"><span class="toc-text">本地消息方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E6%96%B9%E6%A1%88"><span class="toc-text">RocketMQ事务消息方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RocketMQ%E5%AE%9E%E7%8E%B0%E5%AE%9E%E4%BE%8B"><span class="toc-text">RocketMQ实现实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E8%AF%B4%E6%98%8E"><span class="toc-text">业务说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="toc-text">伪代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%96%B9"><span class="toc-text">发送方</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%96%B9"><span class="toc-text">消费方</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/notify.html"><span class="toc-text">最大努力通知</span></a></div></div><div class="widget-header cap dis-select"><span class="name">案例分析</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/example1.html"><span class="toc-text">注册账号案例分析</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/example2.html"><span class="toc-text">存管开户案例分析</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/dtx/index.html">分布式事务</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-26T05:09:41.261Z">2023-09-26</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>可靠消息最终一致性</span></h1>
+  <div class="tag-plugin note" ><div class="body"><p>可靠消息最终一致性是AP的解决方案</p></div></div>
+
+<h2 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h2><p>可靠消息最终一致性方案是指当事务发起方执行完成本地事务后并发出一条消息，事务参与方(消息消费者）一定能够接收消息并处理事务成功，此方案强调的是只要消息发给事务参与方最终事务要达到一致</p>
+<p>此方案是利用消息中间件完成：</p>
+<p>如下图： 事务发起方（消息生产方）将消息发给消息中间件，事务参与方从消息中间件接收消息，事务发起方和消 息中间件之间，事务参与方（消息消费方）和消息中间件之间都是通过网络通信，由于网络通信的不确定性会导致分布式事务问题。</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction15.png" fancybox="true"/></div></div>
+
+<p>因此可靠消息最终一致性方亲要解决以下几个问题：</p>
+<p><strong>本地事务与消息发送的原子性问题</strong></p>
+<p>本地事务与消息发送的原子性问题即：事务发起方在本地事务执行成功后消息必须发出去，否则就丢弃消息。即实现本地事务和消息发送的原子性，要么都成功，要么都失败。本地事务与消息发送的原子性问题是实现可靠消息最终一致性方案的关键问题。</p>
+<p>先来尝试下这种操作，先发送消息，再操作数据库：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION;<br>	<span class="hljs-comment">-- 发送MQ</span><br>	<span class="hljs-comment">-- 数据库操作</span><br><span class="hljs-keyword">COMMIT</span> TRANSACTION;<br></code></pre></td></tr></table></figure>
+
+<p>这种情况下无法保证数据库操作与发送消息的一致性，因为可能发送消息成功，数据库操作失败。</p>
+<p>第二种方案，先进行数据库操作，再发送消息：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION;<br>	<span class="hljs-comment">-- 数据库操作</span><br>	<span class="hljs-comment">-- 发送MQ</span><br><span class="hljs-keyword">COMMIT</span> TRANSACTION;<br></code></pre></td></tr></table></figure>
+
+<p>这种情况下貌似没有问题，如果发送MQ消息失败，就会拋出异常，导致数据库事务回滚。但如果是超时异常，数据库回滚，但MQ其实已经正常发送了，同样会导致不一致。</p>
+<p><strong>事务参与方接收消息的可靠性</strong></p>
+<p>事务参与方必须能够从消息队列接收到消息，如果接收消息失败可以重复接收消息。</p>
+<p><strong>消息重复消费的问题</strong></p>
+<p>由于网路存在，若某一个消费节点超时但是消费成功，此时消息中间件会重复投递此消理，就导致了消息的重复消费。</p>
+<p>要解决消息重复消费的问题就要实现事务参与方的方法幂等性。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="本地消息方案"><a href="#本地消息方案" class="headerlink" title="本地消息方案"></a>本地消息方案</h3><div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction16.png" fancybox="true"/></div></div>
+
+
+
+<h3 id="RocketMQ事务消息方案"><a href="#RocketMQ事务消息方案" class="headerlink" title="RocketMQ事务消息方案"></a>RocketMQ事务消息方案</h3><p>RocketMQ事务消息设计则主要是为了解决Producer端的<strong>消息发送与本地事务执行的原子性</strong>问题，RocketMQ的设计中broker与producer端的双向通信能力，使得broker天生可以作为一个事务协调者存在；而RocketMQ本身提供的存储机制为事务消息提供了持久化能力；RocketMQ的高可用机制以及可靠消息设计则为事务消息在系统发生异常时依然能够保证事务的最终一致性。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/Users/swcode/Documents/%E7%AC%94%E8%AE%B0/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%BC%80%E5%8F%91/images/distributed-transaction/distributed-transaction16.png"></p>
+<p>执行流程如下：</p>
+<p>为了方便理解，以注册送积分的例子来描述整个流程。</p>
+<p>Producer即MQ发送方，本例中是用户服务，负责新增用户。MQ订阅方即消息消费方，本例中是积分服务，负责新增积分。</p>
+<p>1、Producer发送事务消息<br>Producer（MQ发送方）发送<strong>事务消息</strong>至MQ Server，MQ Server将消息状态标记为<strong>Prepared（预备状态）</strong>，注意此时这条消息消费者（MQ订阅方）是无法消费消息的。本例中，Producer发送“增加积分消息”到MQ Server。</p>
+<p>2、MQ Server回应消息发送成功<br>MQ Server接收到Producer发送的消息则<strong>回应发送成功</strong>表示MQ已接收到消息。</p>
+<p>3、Producer执行本地事务<br>Producer端执行业务代码逻辑，通过本地数据库事务控制。本例中，Producer执行添加用户操作。</p>
+<p>4、消息投递<br>若Producer本地事务执行成功则自动向MQ Server发送<strong>commit消息</strong>，MQ Server接收到commit消息后将“增加积分消息”状态<strong>标记为可消费</strong>，此时MQ订阅方（积分服务）可正常消息消息。</p>
+<p>若Producer本地事务执行失败则自动向MQ Server发送<strong>rollback消息</strong>，MQ Server接收到rollback消息后将删除“增加积分消息”。</p>
+<p>以上主干流程已由RocketMQ实现，对于开发者来说，用户需要分别实现本地事务执行以及本地事务回查方法，因此只需要关注本地事务的执行状态即可。</p>
+<p>Rocket MQ提供RocketMQLocalTransactionListener接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RocketMQLocalTransactionListener</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 发送prepare消息成功此被回调，该方法用于执行本地事务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> msg 回传的消息，利用transactionId即可获取该消息的唯一Id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> arg 调用send方法时传递的参数，当send时若有额外的参数可以传递到send中，这里能获取到</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 返回事务状态，COMMIT：提交  ROLLBACK：回滚  UNKNOWN：回调，主动查询</span><br><span class="hljs-comment">     */</span><br>    RocketMQLocalTransactionState <span class="hljs-title function_">executeLocalTransaction</span><span class="hljs-params">(Message msg, Object arg)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 主动查询事务状态</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> msg 利用transactionId来判断这条消息的本地事务执行状态</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 返回事务状态，COMMIT：提交  ROLLBACK：回滚  UNKNOWN：回调，主动查询</span><br><span class="hljs-comment">     */</span><br>    RocketMQLocalTransactionState <span class="hljs-title function_">checkLocalTransaction</span><span class="hljs-params">(Message msg)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="RocketMQ实现实例"><a href="#RocketMQ实现实例" class="headerlink" title="RocketMQ实现实例"></a>RocketMQ实现实例</h2><h3 id="业务说明"><a href="#业务说明" class="headerlink" title="业务说明"></a>业务说明</h3><p>本实例通过RocketMQ中间件实现可靠消息最终一致性分布式事务，模拟两个账户的转账交易过程。</p>
+<p>两个账户在不同的银行（张三在bank1、李四在bank2），bank1、bank2是两个微服务。交易过程是，张三给李四转账指定金额。</p>
+<p>上述交易步骤，张三扣减金额给bank2发转账消息，两个操作必须是一个整体性事务。</p>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>de_duplication表，交易记录表，用于交易幂等控制。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `de_duplication`;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `de_duplication` &#123;<br>	`tx_no` <span class="hljs-type">varchar</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>	`create_time` datetime(<span class="hljs-number">0</span>) <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>	<span class="hljs-keyword">PRIMARY</span> KEY (`tx_no`) <span class="hljs-keyword">USING</span> BTREE<br>&#125; ENGINE<span class="hljs-operator">=</span>InnoDB;<br></code></pre></td></tr></table></figure>
+
+<p>​	</p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p>消息传输的实体类对象</p>
+<figure class="highlight java"><figcaption><span>AccountChangeEvent</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountChangeEvent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializanble</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 账号</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String accountNo;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 变动金额</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> amount;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 事务号</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String txNo;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="发送方"><a href="#发送方" class="headerlink" title="发送方"></a>发送方</h4><p>发送方Producer业务逻辑代码</p>
+<figure class="highlight java"><figcaption><span>AccountInfoService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 向MQ发送转账消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendUpdateAccountBalance</span> <span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 扣减金额，由MQ回调执行</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doUpdateAccountBalance</span><span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现接口类</p>
+<figure class="highlight java"><figcaption><span>AccountInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> AccountInfoServiceImpl <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br><br>    <span class="hljs-meta">@Autowire</span><br>    AccountInfoDao accountInfoDao;<br><br>    <span class="hljs-meta">@Autowire</span><br>    RocketMQTemplate rocketMQTemplate;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 向 MQ 发送转账消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendUpdateAccountBalance</span> <span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span> &#123;<br><br>        <span class="hljs-comment">// 将accountChangeEvent转为JSON</span><br>        <span class="hljs-type">JSONObject</span> <span class="hljs-variable">jsonObject</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JSONObject</span>();<br>        jsonObject.put(<span class="hljs-string">&quot;accountChange&quot;</span>, accountChangeEvent);<br>        <br>        <span class="hljs-comment">// 生成message类型</span><br>        Message&lt;String&gt; message = MessageBuilder.withPayload(jsonObject.toJSONStrong()).build();<br>        <span class="hljs-comment">// 发送事务消息</span><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * String txProducerGroup 生产组</span><br><span class="hljs-comment">         * String destnation topic</span><br><span class="hljs-comment">         * Message&lt;?&gt; message, 消息内容</span><br><span class="hljs-comment">         * Object arg 参数</span><br><span class="hljs-comment">         */</span><br>        rocketMQTemplate.sendMessageInTransaction(<span class="hljs-string">&quot;producer_group_txmsg_bank1&quot;</span>, <span class="hljs-string">&quot;topic_txmsg&quot;</span>, message, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doUpdateAccountBalance</span><span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span> &#123;<br>        <span class="hljs-comment">// 幂等判断</span><br>        <span class="hljs-keyword">if</span> (accountInfoDao.isExistTx(accountChangeEvent.getTxNo() &gt; <span class="hljs-number">0</span>)) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 扣减金额</span><br>        accountInfoDao.updateAccountBalance(accountChangeEvent.getAccountNo(), accountChangeEvent.getAmount() * -<span class="hljs-number">1</span>);<br>        <span class="hljs-comment">// 添加事务日志</span><br>        accountInfoDao.addTx(accountChangeEvent.getTxNo());<br>        <span class="hljs-keyword">if</span> (accountChangeEvent.getAmount() == <span class="hljs-number">3</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;人为制造异常&quot;</span>);<br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>发送方Producer发送消息后，由MQ Server回调的方法实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@RocketMQTransactionListener</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProducerTxmsgListener</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RocketMQLocalTransactionListener</span> &#123;<br><br>    <span class="hljs-meta">@Autowire</span><br>    AccountInfoService accountInfoService;<br><br>    <span class="hljs-meta">@Autowire</span><br>    AccountInfoDao accountInfoDao;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 事务消息发送后的回调，当消息发送给 MQ 成功，此方法会被回调</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> RocketMQLocalTransactionState <span class="hljs-title function_">executedTransaction</span><span class="hljs-params">(Message message, Object arg)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 解析 Message， 转成 AccountChangeEvent</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">messageString</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-type">byte</span>[] message.getPayload());<br>            <span class="hljs-type">String</span> <span class="hljs-variable">accountChange</span> <span class="hljs-operator">=</span> JSONObject.parseObject(messageString).getString(<span class="hljs-string">&quot;accountChange&quot;</span>);<br>            <span class="hljs-type">AccountChangeEvent</span> <span class="hljs-variable">accountChangeEvent</span> <span class="hljs-operator">=</span> JSONObject.parseObject(accountChange, AccountChangeEvent.class);<br><br>            <span class="hljs-comment">// 执行本地事务</span><br>            accountInfoService.doUpdateAccountBalance(accountChangeEvent);<br>            <span class="hljs-comment">// 向 MQ 发送 commit 消息，MQ 将消息改为可消费状态</span><br>            <span class="hljs-keyword">return</span> RocketMQLocalTransactionState.COMMIT;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrance();<br>            <span class="hljs-keyword">return</span> RocketMQLocalTransactionState.ROLLBACK;<br>        &#125;<br>        <span class="hljs-comment">// 返回成功类型</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 事务状态回查，查询张三是否扣减金额</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> RocketMQLocalTransactionState <span class="hljs-title function_">checkLocalTransaction</span><span class="hljs-params">(Message message)</span> &#123;<br>        <span class="hljs-comment">// 解析 Message， 转成 AccountChangeEvent</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">messageString</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-type">byte</span>[] message.getPayload());<br>        <span class="hljs-type">String</span> <span class="hljs-variable">accountChange</span> <span class="hljs-operator">=</span> JSONObject.parseObject(messageString).getString(<span class="hljs-string">&quot;accountChange&quot;</span>);<br>        <span class="hljs-type">AccountChangeEvent</span> <span class="hljs-variable">accountChangeEvent</span> <span class="hljs-operator">=</span> JSONObject.parseObject(accountChange, AccountChangeEvent.class);<br>        <br>        <span class="hljs-comment">// 判断事物是否执行</span><br>        <span class="hljs-keyword">if</span> (accountInfoDao.isExistTx(accountChangeEvent.getTxNo()) &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">return</span> RocketMQLocalTransactionSta te.COMMIT;<br>        &#125;<br>        <span class="hljs-keyword">return</span> RocketMQLocalTransactionState.UNKNOWN;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>发送方提供一个转账的接口，用于向MQ发送一条转账消息（Prepared状态）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountInfoController</span> &#123;<br>    <span class="hljs-meta">@Autowire</span><br>    <span class="hljs-keyword">private</span> AccountInfoService accountInfoService;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/transfer&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">transfer</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;accountNo&quot;)</span> String accountNo, <span class="hljs-meta">@RequestParam(&quot;amount&quot;)</span> Double amount)</span> &#123;<br>        <span class="hljs-comment">// 创建一个事务ID，作为消息发送到 MQ</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">tx_no</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();<br>        <span class="hljs-type">AccountChangeEvent</span> <span class="hljs-variable">accountChangeEvent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AccountChangeEvent</span>(accountNo, amount, tx_no);<br><br>        <span class="hljs-comment">// 发送消息</span><br>        accountInfoService.sendUpdateAccountBalance(accountChangeEvent);<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;转账成功&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="消费方"><a href="#消费方" class="headerlink" title="消费方"></a>消费方</h4><p>定义消费方更新账户的方法</p>
+<figure class="highlight java"><figcaption><span>AccountInfoService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 更新账户，增加金额</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addAccountInfoBalance</span> <span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现上述接口，该方法可能会重复执行，需要做好幂等判断</p>
+<figure class="highlight java"><figcaption><span>AccountInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> AccountInfoServiceImpl <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountInfoService</span> &#123;<br><br>    <span class="hljs-meta">@Autowire</span><br>    AccountInfoDao accountInfoDao;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addAccountInfoBalance</span> <span class="hljs-params">(AccountChangeEvent accountChangeEvent)</span> &#123;<br>        log.info(<span class="hljs-string">&quot;bank2更新本地账号, 账号: &#123;&#125;, 金额: &#123;&#125;&quot;</span>, accountChangeEvent.getAccountNo(), accountChangeEvent.getAmount())<br>        <span class="hljs-comment">// 幂等判断</span><br>        <span class="hljs-keyword">if</span> (accountInfoDao.isExistTx(accountChangeEvent.getTxNo()) &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 增加金额</span><br>        accountInfoDao.updateAccountBalance(accountChangeEvent.getAccountNo(), accountChangeEvent.getAmount());<br>        <span class="hljs-comment">// 添加事务记录</span><br>        accountInfoDao.addTx(accountChangeEvent.getTxNo());<br>        <span class="hljs-keyword">if</span> (accountChangeEvent.getAmount() == <span class="hljs-number">4</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;人为制造异常&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>消费方监听MQ消息</p>
+<figure class="highlight java"><figcaption><span>TxmsgConsumer</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@RocketMQMessageListener(comsumerGroup = &quot;consumer_group_txmsg_bank2&quot;, topic = &quot;topic_txmsg&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TxmsgConsumer</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RocketMQListener</span>&lt;String&gt; &#123;<br><br>    <span class="hljs-meta">@Autowire</span><br>    <span class="hljs-keyword">private</span> AccountInfoService accountInfoService;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onMessage</span><span class="hljs-params">(String message)</span> &#123;<br>        log.info(<span class="hljs-string">&quot;开始消费消息: &#123;&#125;&quot;</span>, message);<br>        <span class="hljs-comment">// 解析 Message， 转成 AccountChangeEvent</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">messageString</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-type">byte</span>[] message.getPayload());<br>        <span class="hljs-type">String</span> <span class="hljs-variable">accountChange</span> <span class="hljs-operator">=</span> JSONObject.parseObject(messageString).getString(<span class="hljs-string">&quot;accountChange&quot;</span>);<br>        <span class="hljs-type">AccountChangeEvent</span> <span class="hljs-variable">accountChangeEvent</span> <span class="hljs-operator">=</span> JSONObject.parseObject(accountChange, AccountChangeEvent.class);<br>        <br>        <span class="hljs-comment">// 增加金额</span><br>        accountChangeEvent.setAccountNo(<span class="hljs-string">&quot;2&quot;</span>); <span class="hljs-comment">// 账户设置为李四的</span><br>        accountInfoService.addAccountInfoBalance(accountChangeEvent);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>可靠消息最终一致性就是保证消息从生产方经过消息中间件传递到消费方的一致性，本案例使用了RacketMQ 作为消息中间件，RocketMQ主要解决了两个功能：</p>
+<ol>
+<li>﻿﻿本地事务与消息发送的原子性问题。</li>
+<li>﻿﻿事务参与方接收消息的可靠性。</li>
+</ol>
+<p>可靠消息最终一致性事务适合<strong>执行周期长且实时性要求不高</strong>的场景。引入消息机制后，同步的事务操作变为基于消息执行的异步操作，避免了分布式事务中的同步阻塞操作的影响，并实现两个服务的解耦。</p>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/dtx/tcc_pt.html">实现TCC</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/dtx/notify.html">最大努力通知</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

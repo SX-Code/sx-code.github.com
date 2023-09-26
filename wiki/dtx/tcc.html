@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>分布式事务：解决方案之TCC - swcode</title>
+
+  
+    <meta name="description" content="什么是TCC事务ICC是Try、Confirm、Cancel三个词语的缩写，TCC要求每个分支事务实现三个操作：预处理Try、确认Confirm、撤销Cancel。 Try操作做业务检查及资源预留，Confirm做业务确认操作，Cancel实现一个与Try相反的操作即口滚操作。TM首先发起所有的分支事务的Try操作，任何一个分支事务的Try操作执行失败，TM将会发起所有分支事务的Cancel操作，">
+<meta property="og:type" content="website">
+<meta property="og:title" content="解决方案之TCC">
+<meta property="og:url" content="http://example.com/wiki/dtx/tcc.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="什么是TCC事务ICC是Try、Confirm、Cancel三个词语的缩写，TCC要求每个分支事务实现三个操作：预处理Try、确认Confirm、撤销Cancel。 Try操作做业务检查及资源预留，Confirm做业务确认操作，Cancel实现一个与Try相反的操作即口滚操作。TM首先发起所有的分支事务的Try操作，任何一个分支事务的Try操作执行失败，TM将会发起所有分支事务的Cancel操作，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction13.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction14.png">
+<meta property="article:published_time" content="2023-09-26T02:25:00.000Z">
+<meta property="article:modified_time" content="2023-09-26T05:09:14.191Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction13.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/dtx/index.html"><div class="main" ff="title">分布式事务</div><div class="sub cap">分布式事务学习笔记</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/dtx/" placeholder="在 /wiki/dtx/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">基础理论</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/cap.html"><span class="toc-text">CAP理论</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/base.html"><span class="toc-text">BASE理论</span></a></div></div><div class="widget-header cap dis-select"><span class="name">2PC</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/2pc.html"><span class="toc-text">解决方案之2PC</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/seata-2pc.html"><span class="toc-text">Seata实现2PC事务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">TCC</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/dtx/tcc.html"><span class="toc-text">解决方案之TCC</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFTCC%E4%BA%8B%E5%8A%A1"><span class="toc-text">什么是TCC事务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">TCC解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCC%E6%A8%A1%E5%BC%8F%E5%8E%9F%E7%90%86"><span class="toc-text">TCC模式原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E5%9B%9E%E6%BB%9A%E3%80%81%E5%B9%82%E7%AD%89%E3%80%81%E6%82%AC%E6%8C%82"><span class="toc-text">空回滚、幂等、悬挂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E5%9B%9E%E6%BB%9A"><span class="toc-text">空回滚</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%82%E7%AD%89"><span class="toc-text">幂等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%82%AC%E6%8C%82"><span class="toc-text">悬挂</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/tcc_pt.html"><span class="toc-text">实现TCC</span></a></div></div><div class="widget-header cap dis-select"><span class="name">消息队列</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/final_c.html"><span class="toc-text">可靠消息最终一致性</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/notify.html"><span class="toc-text">最大努力通知</span></a></div></div><div class="widget-header cap dis-select"><span class="name">案例分析</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/example1.html"><span class="toc-text">注册账号案例分析</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/dtx/example2.html"><span class="toc-text">存管开户案例分析</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/dtx/index.html">分布式事务</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-26T05:09:14.191Z">2023-09-26</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>解决方案之TCC</span></h1>
+  <h2 id="什么是TCC事务"><a href="#什么是TCC事务" class="headerlink" title="什么是TCC事务"></a>什么是TCC事务</h2><p>ICC是Try、Confirm、Cancel三个词语的缩写，TCC要求每个分支事务实现三个操作：预处理Try、确认Confirm、撤销Cancel。 Try操作做业务检查及资源预留，Confirm做业务确认操作，Cancel实现一个与Try相反的操作即口滚操作。TM首先发起所有的分支事务的Try操作，任何一个分支事务的Try操作执行失败，TM将会发起所有分支事务的Cancel操作，若Try操作全部成功，TM将会发起所有分支事务的Confirm操作，其Confirm&#x2F;Cancel操作若执行失败，TM会进行重试。</p>
+<p>成功情况：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction13.png" fancybox="true"/></div></div>
+
+<p>失败情况：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/dtx/distributed-transaction14.png" fancybox="true"/></div></div>
+
+<p>TCC分为三个阶段：</p>
+<ol>
+<li><p><strong>Try</strong> 阶段是做业务检查(一致性)及资源预留(隔离)，此阶段仅是一个初步操作，它和后续的Confirm一起才能真正构成一个完整的业务逻辑。</p>
+</li>
+<li><p>confirm 阶段是做确认提交，Try阶段所有分支事务执行成功后开始执行 Confirm。通常情况下，采用TCC则认为 Confirm 阶段是不会出错的。即：只要Try成功，Confirm一定成功。若Confirm阶段真的出错了，需引入重试机制或人工处理。</p>
+</li>
+<li><p>Cancel 阶段是在业务执行错误需要回滚的状态下执行分支事务的业务取消，预留资源释放。通常情况下，采用TCC则认为 Cancel 阶段也是一定成功的。若Cancel阶段真的出错了，需引入重试机制或人工处理。</p>
+</li>
+<li><p>TM事务管理器<br>TM事务管理器可以实现为独立的服务，也可以让<strong>全局事务发起方</strong>充当TM的角色，TM独立出来是为了成为公用组件，是为了考虑系统结构和软件复用。</p>
+</li>
+</ol>
+<p>TM在发起全局事务时生成全局事务记录，全局事务ID贯穿整个分布式事务调用链条，用来记录事务上下文，追踪和记录状态，由于 Confirm 和 Cancel 失败需进行重试，因此需要实现为幂等，幂等性是指同一个操作无论请求多少次，其结果都相同。</p>
+<h2 id="TCC解决方案"><a href="#TCC解决方案" class="headerlink" title="TCC解决方案"></a>TCC解决方案</h2><p>目前市面上的TCC框架众多比如下面这几种：</p>
+<ul>
+<li>tcc-transaction</li>
+<li>hmily</li>
+<li>ByteTCC</li>
+<li>EasyTransaction</li>
+<li>Seata</li>
+</ul>
+<h2 id="TCC模式原理"><a href="#TCC模式原理" class="headerlink" title="TCC模式原理"></a>TCC模式原理</h2><p>举例一个扣减用户余额的业务。假设账户A原来金额是100，需要扣减30元。</p>
+<ul>
+<li>阶段一（Try）：检查余额是否充足，如果充足则冻结金额增加30元，可用余额扣除30</li>
+<li>阶段二：加入要提交（Confirm），则冻结金额扣减30</li>
+<li>阶段二：如果要回滚（Cancel），则冻结金额扣减30，可用余额增加30</li>
+</ul>
+<p>阶段二只操作冻结金额（预留资源），一阶段每个事务只操作自己的冻结金额（预留资源），事务相互之间没有关联（隔离）</p>
+<h2 id="空回滚、幂等、悬挂"><a href="#空回滚、幂等、悬挂" class="headerlink" title="空回滚、幂等、悬挂"></a>空回滚、幂等、悬挂</h2><h3 id="空回滚"><a href="#空回滚" class="headerlink" title="空回滚"></a>空回滚</h3><p>在没有调用TCC 资源 Try 方法的情况下，调用了二阶段的 Cancel方法，Cancel 方法需要识别出这是一个空回滚，然后直接返回成功。</p>
+<p>出现原因是当一个分支事务所在服务宕机或网络异常，分支事务调用记录为失败，这个时候其实是没有执行 Try 阶段，当故障恢复后，分布式事务进行回滚则会调用二阶段的Cancel方法，从而形成空回滚。</p>
+<p>解决思路是关键就是要识别出这个空回滚。思路很简单就是需要知道一阶段是否执行，如果执行了，那就是正常回滚：如果没执行，那就是空回滚。前面已经说过TM在发起全局事务时生成全局事务记录，全局事务ID贯穿整个分布式事务调用链条。再额外增加一张分支事务记录表 ，其中有全局事务 ID 和分支事务 ID，第一阶段 Try 方法里会插入一条记录，表示一阶段执行了。Cancel 接口里读取该记录，如果该记录存在，则正常回滚；如果该记录不存在，则是空回滚。</p>
+<h3 id="幂等"><a href="#幂等" class="headerlink" title="幂等"></a>幂等</h3><p>通过前面介绍已经了解到 ，为了保证TCC二阶段提交重试机制不会引发数据不一致，要求 TCC 的二阶段Try、Confirm 和 Cancel接口保证幕等，这样不会重复使用或者释放资源。如果幂等控制没有做好，很有可能导致数据不一致等严重问题。</p>
+<p>解决思路在上述”分支事务记录’中增加执行状态，每次执行前都直询该状态。</p>
+<h3 id="悬挂"><a href="#悬挂" class="headerlink" title="悬挂"></a>悬挂</h3><blockquote>
+<p>Cancel 比 Try 先执行，需要阻止 Try 执行</p>
+</blockquote>
+<p>悬挂就是对于一个分布式事务，其二阶段 Cancel 接口比 Try 接口先执行。</p>
+<p>出现原因是在 RPC 调用分支事务try时，先注册分支事务，再执行RPC调用，如果此时RPC 调用的网络发生拥堵，通常 RPC调用是有超时时间的，RPC 超时以后，TM就会通知RM回滚该分布式事务，可能回滚完成后，RPC 请求才到达参与者真正执行，而一个Try 方法预留的业务资源，只有该分布式事务才能使用，该分布式事务第一阶段预留的业务资源就再也没有人能够处理了，对于这种情况，我们就称为悬挂，即业务资源预留后没法继续处理。</p>
+<p>解决思路是如果二阶段执行完成，那一阶段就不能再继续执行。在执行一阶段事务时判断在该全局事务下，“分支事务记录”表中是否已经有二阶段事务记录，如果有则不执行Try。</p>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/dtx/seata-2pc.html">Seata实现2PC事务</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/dtx/tcc_pt.html">实现TCC</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
