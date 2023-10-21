@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Easy云盘：文件转码服务 - swcode</title>
+
+  
+    <meta name="description" content="分片文件上传之后需要进行合并操作，  视频文件合并之后需要进行切割同时生成索引文件.m3u8和切片.ts，同时生成视频缩略图 图片文件同样需要生成缩略图  FFmpegFFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案。 安装FFmpeg本次视频的切片使用的是FFmpeg工具，使用Mave">
+<meta property="og:type" content="website">
+<meta property="og:title" content="文件转码服务">
+<meta property="og:url" content="http://example.com/wiki/easypan/05_file/transfer.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="分片文件上传之后需要进行合并操作，  视频文件合并之后需要进行切割同时生成索引文件.m3u8和切片.ts，同时生成视频缩略图 图片文件同样需要生成缩略图  FFmpegFFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案。 安装FFmpeg本次视频的切片使用的是FFmpeg工具，使用Mave">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-21T04:44:00.000Z">
+<meta property="article:modified_time" content="2023-10-21T04:45:23.756Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/easypan/01_introduce/index.html"><div class="main" ff="title">Easy云盘</div><div class="sub cap">Easy网盘项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/easypan/" placeholder="在 /wiki/easypan/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目部署</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/02_install/source_install.html"><span class="toc-text">源码部署</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/02_install/docker_install.html"><span class="toc-text">Docker部署</span></a></div></div><div class="widget-header cap dis-select"><span class="name">初始化项目</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/03_project-init/init.html"><span class="toc-text">初始化项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/03_project-init/cache.html"><span class="toc-text">缓存服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">用户信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/checkcode.html"><span class="toc-text">验证码服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/login.html"><span class="toc-text">账号密码登陆</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/register.html"><span class="toc-text">用户注册服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/gateway.html"><span class="toc-text">登陆拦截功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/userinfo.html"><span class="toc-text">获取用户信息</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/userspace.html"><span class="toc-text">用户空间服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">文件信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/enum.html"><span class="toc-text">文件枚举类</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/filelist.html"><span class="toc-text">获取文件列表</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/easypan/05_file/transfer.html"><span class="toc-text">文件转码服务</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#FFmpeg"><span class="toc-text">FFmpeg</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85FFmpeg"><span class="toc-text">安装FFmpeg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%93%8D%E4%BD%9C"><span class="toc-text">视频操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C"><span class="toc-text">图片操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F"><span class="toc-text">定义常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BD%AC%E7%A0%81"><span class="toc-text">文件转码</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/upload.html"><span class="toc-text">分片上传文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/info.html"><span class="toc-text">获取文件信息</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/folder.html"><span class="toc-text">目录操作服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/download.html"><span class="toc-text">文件下载服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/recycle.html"><span class="toc-text">文件回收站服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">回收站工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/list.html"><span class="toc-text">获取回收站文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/recover.html"><span class="toc-text">文件恢复服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/del.html"><span class="toc-text">文件彻底删除</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/learning-online/01-introduce/index.html"><span class="title">学成在线</span><span class="excerpt">该项目以在线教育业务为基础，基于当前热门的 Spring Cloud 微服务技术栈进行设计，采用Nginx、SpringBoot、Spring Cloud、MyBatis-Plus、MQ、Redis、Elasticsearch等框架和中间件为基础进行开发，带你体验Java大型项目从需求分析、架构设计、编码、调试、测试的整个过程。</span></a><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/easypan/01_introduce/index.html">Easy云盘</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-10-21T04:45:23.756Z">2023-10-21</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>文件转码服务</span></h1>
+  <p>分片文件上传之后需要进行合并操作，</p>
+<ul>
+<li>视频文件合并之后需要进行切割同时生成索引文件.m3u8和切片.ts，同时生成视频缩略图</li>
+<li>图片文件同样需要生成缩略图</li>
+</ul>
+<h2 id="FFmpeg"><a href="#FFmpeg" class="headerlink" title="FFmpeg"></a>FFmpeg</h2><p>FFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。采用LGPL或GPL许可证。它提供了录制、转换以及流化音视频的完整解决方案。</p>
+<h3 id="安装FFmpeg"><a href="#安装FFmpeg" class="headerlink" title="安装FFmpeg"></a>安装FFmpeg</h3><p>本次视频的切片使用的是FFmpeg工具，使用Maven方式，无需在机器上部署FFmpeg，其Maven依赖如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--FFmpeg--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>ws.schild<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jave-all-deps<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="视频操作"><a href="#视频操作" class="headerlink" title="视频操作"></a>视频操作</h3><p>新建<code>com.swx.easypan.utils</code>包，并在该包下创建 FfmpegUtil,添加如下方法</p>
+<figure class="highlight java"><figcaption><span>FfmpegUtil</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FfmpegUtil</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">logger</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(ProcessUtils.class);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 生成index.ts</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> videoFilePath 视频路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> tsPath        ts文件路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transfer2ts</span><span class="hljs-params">(String videoFilePath, String tsPath)</span> &#123;<br>        <span class="hljs-comment">// &quot;ffmpeg -y -i %s -vcodec copy -acodec copy -vbsf h264_mp4toannexb %s&quot;</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">ProcessWrapper</span> <span class="hljs-variable">ffmpeg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultFFMPEGLocator</span>().createExecutor();<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-y&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-i&quot;</span>);<br>            ffmpeg.addArgument(videoFilePath);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-vcodec&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;copy&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-acodec&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;copy&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-vbsf&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;h264_mp4toannexb&quot;</span>);<br>            ffmpeg.addArgument(tsPath);<br>            ffmpeg.execute();<br>            <span class="hljs-keyword">try</span> (<span class="hljs-type">BufferedReader</span> <span class="hljs-variable">br</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InputStreamReader</span>(ffmpeg.getErrorStream()))) &#123;<br>                blockFfmpeg(br);<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            logger.error(<span class="hljs-string">&quot;ts文件生成失败&quot;</span>, e);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;视频转换失败&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 视频切片</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> tsPath   ts文件路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> m3u8Path index.m3u8路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> tsFolder 切片文件目录路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fileId   文件ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">cutTs</span><span class="hljs-params">(String tsPath, String m3u8Path, String tsFolder, String fileId)</span> &#123;<br>        <span class="hljs-comment">// &quot;ffmpeg -i %s -c copy -map 0 -f segment -segment_list %s -segment_time 30 %s/%s_%%4d.ts&quot;</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">ProcessWrapper</span> <span class="hljs-variable">ffmpeg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultFFMPEGLocator</span>().createExecutor();<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-i&quot;</span>);<br>            ffmpeg.addArgument(tsPath);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-c&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;copy&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-map&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;0&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-f&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;segment&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-segment_list&quot;</span>);<br>            ffmpeg.addArgument(m3u8Path);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-segment_time&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;30&quot;</span>);<br>            ffmpeg.addArgument(String.format(<span class="hljs-string">&quot;%s/%s_%%4d.ts&quot;</span>, tsFolder, fileId));<br>            ffmpeg.execute();<br>            <span class="hljs-keyword">try</span> (<span class="hljs-type">BufferedReader</span> <span class="hljs-variable">br</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InputStreamReader</span>(ffmpeg.getErrorStream()))) &#123;<br>                blockFfmpeg(br);<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            logger.error(<span class="hljs-string">&quot;文件切片失败&quot;</span>, e);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;视频转换失败&quot;</span>);<br>        &#125;<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取视频缩略图</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sourceFile 视频文件地址</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> width      缩略图宽度</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> targetFile 缩略图地址</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createTargetThumbnail</span><span class="hljs-params">(File sourceFile, Integer width, File targetFile)</span> &#123;<br>        <span class="hljs-comment">// &quot;ffmpeg -i %s -y -vframes 1 -vf scale=%d:%d/a %s&quot;</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">ProcessWrapper</span> <span class="hljs-variable">ffmpeg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultFFMPEGLocator</span>().createExecutor();<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-i&quot;</span>);<br>            ffmpeg.addArgument(sourceFile.getAbsoluteFile().toString());<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-y&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-vframes&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;1&quot;</span>);<br>            ffmpeg.addArgument(<span class="hljs-string">&quot;-vf&quot;</span>);<br>            ffmpeg.addArgument(String.format(<span class="hljs-string">&quot;scale=%d:%d/a&quot;</span>, width, width));<br>            ffmpeg.addArgument(targetFile.getAbsoluteFile().toString());<br>            ffmpeg.execute();<br>            <span class="hljs-keyword">try</span> (<span class="hljs-type">BufferedReader</span> <span class="hljs-variable">br</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InputStreamReader</span>(ffmpeg.getErrorStream()))) &#123;<br>                blockFfmpeg(br);<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            logger.error(<span class="hljs-string">&quot;生成封面失败&quot;</span>, e);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;生成封面失败&quot;</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 等待命令执行成功，退出</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> br</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> IOException</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">blockFfmpeg</span><span class="hljs-params">(BufferedReader br)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        String line;<br>        <span class="hljs-comment">// 该方法阻塞线程，直至合成成功</span><br>        <span class="hljs-keyword">while</span> ((line = br.readLine()) != <span class="hljs-literal">null</span>) &#123;<br>            doNothing(line);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doNothing</span><span class="hljs-params">(String line)</span> &#123;<br>        <span class="hljs-comment">// logger.info(&quot;ffmpeg命令执行中————&#123;&#125;&quot;, line);</span><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="图片操作"><a href="#图片操作" class="headerlink" title="图片操作"></a>图片操作</h3><p>在 FfmpegUtil 中添加图片处理方法，生成图片缩略图</p>
+<figure class="highlight java"><figcaption><span>FfmpegUtil</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Boolean <span class="hljs-title function_">createThumbnailWidthFFmpeg</span><span class="hljs-params">(File sourceFile, Integer width, File targetFile, Boolean delSource)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">src</span> <span class="hljs-operator">=</span> ImageIO.read(sourceFile);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sourceW</span> <span class="hljs-operator">=</span> src.getWidth();<br>        <span class="hljs-comment">// 小于指定高宽不要压缩</span><br>        <span class="hljs-keyword">if</span> (sourceW &lt; width) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        compressImage(sourceFile, width, targetFile, delSource);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        e.printStackTrace();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 压缩图片，获取图片缩略图</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> sourceFile 源图片地址</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> width      图片压缩宽度</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> targetFile 缩略图</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> delSource  是否删除原图</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">compressImage</span><span class="hljs-params">(File sourceFile, Integer width, File targetFile, Boolean delSource)</span> &#123;<br>    <span class="hljs-comment">// String cmd = &quot;ffmpeg -i %s -vf scale=%d:-1 %s -y&quot;</span><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-type">ProcessWrapper</span> <span class="hljs-variable">ffmpeg</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultFFMPEGLocator</span>().createExecutor();<br>        ffmpeg.addArgument(<span class="hljs-string">&quot;-i&quot;</span>);<br>        ffmpeg.addArgument(sourceFile.getAbsoluteFile().toString());<br>        ffmpeg.addArgument(<span class="hljs-string">&quot;-vf&quot;</span>);<br>        ffmpeg.addArgument(String.format(<span class="hljs-string">&quot;scale=%d:-1&quot;</span>, width));<br>        ffmpeg.addArgument(targetFile.getAbsolutePath());<br>        ffmpeg.addArgument(<span class="hljs-string">&quot;-y&quot;</span>);<br>        ffmpeg.execute();<br>        <span class="hljs-keyword">try</span> (<span class="hljs-type">BufferedReader</span> <span class="hljs-variable">br</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InputStreamReader</span>(ffmpeg.getErrorStream()))) &#123;<br>            blockFfmpeg(br);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (delSource) &#123;<br>            FileUtils.deleteDirectory(sourceFile);<br>        &#125;<br>    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>        logger.error(<span class="hljs-string">&quot;压缩图片失败&quot;</span>, e);<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;生成封面失败&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="定义常量"><a href="#定义常量" class="headerlink" title="定义常量"></a>定义常量</h2><p>静态常量，在<code>com.swx.easypan.entity.constants</code>包下的 Constants 类中定义常量</p>
+<figure class="highlight java"><figcaption><span>Constants</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Constants</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">FILE_FOLDER_FILE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/file/&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">FILE_FOLDER_TEMP</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/file/temp/&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">IMAGE_PNG_SUFFIX</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;.png&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">TS_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;index.ts&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">M3U8_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;index.m3u8&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="文件转码"><a href="#文件转码" class="headerlink" title="文件转码"></a>文件转码</h2><p>找到 FileInfoServiceImpl，定义 转码方法 transferFile，添加<code>@Async</code>异步注解</p>
+<figure class="highlight java"><figcaption><span>FileInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileInfoServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;FileInfoMapper, FileInfo&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">FileInfoService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AppConfig appConfig;<br>    <br>    <span class="hljs-meta">@Async</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transferFile</span><span class="hljs-params">(String fileId, String userId)</span> &#123;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">transferSuccess</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">targetFilePath</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">cover</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-type">FileInfo</span> <span class="hljs-variable">fileInfo</span> <span class="hljs-operator">=</span> getByMultiId(fileId, userId);<br>        <span class="hljs-keyword">if</span> (fileInfo == <span class="hljs-literal">null</span> || !FileStatusEnums.TRANSFER.getStatus().equals(fileInfo.getStatus())) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 临时目录</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">tempFolderName</span> <span class="hljs-operator">=</span> appConfig.getProjectFolder() + Constants.FILE_FOLDER_TEMP;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">currentUserFolderName</span> <span class="hljs-operator">=</span> userId + fileId;<br>            <span class="hljs-type">File</span> <span class="hljs-variable">fileFolder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(tempFolderName + currentUserFolderName);<br>            <span class="hljs-type">String</span> <span class="hljs-variable">fileSuffix</span> <span class="hljs-operator">=</span> StringTools.getFileSuffix(fileInfo.getFilename());<br>            <span class="hljs-type">String</span> <span class="hljs-variable">month</span> <span class="hljs-operator">=</span> fileInfo.getCreateTime().format(DateTimeFormatter.ofPattern(DateTimePatternEnum.YYYYMM.getPattern()));<br>            <span class="hljs-comment">// 目标目录</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">targetFolderName</span> <span class="hljs-operator">=</span> appConfig.getProjectFolder() + Constants.FILE_FOLDER_FILE;<br>            <span class="hljs-type">File</span> <span class="hljs-variable">targetFolder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(targetFolderName + <span class="hljs-string">&quot;/&quot;</span> + month);<br>            <span class="hljs-keyword">if</span> (!targetFolder.exists()) &#123;<br>                targetFolder.mkdirs();<br>            &#125;<br>            <span class="hljs-comment">// 真实文件名</span><br>            <span class="hljs-type">String</span> <span class="hljs-variable">realFilename</span> <span class="hljs-operator">=</span> currentUserFolderName + fileSuffix;<br>            targetFilePath = targetFolder.getPath() + <span class="hljs-string">&quot;/&quot;</span> + realFilename;<br>            <span class="hljs-comment">// 合并文件</span><br>            union(fileFolder.getPath(), targetFilePath, fileInfo.getFilename(), <span class="hljs-literal">true</span>);<br>            <span class="hljs-comment">// 视频文件切割</span><br>            <span class="hljs-type">Integer</span> <span class="hljs-variable">fileType</span> <span class="hljs-operator">=</span> fileInfo.getFileType();<br>            <span class="hljs-comment">// 文件缩略图</span><br>            <span class="hljs-keyword">if</span> (FileTypeEnums.VIDEO.getType().equals(fileType)) &#123;<br>                cutFile4Video(fileId, targetFilePath);<br>                <span class="hljs-comment">// 视频缩略图</span><br>                cover = month + <span class="hljs-string">&quot;/&quot;</span> + currentUserFolderName + Constants.IMAGE_PNG_SUFFIX;<br>                <span class="hljs-type">String</span> <span class="hljs-variable">coverPath</span> <span class="hljs-operator">=</span> targetFolderName + <span class="hljs-string">&quot;/&quot;</span> + cover;<br>                FfmpegUtil.createTargetThumbnail(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(targetFilePath), Constants.LENGTH_150, <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(coverPath));<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (FileTypeEnums.IMAGE.getType().equals(fileType)) &#123;<br>                <span class="hljs-comment">// 图片缩略图</span><br>                cover = month + <span class="hljs-string">&quot;/&quot;</span> + realFilename.replace(<span class="hljs-string">&quot;.&quot;</span>, <span class="hljs-string">&quot;_.&quot;</span>);<br>                <span class="hljs-type">String</span> <span class="hljs-variable">coverPath</span> <span class="hljs-operator">=</span> targetFolderName + <span class="hljs-string">&quot;/&quot;</span> + cover;<br>                <span class="hljs-type">Boolean</span> <span class="hljs-variable">created</span> <span class="hljs-operator">=</span> FfmpegUtil.createThumbnailWidthFFmpeg(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(targetFilePath), Constants.LENGTH_150, <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(coverPath), <span class="hljs-literal">false</span>);<br>                <span class="hljs-keyword">if</span> (!created) &#123;<br>                    FileUtils.copyFile(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(targetFilePath), <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(coverPath));<br>                &#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;文件转码失败， 文件ID: &#123;&#125;, userId: &#123;&#125;&quot;</span>, fileId, userId, e);<br>            transferSuccess = <span class="hljs-literal">false</span>;<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-comment">// 更新文件Size和封面</span><br>            <span class="hljs-type">FileInfo</span> <span class="hljs-variable">updateInfo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInfo</span>();<br>            <span class="hljs-keyword">if</span> (targetFilePath == <span class="hljs-literal">null</span>) &#123;<br>                updateInfo.setFileSize(<span class="hljs-number">0L</span>);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                updateInfo.setFileSize(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(targetFilePath).length());<br>            &#125;<br>            updateInfo.setFileCover(cover);<br>            updateInfo.setStatus(transferSuccess ? FileStatusEnums.USING.getStatus() : FileStatusEnums.TRANSFER_FAIL.getStatus());<br>            updateByMultiId(updateInfo, fileId, userId);<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 多主键更新</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id     文件ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> userId 用户ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Boolean <span class="hljs-title function_">updateByMultiId</span><span class="hljs-params">(FileInfo fileInfo, String id, String userId)</span> &#123;<br>        <span class="hljs-keyword">return</span> update(fileInfo, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaUpdateWrapper</span>&lt;FileInfo&gt;().eq(FileInfo::getId, id).eq(FileInfo::getUserId, userId));<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 多主键查询</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id     文件ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> userId 用户ID</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> FileInfo <span class="hljs-title function_">getByMultiId</span><span class="hljs-params">(String id, String userId)</span> &#123;<br>        <span class="hljs-keyword">return</span> getOne(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;FileInfo&gt;().eq(FileInfo::getId, id).eq(FileInfo::getUserId, userId));<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 文件合并</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dirPath    分片所在目录</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> toFilePath 合并目标文件</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> filename   合并文件名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> delSource  是否删除分片文件</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(String dirPath, String toFilePath, String filename, Boolean delSource)</span> &#123;<br>        <span class="hljs-type">File</span> <span class="hljs-variable">dir</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(dirPath);<br>        <span class="hljs-keyword">if</span> (!dir.exists()) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;目录不存在&quot;</span>);<br>        &#125;<br>        File[] files = dir.listFiles();<br>        <span class="hljs-type">File</span> <span class="hljs-variable">targetFile</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(toFilePath);<br>        <span class="hljs-type">RandomAccessFile</span> <span class="hljs-variable">writeFile</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            writeFile = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RandomAccessFile</span>(targetFile, <span class="hljs-string">&quot;rw&quot;</span>);<br>            <span class="hljs-type">byte</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span> * <span class="hljs-number">10</span>];<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; files.length; i++) &#123;<br>                <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>                <span class="hljs-type">File</span> <span class="hljs-variable">chunkFile</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(dirPath + <span class="hljs-string">&quot;/&quot;</span> + i);<br>                <span class="hljs-keyword">try</span> (<span class="hljs-type">RandomAccessFile</span> <span class="hljs-variable">readFile</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RandomAccessFile</span>(chunkFile, <span class="hljs-string">&quot;r&quot;</span>)) &#123;<br>                    <span class="hljs-keyword">while</span> ((len = readFile.read(b)) != -<span class="hljs-number">1</span>) &#123;<br>                        writeFile.write(b, <span class="hljs-number">0</span>, len);<br>                    &#125;<br>                &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                    log.error(<span class="hljs-string">&quot;合并分片失败&quot;</span>, e);<br>                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;合并分片失败&quot;</span>);<br>                &#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;合并文件:&#123;&#125;失败&quot;</span>, filename, e);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;合并文件&quot;</span> + filename + <span class="hljs-string">&quot;出错了&quot;</span>);<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != writeFile) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    writeFile.close();<br>                &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>            &#125;<br>            <span class="hljs-keyword">if</span> (delSource &amp;&amp; dir.exists()) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    FileUtils.deleteDirectory(dir);<br>                &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 视频文件切片</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fileId        文件ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> videoFilePath 分片到目录</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">cutFile4Video</span><span class="hljs-params">(String fileId, String videoFilePath)</span> &#123;<br>        <span class="hljs-comment">// 创建同名切片目录</span><br>        <span class="hljs-type">File</span> <span class="hljs-variable">tsFolder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(videoFilePath.substring(<span class="hljs-number">0</span>, videoFilePath.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>)));<br>        <span class="hljs-keyword">if</span> (!tsFolder.exists()) &#123;<br>            tsFolder.mkdirs();<br>        &#125;<br>        <span class="hljs-comment">// 生成ts</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">tsPath</span> <span class="hljs-operator">=</span> tsFolder + <span class="hljs-string">&quot;/&quot;</span> + Constants.TS_NAME;<br>        FfmpegUtil.transfer2ts(videoFilePath, tsPath);<br>        <span class="hljs-comment">// 生成索引文件.m3u8和切片.ts文件</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">indexTs</span> <span class="hljs-operator">=</span> tsFolder.getPath() + <span class="hljs-string">&quot;/&quot;</span> + Constants.M3U8_NAME;<br>        FfmpegUtil.cutTs(tsPath, indexTs, tsFolder.getPath(), fileId);<br>        <span class="hljs-comment">// 删除index.ts</span><br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(tsPath).delete();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/easypan/05_file/filelist.html">获取文件列表</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/easypan/05_file/upload.html">分片上传文件</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Easy云盘：用户注册服务 - swcode</title>
+
+  
+    <meta name="description" content="用户注册时要发送验证码到邮箱，以此验证邮箱是否有效。因此该服务分为两部分，首先是发送邮箱验证码，并放入Redis缓存，其次是新增邮箱账户信息。 邮箱验证码接口信息使用字节流的方式写回前端     值    路径地址 http:&#x2F;&#x2F;localhost:7090&#x2F;api&#x2F;sendEmailCode   请求方式 POST   请求参数 email、checkCode、type   返回结果    定义">
+<meta property="og:type" content="website">
+<meta property="og:title" content="用户注册服务">
+<meta property="og:url" content="http://example.com/wiki/easypan/04_user/register.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="用户注册时要发送验证码到邮箱，以此验证邮箱是否有效。因此该服务分为两部分，首先是发送邮箱验证码，并放入Redis缓存，其次是新增邮箱账户信息。 邮箱验证码接口信息使用字节流的方式写回前端     值    路径地址 http:&#x2F;&#x2F;localhost:7090&#x2F;api&#x2F;sendEmailCode   请求方式 POST   请求参数 email、checkCode、type   返回结果    定义">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-21T04:31:00.000Z">
+<meta property="article:modified_time" content="2023-10-21T04:32:11.269Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/easypan/01_introduce/index.html"><div class="main" ff="title">Easy云盘</div><div class="sub cap">Easy网盘项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/easypan/" placeholder="在 /wiki/easypan/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目部署</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/02_install/source_install.html"><span class="toc-text">源码部署</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/02_install/docker_install.html"><span class="toc-text">Docker部署</span></a></div></div><div class="widget-header cap dis-select"><span class="name">初始化项目</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/03_project-init/init.html"><span class="toc-text">初始化项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/03_project-init/cache.html"><span class="toc-text">缓存服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">用户信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/checkcode.html"><span class="toc-text">验证码服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/login.html"><span class="toc-text">账号密码登陆</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/easypan/04_user/register.html"><span class="toc-text">用户注册服务</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%AE%E7%AE%B1%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">邮箱验证码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Mapper"><span class="toc-text">定义Mapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Service"><span class="toc-text">定义Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Controller"><span class="toc-text">定义Controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E6%9C%8D%E5%8A%A1"><span class="toc-text">用户注册服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF-1"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E9%AA%8C%E8%AF%81%E7%A0%81DTO"><span class="toc-text">图片验证码DTO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Mapper-1"><span class="toc-text">定义Mapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Service-1"><span class="toc-text">定义Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89Controller-1"><span class="toc-text">定义Controller</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/gateway.html"><span class="toc-text">登陆拦截功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/userinfo.html"><span class="toc-text">获取用户信息</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/04_user/userspace.html"><span class="toc-text">用户空间服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">文件信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/enum.html"><span class="toc-text">文件枚举类</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/filelist.html"><span class="toc-text">获取文件列表</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/transfer.html"><span class="toc-text">文件转码服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/upload.html"><span class="toc-text">分片上传文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/info.html"><span class="toc-text">获取文件信息</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/folder.html"><span class="toc-text">目录操作服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/download.html"><span class="toc-text">文件下载服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/05_file/recycle.html"><span class="toc-text">文件回收站服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">回收站工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/list.html"><span class="toc-text">获取回收站文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/recover.html"><span class="toc-text">文件恢复服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/easypan/06_recycle/del.html"><span class="toc-text">文件彻底删除</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/learning-online/01-introduce/index.html"><span class="title">学成在线</span><span class="excerpt">该项目以在线教育业务为基础，基于当前热门的 Spring Cloud 微服务技术栈进行设计，采用Nginx、SpringBoot、Spring Cloud、MyBatis-Plus、MQ、Redis、Elasticsearch等框架和中间件为基础进行开发，带你体验Java大型项目从需求分析、架构设计、编码、调试、测试的整个过程。</span></a><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/easypan/01_introduce/index.html">Easy云盘</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-10-21T04:32:11.269Z">2023-10-21</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>用户注册服务</span></h1>
+  <p>用户注册时要发送验证码到邮箱，以此验证邮箱是否有效。因此该服务分为两部分，首先是发送邮箱验证码，并<strong>放入Redis缓存</strong>，其次是新增邮箱账户信息。</p>
+<h2 id="邮箱验证码"><a href="#邮箱验证码" class="headerlink" title="邮箱验证码"></a>邮箱验证码</h2><h3 id="接口信息"><a href="#接口信息" class="headerlink" title="接口信息"></a>接口信息</h3><p>使用<strong>字节流</strong>的方式写回前端</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:7090/api/sendEmailCode">http://localhost:7090/api/sendEmailCode</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>email、checkCode、type</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="定义Mapper"><a href="#定义Mapper" class="headerlink" title="定义Mapper"></a>定义Mapper</h3><p>将验证码置为无效</p>
+<figure class="highlight java"><figcaption><span>EmailCodeMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">EmailCodeMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;EmailCode&gt; &#123;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">disableEmailCode</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;email&quot;)</span> String email)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在 EmailCodeMapper.xml 中实现接口，使用乐观锁</p>
+<figure class="highlight xml"><figcaption><span>EmailCodeMapper.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">mapper</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.swx.easypan.mapper.EmailCodeMapper&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;disableEmailCode&quot;</span>&gt;</span><br>        update email_code<br>        set status = 1<br>        where email = #&#123;email&#125;<br>          and status = 0<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="定义Service"><a href="#定义Service" class="headerlink" title="定义Service"></a>定义Service</h3><p>找到 EmailCodeService，定义发送验证码方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">EmailCodeService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;EmailCode&gt; &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendEmailCode</span><span class="hljs-params">(String email, Integer type)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在 EmailCodeServiceImpl 实现该方法，发送的同时将验证码写入Redis</p>
+<figure class="highlight java"><figcaption><span>EmailCodeServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * &lt;p&gt;</span><br><span class="hljs-comment"> * 邮箱验证码服务实现类</span><br><span class="hljs-comment"> * &lt;/p&gt;</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> sw-code</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 2023-05-17</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EmailCodeServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;EmailCodeMapper, EmailCode&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">EmailCodeService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> JavaMailSender javaMailSender;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RedisComponent redisComponent;<br><br>    <span class="hljs-meta">@Resource</span><br>    <span class="hljs-keyword">private</span> AppConfig appConfig;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">EmailCodeServiceImpl</span><span class="hljs-params">(JavaMailSender javaMailSender, RedisComponent redisComponent)</span> &#123;<br>        <span class="hljs-built_in">this</span>.javaMailSender = javaMailSender;<br>        <span class="hljs-built_in">this</span>.redisComponent = redisComponent;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendEmailCode</span><span class="hljs-params">(String email, Integer type)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">code</span> <span class="hljs-operator">=</span> StringTools.getRandomNumber(Constants.LENGTH_5);<br>        <span class="hljs-comment">// 发送验证码</span><br>        sendMailCode(email, code);<br>        <span class="hljs-comment">// 将之前的验证码置为无效</span><br>        baseMapper.disableEmailCode(email);<br><br>        <span class="hljs-type">EmailCode</span> <span class="hljs-variable">emailCode</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">EmailCode</span>();<br>        emailCode.setCode(code);<br>        emailCode.setEmail(email);<br>        emailCode.setStatus(Constants.ZERO);<br>        <span class="hljs-built_in">this</span>.save(emailCode);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendMailCode</span><span class="hljs-params">(String toEmail, String code)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">MimeMessage</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> javaMailSender.createMimeMessage();<br>            <span class="hljs-type">MimeMessageHelper</span> <span class="hljs-variable">helper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MimeMessageHelper</span>(message, <span class="hljs-literal">true</span>);<br>            helper.setFrom(appConfig.getSendUsername());<br>            helper.setTo(toEmail);<br><br>            <span class="hljs-type">SysSettingsDTO</span> <span class="hljs-variable">sysSettingsDto</span> <span class="hljs-operator">=</span> redisComponent.getSysSettingDto();<br><br>            helper.setSubject(sysSettingsDto.getRegisterMailTitle());<br>            helper.setText(String.format(sysSettingsDto.getRegisterEmailContent(), code));<br>            helper.setSentDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>            javaMailSender.send(message);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;邮件发送失败&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="定义Controller"><a href="#定义Controller" class="headerlink" title="定义Controller"></a>定义Controller</h3><p>在 UserInfoController 下定义接口</p>
+<figure class="highlight java"><figcaption><span>UserInfoController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController(&quot;userInfoController&quot;)</span><br><span class="hljs-meta">@ResponseResult</span><br><span class="hljs-meta">@Validated</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserInfoController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserInfoService userInfoService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> EmailCodeService emailCodeService;<br>    <br>    <span class="hljs-meta">@Resource</span><br>    AppConfig appConfig;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserInfoController</span><span class="hljs-params">(UserInfoService userInfoService, EmailCodeService emailCodeService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.userInfoService = userInfoService;<br>        <span class="hljs-built_in">this</span>.emailCodeService = emailCodeService;<br>    &#125;<br>    <br>    <span class="hljs-meta">@PostMapping(&quot;/sendEmailCode&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendEmailCode</span><span class="hljs-params">(HttpSession session,</span><br><span class="hljs-params">                              <span class="hljs-meta">@NotNull</span> String email,</span><br><span class="hljs-params">                              <span class="hljs-meta">@NotNull</span> String checkCode,</span><br><span class="hljs-params">                              <span class="hljs-meta">@NotNull</span> Integer type)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">if</span> (!checkCode.equalsIgnoreCase((String) session.getAttribute(Constants.CHECK_CODE_KEY_EMAIL))) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;图片验证码错误&quot;</span>);<br>            &#125;<br>            <span class="hljs-comment">// 0:注册 1：找回</span><br>            <span class="hljs-keyword">if</span> (type == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-type">UserInfo</span> <span class="hljs-variable">userInfo</span> <span class="hljs-operator">=</span> userInfoService.getOne(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;UserInfo&gt;().eq(UserInfo::getEmail, email));<br>                <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != userInfo) &#123;<br>                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;邮箱已存在&quot;</span>);<br>                &#125;<br>            &#125;<br>            emailCodeService.sendEmailCode(email, type);<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            session.removeAttribute(Constants.CHECK_CODE_KEY_EMAIL);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="用户注册服务"><a href="#用户注册服务" class="headerlink" title="用户注册服务"></a>用户注册服务</h2><h3 id="接口信息-1"><a href="#接口信息-1" class="headerlink" title="接口信息"></a>接口信息</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:7090/api/register">http://localhost:7090/api/register</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>RegisterDTO</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="图片验证码DTO"><a href="#图片验证码DTO" class="headerlink" title="图片验证码DTO"></a>图片验证码DTO</h3><p>在包<code>com.swx.easypan.entity.dto</code>，下创建 RegisterDTO 实体类，将下面代码放入：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RegisterDTO</span> &#123;<br><br>    <span class="hljs-meta">@Email</span><br>    <span class="hljs-keyword">private</span> String email;<br>    <span class="hljs-meta">@NotNull</span><br>    <span class="hljs-keyword">private</span> String nickname;<br><br>    <span class="hljs-meta">@NotNull</span><br>    <span class="hljs-meta">@Size(min = 8, max = 18, message = &quot;密码长度在8-18之间&quot;)</span><br>    <span class="hljs-keyword">private</span> String password;<br><br>    <span class="hljs-meta">@NotNull</span><br>    <span class="hljs-keyword">private</span> String checkCode;<br><br>    <span class="hljs-meta">@NotNull</span><br>    <span class="hljs-keyword">private</span> String emailCode;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="定义Mapper-1"><a href="#定义Mapper-1" class="headerlink" title="定义Mapper"></a>定义Mapper</h3><p>将验证码置为无效</p>
+<figure class="highlight java"><figcaption><span>EmailCodeMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">EmailCodeMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;EmailCode&gt; &#123;<br><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">disableEmailCode</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;email&quot;)</span> String email)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在 EmailCodeMapper.xml 中实现接口，使用乐观锁</p>
+<figure class="highlight xml"><figcaption><span>EmailCodeMapper.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">mapper</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.swx.easypan.mapper.EmailCodeMapper&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;disableEmailCode&quot;</span>&gt;</span><br>        update email_code<br>        set status = 1<br>        where email = #&#123;email&#125;<br>          and status = 0<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="定义Service-1"><a href="#定义Service-1" class="headerlink" title="定义Service"></a>定义Service</h3><p>找到 UserInfoService接口，在其中添加：</p>
+<figure class="highlight java"><figcaption><span>UserInfoService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 注册</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> registerDto 注册信息</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">register</span><span class="hljs-params">(RegisterDTO registerDto)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>在 UserInfoServiceImpl 中实现该方法，首先校验用户是否已经注册，然后校验其邮箱验证码，没有问题，则创建新用户，并初始化基础信息。</p>
+<figure class="highlight java"><figcaption><span>UserInfoServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserInfoServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;UserInfoMapper, UserInfo&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">UserInfoService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> EmailCodeService emailCodeService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RedisComponent redisComponent;<br>    <br>    <span class="hljs-meta">@Resource</span><br>    <span class="hljs-keyword">private</span> AppConfig appConfig;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserInfoServiceImpl</span><span class="hljs-params">(EmailCodeService emailCodeService, RedisComponent redisComponent)</span> &#123;<br>        <span class="hljs-built_in">this</span>.emailCodeService = emailCodeService;<br>        <span class="hljs-built_in">this</span>.redisComponent = redisComponent;<br>    &#125;<br>    <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 注册</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> registerDto 注册信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">register</span><span class="hljs-params">(RegisterDTO registerDto)</span> &#123;<br>        <span class="hljs-type">UserInfo</span> <span class="hljs-variable">emailUser</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getOne(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;UserInfo&gt;().eq(UserInfo::getEmail, registerDto.getEmail()));<br>        <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != emailUser) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;邮箱账号已经存在&quot;</span>);<br>        &#125;<br>        <span class="hljs-type">UserInfo</span> <span class="hljs-variable">nickNameUser</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getOne(<span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;UserInfo&gt;().eq(UserInfo::getNickname, registerDto.getNickname()));<br>        <span class="hljs-keyword">if</span> (<span class="hljs-literal">null</span> != nickNameUser) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;邮箱昵称已经存在&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// 校验邮箱验证码</span><br>        emailCodeService.checkCode(registerDto.getEmail(), registerDto.getEmailCode());<br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">userId</span> <span class="hljs-operator">=</span> StringTools.getRandomNumber(Constants.LENGTH_10);<br>        <span class="hljs-type">UserInfo</span> <span class="hljs-variable">userInfo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserInfo</span>();<br>        userInfo.setId(userId);<br>        userInfo.setNickname(registerDto.getNickname());<br>        userInfo.setEmail(registerDto.getEmail());<br>        userInfo.setPassword(MD5.encrypt(registerDto.getPassword()));<br>        userInfo.setUseSpace(<span class="hljs-number">0L</span>);<br>        <span class="hljs-type">SysSettingsDTO</span> <span class="hljs-variable">sysSettingDto</span> <span class="hljs-operator">=</span> redisComponent.getSysSettingDto();<br>        userInfo.setTotalSpace(sysSettingDto.getUserInitSpace() * Constants.MB);<br>        <span class="hljs-built_in">this</span>.save(userInfo);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="定义Controller-1"><a href="#定义Controller-1" class="headerlink" title="定义Controller"></a>定义Controller</h3><p>在 UserInfoController 下定义接口</p>
+<figure class="highlight java"><figcaption><span>UserInfoController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController(&quot;userInfoController&quot;)</span><br><span class="hljs-meta">@ResponseResult</span><br><span class="hljs-meta">@Validated</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserInfoController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserInfoService userInfoService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserInfoController</span><span class="hljs-params">(UserInfoService userInfoService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.userInfoService = userInfoService;<br>    &#125;<br>    <br>    <span class="hljs-meta">@PostMapping(&quot;/register&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">register</span><span class="hljs-params">(HttpSession session, <span class="hljs-meta">@Valid</span> <span class="hljs-meta">@RequestBody</span> RegisterDTO registerDto)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">if</span> (!registerDto.getCheckCode().equalsIgnoreCase((String) session.getAttribute(Constants.CHECK_CODE_KEY))) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;图片验证码错误&quot;</span>);<br>            &#125;<br>            userInfoService.register(registerDto);<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            session.removeAttribute(Constants.CHECK_CODE_KEY);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/easypan/04_user/login.html">账号密码登陆</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/easypan/04_user/gateway.html">登陆拦截功能</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

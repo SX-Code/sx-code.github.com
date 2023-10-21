@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>学成在线：工程代码 - swcode</title>
+
+  
+    <meta name="description" content="接口信息生成验证码图片     值    路径地址 http:&#x2F;&#x2F;localhost:63075&#x2F;checkcode&#x2F;pic   请求方式 POST   请求参数 CheckCodeParamsDTO   返回结果 CheckCodeResultVO   校验验证码图片     值    路径地址 http:&#x2F;&#x2F;localhost:63075&#x2F;checkcode&#x2F;verify   请求方式 POS">
+<meta property="og:type" content="website">
+<meta property="og:title" content="工程代码">
+<meta property="og:url" content="http://example.com/wiki/learning-online/09-checkcode/project.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="接口信息生成验证码图片     值    路径地址 http:&#x2F;&#x2F;localhost:63075&#x2F;checkcode&#x2F;pic   请求方式 POST   请求参数 CheckCodeParamsDTO   返回结果 CheckCodeResultVO   校验验证码图片     值    路径地址 http:&#x2F;&#x2F;localhost:63075&#x2F;checkcode&#x2F;verify   请求方式 POS">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-07T07:55:00.000Z">
+<meta property="article:modified_time" content="2023-09-26T09:31:41.309Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/learning-online/01-introduce/index.html"><div class="main" ff="title">学成在线</div><div class="sub cap">学成在线项目食用教程</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/learning-online/" placeholder="在 /wiki/learning-online/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+<widget class="widget-wrapper ghrepo"><div class="widget-body"><div class="items stellar-ghinfo-api" api="https://api.github.com/repos/SX-Code/learning-online"><a class="repo" href="https://github.com/SX-Code/learning-online" target="_blank" rel="external nofollow noopener noreferrer"><div class="repo-name flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>SX-Code/learning-online</div><div class="repo-desc"><span type="text" id="description">&nbsp;</span></div><div class="grid"><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg><span type="text" id="stargazers_count"></span></div><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg><span type="text" id="forks_count"></span></div><div class="flex-row stellar-ghinfo-api" index="0" api="https://api.github.com/repos/SX-Code/learning-online/tags"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg><span type="text" id="latest-tag-name">0</span></div></div></a></div></div></widget>
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目框架</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/deploy-web.html"><span class="toc-text">导入前端项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/03-project-init/create-server.html"><span class="toc-text">创建后端项目</span></a></div></div><div class="widget-header cap dis-select"><span class="name">项目工具</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/code-generator.html"><span class="toc-text">代码生成工具</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/base.html"><span class="toc-text">完善Base工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/nacos.html"><span class="toc-text">注册配置中心</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/04-project-tools/gateway.html"><span class="toc-text">增加网关工程</span></a></div></div><div class="widget-header cap dis-select"><span class="name">系统信息工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/05-system/select.html"><span class="toc-text">查询系统字典</span></a></div></div><div class="widget-header cap dis-select"><span class="name">内容管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/category.html"><span class="toc-text">课程类别服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/market.html"><span class="toc-text">课程营销服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/course.html"><span class="toc-text">课程信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/plan.html"><span class="toc-text">课程计划服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/06-content/publish.html"><span class="toc-text">课程发布服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">课程搜索服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-search/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-search/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-search/search.html"><span class="toc-text">课程搜索服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/07-search/index.html"><span class="toc-text">课程索引服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">媒资管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/minio.html"><span class="toc-text">分布式文件系统</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/file.html"><span class="toc-text">媒资信息服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/picture.html"><span class="toc-text">文件上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/video-upload.html"><span class="toc-text">视频上传服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/08-media/video-transcoding.html"><span class="toc-text">视频转码服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">验证码工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-checkcode/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/09-checkcode/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/learning-online/09-checkcode/project.html"><span class="toc-text">工程代码</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%89%87%E7%94%9F%E6%88%90"><span class="toc-text">配置图片生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Model%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">Model实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service%E6%96%B9%E6%B3%95"><span class="toc-text">Service方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89"><span class="toc-text">接口定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%BC%93%E5%AD%98%E6%8E%A5%E5%8F%A3"><span class="toc-text">实现缓存接口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%BC%93%E5%AD%98"><span class="toc-text">内存缓存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis%E7%BC%93%E5%AD%98"><span class="toc-text">Redis缓存</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%94%9F%E6%88%90%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">实现生成验证码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%94%9F%E6%88%90Key%E6%8E%A5%E5%8F%A3"><span class="toc-text">实现生成Key接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%9B%BE%E7%89%87%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-text">实现图片验证码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Controller%E6%9C%8D%E5%8A%A1"><span class="toc-text">Controller服务</span></a></li></ol></div></div><div class="widget-header cap dis-select"><span class="name">认证授权工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/bizpro.html"><span class="toc-text">业务流程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/springsecurity.html"><span class="toc-text">Spring Security</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/unifyauth.html"><span class="toc-text">统一认证</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/gatewayauth.html"><span class="toc-text">网关认证</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/10-auth/authorize.html"><span class="toc-text">微服务授权</span></a></div></div><div class="widget-header cap dis-select"><span class="name">学习中心工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-learning/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-learning/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-learning/coursetable.html"><span class="toc-text">课程表服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/11-learning/learning.html"><span class="toc-text">获取章节视频</span></a></div></div><div class="widget-header cap dis-select"><span class="name">订单管理工程</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/nacos.html"><span class="toc-text">Nacos配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/init.html"><span class="toc-text">初始化工程</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/alipay.html"><span class="toc-text">集成阿里支付</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/createorder.html"><span class="toc-text">生成支付二维码</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/payreq.html"><span class="toc-text">扫码支付服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/queryresult.html"><span class="toc-text">查询支付结果</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/learning-online/12-orders/notifyresult.html"><span class="toc-text">查询异步通知</span></a></div></div></widget>
+
+<widget class="widget-wrapper timeline"><div class="widget-body fs14"><div class="tag-plugin timeline stellar-timeline-api" api="https://api.github.com/repos/SX-Code/learning-online/issues?per_page=3"></div></div></widget>
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多项目</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/easypan/01_introduce/index.html"><span class="title">Easy云盘</span><span class="excerpt">Easy网盘项目分为前端和后端两部分，实现了文件前端分片上传，后端接收后合并功能；视频文件转、切片、播放功能；文件回收站、分享、预览、下载等常见的网盘功能。快来一起实现一下吧！</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">AdminPro</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-26T09:31:41.309Z">2023-09-26</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>工程代码</span></h1>
+  <h2 id="接口信息"><a href="#接口信息" class="headerlink" title="接口信息"></a>接口信息</h2><p>生成验证码图片</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:63075/checkcode/pic">http://localhost:63075/checkcode/pic</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>CheckCodeParamsDTO</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>CheckCodeResultVO</td>
+</tr>
+</tbody></table>
+<p>校验验证码图片</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:63075/checkcode/verify">http://localhost:63075/checkcode/verify</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>String key, String code</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>Boolean</td>
+</tr>
+</tbody></table>
+<h2 id="配置图片生成"><a href="#配置图片生成" class="headerlink" title="配置图片生成"></a>配置图片生成</h2><p>使用开源的图片生成工具 Kaptcha，并进行自定义的配置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 图片验证码配置类</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KaptchaConfig</span> &#123;<br><br>    <span class="hljs-comment">//图片验证码生成器，使用开源的kaptcha</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> DefaultKaptcha <span class="hljs-title function_">producer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        properties.put(<span class="hljs-string">&quot;kaptcha.border&quot;</span>, <span class="hljs-string">&quot;no&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.textproducer.font.color&quot;</span>, <span class="hljs-string">&quot;black&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.textproducer.char.space&quot;</span>, <span class="hljs-string">&quot;10&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.textproducer.char.length&quot;</span>, <span class="hljs-string">&quot;4&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.image.height&quot;</span>, <span class="hljs-string">&quot;34&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.image.width&quot;</span>, <span class="hljs-string">&quot;138&quot;</span>);<br>        properties.put(<span class="hljs-string">&quot;kaptcha.textproducer.font.size&quot;</span>, <span class="hljs-string">&quot;25&quot;</span>);<br><br>        properties.put(<span class="hljs-string">&quot;kaptcha.noise.impl&quot;</span>, <span class="hljs-string">&quot;com.google.code.kaptcha.impl.NoNoise&quot;</span>);<br>        <span class="hljs-type">Config</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Config</span>(properties);<br>        <span class="hljs-type">DefaultKaptcha</span> <span class="hljs-variable">defaultKaptcha</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultKaptcha</span>();<br>        defaultKaptcha.setConfig(config);<br>        <span class="hljs-keyword">return</span> defaultKaptcha;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Model实体类"><a href="#Model实体类" class="headerlink" title="Model实体类"></a>Model实体类</h2><p>在<code>com.swx.checkcode.model</code>包下创建下面两个实体类：</p>
+<p>验证码参数类</p>
+<figure class="highlight java"><figcaption><span>CheckCodeParamsDTO</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 验证码生成参数类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckCodeParamsDTO</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 验证码类型:pic、sms、email等</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String checkCodeType;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 业务携带参数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String param1;<br>    <span class="hljs-keyword">private</span> String param2;<br>    <span class="hljs-keyword">private</span> String param3;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>验证码结果类</p>
+<figure class="highlight java"><figcaption><span>CheckCodeResultVO</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 验证码结果类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckCodeResultVO</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * key用于验证</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String key;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 混淆后的内容</span><br><span class="hljs-comment">     * 举例：</span><br><span class="hljs-comment">     * 1.图片验证码为:图片base64编码</span><br><span class="hljs-comment">     * 2.短信验证码为:null</span><br><span class="hljs-comment">     * 3.邮件验证码为: null</span><br><span class="hljs-comment">     * 4.邮件链接点击验证为：null</span><br><span class="hljs-comment">     * ...</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String aliasing;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Service方法"><a href="#Service方法" class="headerlink" title="Service方法"></a>Service方法</h2><h3 id="接口定义"><a href="#接口定义" class="headerlink" title="接口定义"></a>接口定义</h3><p>在<code>com.swx.checkcode.service</code>包下创建下面接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 验证码接口</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CheckCodeService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 生成验证码</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dto 生成验证码参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> com.swx.checkcode.model.CheckCodeResultDTO 验证码结果</span><br><span class="hljs-comment">     */</span><br>    CheckCodeResultVO <span class="hljs-title function_">generate</span><span class="hljs-params">(CheckCodeParamsDTO dto)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 校验验证码</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key  key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> code 验证码</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> boolean 验证结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">verify</span><span class="hljs-params">(String key, String code)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 验证码生成器</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CheckCodeGenerator</span> &#123;<br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * 验证码生成</span><br><span class="hljs-comment">         *</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@param</span> length 验证码长度</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@return</span> String 验证码</span><br><span class="hljs-comment">         */</span><br>        String <span class="hljs-title function_">generate</span><span class="hljs-params">(<span class="hljs-type">int</span> length)</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Key生成器</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">KeyGenerator</span> &#123;<br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * key生成</span><br><span class="hljs-comment">         *</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@param</span> prefix key前缀</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@return</span> String key</span><br><span class="hljs-comment">         */</span><br>        String <span class="hljs-title function_">generate</span><span class="hljs-params">(String prefix)</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 验证码存储</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CheckCodeStore</span> &#123;<br><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * 向缓存设置key</span><br><span class="hljs-comment">         *</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@param</span> key    key</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@param</span> value  value</span><br><span class="hljs-comment">         * <span class="hljs-doctag">@param</span> expire 过期时间,单位秒</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-keyword">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(String key, String value, Integer expire)</span>;<br><br>        String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span>;<br><br>        <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(String key)</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用抽象类实现该接口，提供基础功能</p>
+<figure class="highlight java"><figcaption><span>AbstractCheckCodeService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 验证码接口</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AbstractCheckCodeService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span> &#123;<br><br>    <span class="hljs-keyword">protected</span> CheckCodeGenerator checkCodeGenerator;<br>    <span class="hljs-keyword">protected</span> KeyGenerator keyGenerator;<br>    <span class="hljs-keyword">protected</span> CheckCodeStore checkCodeStore;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span>  <span class="hljs-title function_">setCheckCodeGenerator</span><span class="hljs-params">(CheckCodeGenerator checkCodeGenerator)</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span>  <span class="hljs-title function_">setKeyGenerator</span><span class="hljs-params">(KeyGenerator keyGenerator)</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span>  <span class="hljs-title function_">setCheckCodeStore</span><span class="hljs-params">(CheckCodeStore CheckCodeStore)</span>;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 生成验证公用方法</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dto        生成验证码参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> codeLength 验证码长度</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> keyPrefix  key的前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> expire     过期时间</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> com.swx.checkcode.service.AbstractCheckCodeService.GenerateResult 生成结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> GenerateResult <span class="hljs-title function_">generate</span><span class="hljs-params">(CheckCodeParamsDTO dto, Integer codeLength, String keyPrefix, Integer expire)</span> &#123;<br>        <span class="hljs-comment">// 生成四位验证码</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">code</span> <span class="hljs-operator">=</span> checkCodeGenerator.generate(codeLength);<br>        <span class="hljs-comment">// 生成一个key</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> keyGenerator.generate(keyPrefix);<br><br>        <span class="hljs-comment">// 存储验证码</span><br>        checkCodeStore.set(key, code, expire);<br>        <span class="hljs-comment">// 返回验证码生成结果</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GenerateResult</span>(key, code);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 验证方法</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key  key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> code 验证码</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> boolean 验证结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">verify</span><span class="hljs-params">(String key, String code)</span> &#123;<br>        <span class="hljs-keyword">if</span> (StringUtils.isBlank(key) || StringUtils.isBlank(code)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">code_l</span> <span class="hljs-operator">=</span> checkCodeStore.get(key);<br>        <span class="hljs-keyword">if</span> (code_l == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> code_l.equalsIgnoreCase(code);<br>        <span class="hljs-keyword">if</span> (result) &#123;<br>            <span class="hljs-comment">//删除验证码</span><br>            checkCodeStore.remove(key);<br>        &#125;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GenerateResult</span> &#123;<br>        String key;<br>        String code;<br><br>        GenerateResult() &#123;<br><br>        &#125;<br><br>        GenerateResult(String key, String code) &#123;<br>            <span class="hljs-built_in">this</span>.key = key;<br>            <span class="hljs-built_in">this</span>.code = code;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> CheckCodeResultVO <span class="hljs-title function_">generate</span><span class="hljs-params">(CheckCodeParamsDTO checkCodeParamsDto)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实现缓存接口"><a href="#实现缓存接口" class="headerlink" title="实现缓存接口"></a>实现缓存接口</h3><p>使用策略模式，实现不同的缓存方案。</p>
+<h4 id="内存缓存"><a href="#内存缓存" class="headerlink" title="内存缓存"></a>内存缓存</h4><p>将验证码数据存放在内存中</p>
+<figure class="highlight java"><figcaption><span>MemoryCheckCodeStore</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component(&quot;MemoryCheckCodeStore&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MemoryCheckCodeStore</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span>.CheckCodeStore &#123;<br><br>    Map&lt;String, String&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, String&gt;();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 向缓存设置key</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key    key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value  value</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> expire 过期时间,单位秒</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(String key, String value, Integer expire)</span> &#123;<br>        map.put(key, value);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 键</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> map.get(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 值</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(String key)</span> &#123;<br>        map.remove(key);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Redis缓存"><a href="#Redis缓存" class="headerlink" title="Redis缓存"></a>Redis缓存</h4><p>使用redis存储验证码，可以设置过期时间</p>
+<figure class="highlight java"><figcaption><span>RedisCheckCodeStore</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 使用redis存储验证码</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Component(&quot;RedisCheckCodeStore&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisCheckCodeStore</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span>.CheckCodeStore &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> StringRedisTemplate redisTemplate;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RedisCheckCodeStore</span><span class="hljs-params">(StringRedisTemplate redisTemplate)</span> &#123;<br>        <span class="hljs-built_in">this</span>.redisTemplate = redisTemplate;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 向缓存设置key</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key    key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value  value</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> expire 过期时间,单位秒</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(String key, String value, Integer expire)</span> &#123;<br>        redisTemplate.opsForValue().set(key, value, expire, TimeUnit.SECONDS);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 值</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForValue().get(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 键</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(String key)</span> &#123;<br>        redisTemplate.delete(key);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实现生成验证码"><a href="#实现生成验证码" class="headerlink" title="实现生成验证码"></a>实现生成验证码</h3><p>实现 CheckCodeService.CheckCodeGenerator 接口</p>
+<figure class="highlight java"><figcaption><span>NumberLetterCheckCodeGenerator</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 数字字母生成器</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Component(&quot;NumberLetterCheckCodeGenerator&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NumberLetterCheckCodeGenerator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span>.CheckCodeGenerator &#123;<br><br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">generate</span><span class="hljs-params">(<span class="hljs-type">int</span> length)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&quot;</span>;<br>        <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; length; i++) &#123;<br>            <span class="hljs-type">int</span> <span class="hljs-variable">number</span> <span class="hljs-operator">=</span> random.nextInt(<span class="hljs-number">36</span>);<br>            sb.append(str.charAt(number));<br>        &#125;<br>        <span class="hljs-keyword">return</span> sb.toString();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实现生成Key接口"><a href="#实现生成Key接口" class="headerlink" title="实现生成Key接口"></a>实现生成Key接口</h3><p>实现 CheckCodeService.KeyGenerator 接口</p>
+<figure class="highlight java"><figcaption><span>UUIDKeyGenerator</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * uuid生成器</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Component(&quot;UUIDKeyGenerator&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UUIDKeyGenerator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span>.KeyGenerator &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">generate</span><span class="hljs-params">(String prefix)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">uuid</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();<br>        <span class="hljs-keyword">return</span> prefix + uuid.replaceAll(<span class="hljs-string">&quot;-&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实现图片验证码"><a href="#实现图片验证码" class="headerlink" title="实现图片验证码"></a>实现图片验证码</h3><p>继承 AbstractCheckCodeService 抽象类，实现 CheckCodeService 接口。注入指定的实现类，实现生成图片验证码的同时，将生成的key和code缓存至Redis。</p>
+<figure class="highlight java"><figcaption><span>PicCheckCodeServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 图片验证码生成器</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service(&quot;PicCheckCodeService&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PicCheckCodeServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractCheckCodeService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CheckCodeService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DefaultKaptcha kaptcha;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PicCheckCodeServiceImpl</span><span class="hljs-params">(DefaultKaptcha kaptcha)</span> &#123;<br>        <span class="hljs-built_in">this</span>.kaptcha = kaptcha;<br>    &#125;<br><br>    <span class="hljs-meta">@Resource(name=&quot;NumberLetterCheckCodeGenerator&quot;)</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCheckCodeGenerator</span><span class="hljs-params">(CheckCodeGenerator checkCodeGenerator)</span> &#123;<br>        <span class="hljs-built_in">this</span>.checkCodeGenerator = checkCodeGenerator;<br>    &#125;<br><br>    <span class="hljs-meta">@Resource(name=&quot;UUIDKeyGenerator&quot;)</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setKeyGenerator</span><span class="hljs-params">(KeyGenerator keyGenerator)</span> &#123;<br>        <span class="hljs-built_in">this</span>.keyGenerator = keyGenerator;<br>    &#125;<br><br><br>    <span class="hljs-meta">@Resource(name=&quot;RedisCheckCodeStore&quot;)</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCheckCodeStore</span><span class="hljs-params">(CheckCodeStore checkCodeStore)</span> &#123;<br>        <span class="hljs-built_in">this</span>.checkCodeStore = checkCodeStore;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 生成验证码</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dto 生成验证码参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> com.swx.checkcode.model.CheckCodeResultDTO 验证码结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> CheckCodeResultVO <span class="hljs-title function_">generate</span><span class="hljs-params">(CheckCodeParamsDTO dto)</span> &#123;<br>        <span class="hljs-type">GenerateResult</span> <span class="hljs-variable">generate</span> <span class="hljs-operator">=</span> generate(dto, <span class="hljs-number">4</span>, <span class="hljs-string">&quot;checkcode:&quot;</span>, <span class="hljs-number">60</span>);<br>        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> generate.getKey();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">code</span> <span class="hljs-operator">=</span> generate.getCode();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">pic</span> <span class="hljs-operator">=</span> createPic(code);<br>        <span class="hljs-type">CheckCodeResultVO</span> <span class="hljs-variable">resultDTO</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CheckCodeResultVO</span>();<br>        resultDTO.setAliasing(pic);<br>        resultDTO.setKey(key);<br>        <span class="hljs-keyword">return</span> resultDTO;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">createPic</span><span class="hljs-params">(String code)</span> &#123;<br>        <span class="hljs-comment">// 生成图片验证码</span><br>        <span class="hljs-type">ByteArrayOutputStream</span> <span class="hljs-variable">outputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-type">BufferedImage</span> <span class="hljs-variable">image</span> <span class="hljs-operator">=</span> kaptcha.createImage(code);<br><br>        outputStream = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">imgBase64Encoder</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 对字节数组Base64编码</span><br>            ImageIO.write(image, <span class="hljs-string">&quot;png&quot;</span>, outputStream);<br>            imgBase64Encoder = <span class="hljs-string">&quot;data:image/png;base64,&quot;</span> + Base64Utils.encodeToString(outputStream.toByteArray());<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            log.error(<span class="hljs-string">&quot;图片验证码生成错误&quot;</span>, e);<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                outputStream.close();<br>            &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                log.error(<span class="hljs-string">&quot;流关闭失败&quot;</span>, e);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> imgBase64Encoder;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Controller服务"><a href="#Controller服务" class="headerlink" title="Controller服务"></a>Controller服务</h2><p>主要提供验证码获取和验证功能，其中验证功能将由认证授权微服务远程调用，进行登陆时验证码的验证。</p>
+<figure class="highlight java"><figcaption><span>CheckCodeController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Api(value = &quot;验证码服务接口&quot;, tags = &quot;验证码服务接口&quot;)</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckCodeController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> CheckCodeService picCheckCodeService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CheckCodeController</span><span class="hljs-params">(CheckCodeService picCheckCodeService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.picCheckCodeService = picCheckCodeService;<br>    &#125;<br><br>    <span class="hljs-meta">@ApiOperation(value=&quot;生成验证信息&quot;, notes=&quot;生成验证信息&quot;)</span><br>    <span class="hljs-meta">@PostMapping(value = &quot;/pic&quot;)</span><br>    <span class="hljs-keyword">public</span> CheckCodeResultVO <span class="hljs-title function_">generatePicCheckCode</span><span class="hljs-params">(CheckCodeParamsDTO dto)</span>&#123;<br>        <span class="hljs-keyword">return</span> picCheckCodeService.generate(dto);<br>    &#125;<br><br>    <span class="hljs-meta">@ApiOperation(value=&quot;校验&quot;, notes=&quot;校验&quot;)</span><br>    <span class="hljs-meta">@ApiImplicitParams(&#123;</span><br><span class="hljs-meta">            @ApiImplicitParam(name = &quot;name&quot;, value = &quot;业务名称&quot;, required = true, dataType = &quot;String&quot;, paramType=&quot;query&quot;),</span><br><span class="hljs-meta">            @ApiImplicitParam(name = &quot;key&quot;, value = &quot;验证key&quot;, required = true, dataType = &quot;String&quot;, paramType=&quot;query&quot;),</span><br><span class="hljs-meta">            @ApiImplicitParam(name = &quot;code&quot;, value = &quot;验证码&quot;, required = true, dataType = &quot;String&quot;, paramType=&quot;query&quot;)</span><br><span class="hljs-meta">    &#125;)</span><br>    <span class="hljs-meta">@PostMapping(value = &quot;/verify&quot;)</span><br>    <span class="hljs-keyword">public</span> Boolean <span class="hljs-title function_">verify</span><span class="hljs-params">(String key, String code)</span>&#123;<br>        <span class="hljs-keyword">return</span> picCheckCodeService.verify(key, code);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/learning-online/09-checkcode/init.html">初始化工程</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/learning-online/10-auth/bizpro.html">业务流程</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
