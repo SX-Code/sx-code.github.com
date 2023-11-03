@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>旅游项目：初始化模块 - swcode</title>
+
+  
+    <meta name="description" content="前端对应的页面如下，可以查询全部，目的地，攻略，游记，用户。     API模块在trip_modules-api父模块下创建子模块trip-search-api，pom文件内容如下： pom.xml&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;&lt;project xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven">
+<meta property="og:type" content="website">
+<meta property="og:title" content="初始化模块">
+<meta property="og:url" content="http://example.com/wiki/trip-cloud/09_search/init.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="前端对应的页面如下，可以查询全部，目的地，攻略，游记，用户。     API模块在trip_modules-api父模块下创建子模块trip-search-api，pom文件内容如下： pom.xml&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;&lt;project xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_16.png">
+<meta property="article:published_time" content="2023-11-03T06:49:00.000Z">
+<meta property="article:modified_time" content="2023-11-03T06:59:17.159Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_16.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/trip-cloud/01_introduce/index.html"><div class="main" ff="title">旅游项目</div><div class="sub cap">旅游项目开发指南</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/trip-cloud/" placeholder="在 /wiki/trip-cloud/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目搭建</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/02_init/index.html"><span class="toc-text">项目搭建</span></a></div></div><div class="widget-header cap dis-select"><span class="name">公共模块</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/core.html"><span class="toc-text">核心模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/redis.html"><span class="toc-text">Redis模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/security.html"><span class="toc-text">安全模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/exception.html"><span class="toc-text">统一异常处理</span></a></div></div><div class="widget-header cap dis-select"><span class="name">网关服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/04_gateway/index.html"><span class="toc-text">网关服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">用户微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/msql.html"><span class="toc-text">数据库</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/register.html"><span class="toc-text">用户注册功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/login.html"><span class="toc-text">用户登陆功能</span></a></div></div><div class="widget-header cap dis-select"><span class="name">文章微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/destination.html"><span class="toc-text">目的地服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/catalog.html"><span class="toc-text">攻略分类服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/theme.html"><span class="toc-text">攻略主题服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/strategy.html"><span class="toc-text">攻略服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/travel.html"><span class="toc-text">游记服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">评论微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/mongodb.html"><span class="toc-text">安装MongoDB</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/init.html"><span class="toc-text">始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/strategy.html"><span class="toc-text">攻略评论</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/travel.html"><span class="toc-text">游记评论</span></a></div></div><div class="widget-header cap dis-select"><span class="name">统计数据存储方案</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/redis-key.html"><span class="toc-text">Redis Key</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/strategy.html"><span class="toc-text">攻略统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datainit.html"><span class="toc-text">初始化统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datasync.html"><span class="toc-text">数据同步方案</span></a></div></div><div class="widget-header cap dis-select"><span class="name">搜索服务</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/trip-cloud/09_search/init.html"><span class="toc-text">初始化模块</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#API%E6%A8%A1%E5%9D%97"><span class="toc-text">API模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">文档实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9D%97"><span class="toc-text">微服务模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElasticsearchService"><span class="toc-text">ElasticsearchService</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/inites.html"><span class="toc-text">初始化数据到ES</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/essearch.html"><span class="toc-text">ES数据查询</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/dtx/index.html"><span class="title">分布式事务</span><span class="excerpt">分布式系统会把一个应用系统拆分为可独立部署的多个服务，因此需要服务于服务之间远程协作才能完成事务操作，这种分布式系统环境下由不同的服务之间通过网络远程协作完成事务称之为分布式事务。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/trip-cloud/01_introduce/index.html">旅游项目</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-11-03T06:59:17.159Z">2023-11-03</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>初始化模块</span></h1>
+  <p>前端对应的页面如下，可以查询全部，目的地，攻略，游记，用户。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_16.png" fancybox="true"/></div></div>
+
+
+
+<h2 id="API模块"><a href="#API模块" class="headerlink" title="API模块"></a>API模块</h2><p>在<code>trip_modules-api</code>父模块下创建子模块<code>trip-search-api</code>，pom文件内容如下：</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-modules-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-search-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.source</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.source</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.target</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.target</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="文档实体类"><a href="#文档实体类" class="headerlink" title="文档实体类"></a>文档实体类</h2><p>创建ES文档实体类：DestinationEs，首先创建<code>com.swx.search.domain</code>包，在该包下创建文档实体类。</p>
+<figure class="highlight java"><figcaption><span>DestinationEs</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 目的地搜索对象</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Document(indexName = DestinationEs.INDEX_NAME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DestinationEs</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INDEX_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;destination&quot;</span>;<br><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-comment">//@Field 每个文档的字段配置（类型、是否分词、是否存储、分词器 ）</span><br>    <span class="hljs-meta">@Field(type = FieldType.Long)</span><br>    <span class="hljs-keyword">private</span> Long id;  <span class="hljs-comment">//目的地id</span><br><br>    <span class="hljs-meta">@Field(type = FieldType.Keyword)</span><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String info;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建攻略搜索对象</p>
+<figure class="highlight java"><figcaption><span>StrategyEs</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 攻略搜索对象</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Document(indexName = StrategyEs.INDEX_NAME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StrategyEs</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INDEX_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;strategy&quot;</span>;<br><br>    <span class="hljs-comment">//@Field 每个文档的字段配置（类型、是否分词、是否存储、分词器 ）</span><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@Field(type = FieldType.Long)</span><br>    <span class="hljs-keyword">private</span> Long id;  <span class="hljs-comment">//攻略id</span><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String title;  <span class="hljs-comment">//攻略标题</span><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String subTitle;  <span class="hljs-comment">//攻略标题</span><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String summary; <span class="hljs-comment">//攻略简介</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建游记搜索对象</p>
+<figure class="highlight java"><figcaption><span>TravelEs</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 游记搜索对象</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Document(indexName = TravelEs.INDEX_NAME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TravelEs</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INDEX_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;travel&quot;</span>;<br>    <span class="hljs-comment">//@Field 每个文档的字段配置（类型、是否分词、是否存储、分词器 ）</span><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@Field(type = FieldType.Long)</span><br>    <span class="hljs-keyword">private</span> Long id;  <span class="hljs-comment">//游记id</span><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String title;  <span class="hljs-comment">//游记标题</span><br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String summary; <span class="hljs-comment">//游记简介</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建用户搜索对象</p>
+<figure class="highlight java"><figcaption><span>UserInfoEs</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 用户搜索对象</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Document(indexName = UserInfoEs.INDEX_NAME)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserInfoEs</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INDEX_NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;userinfo&quot;</span>;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-comment">//@Field 每个文档的字段配置（类型、是否分词、是否存储、分词器 ）</span><br>    <span class="hljs-meta">@Field(type = FieldType.Long)</span><br>    <span class="hljs-keyword">private</span> Long id;  <span class="hljs-comment">//用户id</span><br>    <span class="hljs-meta">@Field(type = FieldType.Keyword)</span><br>    <span class="hljs-keyword">private</span> String city;<br>    <span class="hljs-meta">@Field(analyzer = &quot;ik_max_word&quot;, searchAnalyzer = &quot;ik_max_word&quot;, type = FieldType.Text)</span><br>    <span class="hljs-keyword">private</span> String info;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="微服务模块"><a href="#微服务模块" class="headerlink" title="微服务模块"></a>微服务模块</h2><p>在<code>trip_modules</code>父模块下创建子模块<code>trip-search-server</code>，pom文件内容如下：</p>
+<figure class="highlight xml"><figcaption><span>pom.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-modules<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-search-service<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.source</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.source</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.target</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.target</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-search-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-common-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-users-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-article-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-beanutils<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-beanutils<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.9.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>配置文件：<code>bootstrap.yaml</code>，内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">search-service</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">server-addr:</span> <span class="hljs-number">124.221</span><span class="hljs-number">.23</span><span class="hljs-number">.47</span><span class="hljs-string">:8848</span><br>      <span class="hljs-attr">config:</span><br>        <span class="hljs-attr">file-extension:</span> <span class="hljs-string">yaml</span><br>        <span class="hljs-attr">namespace:</span> <span class="hljs-string">trip_cloud_dev</span><br>        <span class="hljs-attr">shared-configs:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">data-id:</span> <span class="hljs-string">redis-$&#123;spring.profiles.active&#125;.yaml</span><br>            <span class="hljs-attr">refresh:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">profiles:</span><br>    <span class="hljs-attr">active:</span> <span class="hljs-string">dev</span><br></code></pre></td></tr></table></figure>
+
+<p>Nacos配置文件</p>
+<ul>
+<li><p><strong>ID</strong>：search-service-dev.yaml</p>
+</li>
+<li><p><strong>Group</strong>：DEFAULT_GROUP</p>
+</li>
+<li><p><strong>描述</strong>：搜索微服务配置文件</p>
+</li>
+<li><p>配置内容：</p>
+<figure class="highlight yaml"><figcaption><span>search-service-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">8095</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">server-addr:</span> <span class="hljs-string">xxx.xxx.xxx.xxx:8848</span><br>      <span class="hljs-attr">discovery:</span><br>        <span class="hljs-attr">namespace:</span> <span class="hljs-string">$&#123;spring.cloud.nacos.config.namespace&#125;</span><br>  <span class="hljs-attr">elasticsearch:</span><br>    <span class="hljs-attr">rest:</span><br>      <span class="hljs-attr">uris:</span> <span class="hljs-string">http://xxx.xxx.xxx.xxx:9200</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>配置网关路由</p>
+<ul>
+<li><p><strong>ID</strong>：trip-gateway-dev.yaml</p>
+</li>
+<li><p><strong>Group</strong>：DEFAULT_GROUP</p>
+</li>
+<li><p><strong>描述</strong>：旅游项目网关配置</p>
+</li>
+<li><p>配置内容：</p>
+<figure class="highlight yaml"><figcaption><span>trip-gateway-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">trip_search</span><br>  <span class="hljs-attr">uri:</span> <span class="hljs-string">lb://search-service</span><br>  <span class="hljs-attr">predicates:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/search/**</span><br>  <span class="hljs-attr">filters:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">StripPrefix=1</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>创建启动类：TripSearchApplication，首先创建<code>com.swx.search</code>包，在该包下创建。</p>
+<figure class="highlight java"><figcaption><span>TripSearchApplication</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@EnableFeignClients</span><br><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TripSearchApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(TripSearchApplication.class, args);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="ElasticsearchService"><a href="#ElasticsearchService" class="headerlink" title="ElasticsearchService"></a>ElasticsearchService</h2><p>在包<code>com.swx.search.parser</code>下创建 ElasticsearchTypeParser</p>
+<blockquote>
+<p>传入一个函数，该函数会根据 id 查询数据库，返回一个实体对象</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * ES 搜索类型解析器</span><br><span class="hljs-comment"> * 函数式接口: 这个接口必须有一个抽象方法, 并且只能有一个抽象方法</span><br><span class="hljs-comment"> * 使用 lambda 实现函数是接口, 这个 lambda 就可以理解为这个函数式接口的实现类 === 匿名内部类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@FunctionalInterface</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ElasticsearchTypeParser</span>&lt;T&gt; &#123;<br><br>    T <span class="hljs-title function_">parse</span><span class="hljs-params">(Class&lt;T&gt; clazz, String id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在包<code>com.swx.search.utils</code>下创建 BeanUtils</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BeanUtils</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">copyProperties</span><span class="hljs-params">(Object source, Object target)</span> <span class="hljs-keyword">throws</span> BeansException &#123;<br>        copyProperties(source, target, (Class) <span class="hljs-literal">null</span>, (String[]) <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">copyProperties</span><span class="hljs-params">(Object source, Object target, <span class="hljs-meta">@Nullable</span> Class&lt;?&gt; editable, <span class="hljs-meta">@Nullable</span> String... ignoreProperties)</span> <span class="hljs-keyword">throws</span> BeansException &#123;<br>        Assert.notNull(source, <span class="hljs-string">&quot;Source must not be null&quot;</span>);<br>        Assert.notNull(target, <span class="hljs-string">&quot;Target must not be null&quot;</span>);<br>        Class&lt;?&gt; actualEditable = target.getClass();<br>        <span class="hljs-keyword">if</span> (editable != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">if</span> (!editable.isInstance(target)) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Target class [&quot;</span> + target.getClass().getName() + <span class="hljs-string">&quot;] not assignable to Editable class [&quot;</span> + editable.getName() + <span class="hljs-string">&quot;]&quot;</span>);<br>            &#125;<br><br>            actualEditable = editable;<br>        &#125;<br><br>        PropertyDescriptor[] targetPds = getPropertyDescriptors(actualEditable);<br>        List&lt;String&gt; ignoreList = ignoreProperties != <span class="hljs-literal">null</span> ? Arrays.asList(ignoreProperties) : <span class="hljs-literal">null</span>;<br>        PropertyDescriptor[] var7 = targetPds;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">var8</span> <span class="hljs-operator">=</span> targetPds.length;<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">var9</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; var9 &lt; var8; ++var9) &#123;<br>            <span class="hljs-type">PropertyDescriptor</span> <span class="hljs-variable">targetPd</span> <span class="hljs-operator">=</span> var7[var9];<br>            <span class="hljs-type">Method</span> <span class="hljs-variable">writeMethod</span> <span class="hljs-operator">=</span> targetPd.getWriteMethod();<br>            <span class="hljs-keyword">if</span> (writeMethod != <span class="hljs-literal">null</span> &amp;&amp; (ignoreList == <span class="hljs-literal">null</span> || !ignoreList.contains(targetPd.getName()))) &#123;<br>                <span class="hljs-type">PropertyDescriptor</span> <span class="hljs-variable">sourcePd</span> <span class="hljs-operator">=</span> getPropertyDescriptor(source.getClass(), targetPd.getName());<br>                <span class="hljs-keyword">if</span> (sourcePd != <span class="hljs-literal">null</span>) &#123;<br>                    <span class="hljs-type">Method</span> <span class="hljs-variable">readMethod</span> <span class="hljs-operator">=</span> sourcePd.getReadMethod();<br>                    <span class="hljs-keyword">if</span> (readMethod != <span class="hljs-literal">null</span> &amp;&amp; ClassUtils.isAssignable(writeMethod.getParameterTypes()[<span class="hljs-number">0</span>], readMethod.getReturnType())) &#123;<br>                        <span class="hljs-keyword">try</span> &#123;<br>                            <span class="hljs-keyword">if</span> (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) &#123;<br>                                readMethod.setAccessible(<span class="hljs-literal">true</span>);<br>                            &#125;<br><br>                            <span class="hljs-type">Object</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> readMethod.invoke(source);<br>                            <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) &#123;<br>                                <span class="hljs-keyword">continue</span>;<br>                            &#125;<br><br>                            <span class="hljs-keyword">if</span> (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) &#123;<br>                                writeMethod.setAccessible(<span class="hljs-literal">true</span>);<br>                            &#125;<br><br>                            writeMethod.invoke(target, value);<br>                        &#125; <span class="hljs-keyword">catch</span> (Throwable var15) &#123;<br>                            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FatalBeanException</span>(<span class="hljs-string">&quot;Could not copy property &#x27;&quot;</span> + targetPd.getName() + <span class="hljs-string">&quot;&#x27; from source to target&quot;</span>, var15);<br>                        &#125;<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在包<code>com.swx.search.service</code>下创建 ElasticsearchService</p>
+<figure class="highlight java"><figcaption><span>ElasticsearchService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.swx.common.core.qo.QueryObject;<br><span class="hljs-keyword">import</span> com.swx.search.parser.ElasticsearchTypeParser;<br><span class="hljs-keyword">import</span> org.springframework.data.domain.Page;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ElasticsearchService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 新增方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> entity ES 实体对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Object entity)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 批量新增方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> iterable ES 实体对象集合</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Iterable&lt;?&gt; iterable)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 主键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> clazz 实体类型</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteById</span><span class="hljs-params">(String id, Class&lt;?&gt; clazz)</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 通用的高亮分页搜索接口</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> esclz  ES 模型字段字节码对象 =&gt; ES 查询的对象</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dtoclz domain 字节码对象 =&gt; 最终希望返回的对象</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> qo     查询对象 =&gt; 封装分页参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> parser 解析器对象 =&gt; 利用 ES 对象中的 id 属性，从数据库中查到对应完整的模型对象，返回最终结果</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fields 需要进行高亮查询的字段</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;T&gt;</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 高亮分页数据对象</span><br><span class="hljs-comment">     */</span><br>    &lt;T&gt; Page&lt;T&gt; <span class="hljs-title function_">searchWithHighlight</span><span class="hljs-params">(Class&lt;?&gt; esclz, Class&lt;T&gt; dtoclz, QueryObject qo, ElasticsearchTypeParser&lt;T&gt; parser, String... fields)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在包<code>com.swx.search.service.impl</code>下创建 ElasticsearchServiceImpl</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.alibaba.fastjson2.JSON;<br><span class="hljs-keyword">import</span> com.swx.common.core.qo.QueryObject;<br><span class="hljs-keyword">import</span> com.swx.search.parser.ElasticsearchTypeParser;<br><span class="hljs-keyword">import</span> com.swx.search.service.ElasticsearchService;<br><span class="hljs-keyword">import</span> com.swx.search.utils.BeanUtils;<br><span class="hljs-keyword">import</span> org.elasticsearch.index.query.MultiMatchQueryBuilder;<br><span class="hljs-keyword">import</span> org.elasticsearch.index.query.QueryBuilders;<br><span class="hljs-keyword">import</span> org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;<br><span class="hljs-keyword">import</span> org.slf4j.Logger;<br><span class="hljs-keyword">import</span> org.slf4j.LoggerFactory;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.data.domain.*;<br><span class="hljs-keyword">import</span> org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;<br><span class="hljs-keyword">import</span> org.springframework.data.elasticsearch.core.SearchHit;<br><span class="hljs-keyword">import</span> org.springframework.data.elasticsearch.core.SearchHits;<br><span class="hljs-keyword">import</span> org.springframework.data.elasticsearch.core.query.NativeSearchQuery;<br><span class="hljs-keyword">import</span> org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.HashMap;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ElasticsearchServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ElasticsearchService</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(ElasticsearchServiceImpl.class);<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ElasticsearchRestTemplate template;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Object entity)</span> &#123;<br>        template.save(entity);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Iterable&lt;?&gt; iterable)</span> &#123;<br>        template.save(iterable);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteById</span><span class="hljs-params">(String id, Class&lt;?&gt; clazz)</span> &#123;<br>        template.delete(id, clazz);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; Page&lt;T&gt; <span class="hljs-title function_">searchWithHighlight</span><span class="hljs-params">(Class&lt;?&gt; esclz, Class&lt;T&gt; dtoclz, QueryObject qo, ElasticsearchTypeParser&lt;T&gt; parser, String... fields)</span> &#123;<br>        <span class="hljs-comment">//高亮显示</span><br>        <span class="hljs-comment">/*&quot;query&quot;:&#123;</span><br><span class="hljs-comment">            &quot;multi_match&quot;: &#123;</span><br><span class="hljs-comment">                &quot;query&quot;: &quot;广州&quot;,</span><br><span class="hljs-comment">                &quot;fields&quot;: [&quot;title&quot;,&quot;subTitle&quot;,&quot;summary&quot;]</span><br><span class="hljs-comment">            &#125;</span><br><span class="hljs-comment">        &#125;,*/</span><br>        <span class="hljs-type">MultiMatchQueryBuilder</span> <span class="hljs-variable">queryBuilder</span> <span class="hljs-operator">=</span> QueryBuilders.multiMatchQuery(qo.getKeyword(), fields);<br>        <span class="hljs-type">HighlightBuilder</span> <span class="hljs-variable">highlightBuilder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HighlightBuilder</span>(); <span class="hljs-comment">// 生成高亮查询器</span><br>        <span class="hljs-keyword">for</span> (String field : fields) &#123;<br>            highlightBuilder.field(field);<span class="hljs-comment">// 高亮查询字段</span><br>        &#125;<br>        highlightBuilder.requireFieldMatch(<span class="hljs-literal">false</span>); <span class="hljs-comment">// 如果要多个字段高亮,这项要为false</span><br>        highlightBuilder.preTags(<span class="hljs-string">&quot;&lt;span style=&#x27;color:red&#x27;&gt;&quot;</span>); <span class="hljs-comment">// 高亮设置</span><br>        highlightBuilder.postTags(<span class="hljs-string">&quot;&lt;/span&gt;&quot;</span>);<br>        highlightBuilder.fragmentSize(<span class="hljs-number">800000</span>); <span class="hljs-comment">// 最大高亮分片数</span><br>        highlightBuilder.numOfFragments(<span class="hljs-number">0</span>); <span class="hljs-comment">// 从第一个分片获取高亮片段</span><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         &quot;from&quot;: 0,</span><br><span class="hljs-comment">         &quot;size&quot;:3,</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(qo.getCurrent() - <span class="hljs-number">1</span>, qo.getSize(),<br>                Sort.Direction.ASC, <span class="hljs-string">&quot;_id&quot;</span>);<span class="hljs-comment">// 设置分页参数</span><br><br>        <span class="hljs-type">NativeSearchQuery</span> <span class="hljs-variable">searchQuery</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NativeSearchQueryBuilder</span>()<br>                .withQuery(queryBuilder) <span class="hljs-comment">// match查询</span><br>                .withPageable(pageable)<br>                .withHighlightBuilder(highlightBuilder) <span class="hljs-comment">// 设置高亮</span><br>                .build();<br><br>        <span class="hljs-comment">// 高亮查询, 得到命中的数据</span><br>        SearchHits&lt;?&gt; searchHits = template.search(searchQuery, esclz);<br><br>        <span class="hljs-comment">// 最终返回的 list 对象</span><br>        List&lt;T&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (SearchHit&lt;?&gt; searchHit : searchHits) &#123; <span class="hljs-comment">// 获取搜索到的数据</span><br>            <span class="hljs-comment">// 具体解析操作: 交给外部调用者去实现</span><br>            <span class="hljs-type">T</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> parser.parse(dtoclz, searchHit.getId());<br><br>            <span class="hljs-comment">// 处理高亮</span><br>            Map&lt;String, String&gt; map = highlightFieldsCopy(searchHit.getHighlightFields(), fields);<br><br>            <span class="hljs-comment">//1：spring 框架中 BeanUtils 类，如果是map集合是无法进行属性复制</span><br>            <span class="hljs-comment">//   copyProperties(源， 目标)</span><br>            <span class="hljs-comment">//2: apache  BeanUtils 类 可以进map集合属性复制</span><br>            <span class="hljs-comment">//   copyProperties(目标， 源)</span><br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-type">T</span> <span class="hljs-variable">highlight</span> <span class="hljs-operator">=</span> JSON.parseObject(JSON.toJSONString(map), dtoclz);<br>                BeanUtils.copyProperties(highlight, target);<br>            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                log.warn(<span class="hljs-string">&quot;[高亮搜索] 拷贝属性失败&quot;</span>, e);<br>            &#125;<br>            list.add(target);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PageImpl</span>&lt;&gt;(list, pageable, searchHits.getTotalHits());<br>    &#125;<br><br>    <span class="hljs-comment">//fields: title subTitle summary</span><br>    <span class="hljs-keyword">private</span> Map&lt;String, String&gt; <span class="hljs-title function_">highlightFieldsCopy</span><span class="hljs-params">(Map&lt;String, List&lt;String&gt;&gt; map, String... fields)</span> &#123;<br>        Map&lt;String, String&gt; mm = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        <span class="hljs-comment">//title:  &quot;有娃必看，&lt;span style=&#x27;color:red;&#x27;&gt;广州&lt;/span&gt;长隆野生动物园全攻略&quot;</span><br>        <span class="hljs-comment">//subTitle: &quot;&lt;span style=&#x27;color:red;&#x27;&gt;广州&lt;/span&gt;长隆野生动物园&quot;</span><br>        <span class="hljs-comment">//summary: &quot;如果要说动物园，楼主强烈推荐带娃去&lt;span style=&#x27;color:red;&#x27;&gt;广州&lt;/span&gt;长隆野生动物园</span><br>        <span class="hljs-comment">//title subTitle summary</span><br>        <span class="hljs-keyword">for</span> (String field : fields) &#123;<br>            List&lt;String&gt; hfs = map.get(field);<br>            <span class="hljs-keyword">if</span> (hfs != <span class="hljs-literal">null</span> &amp;&amp; !hfs.isEmpty()) &#123;<br>                <span class="hljs-comment">//获取高亮显示字段值, 因为是一个数组, 所有使用string拼接</span><br><br>                <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>                <span class="hljs-keyword">for</span> (String hf : hfs) &#123;<br>                    sb.append(hf);<br>                &#125;<br>                mm.put(field, sb.toString());  <span class="hljs-comment">//使用map对象将所有能替换字段先缓存, 后续统一替换</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> mm;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/trip-cloud/08_statdata/datasync.html">数据同步方案</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/trip-cloud/09_search/inites.html">初始化数据到ES</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

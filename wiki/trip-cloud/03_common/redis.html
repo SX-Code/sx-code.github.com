@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>旅游项目：Redis模块 - swcode</title>
+
+  
+    <meta name="description" content="初始化模块在trip_common父模块下创建子模块trip-common-redis，pom文件内容如下： &lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;&lt;project xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;POM&#x2F;4.0.0&quot;         xmlns:xsi">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Redis模块">
+<meta property="og:url" content="http://example.com/wiki/trip-cloud/03_common/redis.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="初始化模块在trip_common父模块下创建子模块trip-common-redis，pom文件内容如下： &lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;&lt;project xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;POM&#x2F;4.0.0&quot;         xmlns:xsi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-03T05:13:10.000Z">
+<meta property="article:modified_time" content="2023-11-03T05:14:42.722Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/trip-cloud/01_introduce/index.html"><div class="main" ff="title">旅游项目</div><div class="sub cap">旅游项目开发指南</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/trip-cloud/" placeholder="在 /wiki/trip-cloud/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目搭建</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/02_init/index.html"><span class="toc-text">项目搭建</span></a></div></div><div class="widget-header cap dis-select"><span class="name">公共模块</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/core.html"><span class="toc-text">核心模块</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/trip-cloud/03_common/redis.html"><span class="toc-text">Redis模块</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A8%A1%E5%9D%97"><span class="toc-text">初始化模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-text">配置类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="toc-text">序列化配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E9%85%8D%E7%BD%AE"><span class="toc-text">Redis配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%B7%A5%E5%85%B7%E6%9C%8D%E5%8A%A1"><span class="toc-text">Redis工具服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-text">自动装配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-Key%E8%AE%BE%E8%AE%A1"><span class="toc-text">Redis Key设计</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/security.html"><span class="toc-text">安全模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/exception.html"><span class="toc-text">统一异常处理</span></a></div></div><div class="widget-header cap dis-select"><span class="name">网关服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/04_gateway/index.html"><span class="toc-text">网关服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">用户微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/msql.html"><span class="toc-text">数据库</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/register.html"><span class="toc-text">用户注册功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/login.html"><span class="toc-text">用户登陆功能</span></a></div></div><div class="widget-header cap dis-select"><span class="name">文章微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/destination.html"><span class="toc-text">目的地服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/catalog.html"><span class="toc-text">攻略分类服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/theme.html"><span class="toc-text">攻略主题服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/strategy.html"><span class="toc-text">攻略服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/travel.html"><span class="toc-text">游记服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">评论微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/mongodb.html"><span class="toc-text">安装MongoDB</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/init.html"><span class="toc-text">始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/strategy.html"><span class="toc-text">攻略评论</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/travel.html"><span class="toc-text">游记评论</span></a></div></div><div class="widget-header cap dis-select"><span class="name">统计数据存储方案</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/redis-key.html"><span class="toc-text">Redis Key</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/strategy.html"><span class="toc-text">攻略统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datainit.html"><span class="toc-text">初始化统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datasync.html"><span class="toc-text">数据同步方案</span></a></div></div><div class="widget-header cap dis-select"><span class="name">搜索服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/inites.html"><span class="toc-text">初始化数据到ES</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/essearch.html"><span class="toc-text">ES数据查询</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/dtx/index.html"><span class="title">分布式事务</span><span class="excerpt">分布式系统会把一个应用系统拆分为可独立部署的多个服务，因此需要服务于服务之间远程协作才能完成事务操作，这种分布式系统环境下由不同的服务之间通过网络远程协作完成事务称之为分布式事务。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/trip-cloud/01_introduce/index.html">旅游项目</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-11-03T05:14:42.722Z">2023-11-03</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>Redis模块</span></h1>
+  <h2 id="初始化模块"><a href="#初始化模块" class="headerlink" title="初始化模块"></a>初始化模块</h2><p>在<code>trip_common</code>父模块下创建子模块<code>trip-common-redis</code>，pom文件内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-common<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-common-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.swx<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>trip-common-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>创建包名：<code>com.swx.common.redis</code></p>
+<h2 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h2><p>创建包名：<code>com.swx.common.redis.configure</code></p>
+<h3 id="序列化配置"><a href="#序列化配置" class="headerlink" title="序列化配置"></a>序列化配置</h3><p>创建：FastJson2JsonRedisSerializer</p>
+<figure class="highlight java"><figcaption><span>FastJson2JsonRedisSerializer</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Redis使用FastJson序列化</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> ruoyi</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FastJson2JsonRedisSerializer</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RedisSerializer</span>&lt;T&gt;<br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Charset</span> <span class="hljs-variable">DEFAULT_CHARSET</span> <span class="hljs-operator">=</span> Charset.forName(<span class="hljs-string">&quot;UTF-8&quot;</span>);<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Filter</span> <span class="hljs-variable">AUTO_TYPE_FILTER</span> <span class="hljs-operator">=</span> JSONReader.autoTypeFilter(Constants.JSON_WHITELIST_STR);<br><br>    <span class="hljs-keyword">private</span> Class&lt;T&gt; clazz;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">FastJson2JsonRedisSerializer</span><span class="hljs-params">(Class&lt;T&gt; clazz)</span><br>    &#123;<br>        <span class="hljs-built_in">super</span>();<br>        <span class="hljs-built_in">this</span>.clazz = clazz;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] serialize(T t) <span class="hljs-keyword">throws</span> SerializationException<br>    &#123;<br>        <span class="hljs-keyword">if</span> (t == <span class="hljs-literal">null</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">0</span>];<br>        &#125;<br>        <span class="hljs-keyword">return</span> JSON.toJSONString(t, JSONWriter.Feature.WriteClassName).getBytes(DEFAULT_CHARSET);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">deserialize</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] bytes)</span> <span class="hljs-keyword">throws</span> SerializationException<br>    &#123;<br>        <span class="hljs-keyword">if</span> (bytes == <span class="hljs-literal">null</span> || bytes.length &lt;= <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(bytes, DEFAULT_CHARSET);<br><br>        <span class="hljs-keyword">return</span> JSON.parseObject(str, clazz, AUTO_TYPE_FILTER);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Redis配置"><a href="#Redis配置" class="headerlink" title="Redis配置"></a>Redis配置</h3><p>创建类：RedisConfig</p>
+<figure class="highlight java"><figcaption><span>RedisConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * redis配置</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableCaching</span><br><span class="hljs-meta">@AutoConfigureBefore(RedisAutoConfiguration.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">CachingConfigurerSupport</span><br>&#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-meta">@SuppressWarnings(value = &#123; &quot;unchecked&quot;, &quot;rawtypes&quot; &#125;)</span><br>    <span class="hljs-keyword">public</span> RedisTemplate&lt;Object, Object&gt; <span class="hljs-title function_">redisTemplate</span><span class="hljs-params">(RedisConnectionFactory connectionFactory)</span><br>    &#123;<br>        RedisTemplate&lt;Object, Object&gt; template = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisTemplate</span>&lt;&gt;();<br>        template.setConnectionFactory(connectionFactory);<br><br>        <span class="hljs-type">FastJson2JsonRedisSerializer</span> <span class="hljs-variable">serializer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FastJson2JsonRedisSerializer</span>(Object.class);<br><br>        <span class="hljs-comment">// 使用StringRedisSerializer来序列化和反序列化redis的key值</span><br>        template.setKeySerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">StringRedisSerializer</span>());<br>        template.setValueSerializer(serializer);<br><br>        <span class="hljs-comment">// Hash的key也采用StringRedisSerializer的序列化方式</span><br>        template.setHashKeySerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">StringRedisSerializer</span>());<br>        template.setHashValueSerializer(serializer);<br><br>        template.afterPropertiesSet();<br>        <span class="hljs-keyword">return</span> template;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Redis工具服务"><a href="#Redis工具服务" class="headerlink" title="Redis工具服务"></a>Redis工具服务</h2><p>创建包名：<code>com.swx.common.redis.service</code>，并创建类：RedisService</p>
+<figure class="highlight java"><figcaption><span>RedisService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.Collection;<br><span class="hljs-keyword">import</span> java.util.Iterator;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><span class="hljs-keyword">import</span> java.util.Set;<br><span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;<br><br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.data.redis.core.BoundSetOperations;<br><span class="hljs-keyword">import</span> org.springframework.data.redis.core.HashOperations;<br><span class="hljs-keyword">import</span> org.springframework.data.redis.core.RedisTemplate;<br><span class="hljs-keyword">import</span> org.springframework.data.redis.core.ValueOperations;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * spring redis 工具类</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> ruoyi</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-meta">@SuppressWarnings(value = &#123;&quot;unchecked&quot;, &quot;rawtypes&quot;&#125;)</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> RedisTemplate redisTemplate;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 缓存基本的对象，Integer、String、实体类等</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key   缓存的键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value 缓存的值</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCacheObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> T value)</span> &#123;<br>        redisTemplate.opsForValue().set(key, value);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 缓存基本的对象，Integer、String、实体类等</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key      缓存的键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value    缓存的值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeout  时间</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeUnit 时间颗粒度</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCacheObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> T value, <span class="hljs-keyword">final</span> Long timeout, <span class="hljs-keyword">final</span> TimeUnit timeUnit)</span> &#123;<br>        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 设置有效时间</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key     Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeout 超时时间</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true=设置成功；false=设置失败</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">expire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> timeout)</span> &#123;<br>        <span class="hljs-keyword">return</span> expire(key, timeout, TimeUnit.SECONDS);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 设置有效时间</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key     Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeout 超时时间</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> unit    时间单位</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true=设置成功；false=设置失败</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">expire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> timeout, <span class="hljs-keyword">final</span> TimeUnit unit)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.expire(key, timeout, unit);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取有效时间</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 有效时间</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">getExpire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.getExpire(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 判断 key是否存在</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true 存在 false不存在</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> Boolean <span class="hljs-title function_">hasKey</span><span class="hljs-params">(String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.hasKey(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获得缓存的基本对象。</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 缓存键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存键值对应的数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">getCacheObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        ValueOperations&lt;String, T&gt; operation = redisTemplate.opsForValue();<br>        <span class="hljs-keyword">return</span> operation.get(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除单个对象</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">deleteObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.delete(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除集合对象</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> collection 多个对象</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">deleteObject</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Collection collection)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.delete(collection) &gt; <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 缓存List数据</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key      缓存的键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dataList 待缓存的List数据</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存的对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-type">long</span> <span class="hljs-title function_">setCacheList</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> List&lt;T&gt; dataList)</span> &#123;<br>        <span class="hljs-type">Long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> redisTemplate.opsForList().rightPushAll(key, dataList);<br>        <span class="hljs-keyword">return</span> count == <span class="hljs-literal">null</span> ? <span class="hljs-number">0</span> : count;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获得缓存的list对象</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 缓存的键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存键值对应的数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; List&lt;T&gt; <span class="hljs-title function_">getCacheList</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForList().range(key, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 缓存Set</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key     缓存键值</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dataSet 缓存的数据</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存数据的对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; BoundSetOperations&lt;String, T&gt; <span class="hljs-title function_">setCacheSet</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> Set&lt;T&gt; dataSet)</span> &#123;<br>        BoundSetOperations&lt;String, T&gt; setOperation = redisTemplate.boundSetOps(key);<br>        Iterator&lt;T&gt; it = dataSet.iterator();<br>        <span class="hljs-keyword">while</span> (it.hasNext()) &#123;<br>            setOperation.add(it.next());<br>        &#125;<br>        <span class="hljs-keyword">return</span> setOperation;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获得缓存的set</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; Set&lt;T&gt; <span class="hljs-title function_">getCacheSet</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForSet().members(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 缓存Map</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> dataMap</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCacheMap</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> Map&lt;String, T&gt; dataMap)</span> &#123;<br>        <span class="hljs-keyword">if</span> (dataMap != <span class="hljs-literal">null</span>) &#123;<br>            redisTemplate.opsForHash().putAll(key, dataMap);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获得缓存的Map</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; Map&lt;String, T&gt; <span class="hljs-title function_">getCacheMap</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForHash().entries(key);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 往Hash中存入数据</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key   Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> hKey  Hash键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value 值</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-keyword">void</span> <span class="hljs-title function_">setCacheMapValue</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> String hKey, <span class="hljs-keyword">final</span> T value)</span> &#123;<br>        redisTemplate.opsForHash().put(key, hKey, value);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取Hash中的数据</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key  Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> hKey Hash键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Hash中的对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">getCacheMapValue</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> String hKey)</span> &#123;<br>        HashOperations&lt;String, String, T&gt; opsForHash = redisTemplate.opsForHash();<br>        <span class="hljs-keyword">return</span> opsForHash.get(key, hKey);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取多个Hash中的数据</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key   Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> hKeys Hash键集合</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Hash对象集合</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> &lt;T&gt; List&lt;T&gt; <span class="hljs-title function_">getMultiCacheMapValue</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> Collection&lt;Object&gt; hKeys)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForHash().multiGet(key, hKeys);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 删除Hash中的某条数据</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key  Redis键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> hKey Hash键</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 是否成功</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">deleteCacheMapValue</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, <span class="hljs-keyword">final</span> String hKey)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForHash().delete(key, hKey) &gt; <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获得缓存的基本对象列表</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pattern 字符串前缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 对象列表</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> Collection&lt;String&gt; <span class="hljs-title function_">keys</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String pattern)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.keys(pattern);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h2><blockquote>
+<p>在其他模块依赖本模块时，自动导入配置类</p>
+</blockquote>
+<p>在resource下创建目录: <code>META-INF</code>，在该目录下创建文件 spring.factories:，内容如下：</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span>=<span class="hljs-string">\</span><br><span class="hljs-string">  com.swx.common.redis.configure.RedisConfig \</span><br><span class="hljs-string">  com.swx.common.redis.service.RedisService</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Redis-Key设计"><a href="#Redis-Key设计" class="headerlink" title="Redis Key设计"></a>Redis Key设计</h2><blockquote>
+<p>Redis Key的设计有两种方案：常量类和枚举类，其中枚举类适合单体项目，对于分布式项目应该采用常量类，为Key设计一套规范。</p>
+</blockquote>
+<p>创建包名：<code>com.swx.common.redis.key</code>，并创建接口：KeyPrefix</p>
+<figure class="highlight java"><figcaption><span>KeyPrefix</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Redis key 通用规范设计</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">KeyPrefix</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> redis key 前缀</span><br><span class="hljs-comment">     */</span><br>    String <span class="hljs-title function_">getPrefix</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 超时时间, -1 表示没有超时时间</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">default</span> Long <span class="hljs-title function_">getTimeout</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1L</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 超时时间, 如果有超时时间，必须要有单位，没有可不设置</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">default</span> TimeUnit <span class="hljs-title function_">getUnit</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 拼接完整的key</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> suffix 待拼接</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 完整的key</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">default</span> String <span class="hljs-title function_">fullKey</span><span class="hljs-params">(String... suffix)</span> &#123;<br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-number">100</span>);<br>        sb.append(getPrefix());<br>        <span class="hljs-keyword">for</span> (String s : suffix) &#123;<br>            sb.append(<span class="hljs-string">&quot;:&quot;</span>).append(s);<br>        &#125;<br>        <span class="hljs-keyword">return</span> sb.toString();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建类：BaseKeyPrefix，实现 KeyPrefix 接口</p>
+<figure class="highlight java"><figcaption><span>BaseKeyPrefix</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 基础 Redis Key 前缀</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BaseKeyPrefix</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">KeyPrefix</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String prefix;<br>    <span class="hljs-keyword">private</span> Long timeout;<br>    <span class="hljs-keyword">private</span> TimeUnit unit;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BaseKeyPrefix</span><span class="hljs-params">(String prefix)</span> &#123;<br>        <span class="hljs-built_in">this</span>(prefix, -<span class="hljs-number">1L</span>, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BaseKeyPrefix</span><span class="hljs-params">(String prefix, Long timeout, TimeUnit unit)</span> &#123;<br>        <span class="hljs-built_in">this</span>.prefix = prefix;<br>        <span class="hljs-built_in">this</span>.timeout = timeout;<br>        <span class="hljs-built_in">this</span>.unit = unit;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getPrefix</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.prefix;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Long <span class="hljs-title function_">getTimeout</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.timeout;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> TimeUnit <span class="hljs-title function_">getUnit</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.unit;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/trip-cloud/03_common/core.html">核心模块</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/trip-cloud/03_common/security.html">安全模块</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>

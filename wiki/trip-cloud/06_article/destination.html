@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>旅游项目：目的地服务 - swcode</title>
+
+  
+    <meta name="description" content="图中红色框为区域模块，国内属于默认展示，其他的使用区域表存储，其对应的目的地可以有多个 图中黑色框为目的地模块，树型结构，数据库使用parent_id来维护关系。   数据库目的地服务分为两个模块：区域和目的地。区域和目的地是1对多，为了方便使用，这里关系交给1方来维护，打破了第一范式 国内区域设计为默认区域，即不存入数据库。 地区表 其中ref_ids用来存其关联的目的地  CREATE TAB">
+<meta property="og:type" content="website">
+<meta property="og:title" content="目的地服务">
+<meta property="og:url" content="http://example.com/wiki/trip-cloud/06_article/destination.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="图中红色框为区域模块，国内属于默认展示，其他的使用区域表存储，其对应的目的地可以有多个 图中黑色框为目的地模块，树型结构，数据库使用parent_id来维护关系。   数据库目的地服务分为两个模块：区域和目的地。区域和目的地是1对多，为了方便使用，这里关系交给1方来维护，打破了第一范式 国内区域设计为默认区域，即不存入数据库。 地区表 其中ref_ids用来存其关联的目的地  CREATE TAB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_06.png">
+<meta property="article:published_time" content="2023-11-03T05:30:10.000Z">
+<meta property="article:modified_time" content="2023-11-03T05:46:25.594Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+  
+
+
+
+
+<div class="widgets"><widget class="widget-wrapper logo-wrap wiki"><div class="widget-body"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/trip-cloud/01_introduce/index.html"><div class="main" ff="title">旅游项目</div><div class="sub cap">旅游项目开发指南</div></a></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/wiki/trip-cloud/" placeholder="在 /wiki/trip-cloud/ 中搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目搭建</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/02_init/index.html"><span class="toc-text">项目搭建</span></a></div></div><div class="widget-header cap dis-select"><span class="name">公共模块</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/core.html"><span class="toc-text">核心模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/redis.html"><span class="toc-text">Redis模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/security.html"><span class="toc-text">安全模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/03_common/exception.html"><span class="toc-text">统一异常处理</span></a></div></div><div class="widget-header cap dis-select"><span class="name">网关服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/04_gateway/index.html"><span class="toc-text">网关服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">用户微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/msql.html"><span class="toc-text">数据库</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/register.html"><span class="toc-text">用户注册功能</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/05_user/login.html"><span class="toc-text">用户登陆功能</span></a></div></div><div class="widget-header cap dis-select"><span class="name">文章微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/trip-cloud/06_article/destination.html"><span class="toc-text">目的地服务</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%8C%BA%E8%A1%A8"><span class="toc-text">地区表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E5%9C%B0%E8%A1%A8"><span class="toc-text">目的地表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">实体类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%8C%BA%E5%9F%9F%E6%9C%8D%E5%8A%A1"><span class="toc-text">基础区域服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E6%9F%A5%E8%AF%A2"><span class="toc-text">主键查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">保存区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E5%8C%BA%E5%9F%9F"><span class="toc-text">更新区域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%8C%BA%E5%9F%9F"><span class="toc-text">删除区域</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9B%AE%E7%9A%84%E5%9C%B0%E6%9C%8D%E5%8A%A1"><span class="toc-text">基础目的地服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89"><span class="toc-text">查询所有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%94%AE%E6%9F%A5%E8%AF%A2-1"><span class="toc-text">主键查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">保存目的地</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">更新目的地</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">删除目的地</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E9%97%A8%E5%8C%BA%E5%9F%9F%E6%9F%A5%E8%AF%A2"><span class="toc-text">热门区域查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller"><span class="toc-text">Controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E9%97%A8%E5%8C%BA%E5%9F%9F%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">热门区域目的地</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF-1"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mapper"><span class="toc-text">Mapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-1"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller-1"><span class="toc-text">Controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%8C%BA%E5%9F%9F%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">查区域目的地</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF-2"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-2"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller-2"><span class="toc-text">Controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E7%9B%AE%E7%9A%84%E5%9C%B0"><span class="toc-text">分页查询目的地</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF-3"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="toc-text">请求参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-3"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller-3"><span class="toc-text">Controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84%E5%9C%B0%E5%90%90%E5%8F%B8%E6%9F%A5%E8%AF%A2"><span class="toc-text">目的地吐司查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BF%A1%E6%81%AF-4"><span class="toc-text">接口信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-4"><span class="toc-text">Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller-4"><span class="toc-text">Controller</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/catalog.html"><span class="toc-text">攻略分类服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/theme.html"><span class="toc-text">攻略主题服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/strategy.html"><span class="toc-text">攻略服务</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/06_article/travel.html"><span class="toc-text">游记服务</span></a></div></div><div class="widget-header cap dis-select"><span class="name">评论微服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/mongodb.html"><span class="toc-text">安装MongoDB</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/init.html"><span class="toc-text">始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/strategy.html"><span class="toc-text">攻略评论</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/07_comment/travel.html"><span class="toc-text">游记评论</span></a></div></div><div class="widget-header cap dis-select"><span class="name">统计数据存储方案</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/redis-key.html"><span class="toc-text">Redis Key</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/strategy.html"><span class="toc-text">攻略统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datainit.html"><span class="toc-text">初始化统计数据</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/08_statdata/datasync.html"><span class="toc-text">数据同步方案</span></a></div></div><div class="widget-header cap dis-select"><span class="name">搜索服务</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/init.html"><span class="toc-text">初始化模块</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/inites.html"><span class="toc-text">初始化数据到ES</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/trip-cloud/09_search/essearch.html"><span class="toc-text">ES数据查询</span></a></div></div></widget>
+
+
+
+<widget class="widget-wrapper related"><div class="widget-header cap theme dis-select"><span class="name">更多笔记</span></div><div class="widget-body related-posts"><a class="item wiki" href="/wiki/dtx/index.html"><span class="title">分布式事务</span><span class="excerpt">分布式系统会把一个应用系统拆分为可独立部署的多个服务，因此需要服务于服务之间远程协作才能完成事务操作，这种分布式系统环境下由不同的服务之间通过网络远程协作完成事务称之为分布式事务。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/redis/%E7%AE%80%E4%BB%8B/index.html"><span class="title">Redis学习笔记</span><span class="excerpt">Redis 是一个开源（BSD 许可）内存数据结构存储，用作数据库、缓存、消息代理和流引擎。</span></a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/trip-cloud/01_introduce/index.html">旅游项目</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-11-03T05:46:25.594Z">2023-11-03</time></div></div>
+
+  <article class='md-text content wiki'>
+  <h1 class="article-title"><span>目的地服务</span></h1>
+  <p>图中红色框为区域模块，国内属于默认展示，其他的使用区域表存储，其对应的目的地可以有多个</p>
+<p>图中黑色框为目的地模块，树型结构，数据库使用<code>parent_id</code>来维护关系。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png" fancybox="true"/></div></div>
+
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>目的地服务分为两个模块：区域和目的地。区域和目的地是1对多，为了方便使用，这里关系交给1方来维护，打破了第一范式</p>
+<p>国内区域设计为默认区域，即不存入数据库。</p>
+<h3 id="地区表"><a href="#地区表" class="headerlink" title="地区表"></a>地区表</h3><blockquote>
+<p>其中<code>ref_ids</code>用来存其关联的目的地</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `region` (<br>  `id` <span class="hljs-type">bigint</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `sn` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `ishot` bit(<span class="hljs-number">1</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `seq` <span class="hljs-type">int</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `info` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `ref_ids` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`) <span class="hljs-keyword">USING</span> BTREE<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">7</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb3 ROW_FORMAT<span class="hljs-operator">=</span><span class="hljs-keyword">DYNAMIC</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="目的地表"><a href="#目的地表" class="headerlink" title="目的地表"></a>目的地表</h3><blockquote>
+<p>目的地为树型结构，使用<code>parent_id</code>来关联关系</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `destination` (<br>  `id` <span class="hljs-type">bigint</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `english` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `cover_url` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `info` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `parent_name` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `parent_id` <span class="hljs-type">bigint</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`) <span class="hljs-keyword">USING</span> BTREE<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">607</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb3 ROW_FORMAT<span class="hljs-operator">=</span><span class="hljs-keyword">DYNAMIC</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h2><p>找到模块：trip-article-api，找到包<code>com.swx.article.domain</code>，创建地区实体类</p>
+<figure class="highlight java"><figcaption><span>Region</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 区域对象</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@TableName(&quot;region&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Region</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">STATE_HOT</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">STATE_NORMAL</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-meta">@TableId(type = IdType.AUTO)</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String name; <span class="hljs-comment">// 地区名</span><br>    <span class="hljs-keyword">private</span> String sn; <span class="hljs-comment">// 地区编码</span><br>    <span class="hljs-keyword">private</span> String refIds; <span class="hljs-comment">// 关联id，多个以，隔开</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">ishot</span> <span class="hljs-operator">=</span> STATE_NORMAL;<br>    <span class="hljs-keyword">private</span> Integer seq; <span class="hljs-comment">// 序号</span><br>    <span class="hljs-keyword">private</span> String info; <span class="hljs-comment">// 简介</span><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 解析子目的地</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 子目的地</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title function_">parseRefIds</span><span class="hljs-params">()</span> &#123;<br>        ArrayList&lt;Long&gt; ids = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">if</span> (StringUtils.hasLength(refIds)) &#123;<br>            String[] split = refIds.split(<span class="hljs-string">&quot;,&quot;</span>);<br>            <span class="hljs-keyword">if</span> (split.length &gt; <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; split.length; i++) &#123;<br>                    ids.add(Long.parseLong(split[i]));<br><br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> ids;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>目的地实体类</p>
+<figure class="highlight java"><figcaption><span>Destination</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 目的地（行政地区：国家/省份/城市）</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@TableName(&quot;destination&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Destination</span> &#123;<br><br>    <span class="hljs-meta">@TableId(type = IdType.AUTO)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> String english;<br>    <span class="hljs-keyword">private</span> Long parentId;<br>    <span class="hljs-keyword">private</span> String parentName;<br>    <span class="hljs-keyword">private</span> String info;<br>    <span class="hljs-keyword">private</span> String coverUrl;<br>    <span class="hljs-meta">@TableField(exist = false)</span><br>    <span class="hljs-keyword">private</span> List&lt;Destination&gt; children = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="基础区域服务"><a href="#基础区域服务" class="headerlink" title="基础区域服务"></a>基础区域服务</h2><h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions">http://localhost:9000/article/regions</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Page</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>Page</td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/regions&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RegionController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RegionService regionService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RegionController</span><span class="hljs-params">(RegionService regionService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.regionService = regionService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping</span><br>    <span class="hljs-keyword">public</span> R&lt;Page&lt;Region&gt;&gt; <span class="hljs-title function_">pageList</span><span class="hljs-params">(Page&lt;Region&gt; page)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.ok(regionService.page(page));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="主键查询"><a href="#主键查询" class="headerlink" title="主键查询"></a>主键查询</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/detail">http://localhost:9000/article/regions/detail</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>id</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>Region</td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/detail&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;Region&gt; <span class="hljs-title function_">getById</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(regionService.getById(id));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="保存区域"><a href="#保存区域" class="headerlink" title="保存区域"></a>保存区域</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/save">http://localhost:9000/article/regions/save</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Region</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/save&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; save(Region region) &#123;<br>    regionService.save(region);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="更新区域"><a href="#更新区域" class="headerlink" title="更新区域"></a>更新区域</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/update">http://localhost:9000/article/regions/update</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Region</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/update&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; update(Region region) &#123;<br>    regionService.updateById(region);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="删除区域"><a href="#删除区域" class="headerlink" title="删除区域"></a>删除区域</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/delete/%7Bid%7D">http://localhost:9000/article/regions/delete/{id}</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>id</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/delete/&#123;id&#125;&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; delete(<span class="hljs-meta">@PathVariable</span> Long id) &#123;<br>    regionService.removeById(id);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="基础目的地服务"><a href="#基础目的地服务" class="headerlink" title="基础目的地服务"></a>基础目的地服务</h2><h3 id="查询所有"><a href="#查询所有" class="headerlink" title="查询所有"></a>查询所有</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/list">http://localhost:9000/article/destinations/list</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td></td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>List<Destination></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/destinations&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DestinationController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DestinationService destinationService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DestinationController</span><span class="hljs-params">(DestinationService destinationService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.destinationService = destinationService;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/list&quot;)</span><br>    <span class="hljs-keyword">public</span> R&lt;List&lt;Destination&gt;&gt; <span class="hljs-title function_">listAll</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> R.ok(destinationService.list());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="主键查询-1"><a href="#主键查询-1" class="headerlink" title="主键查询"></a>主键查询</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/detail">http://localhost:9000/article/destinations/detail</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>id</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>Destination</td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/detail&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;Destination&gt; <span class="hljs-title function_">getById</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(destinationService.getById(id));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="保存目的地"><a href="#保存目的地" class="headerlink" title="保存目的地"></a>保存目的地</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/save">http://localhost:9000/article/destinations/save</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Region</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/save&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; save(Destination dst) &#123;<br>    destinationService.save(dst);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="更新目的地"><a href="#更新目的地" class="headerlink" title="更新目的地"></a>更新目的地</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/update">http://localhost:9000/article/destinations/update</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>Destination</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/update&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; update(Destination dst) &#123;<br>    destinationService.updateById(dst);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="删除目的地"><a href="#删除目的地" class="headerlink" title="删除目的地"></a>删除目的地</h3><p>接口信息</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/delete/%7Bid%7D">http://localhost:9000/article/destinations/delete/{id}</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>id</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Controller</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/delete/&#123;id&#125;&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;?&gt; delete(<span class="hljs-meta">@PathVariable</span> Long id) &#123;<br>    destinationService.removeById(id);<br>    <span class="hljs-keyword">return</span> R.ok();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="热门区域查询"><a href="#热门区域查询" class="headerlink" title="热门区域查询"></a>热门区域查询</h2><p>前端对应页面如下图中的红色框：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png" fancybox="true"/></div></div>
+
+<h3 id="接口信息"><a href="#接口信息" class="headerlink" title="接口信息"></a>接口信息</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/hotList">http://localhost:9000/article/regions/hotList</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td></td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>List<Region></td>
+</tr>
+</tbody></table>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>找到：RegionService，添加热门区域查询方法</p>
+<figure class="highlight java"><figcaption><span>RegionService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RegionService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Region&gt; &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 热门区域查询</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门区域</span><br><span class="hljs-comment">     */</span><br>    List&lt;Region&gt; <span class="hljs-title function_">findHotList</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>找到：RegionServiceImpl，实现上述方法</p>
+<figure class="highlight java"><figcaption><span>RegionServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RegionServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;RegionMapper, Region&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RegionService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 热门区域查询</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门区域</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;Region&gt; <span class="hljs-title function_">findHotList</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> list(Wrappers.&lt;Region&gt;lambdaQuery()<br>                .eq(Region::getIshot, Region.STATE_HOT)<br>                .orderByAsc(Region::getSeq));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>找到：RegionController，添加热门区域查询方法</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/hotList&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;List&lt;Region&gt;&gt; <span class="hljs-title function_">hotList</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(regionService.findHotList());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="热门区域目的地"><a href="#热门区域目的地" class="headerlink" title="热门区域目的地"></a>热门区域目的地</h2><blockquote>
+<p>根据热门区域ID查询区域目的地，包括目的地的子目的地</p>
+</blockquote>
+<p>前端对应页面如下图中黑色框：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_05.png" fancybox="true"/></div></div>
+
+<h3 id="接口信息-1"><a href="#接口信息-1" class="headerlink" title="接口信息"></a>接口信息</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/destinations/hotList">http://localhost:9000/article/destinations/hotList</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td></td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>List<Region></td>
+</tr>
+</tbody></table>
+<h3 id="Mapper"><a href="#Mapper" class="headerlink" title="Mapper"></a>Mapper</h3><p>找到：DestinationMapper，添加查询方法：</p>
+<figure class="highlight java"><figcaption><span>DestinationMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DestinationMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Destination&gt; &#123;<br><br>    List&lt;Destination&gt; <span class="hljs-title function_">selectHotListByRid</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;rid&quot;)</span> Long rid, <span class="hljs-meta">@Param(&quot;ids&quot;)</span> List&lt;Long&gt; ids)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>找到：DestinationMapper.xml，实现实现上述方法</p>
+<figure class="highlight xml"><figcaption><span>DestinationMapper.xml</span></figcaption><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">mapper</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.swx.article.mapper.DestinationMapper&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;FullResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.swx.article.domain.Destination&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;id&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;name&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;name&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">collection</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;children&quot;</span> <span class="hljs-attr">ofType</span>=<span class="hljs-string">&quot;com.swx.article.domain.Destination&quot;</span> <span class="hljs-attr">columnPrefix</span>=<span class="hljs-string">&quot;c_&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;id&quot;</span> /&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;name&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;name&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">collection</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectHotListByRid&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;FullResultMap&quot;</span>&gt;</span><br>        SELECT province.id, province.name, city.id c_id, city.name c_name<br>        FROM destination province LEFT JOIN destination city ON province.id = city.parent_id<br>        <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;rid == -1&quot;</span>&gt;</span><br>                province.parent_id = 1<br>            <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;rid &gt; 0&quot;</span>&gt;</span><br>                province.id in<br>                    <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;ids&quot;</span> <span class="hljs-attr">open</span>=<span class="hljs-string">&quot;(&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span> <span class="hljs-attr">close</span>=<span class="hljs-string">&quot;)&quot;</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;id&quot;</span>&gt;</span><br>                        #&#123;id&#125;<br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span><br>        ORDER BY c_id<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Service-1"><a href="#Service-1" class="headerlink" title="Service"></a>Service</h3><p>找到：DestinationService，添加热门区域下目的地查询方法</p>
+<figure class="highlight java"><figcaption><span>DestinationService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 根据热门区域ID查询热门目的地</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> rid 区域ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 热门目的地</span><br><span class="hljs-comment"> */</span><br>List&lt;Destination&gt; <span class="hljs-title function_">findHotList</span><span class="hljs-params">(Long rid)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>找到：DestinationServiceImpl，实现上述方法</p>
+<blockquote>
+<p>这里使用了三种实现方式：</p>
+<p>1、自连接查询<br>2、循环查询，有N+1问题，即需要循环N次查询数据库<br>3、循环查询，但是使用多线程方式</p>
+<p>线程池配置类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppConfig</span> &#123;<br><br> <span class="hljs-meta">@Bean</span><br> <span class="hljs-keyword">public</span> ThreadPoolExecutor <span class="hljs-title function_">bizThreadPoolExecutor</span><span class="hljs-params">()</span> &#123;<br>     <span class="hljs-comment">// 创建线程池的方式</span><br>     <span class="hljs-comment">/*</span><br><span class="hljs-comment">          1. Executors 创建，不推荐，</span><br><span class="hljs-comment">          默认创建的工作队列，使用的是 LinkedBlockingDeque 队列，且默认容量为 Integer 的最大值</span><br><span class="hljs-comment">          工作队列的容量过大，会导致核心线程工作过载，对垒中任务数过多，且非核心线程无法参与处理，最终导致内存溢出</span><br><span class="hljs-comment">          Executors.newCachedThreadPool(50);</span><br><span class="hljs-comment">         */</span><br><br>        <span class="hljs-comment">// 2. 直接new ThreadPoolExecutor 对象 推荐</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-number">10</span>, TimeUnit.SECONDS,<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedBlockingDeque</span>&lt;&gt;(<span class="hljs-number">100</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight java"><figcaption><span>DestinationServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DestinationServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;DestinationMapper, Destination&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">DestinationService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RegionService regionService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadPoolExecutor bizThreadPoolExecutor;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DestinationServiceImpl</span><span class="hljs-params">(RegionService regionService, ThreadPoolExecutor bizThreadPoolExecutor)</span> &#123;<br>        <span class="hljs-built_in">this</span>.regionService = regionService;<br>        <span class="hljs-built_in">this</span>.bizThreadPoolExecutor = bizThreadPoolExecutor;<br>    &#125;<br>    <br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据热门区域ID查询热门目的地</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> rid 区域ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门目的地</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">findHotList</span><span class="hljs-params">(Long rid)</span> &#123;<br>        List&lt;Destination&gt; destinations = <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">if</span> (rid &lt; <span class="hljs-number">0</span>) &#123;<br>            destinations = <span class="hljs-built_in">this</span>.baseMapper.selectHotListByRid(rid, <span class="hljs-literal">null</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-type">Region</span> <span class="hljs-variable">region</span> <span class="hljs-operator">=</span> regionService.getById(rid);<br>            <span class="hljs-keyword">if</span> (region == <span class="hljs-literal">null</span>) &#123;<br>                <span class="hljs-keyword">return</span> Collections.emptyList();<br>            &#125;<br>            List&lt;Long&gt; ids = region.parseRefIds();<br>            destinations = <span class="hljs-built_in">this</span>.baseMapper.selectHotListByRid(rid, ids);<br>        &#125;<br>        <span class="hljs-keyword">for</span> (Destination destination : destinations) &#123;<br>            List&lt;Destination&gt; children = destination.getChildren();<br>            <span class="hljs-keyword">if</span> (children == <span class="hljs-literal">null</span>) &#123;<br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br>            destination.setChildren(children.stream().limit(<span class="hljs-number">10</span>).collect(Collectors.toList()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> destinations;<br>    &#125;<br>        <br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 使用代码循环方式，有N+1问题</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> rid 区域ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门目的地</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">findHostListFor</span><span class="hljs-params">(Long rid)</span> &#123;<br>        List&lt;Destination&gt; destinations = <span class="hljs-literal">null</span>;<br>        LambdaQueryWrapper&lt;Destination&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>        <span class="hljs-keyword">if</span> (rid &lt; <span class="hljs-number">0</span>) &#123;<br>            destinations = list(wrapper.eq(Destination::getParentId, <span class="hljs-number">1</span>));<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            destinations = <span class="hljs-built_in">this</span>.getDestinationByRegionId(rid);<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (Destination destination : destinations) &#123;<br>            <span class="hljs-comment">// 清楚之前的条件</span><br>            wrapper.clear();<br>            List&lt;Destination&gt; children = list(wrapper.eq(Destination::getParentId, destination.getId()).last(<span class="hljs-string">&quot;limit 10&quot;</span>));<br>            destination.setChildren(children);<br>        &#125;<br>        <span class="hljs-keyword">return</span> destinations;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 使用代码循环方式，有N+1问题</span><br><span class="hljs-comment">     * 使用多线程，同时发查询请求</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> rid 区域ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门目的地</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">findHostListThread</span><span class="hljs-params">(Long rid)</span> &#123;<br>        List&lt;Destination&gt; destinations = <span class="hljs-literal">null</span>;<br>        LambdaQueryWrapper&lt;Destination&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>        <span class="hljs-keyword">if</span> (rid &lt; <span class="hljs-number">0</span>) &#123;<br>            destinations = list(wrapper.eq(Destination::getParentId, <span class="hljs-number">1</span>));<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            destinations = <span class="hljs-built_in">this</span>.getDestinationByRegionId(rid);<br>        &#125;<br>        <span class="hljs-comment">// 如何等待所有异步线程结束，主线程再执行</span><br>        <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(destinations.size());<br>        <span class="hljs-keyword">for</span> (Destination destination : destinations) &#123;<br>            <span class="hljs-comment">// submit有返回值，且支持Callable，execute没有返回值，只支持Runnable</span><br>            bizThreadPoolExecutor.execute(() -&gt; &#123;<br>                <span class="hljs-comment">// 清楚之前的条件</span><br>                List&lt;Destination&gt; children = list(Wrappers.&lt;Destination&gt;lambdaQuery().eq(Destination::getParentId, destination.getId()).last(<span class="hljs-string">&quot;limit 10&quot;</span>));<br>                destination.setChildren(children);<br>                <span class="hljs-comment">// 倒计时数量-1</span><br>                latch.countDown();<br>            &#125;);<br>        &#125;<br>        <span class="hljs-comment">// 返回结果前阻塞等待</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            latch.await(<span class="hljs-number">10</span>, TimeUnit.MINUTES);<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> destinations;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Controller-1"><a href="#Controller-1" class="headerlink" title="Controller"></a>Controller</h3><p>找到：DestinationController，添加热门区域查询方法</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/hotList&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;List&lt;Destination&gt;&gt; <span class="hljs-title function_">hotList</span><span class="hljs-params">(Long rid)</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(destinationService.findHotList(rid));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="查区域目的地"><a href="#查区域目的地" class="headerlink" title="查区域目的地"></a>查区域目的地</h2><blockquote>
+<p>根据区域的ID获取其对应的目的地，父级目的地，不包含其子目的地</p>
+</blockquote>
+<h3 id="接口信息-2"><a href="#接口信息-2" class="headerlink" title="接口信息"></a>接口信息</h3><p>该接口输入后台管理接口</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/%7Bid%7D/destination">http://localhost:9000/article/regions/{id}/destination</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>id</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>List<Destination></td>
+</tr>
+</tbody></table>
+<h3 id="Service-2"><a href="#Service-2" class="headerlink" title="Service"></a>Service</h3><p>找到：DestinationService，添加查区域目的地方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DestinationService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Destination&gt; &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据区域ID获取目的地</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> regionId 区域ID</span><br><span class="hljs-comment">     */</span><br>    List&lt;Destination&gt; <span class="hljs-title function_">getDestinationByRegionId</span><span class="hljs-params">(Long regionId)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>找到：DestinationServiceImpl，实现上述方法</p>
+<figure class="highlight java"><figcaption><span>DestinationService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 根据区域ID获取目的地</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> regionId 区域ID</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">getDestinationByRegionId</span><span class="hljs-params">(Long regionId)</span> &#123;<br>    <span class="hljs-type">Region</span> <span class="hljs-variable">region</span> <span class="hljs-operator">=</span> regionService.getById(regionId);<br>    <span class="hljs-keyword">if</span> (region == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> Collections.emptyList();<br>    &#125;<br>    List&lt;Long&gt; ids = region.parseRefIds();<br>    <span class="hljs-keyword">if</span> (ids.isEmpty()) &#123;<br>        <span class="hljs-keyword">return</span> Collections.emptyList();<br>    &#125;<br>    <span class="hljs-keyword">return</span> listByIds(ids);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Controller-2"><a href="#Controller-2" class="headerlink" title="Controller"></a>Controller</h3><p>找到：RegionController，添加热门区域查询方法</p>
+<figure class="highlight java"><figcaption><span>RegionController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/regions&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RegionController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RegionService regionService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DestinationService destinationService;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RegionController</span><span class="hljs-params">(RegionService regionService, DestinationService destinationService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.regionService = regionService;<br>        <span class="hljs-built_in">this</span>.destinationService = destinationService;<br>    &#125;<br>    <br>	<span class="hljs-meta">@GetMapping(&quot;/&#123;id&#125;/destination&quot;)</span><br>    <span class="hljs-keyword">public</span> R&lt;List&lt;Destination&gt;&gt; <span class="hljs-title function_">getDestination</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.ok(destinationService.getDestinationByRegionId(id));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="分页查询目的地"><a href="#分页查询目的地" class="headerlink" title="分页查询目的地"></a>分页查询目的地</h2><blockquote>
+<p>根据目的地的父ID获取其对应的目的地，父ID为NULL，即查询所有父目的地</p>
+</blockquote>
+<h3 id="接口信息-3"><a href="#接口信息-3" class="headerlink" title="接口信息"></a>接口信息</h3><p>该接口输入后台管理接口</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions">http://localhost:9000/article/regions</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>DestinationQuery</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>Page<Destination></td>
+</tr>
+</tbody></table>
+<h3 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h3><blockquote>
+<p>请求参数除了基本参数，还包括分页参数，将公共的参数放到QueryObject中：</p>
+<p>在 core 模块中创建包：<code>com.swx.common.core.qo</code>，该包下创建 QueryObject</p>
+<figure class="highlight java"><figcaption><span>QueryObject</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">QueryObject</span> &#123;<br> <span class="hljs-keyword">private</span> String keyword;<br> <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br> <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br><br> <span class="hljs-keyword">public</span> <span class="hljs-title function_">QueryObject</span><span class="hljs-params">(Integer current, Integer size)</span> &#123;<br>     <span class="hljs-built_in">this</span>.current = current;<br>     <span class="hljs-built_in">this</span>.size = size;<br> &#125;<br><br> <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getOffset</span><span class="hljs-params">()</span> &#123;<br>     <span class="hljs-keyword">return</span> (current - <span class="hljs-number">1</span>) * size;<br> &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DestinationQuery</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">QueryObject</span> &#123;<br>    <span class="hljs-keyword">private</span> Long parentId;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Service-3"><a href="#Service-3" class="headerlink" title="Service"></a>Service</h3><p>找到：DestinationService，添加分页查询方法</p>
+<figure class="highlight java"><figcaption><span>DestinationService</span></figcaption><table><tr><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 分页查询</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> query 查询参数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 分页数据</span><br><span class="hljs-comment"> */</span><br>Page&lt;Destination&gt; <span class="hljs-title function_">pageList</span><span class="hljs-params">(DestinationQuery query)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>找到：DestinationServiceImpl，实现上述方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 分页查询</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> query 查询参数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 分页数据</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> Page&lt;Destination&gt; <span class="hljs-title function_">pageList</span><span class="hljs-params">(DestinationQuery query)</span> &#123;<br>    LambdaQueryWrapper&lt;Destination&gt; wrapper = Wrappers.&lt;Destination&gt;lambdaQuery();<br>    <span class="hljs-comment">// parentId 为 null，查询所有 parent_id IS NULL 的数据</span><br>    wrapper.isNull(query.getParentId() == <span class="hljs-literal">null</span>, Destination::getParentId);<br>    <span class="hljs-comment">// parentId 不为 null，根据 parent_id 查询</span><br>    wrapper.eq(query.getParentId() != <span class="hljs-literal">null</span>, Destination::getParentId, query.getParentId());<br>    <span class="hljs-comment">// 关键字查询</span><br>    wrapper.like(StringUtils.hasText(query.getKeyword()), Destination::getName, query.getKeyword());<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.page(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(query.getCurrent(), query.getSize()), wrapper);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Controller-3"><a href="#Controller-3" class="headerlink" title="Controller"></a>Controller</h3><p>找到：DestinationController，添加分页查询方法</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping</span><br><span class="hljs-keyword">public</span> R&lt;Page&lt;Destination&gt;&gt; <span class="hljs-title function_">pageList</span><span class="hljs-params">(DestinationQuery query)</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(destinationService.pageList(query));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="目的地吐司查询"><a href="#目的地吐司查询" class="headerlink" title="目的地吐司查询"></a>目的地吐司查询</h2><blockquote>
+<p>根据当前目的地ID，往上查询其父目的地，当父目的地的parent_id为NULL时，停止查询。</p>
+</blockquote>
+<p>前端对应页面如下图红色框：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/trip_cloud/trip_06.png" fancybox="true"/></div></div>
+
+<h3 id="接口信息-4"><a href="#接口信息-4" class="headerlink" title="接口信息"></a>接口信息</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径地址</td>
+<td><a target="_blank" rel="noopener" href="http://localhost:9000/article/regions/toasts">http://localhost:9000/article/regions/toasts</a></td>
+</tr>
+<tr>
+<td>请求方式</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>请求参数</td>
+<td>destId</td>
+</tr>
+<tr>
+<td>返回结果</td>
+<td>List<Destination></td>
+</tr>
+</tbody></table>
+<h3 id="Service-4"><a href="#Service-4" class="headerlink" title="Service"></a>Service</h3><p>找到：DestinationService，添加查询吐司方法</p>
+<figure class="highlight java"><figcaption><span>DestinationService</span></figcaption><table><tr><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 根据当前ID查询面包屑</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> destId 当前目的地ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 面包屑</span><br><span class="hljs-comment"> */</span><br>List&lt;Destination&gt; <span class="hljs-title function_">toasts</span><span class="hljs-params">(Long destId)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>找到：DestinationServiceImpl，实现上述方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 根据当前ID查询面包屑</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> destId 当前目的地ID</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">toasts</span><span class="hljs-params">(Long destId)</span> &#123;<br>    ArrayList&lt;Destination&gt; toasts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">while</span> (destId != <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-type">Destination</span> <span class="hljs-variable">dest</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">super</span>.getById(destId);<br>        <span class="hljs-keyword">if</span> (dest == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>        toasts.add(dest);<br>        destId = dest.getParentId();<br>    &#125;<br>    <span class="hljs-comment">// 逆序，方便前端展示</span><br>    Collections.reverse(toasts);<br>    <span class="hljs-keyword">return</span> toasts;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Controller-4"><a href="#Controller-4" class="headerlink" title="Controller"></a>Controller</h3><p>找到：DestinationController，添加分页查询方法</p>
+<figure class="highlight java"><figcaption><span>DestinationController</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/toasts&quot;)</span><br><span class="hljs-keyword">public</span> R&lt;List&lt;Destination&gt;&gt; <span class="hljs-title function_">toasts</span><span class="hljs-params">(Long destId)</span> &#123;<br>    <span class="hljs-keyword">return</span> R.ok(destinationService.toasts(destId));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/trip-cloud/06_article/init.html">初始化模块</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/trip-cloud/06_article/catalog.html">攻略分类服务</a></div></section></div>
+
+  
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
