@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>使用策略模式设计Elasticsearch数据初始化接口 - swcode</title>
+
+  
+    <meta name="description" content="接口要求：  使用策略模式，请求携带不同参数，接口执行不同数据的初始化方法 接口只能使用一次，即初始化完成之后，接口无法再调用  策略类创建策略类，QueryObject 为查询参数，clazz为ES文档类，用于类型转换 EsDataInitStrategy@Getter@Setterstatic class EsDataInitStrategy &amp;#123;    private Functio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用策略模式设计Elasticsearch数据初始化接口">
+<meta property="og:url" content="http://example.com/2023/11/05/%E4%BD%BF%E7%94%A8%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1Elasticsearch%E6%95%B0%E6%8D%AE%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3/index.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="接口要求：  使用策略模式，请求携带不同参数，接口执行不同数据的初始化方法 接口只能使用一次，即初始化完成之后，接口无法再调用  策略类创建策略类，QueryObject 为查询参数，clazz为ES文档类，用于类型转换 EsDataInitStrategy@Getter@Setterstatic class EsDataInitStrategy &amp;#123;    private Functio">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-05T05:03:51.000Z">
+<meta property="article:modified_time" content="2023-11-05T05:09:08.355Z">
+<meta property="article:author" content="swcode">
+<meta property="article:tag" content="Elasticsearch">
+<meta property="article:tag" content="数据初始化">
+<meta name="twitter:card" content="summary">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  
+
+
+  
+    
+      <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+    
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">使用策略模式设计Elasticsearch数据初始化接口</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E7%B1%BB"><span class="toc-text">策略类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="toc-text">远程调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1"><span class="toc-text">用户服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">文章微服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%9C%8D%E5%8A%A1"><span class="toc-text">Redis服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Elasticsearch%E6%9C%8D%E5%8A%A1"><span class="toc-text">Elasticsearch服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1"><span class="toc-text">接口设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A3%9F%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-text">食用教程</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-11-05T05:03:51.000Z">2023-11-05</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>使用策略模式设计Elasticsearch数据初始化接口</span></h1>
+<p>接口要求：</p>
+<ul>
+<li>使用策略模式，请求携带不同参数，接口执行不同数据的初始化方法</li>
+<li>接口只能使用一次，即初始化完成之后，接口无法再调用</li>
+</ul>
+<h2 id="策略类"><a href="#策略类" class="headerlink" title="策略类"></a>策略类</h2><p>创建策略类，QueryObject 为查询参数，clazz为ES文档类，用于类型转换</p>
+<figure class="highlight java"><figcaption><span>EsDataInitStrategy</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EsDataInitStrategy</span> &#123;<br>    <span class="hljs-keyword">private</span> Function&lt;QueryObject, R&lt;List&lt;Object&gt;&gt;&gt; function;<br>    <span class="hljs-keyword">private</span> Class&lt;?&gt; clazz;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">EsDataInitStrategy</span><span class="hljs-params">(Function&lt;QueryObject, R&lt;List&lt;Object&gt;&gt;&gt; function, Class&lt;?&gt; clazz)</span> &#123;<br>        <span class="hljs-built_in">this</span>.function = function;<br>        <span class="hljs-built_in">this</span>.clazz = clazz;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>查询参数 QueryObject</p>
+<figure class="highlight java"><figcaption><span>QueryObject</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">QueryObject</span> &#123;<br>    <span class="hljs-keyword">private</span> String keyword;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">QueryObject</span><span class="hljs-params">(Integer current, Integer size)</span> &#123;<br>        <span class="hljs-built_in">this</span>.current = current;<br>        <span class="hljs-built_in">this</span>.size = size;<br>    &#125;<br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getOffset</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> (current - <span class="hljs-number">1</span>) * size;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>响应参数 R</p>
+<figure class="highlight java"><figcaption><span>R</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">R</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CODE_SUCCESS</span> <span class="hljs-operator">=</span> <span class="hljs-number">200</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">MSG_SUCCESS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;操作成功&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CODE_NOLOGIN</span> <span class="hljs-operator">=</span> <span class="hljs-number">401</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">MSG_NOLOGIN</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;请先登陆&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CODE_ERROR</span> <span class="hljs-operator">=</span> <span class="hljs-number">500</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CODE_REGISTER_ERROR</span> <span class="hljs-operator">=</span> <span class="hljs-number">500</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">MSG_ERROR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;系统异常，请联系管理员&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">CODE_ERROR_PARAM</span> <span class="hljs-operator">=</span> <span class="hljs-number">501</span>;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> code;<br>    <span class="hljs-keyword">private</span> String msg;<br>    <span class="hljs-keyword">private</span> T data;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">R</span><span class="hljs-params">(<span class="hljs-type">int</span> code, String msg, T data)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.msg = msg;<br>        <span class="hljs-built_in">this</span>.data = data;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">ok</span><span class="hljs-params">(T data)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(CODE_SUCCESS, MSG_SUCCESS, data);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">ok</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(CODE_SUCCESS, MSG_SUCCESS, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">error</span><span class="hljs-params">(<span class="hljs-type">int</span> code, String msg, T data)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(code, msg, data);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">error</span><span class="hljs-params">(<span class="hljs-type">int</span> code, String msg)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(code, msg, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">defaultError</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(CODE_ERROR, MSG_ERROR, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">noLogin</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(CODE_NOLOGIN, MSG_NOLOGIN, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">noPermission</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(<span class="hljs-number">403</span>, <span class="hljs-string">&quot;非法访问&quot;</span>, <span class="hljs-literal">null</span>);<br>    &#125;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">checkAndGet</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.code != CODE_SUCCESS) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(code, msg);<br>        &#125;<br>        <span class="hljs-keyword">return</span> data;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="远程调用"><a href="#远程调用" class="headerlink" title="远程调用"></a>远程调用</h2><p>初始化接口所在微服务可能与需要初始化的数据不在不同，所用数据库不同。为此需要使用Feign远程调用获取数据</p>
+<h3 id="用户服务"><a href="#用户服务" class="headerlink" title="用户服务"></a>用户服务</h3><p>以获取用户信息为案例，远程调用用户微服务<code>user-service</code>，分页拉取用户数据</p>
+<blockquote>
+<p>注意，因为使用策略模式，这里的返回结果为Object，也因此 Feign 会将返回的 JSON 结构转换为 LinkedHashMap 对象</p>
+</blockquote>
+<figure class="highlight java"><figcaption><span>UserInfoFeignService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(&quot;user-service&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserInfoFeignService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 如果 Feign 发起远程调用后，接收的类型没有明确具体类型是什么</span><br><span class="hljs-comment">     * Feign 会将返回的 JSON 结构转换为 LinkedHashMap 对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@GetMapping(&quot;/users/&quot;)</span><br>    R&lt;List&lt;Object&gt;&gt; <span class="hljs-title function_">findList</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> Integer current, <span class="hljs-meta">@RequestParam</span> Integer limit)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="文章微服务"><a href="#文章微服务" class="headerlink" title="文章微服务"></a>文章微服务</h3><p>以获取文章信息为案例，远程调用文章微服务<code>user-service</code>，分页拉取文章数据</p>
+<blockquote>
+<p>使用Post请求，同时添加 @RequestBody 注解，QueryObject 中包含分页参数。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(&quot;article-service&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ArticleFeignService</span> &#123;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/articles/search&quot;)</span><br>    <span class="hljs-keyword">public</span> R&lt;List&lt;Object&gt;&gt; <span class="hljs-title function_">articleSearch</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> QueryObject qo)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Redis服务"><a href="#Redis服务" class="headerlink" title="Redis服务"></a>Redis服务</h2><p>接口被设计为只能访问一次，如果项目中使用了Redis，可以将该状态保存到Redis中，同时保证接口幂等性，即并发访问初始化接口，也只能初始化一次。</p>
+<figure class="highlight java"><figcaption><span>RedisService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> RedisTemplate redisTemplate;<br>    <br>    <span class="hljs-keyword">public</span> Boolean <span class="hljs-title function_">setnx</span><span class="hljs-params">(String key, String value)</span> &#123;<br>        <span class="hljs-keyword">return</span> redisTemplate.opsForValue().setIfAbsent(key, value);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>为了防止接口滥用，可以在配置文件中配置一个随机接口地址：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">es:</span><br>  <span class="hljs-attr">init:</span><br>    <span class="hljs-attr">key:</span> <span class="hljs-string">hg345f67gfdh5yth34g56</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Elasticsearch服务"><a href="#Elasticsearch服务" class="headerlink" title="Elasticsearch服务"></a>Elasticsearch服务</h2><p>直接使用 ElasticsearchRestTemplate 的批量保存方法</p>
+<figure class="highlight java"><figcaption><span>ElasticsearchService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ElasticsearchService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 批量新增方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> iterable ES 实体对象集合</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Iterable&lt;?&gt; iterable)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现方法</p>
+<figure class="highlight java"><figcaption><span>ElasticsearchServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ElasticsearchServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ElasticsearchService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ElasticsearchRestTemplate template;<br>    <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Iterable&lt;?&gt; iterable)</span> &#123;<br>        template.save(iterable);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h2><figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/init&quot;)</span><br><span class="hljs-meta">@RefreshScope</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ElasticsearchDataInitController</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INIT_USER</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;user&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INIT_ARTICLE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;article&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Integer</span> <span class="hljs-variable">BATCH_COUNT</span> <span class="hljs-operator">=</span> <span class="hljs-number">200</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, EsDataInitStrategy&gt; DATA_HANDLER_STRATEGY_MAP = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;es.init.key&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String initKey;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RedisService redisService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserInfoFeignService userInfoFeignService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ArticleFeignService articleFeignService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ElasticsearchService elasticsearchService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ElasticsearchDataInitController</span><span class="hljs-params">(RedisService redisService, UserInfoFeignService userInfoFeignService,</span><br><span class="hljs-params">                                           ArticleFeignService articleFeignService, ElasticsearchService elasticsearchService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.redisService = redisService;<br>        <span class="hljs-built_in">this</span>.userInfoFeignService = userInfoFeignService;<br>        <span class="hljs-built_in">this</span>.articleFeignService = articleFeignService;<br>        <span class="hljs-built_in">this</span>.elasticsearchService = elasticsearchService;<br>    &#125;<br><br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">postConstruct</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 用户初始化</span><br>        <span class="hljs-type">EsDataInitStrategy</span> <span class="hljs-variable">userInit</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">EsDataInitStrategy</span>((qo) -&gt; userInfoFeignService.findList(qo.getCurrent(), qo.getSize()), UserInfoEs.class);<br>        DATA_HANDLER_STRATEGY_MAP.put(INIT_USER, userInit);<br>        <span class="hljs-comment">// 文章初始化</span><br>        <span class="hljs-type">EsDataInitStrategy</span> <span class="hljs-variable">articleInit</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">EsDataInitStrategy</span>(articleFeignService::articleSearch, ArticleEs.class);<br>        DATA_HANDLER_STRATEGY_MAP.put(INIT_ARTICLE, articleInit);<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/&#123;key&#125;/&#123;type&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; init(<span class="hljs-meta">@PathVariable(&quot;key&quot;)</span> String key, <span class="hljs-meta">@PathVariable(&quot;type&quot;)</span> String type) &#123;<br>        log.info(<span class="hljs-string">&quot;[ES 数据初始化] -------------------- 数据初始化开始 --------------------&quot;</span>);<br>        <span class="hljs-keyword">if</span> (StringUtils.isEmpty(key) || !initKey.equals(key)) &#123;<br>            log.warn(<span class="hljs-string">&quot;[ES 数据初始化] 非法操作，请求参数有误 key=&#123;&#125;, type=&#123;&#125;, initKey=&#123;&#125;&quot;</span>, key, type, initKey);<br>            <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.FORBIDDEN).build();<br>        &#125;<br>        <span class="hljs-comment">// 用户访问过，就不允许再访问了</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">redisKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;es:init:&quot;</span> + key + type;<br>        <span class="hljs-type">Boolean</span> <span class="hljs-variable">ret</span> <span class="hljs-operator">=</span> redisService.setnx(redisKey, <span class="hljs-string">&quot;initialized&quot;</span>);<br>        <span class="hljs-keyword">if</span> (ret == <span class="hljs-literal">null</span> || !ret) &#123;<br>            log.warn(<span class="hljs-string">&quot;[ES 数据初始化] 非法操作，已初始化过, redisKey=&#123;&#125;, ret=&#123;&#125;&quot;</span>, redisKey, ret);<br>            <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).build();<br>        &#125;<br><br>        <span class="hljs-comment">// 开始初始化数据</span><br>        <span class="hljs-built_in">this</span>.doInit(type);<br>        log.info(<span class="hljs-string">&quot;[ES 数据初始化] -------------------- 数据初始化完成 --------------------&quot;</span>);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok().body(<span class="hljs-string">&quot;init success&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doInit</span><span class="hljs-params">(String type)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">do</span> &#123;<br>            List&lt;Object&gt; list = handleRemoteDataList(current++, type);<br>            <span class="hljs-keyword">if</span> (list == <span class="hljs-literal">null</span> || list.isEmpty()) &#123;<br>                log.info(<span class="hljs-string">&quot;[ES 数据初始化] 数据初始化完成.&quot;</span>);<br>                <span class="hljs-keyword">return</span>;<br>            &#125;<br>            elasticsearchService.save(list);<br>        &#125; <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>);<br><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取并处理远程数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> List&lt;Object&gt; <span class="hljs-title function_">handleRemoteDataList</span><span class="hljs-params">(Integer current, String type)</span> &#123;<br>        <span class="hljs-type">EsDataInitStrategy</span> <span class="hljs-variable">strategy</span> <span class="hljs-operator">=</span> DATA_HANDLER_STRATEGY_MAP.get(type);<br>        <span class="hljs-keyword">if</span> (strategy == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BizException</span>(<span class="hljs-string">&quot;初始化参数类型错误&quot;</span>);<br>        &#125;<br>        R&lt;List&lt;Object&gt;&gt; ret = strategy.getFunction().apply(<span class="hljs-keyword">new</span> <span class="hljs-title class_">QueryObject</span>(current, BATCH_COUNT));<br>        log.info(<span class="hljs-string">&quot;[ES 数据初始化] 初始化开始，查询&#123;&#125;数据 data=&#123;&#125;&quot;</span>, type, JSON.toJSONString(ret));<br>        List&lt;Object&gt; list = ret.checkAndGet();<br>        <span class="hljs-keyword">if</span> (list == <span class="hljs-literal">null</span> || list.isEmpty()) &#123;<br>            <span class="hljs-keyword">return</span> list;<br>        &#125;<br>        List&lt;Object&gt; dataList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(list.size());<br>        <span class="hljs-keyword">try</span> &#123;<br>            Class&lt;?&gt; clazz = strategy.getClazz();<br>            <span class="hljs-keyword">for</span> (Object dto : list) &#123;<br>                <span class="hljs-type">Object</span> <span class="hljs-variable">es</span> <span class="hljs-operator">=</span> clazz.getDeclaredConstructor().newInstance();<br>                BeanUtils.copyProperties(es, dto);<br>                dataList.add(es);<br>            &#125;<br>            <span class="hljs-keyword">return</span> dataList;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="食用教程"><a href="#食用教程" class="headerlink" title="食用教程"></a>食用教程</h2><p>初始化用户数据</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">curl --request GET \<br>  --url http://localhost:9000/search/init/hg345f67gfdh5yth34g56/user<br></code></pre></td></tr></table></figure>
+
+<p>初始化文章数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">curl --request GET \<br>  --url http://localhost:9000/search/init/hg345f67gfdh5yth34g56/article<br></code></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/11/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%EF%BC%88%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/">多线程并发执行任务（自定义线程池）</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="sx-code/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.18.5';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function loadBeaudar() {
+    const els = document.querySelectorAll("#comments #beaudar");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.log(error);
+      }
+      var script = document.createElement('script');
+      script.src = 'https://beaudar.lipk.org/client.js';
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+      loadBeaudar();
+  });
+</script>
+
+
+
+
+<!-- inject -->
+
+  
+    <script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+  
+
+
+  </div>
+</body>
+</html>
