@@ -5,7 +5,7 @@
   <meta name="generator" content="Hexo 6.3.0">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.18.5">
   <meta charset="utf-8">
-  <meta name="robots" content="none">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
@@ -20,17 +20,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>swcode</title>
+  <title>多线程并发执行任务（自定义线程池） - swcode</title>
 
   
-    <meta name="description" content="记录我的学习过程">
-<meta property="og:type" content="website">
-<meta property="og:title" content="swcode">
-<meta property="og:url" content="http://example.com/404.html">
+    <meta name="description" content="配置线程池创建线程池的方式： 1、使用 Executors 创建，不推荐，  默认创建的工作队列，使用的是 LinkedBlockingDeque 队列，且默认容量为 Integer 的最大值，工作队列的容量过大，会导致核心线程工作过载，对垒中任务数过多，且非核心线程无法参与处理，最终导致内存溢出 2、直接new ThreadPoolExecutor 对象，推荐 @Configurationpub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程并发执行任务（自定义线程池）">
+<meta property="og:url" content="http://example.com/2023/11/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%EF%BC%88%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/index.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="记录我的学习过程">
+<meta property="og:description" content="配置线程池创建线程池的方式： 1、使用 Executors 创建，不推荐，  默认创建的工作队列，使用的是 LinkedBlockingDeque 队列，且默认容量为 Integer 的最大值，工作队列的容量过大，会导致核心线程工作过载，对垒中任务数过多，且非核心线程无法参与处理，最终导致内存溢出 2、直接new ThreadPoolExecutor 对象，推荐 @Configurationpub">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-05T04:15:32.000Z">
+<meta property="article:modified_time" content="2023-11-05T04:19:45.949Z">
 <meta property="article:author" content="swcode">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
   
   
@@ -70,50 +75,78 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout='404'>
+    <aside class='l_left' layout='post'>
     
 
   
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar.jpeg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">swcode</div><div class="sub normal cap">记录我的学习过程</div><div class="sub hover cap" style="opacity:0"> 不要点那里啊😠</div></a></div>
 
-<nav class="menu dis-select"><a class="nav-item" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
+<nav class="menu dis-select"><a class="nav-item active" href="/">博客</a><a class="nav-item" href="/wiki/">专栏</a><a class="nav-item" href="/about/">关于</a></nav>
 </header>
 
 
 <div class="widgets">
-<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/11/05/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1%EF%BC%88%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89/"><span class="title">多线程并发执行任务（自定义线程池）</span></a><a class="item title" href="/2023/02/18/Mybatis-Plus%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E4%BB%A3%E7%A0%81/"><span class="title">Mybatis-Plus自动生成代码</span></a><a class="item title" href="/2022/11/14/Redis%E5%AE%9E%E7%8E%B0%E9%99%84%E8%BF%91%E5%BA%97%E9%93%BA%E5%8A%9F%E8%83%BD/"><span class="title">Redis实现附近店铺功能</span></a><a class="item title" href="/2022/11/08/%E4%BD%BF%E7%94%A8Kotlin%E5%8D%8F%E7%A8%8B%E9%85%8D%E5%90%88Retrofit%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82/"><span class="title">安卓开发-使用Kotlin协程配合Retrofit发送请求</span></a><a class="item title" href="/2022/11/16/Redis%E5%AE%89%E8%A3%85%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/"><span class="title">Redis安装系列教程</span></a></div></widget>
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">多线程并发执行任务（自定义线程池）</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">配置线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="toc-text">多线程执行任务</span></a></li></ol></div></div></widget>
+
+
 
 
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="/about/#comments" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
 
       
-<article class='md-text error-page'>
-  <h1><img id='error' src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/404/1c830bfcd517d.svg' alt='404'></h1>
-  <p class='what'>
-    <strong>
-      很抱歉，您访问的页面不存在
-    </strong>
-  </p>
-  <p class='why'>
-    可能是输入地址有误或该地址已被删除
-  </p>
-  <br><br>
-  <a class='button' id='back' href="/">返回主页</a>
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-11-05T04:15:32.000Z">2023-11-05</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>多线程并发执行任务（自定义线程池）</span></h1>
+<h2 id="配置线程池"><a href="#配置线程池" class="headerlink" title="配置线程池"></a>配置线程池</h2><p>创建线程池的方式：</p>
+<p>1、使用 Executors 创建，不推荐，  默认创建的工作队列，使用的是 LinkedBlockingDeque 队列，且默认容量为 Integer 的最大值，工作队列的容量过大，会导致核心线程工作过载，对垒中任务数过多，且非核心线程无法参与处理，最终导致内存溢出</p>
+<p>2、直接new ThreadPoolExecutor 对象，推荐</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppConfig</span> &#123;<br><br> <span class="hljs-meta">@Bean</span><br> <span class="hljs-keyword">public</span> ThreadPoolExecutor <span class="hljs-title function_">bizThreadPoolExecutor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-number">10</span>, TimeUnit.SECONDS,<br>                <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedBlockingDeque</span>&lt;&gt;(<span class="hljs-number">100</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ThreadPoolExecutor</span><span class="hljs-params">(<span class="hljs-type">int</span> corePoolSize,</span><br><span class="hljs-params">                          <span class="hljs-type">int</span> maximumPoolSize,</span><br><span class="hljs-params">                          <span class="hljs-type">long</span> keepAliveTime,</span><br><span class="hljs-params">                          TimeUnit unit,</span><br><span class="hljs-params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="hljs-params">                          ThreadFactory threadFactory,</span><br><span class="hljs-params">                          RejectedExecutionHandler handler)</span> &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>corePoolSize</strong>:指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到workQueue任务队列中去；</p>
+<p><strong>maximumPoolSize</strong>:指定了线程池中的最大线程数量，这个参数会根据你使用的workQueue任务队列的类型，决定线程池会开辟的最大线程数量；</p>
+<p><strong>keepAliveTime</strong>:当线程池中空闲线程数量超过corePoolSize时，多余的线程会在多长时间内被销毁；</p>
+<p><strong>unit</strong>:keepAliveTime的单位</p>
+<p><strong>workQueue</strong>:任务队列，被添加到线程池中，但尚未被执行的任务；它一般分为直接提交队列、有界任务队列、无界任务队列、优先任务队列几种；</p>
+<p><strong>threadFactory</strong>:线程工厂，用于创建线程，一般用默认即可；</p>
+<p><strong>handler</strong>:拒绝策略；当任务太多来不及处理时，如何拒绝任务；</p>
+<h2 id="多线程执行任务"><a href="#多线程执行任务" class="headerlink" title="多线程执行任务"></a>多线程执行任务</h2><p>使用一个 Mybatis Plus 项目举例：使用多线程发起查询请求，获取当前区域的子区域，例如广东省的子区域广州、深圳等</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DestinationServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;DestinationMapper, Destination&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">DestinationService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadPoolExecutor bizThreadPoolExecutor;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DestinationServiceImpl</span><span class="hljs-params">(ThreadPoolExecutor bizThreadPoolExecutor)</span> &#123;<br>        <span class="hljs-built_in">this</span>.bizThreadPoolExecutor = bizThreadPoolExecutor;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 使用代码循环方式，有N+1问题</span><br><span class="hljs-comment">     * 使用多线程，同时发查询请求</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> rid 区域ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 热门目的地</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> List&lt;Destination&gt; <span class="hljs-title function_">findHostListThread</span><span class="hljs-params">(Long rid)</span> &#123;<br>        List&lt;Destination&gt; destinations = <span class="hljs-literal">null</span>;<br>        LambdaQueryWrapper&lt;Destination&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>        destinations = list(wrapper.eq(Destination::getParentId, <span class="hljs-number">1</span>));<br>        <span class="hljs-comment">// 如何等待所有异步线程结束，主线程再执行</span><br>        <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(destinations.size());<br>        <span class="hljs-keyword">for</span> (Destination destination : destinations) &#123;<br>            <span class="hljs-comment">// submit有返回值，且支持Callable，execute没有返回值，只支持Runnable</span><br>            bizThreadPoolExecutor.execute(() -&gt; &#123;<br>                List&lt;Destination&gt; children = list(Wrappers.&lt;Destination&gt;lambdaQuery().eq(Destination::getParentId, destination.getId()).last(<span class="hljs-string">&quot;limit 10&quot;</span>));<br>                destination.setChildren(children);<br>                <span class="hljs-comment">// 倒计时数量-1</span><br>                latch.countDown();<br>            &#125;);<br>        &#125;<br>        <span class="hljs-comment">// 返回结果前阻塞等待</span><br>        <span class="hljs-keyword">try</span> &#123;<br>            latch.await(<span class="hljs-number">10</span>, TimeUnit.MINUTES);<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> destinations;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
 </article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/23/Seata%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">Seata实现分布式事务</a></div></section></div>
+
+
+
+
 
 
   <div class='related-wrap md-text reveal' id="comments">
     <section class='header cmt-title cap theme'>
-      
+      快来参与讨论吧
     </section>
     <section class='body cmt-body beaudar'>
       
