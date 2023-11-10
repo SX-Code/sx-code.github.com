@@ -23,19 +23,19 @@
   <title>AdminPro JS版搭建流程：项目搭建 - swcode</title>
 
   
-    <meta name="description" content="本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。 安装vue&#x2F;cli-init sudo npm install -g @vue&#x2F;cli  运行图形界面 vue ui    在此创建项目，给项目起个名字   预设选择手动，当然如果你之前配置过，也可以直接使用之前保存的模板  勾选的项目，根据自己喜好来：  Babel Router Vue Linter&#x2F;">
+    <meta name="description" content="Webpack本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。 安装vue&#x2F;cli-init sudo npm install -g @vue&#x2F;cli  运行图形界面 vue ui    在此创建项目，给项目起个名字   预设选择手动，当然如果你之前配置过，也可以直接使用之前保存的模板  勾选的项目，根据自己喜好来：  Babel Router Vue Linte">
 <meta property="og:type" content="website">
 <meta property="og:title" content="项目搭建">
 <meta property="og:url" content="http://example.com/wiki/adminpro/02_project_prepare/01_%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA.html">
 <meta property="og:site_name" content="swcode">
-<meta property="og:description" content="本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。 安装vue&#x2F;cli-init sudo npm install -g @vue&#x2F;cli  运行图形界面 vue ui    在此创建项目，给项目起个名字   预设选择手动，当然如果你之前配置过，也可以直接使用之前保存的模板  勾选的项目，根据自己喜好来：  Babel Router Vue Linter&#x2F;">
+<meta property="og:description" content="Webpack本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。 安装vue&#x2F;cli-init sudo npm install -g @vue&#x2F;cli  运行图形界面 vue ui    在此创建项目，给项目起个名字   预设选择手动，当然如果你之前配置过，也可以直接使用之前保存的模板  勾选的项目，根据自己喜好来：  Babel Router Vue Linte">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/admin_01.png">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/admin_02.png">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/admin_03.png">
 <meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/admin_04.png">
 <meta property="article:published_time" content="2023-03-06T09:39:46.000Z">
-<meta property="article:modified_time" content="2023-09-23T14:19:32.494Z">
+<meta property="article:modified_time" content="2023-11-10T01:49:48.731Z">
 <meta property="article:author" content="swcode">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/admin_01.png">
@@ -94,7 +94,7 @@
 
 
 
-<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目准备</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/adminpro/02_project_prepare/01_%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA.html"><span class="toc-text">项目搭建</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/02_%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85.html"><span class="toc-text">依赖安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/03_%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.html"><span class="toc-text">资源文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/04_%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.html"><span class="toc-text">项目设置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/05_%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6.html"><span class="toc-text">常量字符</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/06_%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95.html"><span class="toc-text">工具方法</span></a></div></div><div class="widget-header cap dis-select"><span class="name">高级修改</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/01_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86.html"><span class="toc-text">状态管理</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/02_VUE%E9%A1%B5%E9%9D%A2.html"><span class="toc-text">VUE页面</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/03_%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE.html"><span class="toc-text">路由配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/04_%E9%A1%B9%E7%9B%AE%E5%B8%83%E5%B1%80.html"><span class="toc-text">项目布局</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/05_%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE.html"><span class="toc-text">启动项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/06_%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.html"><span class="toc-text">网络配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/07_%E8%AF%B7%E6%B1%82API.html"><span class="toc-text">请求API</span></a></div></div></widget>
+<widget class="widget-wrapper toc multi" id="data-toc"><div class="widget-header cap dis-select"><span class="name">项目准备</span></div><div class="widget-body fs14"><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/adminpro/02_project_prepare/01_%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA.html"><span class="toc-text">项目搭建</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Webpack"><span class="toc-text">Webpack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite"><span class="toc-text">Vite</span></a></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/02_%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85.html"><span class="toc-text">依赖安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/03_%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.html"><span class="toc-text">资源文件</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/04_%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.html"><span class="toc-text">项目设置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/05_%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6.html"><span class="toc-text">常量字符</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/02_project_prepare/06_%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95.html"><span class="toc-text">工具方法</span></a></div></div><div class="widget-header cap dis-select"><span class="name">高级修改</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/01_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86.html"><span class="toc-text">状态管理</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/02_VUE%E9%A1%B5%E9%9D%A2.html"><span class="toc-text">VUE页面</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/03_%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE.html"><span class="toc-text">路由配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/04_%E9%A1%B9%E7%9B%AE%E5%B8%83%E5%B1%80.html"><span class="toc-text">项目布局</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/05_%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE.html"><span class="toc-text">启动项目</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/06_%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.html"><span class="toc-text">网络配置</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/adminpro/03_advanced_operation/07_%E8%AF%B7%E6%B1%82API.html"><span class="toc-text">请求API</span></a></div></div></widget>
 
 
 
@@ -110,11 +110,11 @@
 
   
   
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/adminpro/01_introduce/index.html">AdminPro JS版搭建流程</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-09-23T14:19:32.494Z">2023-09-23</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">专栏</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/adminpro/01_introduce/index.html">AdminPro JS版搭建流程</a></div><div id="post-meta">更新于&nbsp;<time datetime="2023-11-10T01:49:48.731Z">2023-11-10</time></div></div>
 
   <article class='md-text content wiki'>
   <h1 class="article-title"><span>项目搭建</span></h1>
-  <p>本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。</p>
+  <h2 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h2><p>本次项目搭建使用Vue3提供的脚手架工具，使用UI方式搭建项目基础框架。</p>
 <p>安装vue&#x2F;cli-init</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo npm install -g @vue/cli<br></code></pre></td></tr></table></figure>
 
@@ -146,6 +146,9 @@
 <p>注意Linter+Prettier可能对格式要求较高，开发过程中可能会报错。请根据自己喜好选择是否使用。</p>
 <p>当然开发过程中可以使用命令一键调整格式。</p>
 </blockquote>
+<h2 id="Vite"><a href="#Vite" class="headerlink" title="Vite"></a>Vite</h2><p>vite方式使用下面命令初始化项目</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">npm init vite@latest<br></code></pre></td></tr></table></figure>
+
 
   
 
