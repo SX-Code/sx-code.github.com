@@ -1,6 +1,9 @@
 :root {
     --code-autor: '© swcode';
 }
+.tag-plugin.banner{
+    margin-top: 0px !important;
+}
 pre > .hljs {
 	border-radius: 0px !important;
 	padding: .7rem 1rem !important
