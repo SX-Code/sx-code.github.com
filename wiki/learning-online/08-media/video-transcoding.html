@@ -1,0 +1,639 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0" theme-name="Stellar" theme-version="1.28.0">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  
+  <title>学成在线：视频转码服务 - swcode</title>
+
+  
+    <meta name="description" content="AVI 是一种比较老的视频格式，现代浏览器通常不直接支持 AVI 格式，因此在网页上播放 AVI 视频时，您需要将视频转换为一种更常见的格式（如 MP4），或使用一些第三方的 JavaScript 播放器库。 下面是整个转码服务的运行过程     FFmpeg处理视频使用FFmpeg进行视频转码操作 分布式任务调度XXL-JOB是一个分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、">
+<meta property="og:type" content="website">
+<meta property="og:title" content="视频转码服务">
+<meta property="og:url" content="http://example.com/wiki/learning-online/08-media/video-transcoding.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="AVI 是一种比较老的视频格式，现代浏览器通常不直接支持 AVI 格式，因此在网页上播放 AVI 视频时，您需要将视频转换为一种更常见的格式（如 MP4），或使用一些第三方的 JavaScript 播放器库。 下面是整个转码服务的运行过程     FFmpeg处理视频使用FFmpeg进行视频转码操作 分布式任务调度XXL-JOB是一个分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online15.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online16.png">
+<meta property="article:published_time" content="2024-04-11T02:48:14.126Z">
+<meta property="article:modified_time" content="2023-09-26T09:32:28.029Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online17.png">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.28.0">
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+</head>
+<body>
+
+
+
+<div class="l_body s:aa content tech" id="start" layout="wiki" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/logo.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/wiki/learning-online/01-introduce/index.html"><div class="main" ff="title">学成在线</div><div class="sub cap">学成在线项目食用教程</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/wiki/learning-online/" placeholder="在学成在线中搜索..."></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><span>博客</span></a><a class="nav-item active" title="专栏" href="/wiki/" style="color:#3DC550"><span>专栏</span></a><a class="nav-item" title="关于" href="/about/" style="color:#FA6400"><span>关于</span></a></nav>
+</div>
+<div class="widgets">
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">项目概述</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/01-introduce/index.html#start"><span class="toc-text">笔记简介</span></a></div><div class="widget-header dis-select"><span class="name">项目框架</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/03-project-init/deploy-web.html"><span class="toc-text">导入前端项目</span></a><a class="link" href="/wiki/learning-online/03-project-init/create-server.html"><span class="toc-text">创建后端项目</span></a></div><div class="widget-header dis-select"><span class="name">项目工具</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/04-project-tools/code-generator.html"><span class="toc-text">代码生成工具</span></a><a class="link" href="/wiki/learning-online/04-project-tools/base.html"><span class="toc-text">完善Base工程</span></a><a class="link" href="/wiki/learning-online/04-project-tools/nacos.html"><span class="toc-text">注册配置中心</span></a><a class="link" href="/wiki/learning-online/04-project-tools/gateway.html"><span class="toc-text">增加网关工程</span></a></div><div class="widget-header dis-select"><span class="name">系统信息工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/05-system/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/05-system/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/05-system/select.html"><span class="toc-text">查询系统字典</span></a></div><div class="widget-header dis-select"><span class="name">内容管理工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/06-content/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/06-content/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/06-content/category.html"><span class="toc-text">课程类别服务</span></a><a class="link" href="/wiki/learning-online/06-content/market.html"><span class="toc-text">课程营销服务</span></a><a class="link" href="/wiki/learning-online/06-content/course.html"><span class="toc-text">课程信息服务</span></a><a class="link" href="/wiki/learning-online/06-content/plan.html"><span class="toc-text">课程计划服务</span></a><a class="link" href="/wiki/learning-online/06-content/publish.html"><span class="toc-text">课程发布服务</span></a></div><div class="widget-header dis-select"><span class="name">课程搜索服务</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/07-search/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/07-search/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/07-search/search.html"><span class="toc-text">课程搜索服务</span></a><a class="link" href="/wiki/learning-online/07-search/index.html"><span class="toc-text">课程索引服务</span></a></div><div class="widget-header dis-select"><span class="name">媒资管理工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/08-media/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/08-media/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/08-media/minio.html"><span class="toc-text">分布式文件系统</span></a><a class="link" href="/wiki/learning-online/08-media/file.html"><span class="toc-text">媒资信息服务</span></a><a class="link" href="/wiki/learning-online/08-media/picture.html"><span class="toc-text">文件上传服务</span></a><a class="link" href="/wiki/learning-online/08-media/video-upload.html"><span class="toc-text">视频上传服务</span></a><a class="link active" href="/wiki/learning-online/08-media/video-transcoding.html"><span class="toc-text">视频转码服务</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a></div><div class="widget-header dis-select"><span class="name">验证码工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/09-checkcode/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/09-checkcode/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/09-checkcode/project.html"><span class="toc-text">工程代码</span></a></div><div class="widget-header dis-select"><span class="name">认证授权工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/10-auth/bizpro.html"><span class="toc-text">业务流程</span></a><a class="link" href="/wiki/learning-online/10-auth/springsecurity.html"><span class="toc-text">Spring Security</span></a><a class="link" href="/wiki/learning-online/10-auth/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/10-auth/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/10-auth/unifyauth.html"><span class="toc-text">统一认证</span></a><a class="link" href="/wiki/learning-online/10-auth/gatewayauth.html"><span class="toc-text">网关认证</span></a><a class="link" href="/wiki/learning-online/10-auth/authorize.html"><span class="toc-text">微服务授权</span></a></div><div class="widget-header dis-select"><span class="name">学习中心工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/11-learning/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/11-learning/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/11-learning/coursetable.html"><span class="toc-text">课程表服务</span></a><a class="link" href="/wiki/learning-online/11-learning/learning.html"><span class="toc-text">获取章节视频</span></a></div><div class="widget-header dis-select"><span class="name">订单管理工程</span></div><div class="widget-body fs14"><a class="link" href="/wiki/learning-online/12-orders/nacos.html"><span class="toc-text">Nacos配置</span></a><a class="link" href="/wiki/learning-online/12-orders/init.html"><span class="toc-text">初始化工程</span></a><a class="link" href="/wiki/learning-online/12-orders/alipay.html"><span class="toc-text">集成阿里支付</span></a><a class="link" href="/wiki/learning-online/12-orders/createorder.html"><span class="toc-text">生成支付二维码</span></a><a class="link" href="/wiki/learning-online/12-orders/payreq.html"><span class="toc-text">扫码支付服务</span></a><a class="link" href="/wiki/learning-online/12-orders/queryresult.html"><span class="toc-text">查询支付结果</span></a><a class="link" href="/wiki/learning-online/12-orders/notifyresult.html"><span class="toc-text">查询异步通知</span></a></div></widget>
+
+<widget class="widget-wrapper post-card"><div class="widget-header dis-select"><span class="name">更多：项目</span></div><div class="widget-body"><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">Naive UI Admin</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/pyqgis-sd/01_intr/index.html"><span class="title">PyQGIS二次开发指南</span><span class="excerpt">当你的数据处理使用的是Python语言，而你的导师又让你开发界面，那么PyQGIS二次开发指南是你必读的圣经。QGIS支持Python语言进行二次开发，你将学会如何使用Qt Designer进行界面设计、加载栅格数据、加载矢量数据、软件打包、安装包制作等。</span></a><a class="item wiki" href="/wiki/trip-cloud/01_introduce/index.html"><span class="title">旅游项目</span><span class="excerpt">该项目基于Spring Cloud微服务技术栈进行设计，使用JWT+ThreadLocal完成用户登陆，使用MongoDB NoSQL实现文章评论，使用Elasticsearch做内容搜索，使用Redis做统计数据的存储并完成数据同步。</span></a><a class="item wiki" href="/wiki/ebook/index.html"><span class="title">电子书城</span><span class="excerpt">EBook - 电子书城是一个集成豆瓣读书和豆瓣阅读商城和电子书阅读器的Flutter构建的手机APP。你可以在商城中浏览书籍，查看书籍评分、字数、价格、书评等相关信息。登录豆瓣阅读之后，你可以将电子书加入书架，查看书架、阅读电子书等操作。总之，你的豆瓣阅读不一定是豆瓣阅读，也可能是电子书城。</span></a><a class="item wiki" href="/wiki/oneread/index.html"><span class="title">ONE阅读</span><span class="excerpt">OneRead - ONE阅读,是一个使用Flutter构建的集书籍、漫画、听书和视频资源为一体的手机APP。使用自定义源来解析对应的资源，以舒适的UI来展示数据。ONE阅读，不只阅读。</span></a></div></widget>
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/wiki/oneread/index.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目介绍</span></a><a class="item title" href="/wiki/oneread/source_rule.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>源规则</span></a><a class="item title" href="/wiki/oneread/preview.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目预览</span></a><a class="item title" href="/wiki/flutter-dev/mac/icon.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>修改应用图标</span></a><a class="item title" href="/wiki/flutter-dev/windows/title.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>定制标题栏</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="https://github.com/SX-Code/about/#comments" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki">文档</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/learning-online/01-introduce/index.html">学成在线</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2023-09-26T09:32:28.029Z">2023-09-26</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>视频转码服务</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>AVI 是一种比较老的视频格式，现代浏览器通常不直接支持 AVI 格式，因此在网页上播放 AVI 视频时，您需要将视频转换为一种更常见的格式（如 MP4），或使用一些第三方的 JavaScript 播放器库。</p>
+<p>下面是整个转码服务的运行过程</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online17.png" data-fancybox="true"/></div></div>
+
+
+
+<h2 id="FFmpeg处理视频"><a href="#FFmpeg处理视频" class="headerlink" title="FFmpeg处理视频"></a>FFmpeg处理视频</h2><p>使用<a target="_blank" rel="noopener" href="https://ffmpeg.org/">FFmpeg</a>进行视频转码操作</p>
+<h2 id="分布式任务调度"><a href="#分布式任务调度" class="headerlink" title="分布式任务调度"></a>分布式任务调度</h2><p><a target="_blank" rel="noopener" href="https://www.xuxueli.com/xxl-job/">XXL-JOB</a>是一个分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用。</p>
+<blockquote>
+<p>如何保证任务不重复执行？</p>
+<p>1）调度中心按分片广播的方式去下发任务<br>2）执行器收到作北分片广播的参数：分片总教和分片序号，计管任务id除以分片总数得到一个余数．如果余数等于分片序号这时就去执行这个任务，这里保证了不同的执行器执行不同的任务。<br>3）配置调度过期策路为〝忽略”，避免同一个执行器多次重复执行同—个任务<br>4）配置任务阻塞处理策略为〝丢弃后续调度〞，注意：丢弃也没事下一次调度就又可以执行了<br>5）另外还要保证任务处理的幂等性，执行过的任务可以打一个状态标记已完成，下次再调度执行该任务判断该任务已完成就不再执行。</p>
+</blockquote>
+<blockquote>
+<p>任务幂等性如何保证？</p>
+<p>它描述了一次和多次请求某一个资源对于资源本身应该具有同样的结果。</p>
+<p>幂等性是为了解決重复提交问题，比如：恶意刷单，重复支付等。</p>
+<p>解决幂等性常用的方案：</p>
+<p>1）数据库约束，比如：唯一素引，主键。同一个主键不可能两次都插入成功。<br>2） 乐观锁，常用于数据库，更新数据时根据乐观锁状态去更新。<br>3）唯一序列号，请求前生成唯一的序列号，携带序列号去请求，执行时在redis记录该序列号表示以该序列号的请求执行过了，如果相同的序列号再次来执行说明是重复执行。</p>
+<p>这里我们在数据库视频处理表中添加处理状态字段，视频处理完成更新状态为完成，执行视频处理前判断</p>
+</blockquote>
+<h3 id="安装XXL-JOB"><a href="#安装XXL-JOB" class="headerlink" title="安装XXL-JOB"></a>安装XXL-JOB</h3><p>使用Docker部署，使用下面命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker pull xuxueli/xxl-job-admin:2.3.0<br></code></pre></td></tr></table></figure>
+
+<p>使用如下命令启动：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker run -e PARAMS=<span class="hljs-string">&quot;--spring.datasource.url=jdbc:mysql://ip:3306/xxl_job?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true \</span><br><span class="hljs-string">        --spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver \</span><br><span class="hljs-string">        --spring.datasource.username=root \</span><br><span class="hljs-string">        --spring.datasource.password=root&quot;</span> \<br>        -p 8080:8080 \<br>        -v /tmp:/data/applogs \<br>        --name xxl-job-admin  \<br>        -d xuxueli/xxl-job-admin:2.3.0<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意修改数据源，其中url中的IP设置为服务器IP地址，如果是本机，请使用本机地址不要使用<code>localhost</code>或者<code>127.0.0.1</code>，同时记得开启mysql的远程访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mysql">use mysql;<br>update user set host=&#x27;%&#x27; where user=&#x27;root&#x27;;<br>flush privileges<br>grant all privileges on *.* TO &#x27;root&#x27;@&#x27;%&#x27; with grant option;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/">http://localhost:8080/xxl-job-admin/</a></p>
+<h3 id="创建执行器"><a href="#创建执行器" class="headerlink" title="创建执行器"></a>创建执行器</h3><p>进入后台管理，点击右侧<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobgroup">执行器管理</a>，新建一个执行器</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online15.png" data-fancybox="true"/></div></div>
+
+<h3 id="注册执行器"><a href="#注册执行器" class="headerlink" title="注册执行器"></a>注册执行器</h3><p>进入Nacos后台，找到<code>media-service-dev.yaml</code>，添加xxl-Job的配置：</p>
+<figure class="highlight yaml"><figcaption><span>media-service-dev.yaml</span></figcaption><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># xxl-job配置</span><br><span class="hljs-attr">xxl:</span><br>  <span class="hljs-attr">job:</span><br>    <span class="hljs-attr">admin:</span><br>      <span class="hljs-comment"># 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行&quot;执行器心跳注册&quot;和&quot;任务结果回调&quot;；为空则关闭自动注册；</span><br>      <span class="hljs-attr">addresses:</span> <span class="hljs-string">http://127.0.0.1:8080/xxl-job-admin</span><br>    <span class="hljs-attr">executor:</span><br>      <span class="hljs-comment"># 执行器注册 [选填]：优先使用该配置作为注册地址，为空时使用内嵌服务 ”IP:PORT“ 作为注册地址。从而更灵活的支持容器类型执行器动态IP和动态映射端口问题。</span><br>      <span class="hljs-attr">address:</span><br>      <span class="hljs-comment"># 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册</span><br>      <span class="hljs-attr">appname:</span> <span class="hljs-string">media-process-executor</span><br>      <span class="hljs-comment"># 执行器IP [选填]：默认为空表示自动获取IP，多网卡时可手动设置指定IP，该IP不会绑定Host仅作为通讯实用；地址信息用于 &quot;执行器注册&quot; 和 &quot;调度中心请求并触发任务&quot;；</span><br>      <span class="hljs-attr">ip:</span><br>      <span class="hljs-comment"># 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；</span><br>      <span class="hljs-attr">port:</span> <span class="hljs-number">9999</span><br>      <span class="hljs-comment"># 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；</span><br>      <span class="hljs-attr">logpath:</span> <span class="hljs-string">/Users/swcode/data/applogs/xxl-job/jobhandler</span><br>      <span class="hljs-comment"># 执行器日志文件保存天数 [选填] ： 过期日志自动清理, 限制值大于等于3时生效; 否则, 如-1, 关闭自动清理功能；</span><br>      <span class="hljs-attr">logretentiondays:</span> <span class="hljs-number">30</span><br>    <span class="hljs-comment"># 执行器通讯TOKEN [选填]：非空时启用；</span><br>    <span class="hljs-attr">accessToken:</span><br></code></pre></td></tr></table></figure>
+
+<p>找到<code>learning-online-media-service</code>模块，在<code>config</code>包下创建<code>XxlJonConfig</code>配置类</p>
+<figure class="highlight java"><figcaption><span>XxlJonConfig</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">XxlJonConfig</span> &#123;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.admin.addresses&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String adminAddresses;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.appname&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String appname;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.address&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String address;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.ip&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String ip;<br><br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.port&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> port;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.accessToken&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String accessToken;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.logpath&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String logPath;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;xxl.job.executor.logretentiondays&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> logRetentionDays;<br><br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> XxlJobSpringExecutor <span class="hljs-title function_">xxlJobExecutor</span><span class="hljs-params">()</span> &#123;<br>        log.info(<span class="hljs-string">&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; xxl-job config init.&quot;</span>);<br>        <span class="hljs-type">XxlJobSpringExecutor</span> <span class="hljs-variable">xxlJobSpringExecutor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">XxlJobSpringExecutor</span>();<br>        xxlJobSpringExecutor.setAdminAddresses(adminAddresses);<br>        xxlJobSpringExecutor.setAppname(appname);<br>        xxlJobSpringExecutor.setAddress(address);<br>        xxlJobSpringExecutor.setIp(ip);<br>        xxlJobSpringExecutor.setPort(port);<br>        xxlJobSpringExecutor.setAccessToken(accessToken);<br>        xxlJobSpringExecutor.setLogPath(logPath);<br>        xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);<br>        <span class="hljs-keyword">return</span> xxlJobSpringExecutor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>启动<code>learning-online-media</code>服务，在<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobgroup">执行器管理</a>页面可以看到自动注册了一个服务。</p>
+<h3 id="添加任务管理"><a href="#添加任务管理" class="headerlink" title="添加任务管理"></a>添加任务管理</h3><p>进入后台管理，点击右侧<a target="_blank" rel="noopener" href="http://localhost:8080/xxl-job-admin/jobinfo">任务管理</a>，新建一个任务</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/learning-online/learning-online16.png" data-fancybox="true"/></div></div>
+
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>买现分布式锁的方案有很多，常用的如下：<br>1、基于数据库实现分布锁<br>利用数据库主键唯一性的特点，或利用数据库唯一索号l、行级锁的特点，比如：多个线程同时向数据库插入主键相同的同一条记录，谁插入成功谁就获取锁，多个线程同时去更新相同的记录，谁更新成功谁就抢到锁。</p>
+<p>2、基于redis实现锁<br>redis提供了分布式锁的实现方案，比如：SETNX、set nx、redisson等。<br>拿SETNX举例说明，SETNX命令的工作过程是去set一个不存在的key，多个线程去设置同一个key只会有一个线程设置成功，设置成功的的线程拿到锁。</p>
+<p>3、使用zookeeper实现<br>zookeeper是一个分布式协调服务，主要解决分布式程序之间的同步的问题。zookeeper的结构类似的文件目录，多线程向zookeeper创建一个子目录(节点)只会有一个创建成功，利用此特点可以实现分布式锁，谁创建该结点成功谁就获得锁。</p>
+<p>本次我们使用数据库实现分布锁，后边的模块会使用其它方法到时再洋细介绍，</p>
+<p><strong>使用乐观锁机制实现</strong></p>
+<blockquote>
+<p>当某次调用者执行成功时，status被置为4，其他执行都会失败；这个执行成功的就拿到了”锁”。</p>
+</blockquote>
+<figure class="highlight java"><figcaption><span>MediaProcessMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MediaProcessMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;MediaProcess&gt; &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 开启一个任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 任务id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> int 更新成功条数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Update(&quot;update media_process set status = &#x27;4&#x27; where (status=&#x27;1&#x27; or status=&#x27;3&#x27;) and fail_count&lt;3 and id=#&#123;id&#125;&quot;)</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">startTask</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> Long id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Service包一层</p>
+<figure class="highlight java"><figcaption><span>MediaProcessService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MediaProcessService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;MediaProcess&gt; &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 开启一个任务</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 任务id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true 开启任务成功，false开启任务失败</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">startTask</span><span class="hljs-params">(<span class="hljs-type">long</span> id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实现该方法</p>
+<figure class="highlight java"><figcaption><span>MediaProcessServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MediaProcessServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;MediaProcessMapper, MediaProcess&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MediaProcessService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 开启一个任务</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 任务id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> true 开启任务成功，false开启任务失败</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">startTask</span><span class="hljs-params">(<span class="hljs-type">long</span> id)</span> &#123;<br>        <span class="hljs-keyword">return</span> baseMapper.startTask(id) &gt; <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现添加任务"><a href="#实现添加任务" class="headerlink" title="实现添加任务"></a>实现添加任务</h2><p>在文件合并完成之后，将数据保存到<code>media_files</code>同时，判断视频文件是否为<code>.avi</code>，如果是需要进行转码操作，将其添加到任务表<code>media_process</code>。</p>
+<p>找到<code>MediaFilesServiceImpl</code>，修改<code>saveAfterStore</code>方法</p>
+<figure class="highlight java"><figcaption><span>MediaFilesServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> MediaFiles <span class="hljs-title function_">saveAfterStore</span><span class="hljs-params">(UploadFileParamDTO dto, Long companyId, String fileMd5, String bucket, String path)</span> &#123;<br>    <span class="hljs-comment">// 构造参数</span><br>    <span class="hljs-type">MediaFiles</span> <span class="hljs-variable">mediaFiles</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MediaFiles</span>();<br>    BeanUtils.copyProperties(dto, mediaFiles);<br>    mediaFiles.setId(fileMd5);<br>    mediaFiles.setCompanyId(companyId);<br>    mediaFiles.setBucket(bucket);<br>    mediaFiles.setFilePath(path);<br>    mediaFiles.setFileId(fileMd5);<br>    mediaFiles.setUrl(<span class="hljs-string">&quot;/&quot;</span> + bucket + <span class="hljs-string">&quot;/&quot;</span> + path);<br>    mediaFiles.setCreateDate(LocalDateTime.now());<br>    mediaFiles.setStatus(MediaFileStatusEnum.NORMAL.status());<br>    mediaFiles.setAuditStatus(<span class="hljs-string">&quot;002003&quot;</span>);<br>    <span class="hljs-comment">// 保存到媒资文件表</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">save</span> <span class="hljs-operator">=</span> save(mediaFiles);<br>    <span class="hljs-keyword">if</span> (!save) &#123;<br>        log.error(<span class="hljs-string">&quot;想数据库保存文件失败，bucket: &#123;&#125;，文件名: &#123;&#125;&quot;</span>, bucket, path);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-comment">// 记录待处理任务</span><br>    addWaitingTask(mediaFiles);<br>    <span class="hljs-keyword">return</span> mediaFiles;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 添加文件转码待处理任务</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> mediaFiles 文件信息</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addWaitingTask</span><span class="hljs-params">(MediaFiles mediaFiles)</span> &#123;<br>    <span class="hljs-comment">// 获取文件的mimeType, 如果是avi视频，写入待处理任务</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">filename</span> <span class="hljs-operator">=</span> mediaFiles.getFilename();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">suffix</span> <span class="hljs-operator">=</span> filename.substring(filename.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>));<br>    <span class="hljs-type">String</span> <span class="hljs-variable">mineType</span> <span class="hljs-operator">=</span> getMineType(suffix);<br>    <span class="hljs-keyword">if</span> (!mineType.equals(<span class="hljs-string">&quot;video/x-msvideo&quot;</span>)) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-type">MediaProcess</span> <span class="hljs-variable">mediaProcess</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MediaProcess</span>();<br>    BeanUtils.copyProperties(mediaProcess, mediaFiles);<br>    mediaProcess.setStatus(<span class="hljs-string">&quot;1&quot;</span>);<br>    mediaProcess.setCreateDate(LocalDateTime.now());<br>    mediaProcess.setFailCount(<span class="hljs-number">0</span>);<br>    mediaProcess.setUrl(<span class="hljs-literal">null</span>);<br>    mediaProcessService.save(mediaProcess);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="更新任务状态"><a href="#更新任务状态" class="headerlink" title="更新任务状态"></a>更新任务状态</h2><p>任务处理完成需要更新任务处理结果，任务执行成功更新视频的URL、及任务处理结果，将待处理任务记录删除，同时向历史任务表添加记录。</p>
+<p>创建<code>MediaProcessSaveService</code>接口添加方法</p>
+<figure class="highlight java"><figcaption><span>MediaProcessSaveService.java</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MediaProcessSaveService</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 保存任务结果</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> taskId   任务ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> status   任务状态</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fileId   文件id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> url      转码路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> errorMsg 错误信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveProcessFinishStatus</span><span class="hljs-params">(Long taskId, String status, String fileId, String url, String errorMsg)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建实现类<code>MediaProcessSaveServiceImpl</code>实现保存方法：</p>
+<figure class="highlight java"><figcaption><span>MediaProcessSaveServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MediaProcessSaveServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MediaProcessSaveService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaFilesService mediaFilesService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaProcessService mediaProcessService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaProcessHistoryService mediaProcessHistoryService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MediaProcessSaveServiceImpl</span><span class="hljs-params">(MediaFilesService mediaFilesService, MediaProcessService mediaProcessService,</span><br><span class="hljs-params">                                       MediaProcessHistoryService mediaProcessHistoryService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.mediaFilesService = mediaFilesService;<br>        <span class="hljs-built_in">this</span>.mediaProcessService = mediaProcessService;<br>        <span class="hljs-built_in">this</span>.mediaProcessHistoryService = mediaProcessHistoryService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 保存任务结果</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> taskId   任务ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> status   任务状态</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fileId   文件id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> url      转码路径</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> errorMsg 错误信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveProcessFinishStatus</span><span class="hljs-params">(Long taskId, String status, String fileId, String url, String errorMsg)</span> &#123;<br>        <span class="hljs-type">MediaProcess</span> <span class="hljs-variable">dbProcess</span> <span class="hljs-operator">=</span> mediaProcessService.getById(taskId);<br>        <span class="hljs-keyword">if</span> (dbProcess == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 任务执行失败</span><br>        <span class="hljs-keyword">if</span> (status.equals(ProcessStatus.PROCESS_FAIL.status())) &#123;<br>            <span class="hljs-comment">// 更新失败次数</span><br>            mediaProcessService.update(Wrappers.&lt;MediaProcess&gt;lambdaUpdate()<br>                    .eq(MediaProcess::getId, taskId)<br>                    .set(MediaProcess::getStatus, status)<br>                    .set(MediaProcess::getFailCount, dbProcess.getFailCount() + <span class="hljs-number">1</span>)<br>                    .set(MediaProcess::getErrormsg, errorMsg));<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 任务执行成功</span><br>        <span class="hljs-type">MediaFiles</span> <span class="hljs-variable">mediaFiles</span> <span class="hljs-operator">=</span> mediaFilesService.getById(fileId);<br>        <span class="hljs-keyword">if</span> (mediaFiles == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>        <span class="hljs-comment">// 更新media_file中的url</span><br>        mediaFilesService.update(Wrappers.&lt;MediaFiles&gt;lambdaUpdate().eq(MediaFiles::getId, fileId).set(MediaFiles::getUrl, url));<br>        <span class="hljs-comment">// 将MediaProcess记录插入到MediaProcessHistory中</span><br>        dbProcess.setStatus(status);<br>        dbProcess.setFinishDate(LocalDateTime.now());<br>        dbProcess.setUrl(url);<br>        <span class="hljs-type">MediaProcessHistory</span> <span class="hljs-variable">processHistory</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MediaProcessHistory</span>();<br>        BeanUtils.copyProperties(dbProcess, processHistory);<br>        mediaProcessHistoryService.save(processHistory);<br><br>        <span class="hljs-comment">// 删除MediaProcess记录</span><br>        mediaFilesService.removeById(taskId);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现获取任务"><a href="#实现获取任务" class="headerlink" title="实现获取任务"></a>实现获取任务</h2><p>从数据库中获取任务，根据分片数量和当前分片序号确定当前分片要处理的任务。</p>
+<p>找到<code>MediaProcessMapper</code>，添加查询任务方法：</p>
+<figure class="highlight java"><figcaption><span>MediaProcessMapper</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 查询当前分片的任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardTotal 分片总数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardIndex 当前分片序号</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> count      任务数量</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> List&lt;MediaProcess&gt;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Select(&quot;select * from media_process t where t.id % #&#123;shardTotal&#125; = #&#123;shardIndex&#125; and t.status &lt;&gt; 2 and t.fail_count &lt; 3 limit #&#123;count&#125;&quot;)</span><br>List&lt;MediaProcess&gt; <span class="hljs-title function_">selectListByShardIndex</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;shardTotal&quot;)</span> <span class="hljs-type">int</span> shardTotal, <span class="hljs-meta">@Param(&quot;shardIndex&quot;)</span> <span class="hljs-type">int</span> shardIndex, <span class="hljs-meta">@Param(&quot;count&quot;)</span> <span class="hljs-type">int</span> count)</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p>包一层<code>MediaProcessService</code></p>
+<figure class="highlight java"><figcaption><span>MediaProcessService</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 获取待处理任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardTotal 分片总数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardIndex 当前分片序号</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> count      任务数量</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> List&lt;MediaProcess&gt;</span><br><span class="hljs-comment"> */</span><br>List&lt;MediaProcess&gt; <span class="hljs-title function_">getMediaProcessList</span><span class="hljs-params">(<span class="hljs-type">int</span> shardTotal, <span class="hljs-type">int</span> shardIndex, <span class="hljs-type">int</span> count)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>实现该方法，<code>MediaProcessServiceImpl</code></p>
+<figure class="highlight java"><figcaption><span>MediaProcessServiceImpl</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 获取待处理任务</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardTotal 分片总数</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> shardIndex 当前分片序号</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> count      任务数量</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> List&lt;MediaProcess&gt;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> List&lt;MediaProcess&gt; <span class="hljs-title function_">getMediaProcessList</span><span class="hljs-params">(<span class="hljs-type">int</span> shardTotal, <span class="hljs-type">int</span> shardIndex, <span class="hljs-type">int</span> count)</span> &#123;<br>    <span class="hljs-keyword">return</span> baseMapper.selectListByShardIndex(shardTotal, shardIndex, count);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现调度任务"><a href="#实现调度任务" class="headerlink" title="实现调度任务"></a>实现调度任务</h2><p>创建包<code>com.swx.media.service.jobhandle</code>，并创建视频编码任务<code>VideoTask</code></p>
+<ul>
+<li>根据系统CPU核心数，确定从数据库查询多少任务，如果任务为0则直接返回；</li>
+<li>根据获取的任务数，开启对应数量的线程数；</li>
+<li>使用计数器，确保所有任务执行完成后再结束方法；</li>
+<li>循环所有任务，指定线程取执行如下步骤：<ul>
+<li>获取任务锁，实现幂等性，防止重复执行，失败，写入数据库，返回；</li>
+<li>从MinIO下载要转码的视频，下载失败，写入数据库，返回；</li>
+<li>使用FFmpeg进行视频转码，保存到临时文件；转码失败，写入数据库，返回；</li>
+<li>将转码之后的文件上传到MinIO中，上传失败，写入数据库，返回；</li>
+<li>上传成功，写入数据库。</li>
+</ul>
+</li>
+<li>使用try finally包裹线程方法，在finally中将计数器减1；</li>
+<li>使用计数器阻塞进程，并设置最大等待时间，无论线程中计数器是否减1，最大时间过后释放线程。</li>
+</ul>
+<figure class="highlight java"><figcaption><span>VideoTask</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 视频转码任务处理类</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VideoTask</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaProcessService mediaProcessService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> FileStorageService fileStorageService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MediaProcessSaveService mediaProcessSaveService;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">VideoTask</span><span class="hljs-params">(MediaProcessService mediaProcessService, FileStorageService fileStorageService, MediaProcessSaveService mediaProcessSaveService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.mediaProcessService = mediaProcessService;<br>        <span class="hljs-built_in">this</span>.fileStorageService = fileStorageService;<br>        <span class="hljs-built_in">this</span>.mediaProcessSaveService = mediaProcessSaveService;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 视频处理任务</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@XxlJob(&quot;videoJobHandler&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">videoJobHandler</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 分片参数</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">shardIndex</span> <span class="hljs-operator">=</span> XxlJobHelper.getShardIndex();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">shardTotal</span> <span class="hljs-operator">=</span> XxlJobHelper.getShardTotal();<br><br>        <span class="hljs-comment">// 确定CPU核心数</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">processors</span> <span class="hljs-operator">=</span> Runtime.getRuntime().availableProcessors();<br>        <span class="hljs-comment">// 拉取任务</span><br>        List&lt;MediaProcess&gt; mediaProcessList = mediaProcessService.getMediaProcessList(shardIndex, shardTotal, processors);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> mediaProcessList.size();<br>        <span class="hljs-keyword">if</span> (size == <span class="hljs-number">0</span>) &#123;<br>            log.debug(<span class="hljs-string">&quot;取到的视频处理任务数：&#123;&#125;&quot;</span>, size);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">// 创建线程池</span><br>        <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executorService</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(size);<br>        <span class="hljs-comment">// 使用计数器，等待所有线程执行完再结束方法</span><br>        <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">countDownLatch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(size);<br>        <span class="hljs-keyword">for</span> (MediaProcess mediaProcess : mediaProcessList) &#123;<br>            <span class="hljs-comment">// 将任务加入线程池</span><br>            executorService.execute(() -&gt; &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br><br>                    <span class="hljs-comment">// 获取任务锁，幂等性操作，避免重复执行</span><br>                    <span class="hljs-type">Long</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> mediaProcess.getId();<br>                    <span class="hljs-type">boolean</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> mediaProcessService.startTask(taskId);<br>                    <span class="hljs-type">String</span> <span class="hljs-variable">fileId</span> <span class="hljs-operator">=</span> mediaProcess.getFileId();<br>                    <span class="hljs-keyword">if</span> (!lock) &#123;<br>                        log.debug(<span class="hljs-string">&quot;抢占任务失败，任务id: &#123;&#125;&quot;</span>, taskId);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                    <span class="hljs-comment">// 下载MinIO视频</span><br>                    <span class="hljs-type">String</span> <span class="hljs-variable">bucket</span> <span class="hljs-operator">=</span> mediaProcess.getBucket();<br>                    <span class="hljs-type">String</span> <span class="hljs-variable">objectName</span> <span class="hljs-operator">=</span> mediaProcess.getFilePath();<br>                    <span class="hljs-type">File</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> fileStorageService.downloadFile(bucket, objectName);<br>                    <span class="hljs-keyword">if</span> (file == <span class="hljs-literal">null</span>) &#123;<br>                        log.error(<span class="hljs-string">&quot;下载视频出错，任务id: &#123;&#125;, bucket: &#123;&#125;, objectName: &#123;&#125;&quot;</span>, taskId, bucket, objectName);<br>                        <span class="hljs-comment">// 保存任务处理失败结果</span><br>                        mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_FAIL.status(),<br>                                fileId, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;下载视频到本地失败&quot;</span>);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                    <span class="hljs-comment">// 视频转码</span><br>                    <span class="hljs-comment">// 源avi视频的路径</span><br>                    <span class="hljs-type">File</span> <span class="hljs-variable">sourcePath</span> <span class="hljs-operator">=</span> file.getAbsoluteFile();<br>                    <span class="hljs-type">File</span> <span class="hljs-variable">targetFile</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>                    <span class="hljs-keyword">try</span> &#123;<br>                        targetFile = File.createTempFile(<span class="hljs-string">&quot;minio&quot;</span>, <span class="hljs-string">&quot;.mp4&quot;</span>);<br>                    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>                        log.error(<span class="hljs-string">&quot;创建临时文件异常, &quot;</span>, e);<br>                        <span class="hljs-comment">// 保存任务处理失败结果</span><br>                        mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_FAIL.status(),<br>                                fileId, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;创建临时文件异常&quot;</span>);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                    <span class="hljs-type">String</span> <span class="hljs-variable">targetPath</span> <span class="hljs-operator">=</span> targetFile.getAbsolutePath();<br>                    <span class="hljs-comment">// 开始转换</span><br>                    <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;success&quot;</span>;<br>                    <span class="hljs-keyword">if</span> (!result.equals(<span class="hljs-string">&quot;success&quot;</span>)) &#123;<br>                        log.error(<span class="hljs-string">&quot;视频转码失败, bucket: &#123;&#125;, objectName: &#123;&#125;,  原因: &#123;&#125;&quot;</span>, taskId, bucket, result);<br>                        <span class="hljs-comment">// 保存任务处理失败结果</span><br>                        mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_FAIL.status(),<br>                                fileId, <span class="hljs-literal">null</span>, result);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br><br>                    <span class="hljs-comment">// 上传到MinIO</span><br>                    <span class="hljs-type">FileInputStream</span> <span class="hljs-variable">fileInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>                    <span class="hljs-keyword">try</span> &#123;<br>                        fileInputStream = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(targetPath);<br>                    &#125; <span class="hljs-keyword">catch</span> (FileNotFoundException e) &#123;<br>                        log.error(<span class="hljs-string">&quot;转码后的文件不存在, 文件路径: &#123;&#125;&quot;</span>, targetPath);<br>                        <span class="hljs-comment">// 保存任务处理失败结果</span><br>                        mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_FAIL.status(),<br>                                fileId, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;转码后的文件不存在&quot;</span>);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                    <span class="hljs-comment">// 开始上传</span><br>                    <span class="hljs-type">boolean</span> <span class="hljs-variable">isUploadMinIO</span> <span class="hljs-operator">=</span> fileStorageService.uploadVideoFile(objectName, <span class="hljs-string">&quot;video/mp4&quot;</span>, fileInputStream);<br>                    <span class="hljs-keyword">if</span> (!isUploadMinIO) &#123;<br>                        log.error(<span class="hljs-string">&quot;上传mp4到MinIO失败, taskId: &#123;&#125;&quot;</span>, taskId);<br>                        <span class="hljs-comment">// 保存任务处理失败结果</span><br>                        mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_FAIL.status(),<br>                                fileId, <span class="hljs-literal">null</span>, <span class="hljs-string">&quot;上传mp4到MinIO失败&quot;</span>);<br>                        <span class="hljs-keyword">return</span>;<br>                    &#125;<br>                    <span class="hljs-comment">// 保存任务成功结果，mp4文件的url</span><br>                    <span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> getFilePathByMd5(fileId, <span class="hljs-string">&quot;.mp4&quot;</span>);<br>                    mediaProcessSaveService.saveProcessFinishStatus(taskId, ProcessStatus.PROCESS_SUCCESS.status(),<br>                            fileId, url, <span class="hljs-literal">null</span>);<br>                &#125; <span class="hljs-keyword">finally</span> &#123;<br>                    <span class="hljs-comment">// 线程任务完成，计算器-1</span><br>                    countDownLatch.countDown();<br>                &#125;<br>            &#125;);<br>        &#125;<br><br>        <span class="hljs-comment">// 阻塞，最多等待30分钟</span><br>        countDownLatch.await(<span class="hljs-number">30</span>, TimeUnit.MINUTES);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 得到MinIO文件的路径</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fileMd5 源文件Md5</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> suffix  文件后缀</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 分块存储路径</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">getFilePathByMd5</span><span class="hljs-params">(String fileMd5, String suffix)</span> &#123;<br>        <span class="hljs-keyword">return</span> fileMd5.charAt(<span class="hljs-number">0</span>) + <span class="hljs-string">&quot;/&quot;</span> + fileMd5.charAt(<span class="hljs-number">1</span>) + <span class="hljs-string">&quot;/&quot;</span> + fileMd5 + <span class="hljs-string">&quot;/&quot;</span> + fileMd5 + suffix;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/learning-online/08-media/video-upload.html">视频上传服务</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/learning-online/09-checkcode/nacos.html">Nacos配置</a></div></section></div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="sx-code/blog-comments" data-repo-id="R_kgDOIYpmwg" data-category="Announcements" data-category-id="DIC_kwDOIYpmws4Ce4IF" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">swcode</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0">Stellar 1.28.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+<widget class="widget-wrapper ghrepo"><div class="widget-body"><div class="items ds-ghinfo" api="https://api.github.com/repos/SX-Code/learning-online"><a class="repo" href="https://github.com/SX-Code/learning-online" target="_blank" rel="external nofollow noopener noreferrer"><div class="repo-name flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>SX-Code/learning-online</div><div class="repo-desc"><span type="text" id="description">&nbsp;</span></div><div class="grid"><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg><span type="text" id="stargazers_count"></span></div><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg><span type="text" id="forks_count"></span></div><div class="flex-row ds-ghinfo" index="0" api="https://api.github.com/repos/SX-Code/learning-online/tags"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg><span type="text" id="latest-tag-name">0</span></div></div></a></div></div></widget>
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#FFmpeg%E5%A4%84%E7%90%86%E8%A7%86%E9%A2%91"><span class="toc-text">FFmpeg处理视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="toc-text">分布式任务调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85XXL-JOB"><span class="toc-text">安装XXL-JOB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%89%A7%E8%A1%8C%E5%99%A8"><span class="toc-text">创建执行器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E6%89%A7%E8%A1%8C%E5%99%A8"><span class="toc-text">注册执行器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-text">添加任务管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%B7%BB%E5%8A%A0%E4%BB%BB%E5%8A%A1"><span class="toc-text">实现添加任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%BB%BB%E5%8A%A1%E7%8A%B6%E6%80%81"><span class="toc-text">更新任务状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%8E%B7%E5%8F%96%E4%BB%BB%E5%8A%A1"><span class="toc-text">实现获取任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%B0%83%E5%BA%A6%E4%BB%BB%E5%8A%A1"><span class="toc-text">实现调度任务</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.28.0" async></script>
+
+<!-- optional -->
+
+  <script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      var script = document.createElement('script');
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  });
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+<script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+</div></body></html>

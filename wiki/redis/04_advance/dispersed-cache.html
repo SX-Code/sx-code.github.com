@@ -1,0 +1,1048 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0" theme-name="Stellar" theme-version="1.28.0">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  
+  <title>Redis：分布式缓存 - swcode</title>
+
+  
+    <meta name="description" content="单点Redis的问题数据丢失问题：Redis是内存存储，服务器重启可能丢失数据  实现Redis数据持久化  并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景  搭建主从集群，实现读写分离  故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段  利用Redis哨兵，实现健康检测和自动恢复  存储能力问题：Redis基于内存，单节点存储的数据量难">
+<meta property="og:type" content="website">
+<meta property="og:title" content="分布式缓存">
+<meta property="og:url" content="http://example.com/wiki/redis/04_advance/dispersed-cache.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="单点Redis的问题数据丢失问题：Redis是内存存储，服务器重启可能丢失数据  实现Redis数据持久化  并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景  搭建主从集群，实现读写分离  故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段  利用Redis哨兵，实现健康检测和自动恢复  存储能力问题：Redis基于内存，单节点存储的数据量难">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image31.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image34.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image35.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image36.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image37.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image38.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image40.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image47.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image48.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image49.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image50.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image51.png">
+<meta property="og:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png">
+<meta property="article:published_time" content="2024-04-23T06:05:41.711Z">
+<meta property="article:modified_time" content="2023-09-23T14:19:32.471Z">
+<meta property="article:author" content="swcode">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image31.png">
+  
+  
+  
+  <meta name="keywords" content="">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.28.0">
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+</head>
+<body>
+
+
+
+<div class="l_body s:aa content tech" id="start" layout="wiki" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/redis-tm.svg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/wiki/redis/introduce/index.html"><div class="main" ff="title">Redis</div><div class="sub cap">通过项目学习Reids的各种应用</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/wiki/redis/" placeholder="在 Redis 中搜索..."></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><span>博客</span></a><a class="nav-item active" title="专栏" href="/wiki/" style="color:#3DC550"><span>专栏</span></a><a class="nav-item" title="关于" href="/about/" style="color:#FA6400"><span>关于</span></a></nav>
+</div>
+<div class="widgets">
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">快速开始</span></div><div class="widget-body fs14"><a class="link" href="/wiki/redis/introduce/index.html#start"><span class="toc-text">笔记简介</span></a></div><div class="widget-header dis-select"><span class="name">Redis快速入门</span></div><div class="widget-body fs14"><a class="link" href="/wiki/redis/02_start/index.html"><span class="toc-text">Redis</span></a><a class="link" href="/wiki/redis/02_start/redis-install.html"><span class="toc-text">Redis的安装</span></a><a class="link" href="/wiki/redis/02_start/struct.html"><span class="toc-text">Redis常见数据结构</span></a><a class="link" href="/wiki/redis/02_start/cli.html"><span class="toc-text">Redis客户端</span></a></div><div class="widget-header dis-select"><span class="name">Redis进阶</span></div><div class="widget-body fs14"><a class="link" href="/wiki/redis/03_cache/index.html"><span class="toc-text">Redis缓存</span></a><a class="link" href="/wiki/redis/geo/index.html"><span class="toc-text">GEO数据结构</span></a></div><div class="widget-header dis-select"><span class="name">Redis高级</span></div><div class="widget-body fs14"><a class="link" href="/wiki/redis/04_advance/index.html"><span class="toc-text">单点Redis的问题</span></a><a class="link" href="/wiki/redis/04_advance/multi-cache.html"><span class="toc-text">多级缓存</span></a><a class="link active" href="/wiki/redis/04_advance/dispersed-cache.html"><span class="toc-text">分布式缓存</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a></div></widget>
+
+<widget class="widget-wrapper post-card"><div class="widget-header dis-select"><span class="name">更多：笔记</span></div><div class="widget-body"><a class="item wiki" href="/wiki/dtx/index.html"><span class="title">分布式事务</span><span class="excerpt">分布式系统会把一个应用系统拆分为可独立部署的多个服务，因此需要服务于服务之间远程协作才能完成事务操作，这种分布式系统环境下由不同的服务之间通过网络远程协作完成事务称之为分布式事务。</span></a><a class="item wiki" href="/wiki/docker/01_introduce/index.html"><span class="title">Docker学习笔记</span><span class="excerpt">Docker 是一个用于开发、交付和运行应用程序的开放平台。 Docker 使您能够将应用程序与基础架构分离，以便您可以快速交付软件。</span></a><a class="item wiki" href="/wiki/kubernetes/01_introduce/index.html"><span class="title">Kubernetes学习笔记</span><span class="excerpt">Kubernetes 也称为 K8s，是用于自动部署、扩缩和管理容器化应用程序的开源系统。</span></a></div></widget>
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/wiki/oneread/index.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目介绍</span></a><a class="item title" href="/wiki/oneread/source_rule.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>源规则</span></a><a class="item title" href="/wiki/oneread/preview.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目预览</span></a><a class="item title" href="/wiki/flutter-dev/mac/icon.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>修改应用图标</span></a><a class="item title" href="/wiki/flutter-dev/windows/title.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>定制标题栏</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="https://github.com/SX-Code/about/#comments" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki">文档</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/redis/introduce/index.html">Redis</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2023-09-23T14:19:32.471Z">2023-09-23</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>分布式缓存</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="单点Redis的问题"><a href="#单点Redis的问题" class="headerlink" title="单点Redis的问题"></a>单点Redis的问题</h2><p>数据丢失问题：Redis是内存存储，服务器重启可能丢失数据</p>
+<ul>
+<li>实现Redis数据持久化</li>
+</ul>
+<p>并发能力问题：单节点Redis并发能力虽然不错，但也无法满足如618这样的高并发场景</p>
+<ul>
+<li>搭建主从集群，实现读写分离</li>
+</ul>
+<p>故障恢复问题：如果Redis宕机，则服务不可用，需要一种自动恢复手段</p>
+<ul>
+<li>利用Redis哨兵，实现健康检测和自动恢复</li>
+</ul>
+<p>存储能力问题：Redis基于内存，单节点存储的数据量难以满足海量数据需求</p>
+<ul>
+<li>搭建分片集群，利用插槽机制实现动态扩容</li>
+</ul>
+<h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><h3 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h3><p>RDB全称Redis Database Backup file（Redis数据备份文件），也叫Redis数据快照。简单来说就是把内存中的所有数据都记录到磁盘中。当Redis实例故障重启后，从磁盘读取快照文件，恢复数据。</p>
+<p>快照文件成为RDB，默认保存在当前运行目录</p>
+<ul>
+<li>save：由Redis主进程来执行RDB，会阻塞所有命令</li>
+<li>bgsave：开启子进程执行RDB，避免主进程收到影响</li>
+</ul>
+<p>Reids停机会执行一次RDB</p>
+<p>Redis内部有触发RDB的机制，可以在redis.conf文件中找到，格式如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 900秒内，如果至少有一个key被修改，则执行bgsace，如果是save &quot;&quot;则表示禁用RDB</span><br>save 900 1<br>save 200 10<br>save 60 10000<br></code></pre></td></tr></table></figure>
+
+<p>RDB的其他配置也可以在redis.conf文件中设置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 是否压缩，不建议开启，压缩也会消耗CPU，磁盘的话不值钱</span><br>rdbcompression <span class="hljs-built_in">yes</span><br><br><span class="hljs-comment"># RDB文件名称</span><br>dbfilename dump.rdb<br><br><span class="hljs-comment"># 文件保存的路径目录</span><br><span class="hljs-built_in">dir</span> ./<br></code></pre></td></tr></table></figure>
+
+<p>bgsave开始会fork主进程得到子进程，子进程共享主进程的内存数据。完成fork后读取内存数据并写入RDB文件</p>
+<p>fork采用的是copy-on-write技术：</p>
+<ul>
+<li>当主进程执行读操作时，访问共享内存</li>
+<li>当主进程执行写操作时，则会拷贝一份数据，执行写操作。</li>
+</ul>
+<div class="tag-plugin image"><div class="image-bg" style="background:white;padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image31.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image31.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>总结</p>
+<p>RDB方式bgsave的基本流程</p>
+<ol>
+<li>fork主进程得到一个子进程，共享内存空间</li>
+<li>子进程读取内存数据并写入新的RDB文件</li>
+<li>用新RDB文件替换旧的RDB文件</li>
+</ol>
+<p>RDB会在什么时候执行？save 60 1000代表什么含义？</p>
+<ul>
+<li>默认时服务停止时。</li>
+<li>代表60秒内至少执行1000次修改则触发RDB</li>
+</ul>
+<p>RDB的缺点？</p>
+<ul>
+<li>RDB执行时隔时间长，两次RDB之间写数据有丢失的风险</li>
+<li>fork子进程、压缩、写出RDB文件都比较耗时</li>
+</ul>
+<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p>AOF全称为Append Only File（追加文件）。Redis处理的每一个写命令都会记录在AOF文件，可以看做是命令日志文件。恢复时，从头执行文件中的命令。</p>
+<p>AOF默认是关闭的，需要修改redis.conf配置文件来开启AOF：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs conf"># 是否开启AOF功能，默认是no<br>appendonly yes<br># AOF文件的名称<br>appendfilename &quot;appendonly.aof&quot;<br></code></pre></td></tr></table></figure>
+
+<p>AOF的命令记录的频率也可以通过redis.conf文件来配：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs conf"># 表示每执行一次写命令，立即记录到AOF文件<br>appendfsync always<br># 写命令执行完先放入AOF缓冲区，然后表示每隔1秒将缓冲区数据写到AOF文件，是默认方案<br>appendfsync everysec<br># 写命令执行完先放入AOF缓冲区，由操作系统决定何时将缓冲区内容写回磁盘<br>appendfsync no<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>no: don’t fsync, just let the OS flush the data when it wants. Faster.</p>
+</li>
+<li><p>always: fsync after every write to the append only log. Slow, Safest.</p>
+</li>
+<li><p>everysec: fsync only one time every second. Compromise.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">刷盘时机</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">always</td>
+<td align="center">同步刷盘</td>
+<td align="center">可靠性高，几乎不丢数据</td>
+<td align="center">性能影响大</td>
+</tr>
+<tr>
+<td align="center">everysec</td>
+<td align="center">每秒刷盘</td>
+<td align="center">性能适中</td>
+<td align="center">最多丢失1s数据</td>
+</tr>
+<tr>
+<td align="center">no</td>
+<td align="center">操作系统控制</td>
+<td align="center">性能最好</td>
+<td align="center">可靠性差，肯能丢失大量数据</td>
+</tr>
+</tbody></table>
+<p>重写</p>
+<p>因为是记录命令，AOF文件会比RDB文件大的多。而且AOF会记录对同一个key的多次写操作，但只有最后一次写操作才有意义。通过执行<code>bgrewriteaof</code>命令，可以让AOF文件执行重写功能，用最少的命令达到相同效果。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">127.0.0.1:6379&gt; BGREWRITEAOF<br>Background append only file rewriting started<br></code></pre></td></tr></table></figure>
+
+<p>Redis也会在触发阈值时自动去重写AOF文件。阈值也可以在redis.conf中配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs conf"># AOF文件比上次文件增长超过多少百分比则触发重写<br>auto-aof-rewrite-percentage 100<br># AOF文件体积最小多大以上才触发重写<br>auto-aof-rewrite-min-size 64mb<br></code></pre></td></tr></table></figure>
+
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p>RDB和AOF各有自己的优缺点，如果对数据安全性要求较高，在实际开发中往往会结合两者来使用。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">RDB</th>
+<th align="center">AOF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">持久化方式</td>
+<td align="center">定时对整个内存做快照</td>
+<td align="center">记录每一次执行的命令</td>
+</tr>
+<tr>
+<td align="center">数据完整性</td>
+<td align="center">不完整，两次备份之间会丢失</td>
+<td align="center">相对完整，取决于刷盘策略</td>
+</tr>
+<tr>
+<td align="center">文件大小</td>
+<td align="center">会有压缩，文件体积小</td>
+<td align="center">记录命令，文件体积很大</td>
+</tr>
+<tr>
+<td align="center">宕机恢复速度</td>
+<td align="center">很快</td>
+<td align="center">慢</td>
+</tr>
+<tr>
+<td align="center">数据恢复优先级</td>
+<td align="center">低，因为数据完整性不如AOF</td>
+<td align="center">高，因为数据完整性更高</td>
+</tr>
+<tr>
+<td align="center">系统资源占用</td>
+<td align="center">高，大量CPU和内存消耗</td>
+<td align="center">低，主要是磁盘IO资源<br />但AOF重写时会占用大量CPU和内存</td>
+</tr>
+<tr>
+<td align="center">使用场景</td>
+<td align="center">可以容忍数分钟的数据丢失<br />追求更快的启动速度</td>
+<td align="center">对数据安全性要求较高常见</td>
+</tr>
+</tbody></table>
+<h2 id="Redis主从"><a href="#Redis主从" class="headerlink" title="Redis主从"></a>Redis主从</h2><p>单节点Redis的并发能力是有上限的，要进一步提高Redis的并发能力，就需要搭建主从集群，实现读写分离。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image32.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h3 id="搭建主从集群"><a href="#搭建主从集群" class="headerlink" title="搭建主从集群"></a>搭建主从集群</h3><p>详情查看：</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="Redis主从集群搭建" href="https://sx-code.github.io/2022/11/16/Redis安装系列教程/#Redis主从集群" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">Redis主从集群搭建</span><span class="cap link footnote">https://sx-code.github.io/2022/11/16/Redis安装系列教程/#Redis主从集群</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+
+<h3 id="数据同步原理"><a href="#数据同步原理" class="headerlink" title="数据同步原理"></a>数据同步原理</h3><h4 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h4><p>主从第一次同步是全量同步：</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image34.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image34.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>master如何判断slave是不是第一次来同步数据？这里会用到两个很重要的概念：</p>
+<ul>
+<li>Replication Id：简称replid，是数据集的标记，id一致则说明是同一数据集。每一个master都有一个唯一的replid，slave则会继承master节点的replid</li>
+<li>offset：偏移量，随记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前的offset。如果slave的offset小于master的offset，说明slave数据落后于master，需要更新。</li>
+</ul>
+<p>因此slave做数据同步，必须向master声明自己的replication id和offset，master才可以判断到底需要同步哪些数据。</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image35.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image35.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>详情可以查看打印的日志。</p>
+<p>总结</p>
+<p>简述全量同步的流程？</p>
+<ol>
+<li>slave节点请求增量同步</li>
+<li>master节点判断replid，发现不一致，拒绝增量同步</li>
+<li>master将完整内存数据生成RDB，发送RDB到slave</li>
+<li>slave清空本地数据，加载master的RDB</li>
+<li>master将RDB期间的命令记录在real_baklog，并持续将log中的命令发送给slave</li>
+<li>slave执行接受到的命令，保持与master之间的同步</li>
+</ol>
+<h4 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h4><p>如果slave重启后同步，则执行增量同步</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image36.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image36.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<p>repl_baklog大小有上限，写满后会覆盖最早的数据。如果slave断开时间过久，导致尚未备份的数据被覆盖，则无法基于log做数据增量同步，只能再次全量同步</p>
+<div class="tag-plugin image"><div class="image-bg" style="background:var(--card);padding:16px;"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image37.png" data-fancybox="true" style="width:300px;"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image37.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>可以从以下几个方面来优化Redis主从集群：</p>
+<ul>
+<li>在master中配置repl-diskless-sync yes启用无磁盘复制，避免全量同步时的磁盘IO。</li>
+<li>Redis单节点的内存占用不要太大，减少RDB导致过多的磁盘IO。</li>
+<li>适当提高repl_baklog的大小，发现slave宕机时尽快故障恢复，尽可能避免全量同步。</li>
+<li>限制一个master上的slave节点数量，如果实在是太多slave，则可以采用主-从-从链式结构，减少master压力<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image38.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image38.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>简述全量同步和增量同步的区别？</p>
+<ul>
+<li>全量同步：master将完整内存数据生成RDB，发送RDB到slave。后续命令则记录在repl_baklog，逐个发送给slave。</li>
+<li>增量同步：slave提交给自己的offset到master，master获取real_baklog中从offset之后的命令给slave</li>
+</ul>
+<p>什么时候执行全量同步？</p>
+<ul>
+<li>slave节点第一次连接master节点时</li>
+<li>slave节点断开时间太久，repl_baklog中的offset已经被覆盖时</li>
+</ul>
+<p>什么时候执行增量同步？</p>
+<ul>
+<li>slave节点断开又恢复，并且在repl_baklog中能找到offset时</li>
+</ul>
+<h2 id="Redis哨兵"><a href="#Redis哨兵" class="headerlink" title="Redis哨兵"></a>Redis哨兵</h2><div class="tag-plugin colorful note" color="warning"><div class="body"><p>slave节点宕机恢复后可以找master节点同步数据，那master节点宕机怎么办？</p></div></div>
+
+<h3 id="哨兵的作用和原理"><a href="#哨兵的作用和原理" class="headerlink" title="哨兵的作用和原理"></a>哨兵的作用和原理</h3><h4 id="哨兵的作用"><a href="#哨兵的作用" class="headerlink" title="哨兵的作用"></a>哨兵的作用</h4><p>Redis提供了哨兵（Sentinel）机制来实现主从集群的自动故障恢复。哨兵的结构和作用如下：</p>
+<ul>
+<li><p>监控：Sentinel会不断检查您的master和slave是否按预期工作</p>
+</li>
+<li><p>自动故障恢复：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主。</p>
+</li>
+<li><p>通知：Sentinel充当Redis客户端的服务来源，当集群发生故障转移时，会讲最新信息推送给Redis的客户端</p>
+</li>
+</ul>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image39.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h4 id="服务状态监控"><a href="#服务状态监控" class="headerlink" title="服务状态监控"></a>服务状态监控</h4><p>Sentinel基于心跳机制检测服务状态，每隔1秒向集群的每个实例发送ping命令：</p>
+<ul>
+<li>主观下线：如果sentinel节点发现某实例未在规定时间响应，则认为实例<strong>主观下线</strong>。</li>
+<li>客观下线：若超过指定数量（quorum）的sentinel都认为该实例主观下线，则该实例<strong>客观下线</strong>。quorum值最好超过Sentinel实例数量的一半。</li>
+</ul>
+<h4 id="选举新的master"><a href="#选举新的master" class="headerlink" title="选举新的master"></a>选举新的master</h4><p>一旦发现master故障，sentinel需要在slave中选择一个作为新的master，依据是这样的：</p>
+<ul>
+<li>首先会判断salve节点与master节点断开时间长短，如果超过指定值（down-after-milliseconds * 10）则会排除该slave节点</li>
+<li>然后判断slave节点的slave-priority值，越小优先级越高，如果是0则永不参与选举</li>
+<li>如果slave-prority一样，则判断slave节点的offset值，越大说明数据越新，优先级越高</li>
+<li>最后是判断slave节点的运行id大小，越小优先级越高。</li>
+</ul>
+<h4 id="如何实现故障转移"><a href="#如何实现故障转移" class="headerlink" title="如何实现故障转移"></a>如何实现故障转移</h4><p>当选中了其中一个slave为新的master后（例如slave1），故障的转移的步骤如下：</p>
+<ul>
+<li>sentinel给备选的slave1节点发送slaveof no one命令，让该节点成为master</li>
+<li>sentinel给所有其他slave发送slaveof 192.168.150.101 7002命令，让这些slave成为新master的从节点，开始从新的master上同步数据。</li>
+<li>最后，sentinel将故障节点标记为slave，当故障节点恢复后会自动成为新的master的slave节点。</li>
+</ul>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image40.png" data-fancybox="true"/><a class="image-download blur" style="opacity:0" target="_blank" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image40.png"><svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3734"><path d="M561.00682908 685.55838913a111.03077546 111.03077546 0 0 1-106.8895062 0L256.23182837 487.72885783a55.96309219 55.96309219 0 0 1 79.13181253-79.18777574L450.70357448 523.88101491V181.55477937a55.96309219 55.96309219 0 0 1 111.92618438 0v344.06109173l117.07478902-117.07478901a55.96309219 55.96309219 0 0 1 79.13181252 79.18777574zM282.81429711 797.1487951h447.70473912a55.96309219 55.96309219 0 0 1 0 111.92618438H282.81429711a55.96309219 55.96309219 0 0 1 0-111.92618438z" p-id="3735"></path></svg></a></div></div>
+
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>Sentinel的三个作用是什么？</p>
+<ul>
+<li>监控</li>
+<li>故障转移</li>
+<li>通知</li>
+</ul>
+<p>Sentinel如和判断一个redis实例是否健康？</p>
+<ul>
+<li>每隔1秒发送一次ping命令，如果超过一定时间没有相向则认为是主观下线</li>
+<li>如果大多数sentinel都认为实例主观下线，则判定服务下线</li>
+</ul>
+<p>故障转移步骤有哪些？</p>
+<ul>
+<li>首先选定一个slave作为新的master，执行slaveof no one</li>
+<li>然后让所有节点都执行slaveof 新master</li>
+<li>修改故障节点配置，添加slaveof 新master</li>
+</ul>
+<h3 id="搭建哨兵集群"><a href="#搭建哨兵集群" class="headerlink" title="搭建哨兵集群"></a>搭建哨兵集群</h3><p>搭建过程可查看：</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="搭建哨兵集群" href="https://sx-code.github.io/2022/11/16/Redis安装系列教程/#搭建哨兵集群" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">搭建哨兵集群</span><span class="cap link footnote">https://sx-code.github.io/2022/11/16/Redis安装系列教程/#搭建哨兵集群</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+
+<h3 id="RedisTemplate的哨兵模式"><a href="#RedisTemplate的哨兵模式" class="headerlink" title="RedisTemplate的哨兵模式"></a>RedisTemplate的哨兵模式</h3><p>在Sentinel集群监管下的Redis主从集群，其节点会因为自动故障转移而发生变化，Redis的客户端必须感知这种变化，及时更新连接信息。Spring的RedisTemplate底层利用lettuce实现了节点的感知和自动切换。</p>
+<h4 id="搭建项目"><a href="#搭建项目" class="headerlink" title="搭建项目"></a>搭建项目</h4><ol>
+<li><p>新建一个Spring Boot项目，在pom中引入redis的starter依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>然后在配置文件<code>application.yml</code>中指定sentinel相关信息：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">level:</span><br>    <span class="hljs-attr">io.lettuce.core:</span> <span class="hljs-string">debug</span><br>  <span class="hljs-attr">pattern:</span><br>    <span class="hljs-attr">dateformat:</span> <span class="hljs-string">MM-dd</span> <span class="hljs-string">HH:mm:ss:SSS</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">sentinel:</span><br>      <span class="hljs-attr">master:</span> <span class="hljs-string">mymaster</span><br>      <span class="hljs-attr">nodes:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:27001</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:27002</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:27003</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>配置主从读写分离</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> LettuceClientConfigurationBuilderCustomizer <span class="hljs-title function_">configurationBuilderCustomizer</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> clientConfigurationBuilder -&gt; clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里的ReadFrom是配置Redis的读写策略，是一个枚举，包括下面选择：</p>
+<ul>
+<li><code>MASTER</code>：从主节点读取</li>
+<li><code>MASTER_PREFERRED</code>：优先从master节点读取，master不可用才读取replica</li>
+<li><code>REPLICA</code>：从slave（replica）节点读取</li>
+<li><code>REPLICA_PREFERRED</code>：优先从slave（replica）节点读取，所有的slave都不可用才读取master</li>
+</ul>
+</li>
+<li><p>写一个Controller</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> StringRedisTemplate stringRedisTemplate;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HelloController</span><span class="hljs-params">(StringRedisTemplate stringRedisTemplate)</span> &#123;<br>        <span class="hljs-built_in">this</span>.stringRedisTemplate = stringRedisTemplate;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/get/&#123;key&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hi</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;key&quot;)</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> stringRedisTemplate.opsForValue().get(key);<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/set/&#123;key&#125;/&#123;value&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hi</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;key&quot;)</span> String key, <span class="hljs-meta">@PathVariable(&quot;value&quot;)</span> String value)</span> &#123;<br>        stringRedisTemplate.opsForValue().set(key, value);<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/get/num">http://localhost:8080/get/num</a>，可以在日志中看到读命令是交给了slave<code>7003</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">dispatching <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=GET, output=ValueOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0xd02617c1, /192.168.52.1:49821 -&gt; /192.168.52.101:7003, epid=0x8] write() writeAndFlush <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=GET, output=ValueOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0xd02617c1, /192.168.52.1:49821 -&gt; /192.168.52.101:7003, epid=0x8] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/set/num/666">http://localhost:8080/set/num/666</a>，可以在日志中看到写命令是交给了master<code>7002</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">dispatching <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=SET, output=StatusOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0xf240bccb, /192.168.52.1:49823 -&gt; /192.168.52.101:7002, epid=0xa] write() writeAndFlush <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=SET, output=StatusOutput [output=null, [channel=0xf240bccb, /192.168.52.1:49823 -&gt; /192.168.52.101:7002, epid=0xa] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>此时我们将主节点<code>7002</code>关掉，等待一段时间后，会看到<code>7001</code>成功成为新的master，来到IDEA项目的日志窗口，会看到打印了很多日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">[channel=0xbdf66d4c, /192.168.52.1:49846 -&gt; /192.168.52.101:27001, epid=0xe, chid=0x19] Completing <span class="hljs-built_in">command</span> SubscriptionCommand [<span class="hljs-built_in">type</span>=SENTINEL, output=MapOutput [output=&#123;name=mymaster, ip=192.168.52.101, port=7001, runid=15057e012c11ea30ae9e20fe1f9e2ea2243efa70, flags=master, link-pending-commands=0, link-refcount=1, last-ping-sent=0, last-ok-ping-reply=451, last-ping-reply=451, down-after-milliseconds=5000, info-refresh=7803, role-reported=master, role-reported-time=10012, config-epoch=7, num-slaves=2, num-other-sentinels=2, quorum=2, failover-timeout=60000, parallel-syncs=1&#125;, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br></code></pre></td></tr></table></figure>
+
+<p>可以看到到<code>7001</code>的<code>flag=master</code></p>
+<p>再次访问<a target="_blank" rel="noopener" href="http://localhost:8080/get/num">http://localhost:8080/get/num</a>，可以看到是slave<code>7003</code>处理了GET命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">dispatching <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=GET, output=ValueOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0x8764567f, /192.168.52.1:49839 -&gt; /192.168.52.101:7003, epid=0x8] write() writeAndFlush <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=GET, output=ValueOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0x8764567f, /192.168.52.1:49839 -&gt; /192.168.52.101:7003, epid=0x8] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Redis分片集群"><a href="#Redis分片集群" class="headerlink" title="Redis分片集群"></a>Redis分片集群</h2><h3 id="分片集群结构"><a href="#分片集群结构" class="headerlink" title="分片集群结构"></a>分片集群结构</h3><p>主从和哨兵可以解决高可用、高并发读的问题。但是依然有两个问题还没有解决：</p>
+<ul>
+<li>海量数据存储问题</li>
+<li>高并发写的问题</li>
+</ul>
+<p>使用分片集群可解决上述问题，分片集群特征：</p>
+<ul>
+<li>集群中有多个master，每个master保持不同数据</li>
+<li>每个master都可以有多个slave节点</li>
+<li>master之间通过ping检测彼此健康状态</li>
+<li>客户端请求可以访问集群人意节点，最终都会被转发到正确节点</li>
+</ul>
+<div class="tag-plugin colorful note" color="warning"><div class="body"><p>需要说明的是，分片集群里面的主从是不需要依赖哨兵的，当其中一个主节点宕机也是可以由另外的从节点顶替上</p></div></div>
+
+<h3 id="搭建分片集群"><a href="#搭建分片集群" class="headerlink" title="搭建分片集群"></a>搭建分片集群</h3><p>搭建过程可查看：</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="搭建分片集群" href="https://sx-code.github.io/2022/11/16/Redis安装系列教程/#搭建分片集群" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">搭建分片集群</span><span class="cap link footnote">https://sx-code.github.io/2022/11/16/Redis安装系列教程/#搭建分片集群</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+
+<h3 id="散列插槽"><a href="#散列插槽" class="headerlink" title="散列插槽"></a>散列插槽</h3><p>Redis会把每个master节点映射到0～16383共16384个插槽（hash slot）上，查看集群信息时就能看到：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image47.png" data-fancybox="true"/></div></div>
+
+<p>数据key不是与节点绑定，而是与插槽绑定。redis会根据key的有效部分计算插槽值，分两种情况：</p>
+<ul>
+<li>key中包含”{}”，且”{}”中至少包含1个字符，”{}”中的部分时有效部分</li>
+<li>key中不包含”{}”，整个key都是有效部分</li>
+</ul>
+<p>例如：key是num，那么就根据num计算，如果是{itcast}num，则根据itcast计算。计算方法是利用CRC16算法得到一个hash值，然后对16384取余，得到的结果就是slot值。</p>
+<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h4><p>使用下面命令连接Redis集群</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -c -p 7001<br></code></pre></td></tr></table></figure>
+
+<p>set一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">127.0.0.1:7001&gt; <span class="hljs-built_in">set</span> num 123<br>OK<br></code></pre></td></tr></table></figure>
+
+<p>再set一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">set</span> a 1<br>-&gt; Redirected to slot [15495] located at 192.168.52.101:7003<br>OK<br>192.168.52.101:7003&gt;<br></code></pre></td></tr></table></figure>
+
+<p>a计算得到的hash值为15495，该值所在的节点为7003</p>
+<p>get一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">192.168.52.101:7003&gt; get a<br><span class="hljs-string">&quot;1&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>再get一个值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">192.168.52.101:7003&gt; get num<br>-&gt; Redirected to slot [2765] located at 192.168.52.101:7001<br><span class="hljs-string">&quot;123&quot;</span><br>192.168.52.101:7001&gt; <br></code></pre></td></tr></table></figure>
+
+<p>可以看到已经切换到7001了</p>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><p>Redis如何判断某个key应该在哪个实例？</p>
+<ul>
+<li>将16384个插槽分配到不同实例</li>
+<li>根据key的有效部分计算哈希值，对16384取余</li>
+<li>余数作为插槽，寻找插槽所在的实例即可</li>
+</ul>
+<p>如何将同一类数据固定的保持在同一个Redis实例？</p>
+<ul>
+<li>这一类数据使用相同的有效部分，例如key都以{typeId}为前缀</li>
+</ul>
+<h3 id="集群伸缩"><a href="#集群伸缩" class="headerlink" title="集群伸缩"></a>集群伸缩</h3><h4 id="添加一个节点到集群"><a href="#添加一个节点到集群" class="headerlink" title="添加一个节点到集群"></a>添加一个节点到集群</h4><p>redis-cli –cluster提供了很多操作集群的命令，可以通过下面方式查看：</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+
+<p>比如，添加节点和删除节点命令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">add-node       new_host:new_port existing_host:existing_port<br>							 --cluster-slave<br>							 --cluster-master-id &lt;arg&gt;<br>del-node       host:port node_id<br></code></pre></td></tr></table></figure>
+
+<p>添加一个新的master节点，并向其中存储num&#x3D;10，其步骤如下：</p>
+<ol>
+<li>启动一个新的redis实例，端口为7004</li>
+<li>添加7004到之前的集群，并作为一个master节点</li>
+<li>给7004节点分配插槽，使得num这个key可以存储到7004实例</li>
+</ol>
+<p>具体操作</p>
+<p>创建并启动实例</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">mkdir</span> 7004<br><span class="hljs-built_in">cp</span> redis.conf 7004/<br>sed -i s/6379/7004/g 7004/redis.conf<br>redis-server 7004/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>查看是否成功启动</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">ps -ef | grep redis<br></code></pre></td></tr></table></figure>
+
+<p>添加到集群</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster add-node 192.168.52.101:7004 192.168.52.101:7001<br></code></pre></td></tr></table></figure>
+
+<p>查看是否添加成功</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
+
+<p>分配插槽，从7001到7004</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster reshard 192.168.52.101:7001<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image48.png" data-fancybox="true"/></div></div>
+
+<p>接下来的步骤会提示下面信息，根据自己需要填写即可</p>
+<p>How many slots do you want to move (from 1 to 16384)?</p>
+<ul>
+<li>这里我们直接输入3000，因为num的hash值是2765</li>
+</ul>
+<p>What is the receiving node ID?</p>
+<ul>
+<li>我们是要移动到7004，所以输入7004的ID，可以从上面复制</li>
+</ul>
+<p>Please enter all the source node IDs. </p>
+<p>​	Type ‘all’ to use all the nodes as source nodes for the hash slots.                                                                           	Type ‘done’ once you entered all the source nodes IDs.</p>
+<ul>
+<li>插槽的数据源，我们是7001，所以填入7001的ID，同样从上面复制</li>
+<li>输入<code>done</code>继续</li>
+</ul>
+<p>Do you want to proceed with the proposed reshard plan (yes&#x2F;no)?</p>
+<ul>
+<li>输入yes</li>
+</ul>
+<p>查看是否分配成功</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">[root@localhost opt]<span class="hljs-comment"># redis-cli -p 7001 cluster nodes</span><br>e5850b5810751d294a82607dd7931687561c73f7 192.168.52.101:7004@17004 master - 0 1668781636405 7 connected 0-2999<br></code></pre></td></tr></table></figure>
+
+<p>get一下num值</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -c -p 7001<br>127.0.0.1:7001&gt; get num<br><span class="hljs-comment"># 会自动跳转到7004</span><br>Redirected to slot [2765] located at 192.168.52.101:7004<br><span class="hljs-string">&quot;123&quot;</span><br>192.168.52.101:7004&gt;<br></code></pre></td></tr></table></figure>
+
+<p>设置num的值为10</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">192.168.52.101:7004&gt; <span class="hljs-built_in">set</span> num 10<br>OK<br></code></pre></td></tr></table></figure>
+
+<h4 id="从集群删除一个节点"><a href="#从集群删除一个节点" class="headerlink" title="从集群删除一个节点"></a>从集群删除一个节点</h4><p>删除slave节点</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster del-node 节点ip:port 节点<span class="hljs-built_in">id</span><br></code></pre></td></tr></table></figure>
+
+<p>删除master节点</p>
+<ol>
+<li><p>先对节点进行分片工作，防止数据丢失</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster reshard 欲删除节点ip:port<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>移除节点</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster del-node 节点ip:port 节点<span class="hljs-built_in">id</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>使用下面命令删除7004节点</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli --cluster reshard 192.168.52.101:7004<br>redis-cli --cluster del-node 192.168.52.101:7004 e5850b5810751d294a82607dd7931687561c73f7<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>分配步骤参考添加节点，目标是移动7004上的3000个插槽到7001</li>
+</ul>
+<p>验证是否成功</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png" data-fancybox="true"/></div></div>
+
+<h3 id="故障转移"><a href="#故障转移" class="headerlink" title="故障转移"></a>故障转移</h3><p>当集群中有一个master宕机会发生什么呢？</p>
+<p>我们使用<code>watch</code>命令监听集群</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">watch redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
+
+<p>再开启一个窗口，停止7002</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> /opt<br>redis-cli -p 7002 shutdown<br></code></pre></td></tr></table></figure>
+
+<p>等待一会我们看到7002 fail，而8002成为了master</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image49.png" data-fancybox="true"/></div></div>
+
+<p>我们再次启动7002</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> /opt<br>redis-server 7002/redis.conf<br></code></pre></td></tr></table></figure>
+
+<p>启动瞬间，7002成功连接集群，成为slave，实现了主从故障切换</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image50.png" data-fancybox="true"/></div></div>
+
+<h4 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h4><p>利用cluster failover命令可以手动让集群中的某个master宕机，切换到执行cluster failover命令的这个slave节点，实现无感知的数据迁移。其流程如下：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image51.png" data-fancybox="true"/></div></div>
+
+<p>手动的Failover支持三种不同模式：</p>
+<ul>
+<li>缺省：默认的流程，如图1～6步</li>
+<li>force：省略了对offset的一致性校验</li>
+<li>takeover：直接执行第5步，忽略数据一致性、忽略master状态和其他master的意见</li>
+</ul>
+<p>在7002这个slave节点执行手动故障转移，重新夺回master地位</p>
+<p>步骤如下：</p>
+<ol>
+<li><p>利用redis-cli连接7002这个节点</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -c -p 7002<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行cluster failover命令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">CLUSTER FAILOVER<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>切换后通过命令查看状态</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">redis-cli -p 7001 cluster nodes<br></code></pre></td></tr></table></figure>
+
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/redis/image46.png" data-fancybox="true"/></div></div>
+
+<h3 id="RedisTemplate访问分片集群"><a href="#RedisTemplate访问分片集群" class="headerlink" title="RedisTemplate访问分片集群"></a>RedisTemplate访问分片集群</h3><p>RedisTemplate底层同样基于lettuce实现了分片集群的支持，而使用的步骤与哨兵模式基本一致：</p>
+<h4 id="搭建项目-1"><a href="#搭建项目-1" class="headerlink" title="搭建项目"></a>搭建项目</h4><ol>
+<li><p>新建一个Spring Boot项目，在pom中引入redis的starter依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>然后在配置文件<code>application.yml</code>中指定sentinel相关信息：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">level:</span><br>    <span class="hljs-attr">io.lettuce.core:</span> <span class="hljs-string">debug</span><br>  <span class="hljs-attr">pattern:</span><br>    <span class="hljs-attr">dateformat:</span> <span class="hljs-string">MM-dd</span> <span class="hljs-string">HH:mm:ss:SSS</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">cluster:</span><br>      <span class="hljs-attr">nodes:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:7001</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:7002</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:7003</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:8001</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:8002</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.52</span><span class="hljs-number">.101</span><span class="hljs-string">:8003</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>配置主从读写分离，可省略</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> LettuceClientConfigurationBuilderCustomizer <span class="hljs-title function_">configurationBuilderCustomizer</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> clientConfigurationBuilder -&gt; clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里的ReadFrom是配置Redis的读写策略，是一个枚举，包括下面选择：</p>
+<ul>
+<li><code>MASTER</code>：从主节点读取</li>
+<li><code>MASTER_PREFERRED</code>：优先从master节点读取，master不可用才读取replica</li>
+<li><code>REPLICA</code>：从slave（replica）节点读取</li>
+<li><code>REPLICA_PREFERRED</code>：优先从slave（replica）节点读取，所有的slave都不可用才读取master</li>
+</ul>
+</li>
+<li><p>写一个Controller</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HelloController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> StringRedisTemplate stringRedisTemplate;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HelloController</span><span class="hljs-params">(StringRedisTemplate stringRedisTemplate)</span> &#123;<br>        <span class="hljs-built_in">this</span>.stringRedisTemplate = stringRedisTemplate;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/get/&#123;key&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hi</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;key&quot;)</span> String key)</span> &#123;<br>        <span class="hljs-keyword">return</span> stringRedisTemplate.opsForValue().get(key);<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/set/&#123;key&#125;/&#123;value&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hi</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;key&quot;)</span> String key, <span class="hljs-meta">@PathVariable(&quot;value&quot;)</span> String value)</span> &#123;<br>        stringRedisTemplate.opsForValue().set(key, value);<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h4><p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/get/num">http://localhost:8080/get/num</a></p>
+<p>num是在7001中存储，日志中可以看出最后是交给了7001的从节点8001来执行，成功。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">[channel=0x0992eeda, /192.168.52.1:49901 -&gt; /192.168.52.101:8001, epid=0x8, chid=0x8] Completing <span class="hljs-built_in">command</span> AsyncCommand [<span class="hljs-built_in">type</span>=READONLY, output=StatusOutput [output=OK, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command]<br>[channel=0x0992eeda, /192.168.52.1:49901 -&gt; /192.168.52.101:8001, epid=0x8] write() writeAndFlush <span class="hljs-built_in">command</span> ClusterCommand [<span class="hljs-built_in">command</span>=AsyncCommand [<span class="hljs-built_in">type</span>=GET, output=ValueOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command], redirections=0, maxRedirections=5]<br>[channel=0x0992eeda, /192.168.52.1:49901 -&gt; /192.168.52.101:8001, epid=0x8] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/set/num/666">http://localhost:8080/set/num/666</a></p>
+<p>set操作交给了7001，成功。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">[channel=0x08f375e0, /192.168.52.1:49902 -&gt; /192.168.52.101:7001, epid=0x9] write() writeAndFlush <span class="hljs-built_in">command</span> ClusterCommand [<span class="hljs-built_in">command</span>=AsyncCommand [<span class="hljs-built_in">type</span>=SET, output=StatusOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command], redirections=0, maxRedirections=5]<br>[channel=0x08f375e0, /192.168.52.1:49902 -&gt; /192.168.52.101:7001, epid=0x9] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:8080/set/a/666">http://localhost:8080/set/a/666</a></p>
+<p><code>set a 666</code>的命令是切换到了7003来执行，成功。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><code class="hljs sh">[channel=0x85d2adbb, /192.168.52.1:49918 -&gt; /192.168.52.101:7003] writing <span class="hljs-built_in">command</span> ClusterCommand [<span class="hljs-built_in">command</span>=AsyncCommand [<span class="hljs-built_in">type</span>=SET, output=StatusOutput [output=null, error=<span class="hljs-string">&#x27;null&#x27;</span>], commandType=io.lettuce.core.protocol.Command], redirections=0, maxRedirections=5]<br>[channel=0x85d2adbb, /192.168.52.1:49918 -&gt; /192.168.52.101:7003, epid=0xa] write() <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/redis/04_advance/multi-cache.html">多级缓存</a></div><div class="item" id="next"></div></section></div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="sx-code/blog-comments" data-repo-id="R_kgDOIYpmwg" data-category="Announcements" data-category-id="DIC_kwDOIYpmws4Ce4IF" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">swcode</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0">Stellar 1.28.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%82%B9Redis%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">单点Redis的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">Redis持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">RDB持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">AOF持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%94%E8%BE%83"><span class="toc-text">比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%B8%BB%E4%BB%8E"><span class="toc-text">Redis主从</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E4%B8%BB%E4%BB%8E%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建主从集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%8E%9F%E7%90%86"><span class="toc-text">数据同步原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-text">全量同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-text">增量同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96"><span class="toc-text">优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%93%A8%E5%85%B5"><span class="toc-text">Redis哨兵</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8E%9F%E7%90%86"><span class="toc-text">哨兵的作用和原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">哨兵的作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7"><span class="toc-text">服务状态监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E4%B8%BE%E6%96%B0%E7%9A%84master"><span class="toc-text">选举新的master</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB"><span class="toc-text">如何实现故障转移</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建哨兵集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RedisTemplate%E7%9A%84%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="toc-text">RedisTemplate的哨兵模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">搭建项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-text">Redis分片集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%E7%BB%93%E6%9E%84"><span class="toc-text">分片集群结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-text">搭建分片集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%A3%E5%88%97%E6%8F%92%E6%A7%BD"><span class="toc-text">散列插槽</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-text">测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-2"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E4%BC%B8%E7%BC%A9"><span class="toc-text">集群伸缩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E9%9B%86%E7%BE%A4"><span class="toc-text">添加一个节点到集群</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E9%9B%86%E7%BE%A4%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9"><span class="toc-text">从集群删除一个节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB"><span class="toc-text">故障转移</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-text">数据迁移</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RedisTemplate%E8%AE%BF%E9%97%AE%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-text">RedisTemplate访问分片集群</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE-1"><span class="toc-text">搭建项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-2"><span class="toc-text">测试</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.28.0" async></script>
+
+<!-- optional -->
+
+  <script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      var script = document.createElement('script');
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  });
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+<script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+</div></body></html>

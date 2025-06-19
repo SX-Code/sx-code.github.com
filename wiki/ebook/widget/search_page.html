@@ -1,0 +1,599 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0" theme-name="Stellar" theme-version="1.28.0">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  
+  <title>EBook：搜索界面 - swcode</title>
+
+  
+    <meta name="description" content="搜索界面使用Flutter自带的SearchDelegate组件实现，通过魔改实现如下效果：  搜素建议 搜索结果，支持刷新和加载更多 IOS中文输入拼音问题  界面预览    拷贝源码将SearchDelegate的源码拷贝一份，修改内容如下： import &amp;#x27;package:flutter&#x2F;material.dart&amp;#x27;;import &amp;#x27;package:flutte">
+<meta property="og:type" content="website">
+<meta property="og:title" content="搜索界面">
+<meta property="og:url" content="http://example.com/wiki/ebook/widget/search_page.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="搜索界面使用Flutter自带的SearchDelegate组件实现，通过魔改实现如下效果：  搜素建议 搜索结果，支持刷新和加载更多 IOS中文输入拼音问题  界面预览    拷贝源码将SearchDelegate的源码拷贝一份，修改内容如下： import &amp;#x27;package:flutter&#x2F;material.dart&amp;#x27;;import &amp;#x27;package:flutte">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_03.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_04.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_05.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_05.png">
+<meta property="article:published_time" content="2024-06-19T14:34:00.000Z">
+<meta property="article:modified_time" content="2024-06-19T15:13:28.339Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_03.png">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.28.0">
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+</head>
+<body>
+
+
+
+<div class="l_body s:aa content tech" id="start" layout="wiki" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/logo.webp" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/wiki/ebook/index.html"><div class="main" ff="title">EBook</div><div class="sub cap">电子书城项目开发指南</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/wiki/ebook/" placeholder="在电子书城项目中搜索..."></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><span>博客</span></a><a class="nav-item active" title="专栏" href="/wiki/" style="color:#3DC550"><span>专栏</span></a><a class="nav-item" title="关于" href="/about/" style="color:#FA6400"><span>关于</span></a></nav>
+</div>
+<div class="widgets">
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">项目概述</span></div><div class="widget-body fs14"><a class="link" href="/wiki/ebook/index.html#start"><span class="toc-text">项目概述</span></a></div><div class="widget-header dis-select"><span class="name">初始化项目</span></div><div class="widget-body fs14"><a class="link" href="/wiki/ebook/init/create.html"><span class="toc-text">创建项目</span></a><a class="link" href="/wiki/ebook/init/screenutil.html"><span class="toc-text">屏幕适配</span></a><a class="link" href="/wiki/ebook/init/theme.html"><span class="toc-text">主题适配</span></a><a class="link" href="/wiki/ebook/init/lazystack.html"><span class="toc-text">懒加载导航页</span></a></div><div class="widget-header dis-select"><span class="name">界面实现</span></div><div class="widget-body fs14"><a class="link active" href="/wiki/ebook/widget/search_page.html"><span class="toc-text">搜索界面</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="link" href="/wiki/ebook/widget/theme_switch.html"><span class="toc-text">主题切换</span></a><a class="link" href="/wiki/ebook/widget/global_bottomnav.html"><span class="toc-text">底部导航栏全局跳转</span></a><a class="link" href="/wiki/ebook/widget/continue.html"><span class="toc-text">持续更新中</span></a></div></widget>
+
+<widget class="widget-wrapper post-card"><div class="widget-header dis-select"><span class="name">更多：项目</span></div><div class="widget-body"><a class="item wiki" href="/wiki/adminpro/01_introduce/index.html"><span class="title">Naive UI Admin</span><span class="excerpt">Naive Ui Admin是一个基于 Vue3.0、Vite、 Naive UI、TypeScript的中后台解决方案，它使用了最新的前端技术栈，可以帮助你快速搭建企业级中后台项目。</span></a><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/pyqgis-sd/01_intr/index.html"><span class="title">PyQGIS二次开发指南</span><span class="excerpt">当你的数据处理使用的是Python语言，而你的导师又让你开发界面，那么PyQGIS二次开发指南是你必读的圣经。QGIS支持Python语言进行二次开发，你将学会如何使用Qt Designer进行界面设计、加载栅格数据、加载矢量数据、软件打包、安装包制作等。</span></a><a class="item wiki" href="/wiki/learning-online/01-introduce/index.html"><span class="title">学成在线</span><span class="excerpt">该项目以在线教育业务为基础，基于当前热门的 Spring Cloud 微服务技术栈进行设计，采用Nginx、SpringBoot、Spring Cloud、MyBatis-Plus、MQ、Redis、Elasticsearch等框架和中间件为基础进行开发，带你体验Java大型项目从需求分析、架构设计、编码、调试、测试的整个过程。</span></a><a class="item wiki" href="/wiki/trip-cloud/01_introduce/index.html"><span class="title">旅游项目</span><span class="excerpt">该项目基于Spring Cloud微服务技术栈进行设计，使用JWT+ThreadLocal完成用户登陆，使用MongoDB NoSQL实现文章评论，使用Elasticsearch做内容搜索，使用Redis做统计数据的存储并完成数据同步。</span></a><a class="item wiki" href="/wiki/oneread/index.html"><span class="title">ONE阅读</span><span class="excerpt">OneRead - ONE阅读,是一个使用Flutter构建的集书籍、漫画、听书和视频资源为一体的手机APP。使用自定义源来解析对应的资源，以舒适的UI来展示数据。ONE阅读，不只阅读。</span></a></div></widget>
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/wiki/oneread/index.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目介绍</span></a><a class="item title" href="/wiki/oneread/source_rule.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>源规则</span></a><a class="item title" href="/wiki/oneread/preview.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目预览</span></a><a class="item title" href="/wiki/flutter-dev/mac/icon.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>修改应用图标</span></a><a class="item title" href="/wiki/flutter-dev/windows/title.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>定制标题栏</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="https://github.com/SX-Code/about/#comments" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki">文档</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/ebook/index.html">EBook</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2024-06-19T15:13:28.339Z">2024-06-19</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>搜索界面</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>搜索界面使用Flutter自带的<strong>SearchDelegate</strong>组件实现，通过魔改实现如下效果：</p>
+<ol>
+<li>搜素建议</li>
+<li>搜索结果，支持刷新和加载更多</li>
+<li>IOS中文输入拼音问题</li>
+</ol>
+<h2 id="界面预览"><a href="#界面预览" class="headerlink" title="界面预览"></a>界面预览</h2><div class="tag-plugin img-wrap"><div class="frame-wrap" id="iphone11"focus="top"><img class="img lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_03.png"/><div class="frame"></div></div></div>
+
+<div class="tag-plugin img-wrap"><div class="frame-wrap" id="iphone11"focus="top"><img class="img lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_04.png"/><div class="frame"></div></div></div>
+
+<h2 id="拷贝源码"><a href="#拷贝源码" class="headerlink" title="拷贝源码"></a>拷贝源码</h2><p>将SearchDelegate的源码拷贝一份，修改内容如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/services.dart&#x27;</span>;<br><br><span class="hljs-comment">/// <span class="language-markdown">修改此处为 showMySearch</span></span><br>Future&lt;T?&gt; showMySearch&lt;T&gt;(&#123;<br>  <span class="hljs-keyword">required</span> BuildContext context,<br>  <span class="hljs-keyword">required</span> MySearchDelegate&lt;T&gt; delegate,<br>  <span class="hljs-built_in">String?</span> query = <span class="hljs-string">&#x27;&#x27;</span>,<br>  <span class="hljs-built_in">bool</span> useRootNavigator = <span class="hljs-keyword">false</span>,<br>&#125;) &#123;<br>  delegate.query = query ?? delegate.query;<br>  delegate._currentBody = _SearchBody.suggestions;<br>  <span class="hljs-keyword">return</span> Navigator.of(context, rootNavigator: useRootNavigator)<br>      .push(_SearchPageRoute&lt;T&gt;(<br>    delegate: delegate,<br>  ));<br>&#125;<br><br><span class="hljs-comment">/// <span class="language-markdown">https://juejin.cn/post/7090374603951833118</span></span><br><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySearchDelegate</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>  MySearchDelegate(&#123;<br>    <span class="hljs-keyword">this</span>.searchFieldLabel,<br>    <span class="hljs-keyword">this</span>.searchFieldStyle,<br>    <span class="hljs-keyword">this</span>.searchFieldDecorationTheme,<br>    <span class="hljs-keyword">this</span>.keyboardType,<br>    <span class="hljs-keyword">this</span>.textInputAction = TextInputAction.search,<br>  &#125;) : <span class="hljs-keyword">assert</span>(searchFieldStyle == <span class="hljs-keyword">null</span> || searchFieldDecorationTheme == <span class="hljs-keyword">null</span>);<br><br>  Widget buildSuggestions(BuildContext context);<br><br>  Widget buildResults(BuildContext context);<br><br>  Widget? buildLeading(BuildContext context);<br><br>  <span class="hljs-built_in">bool?</span> automaticallyImplyLeading;<br><br>  <span class="hljs-built_in">double?</span> leadingWidth;<br><br>  <span class="hljs-built_in">List</span>&lt;Widget&gt;? buildActions(BuildContext context);<br><br>  PreferredSizeWidget? buildBottom(BuildContext context) =&gt; <span class="hljs-keyword">null</span>;<br><br>  Widget? buildFlexibleSpace(BuildContext context) =&gt; <span class="hljs-keyword">null</span>;<br><br>  ThemeData appBarTheme(BuildContext context) &#123;<br>    <span class="hljs-keyword">final</span> ThemeData theme = Theme.of(context);<br>    <span class="hljs-keyword">final</span> ColorScheme colorScheme = theme.colorScheme;<br>    <span class="hljs-keyword">return</span> theme.copyWith(<br>      appBarTheme: AppBarTheme(<br>        systemOverlayStyle: colorScheme.brightness == Brightness.dark<br>            ? SystemUiOverlayStyle.light<br>            : SystemUiOverlayStyle.dark,<br>        backgroundColor: colorScheme.brightness == Brightness.dark<br>            ? Colors.grey[<span class="hljs-number">900</span>]<br>            : Colors.white,<br>        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),<br>        titleTextStyle: theme.textTheme.titleLarge,<br>        toolbarTextStyle: theme.textTheme.bodyMedium,<br>      ),<br>      inputDecorationTheme: searchFieldDecorationTheme ??<br>          InputDecorationTheme(<br>            hintStyle: searchFieldStyle ?? theme.inputDecorationTheme.hintStyle,<br>            border: InputBorder.none,<br>          ),<br>    );<br>  &#125;<br><br>  <span class="hljs-built_in">String</span> <span class="hljs-keyword">get</span> query =&gt; _queryTextController.completeText;<br><br>  <span class="hljs-keyword">set</span> query(<span class="hljs-built_in">String</span> value) &#123;<br>    _queryTextController.completeText = value; <span class="hljs-comment">// 更新实际搜索内容</span><br>    _queryTextController.text = value; <span class="hljs-comment">// 更新输入框内容</span><br>    <span class="hljs-keyword">if</span> (_queryTextController.text.isNotEmpty) &#123;<br>      _queryTextController.selection = TextSelection.fromPosition(<br>          TextPosition(offset: _queryTextController.text.length));<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> showResults(BuildContext context) &#123;<br>    _focusNode?.unfocus();<br>    _currentBody = _SearchBody.results;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> showSuggestions(BuildContext context) &#123;<br>    <span class="hljs-keyword">assert</span>(_focusNode != <span class="hljs-keyword">null</span>,<br>        <span class="hljs-string">&#x27;_focusNode must be set by route before showSuggestions is called.&#x27;</span>);<br>    _focusNode!.requestFocus();<br>    _currentBody = _SearchBody.suggestions;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> close(BuildContext context, T result) &#123;<br>    _currentBody = <span class="hljs-keyword">null</span>;<br>    _focusNode?.unfocus();<br>    Navigator.of(context)<br>      ..popUntil((Route&lt;<span class="hljs-built_in">dynamic</span>&gt; route) =&gt; route == _route)<br>      ..pop(result);<br>  &#125;<br><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String?</span> searchFieldLabel;<br><br>  <span class="hljs-keyword">final</span> TextStyle? searchFieldStyle;<br><br>  <span class="hljs-keyword">final</span> InputDecorationTheme? searchFieldDecorationTheme;<br><br>  <span class="hljs-keyword">final</span> TextInputType? keyboardType;<br><br>  <span class="hljs-keyword">final</span> TextInputAction textInputAction;<br><br>  Animation&lt;<span class="hljs-built_in">double</span>&gt; <span class="hljs-keyword">get</span> transitionAnimation =&gt; _proxyAnimation;<br><br>  FocusNode? _focusNode;<br><br>  <span class="hljs-keyword">final</span> ChinaTextEditController _queryTextController = ChinaTextEditController();<br><br>  <span class="hljs-keyword">final</span> ProxyAnimation _proxyAnimation =<br>      ProxyAnimation(kAlwaysDismissedAnimation);<br><br>  <span class="hljs-keyword">final</span> ValueNotifier&lt;_SearchBody?&gt; _currentBodyNotifier =<br>      ValueNotifier&lt;_SearchBody?&gt;(<span class="hljs-keyword">null</span>);<br><br>  _SearchBody? <span class="hljs-keyword">get</span> _currentBody =&gt; _currentBodyNotifier.value;<br>  <span class="hljs-keyword">set</span> _currentBody(_SearchBody? value) &#123;<br>    _currentBodyNotifier.value = value;<br>  &#125;<br><br>  _SearchPageRoute&lt;T&gt;? _route;<br><br>  <span class="hljs-comment">/// <span class="language-markdown">Releases the resources.</span></span><br>  <span class="hljs-meta">@mustCallSuper</span><br>  <span class="hljs-keyword">void</span> dispose() &#123;<br>    _currentBodyNotifier.dispose();<br>    _focusNode?.dispose();<br>    _queryTextController.dispose();<br>    _proxyAnimation.parent = <span class="hljs-keyword">null</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">/// <span class="language-markdown">search page.</span></span><br><span class="hljs-keyword">enum</span> _SearchBody &#123;<br>  suggestions,<br><br>  results,<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SearchPageRoute</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">PageRoute</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>  _SearchPageRoute(&#123;<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.delegate,<br>  &#125;) &#123;<br>    <span class="hljs-keyword">assert</span>(<br>      delegate._route == <span class="hljs-keyword">null</span>,<br>      <span class="hljs-string">&#x27;The <span class="hljs-subst">$&#123;delegate.runtimeType&#125;</span> instance is currently used by another active &#x27;</span><br>      <span class="hljs-string">&#x27;search. Please close that search by calling close() on the MySearchDelegate &#x27;</span><br>      <span class="hljs-string">&#x27;before opening another search with the same delegate instance.&#x27;</span>,<br>    );<br>    delegate._route = <span class="hljs-keyword">this</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">final</span> MySearchDelegate&lt;T&gt; delegate;<br><br>  <span class="hljs-meta">@override</span><br>  Color? <span class="hljs-keyword">get</span> barrierColor =&gt; <span class="hljs-keyword">null</span>;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">String?</span> <span class="hljs-keyword">get</span> barrierLabel =&gt; <span class="hljs-keyword">null</span>;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">Duration</span> <span class="hljs-keyword">get</span> transitionDuration =&gt; <span class="hljs-keyword">const</span> <span class="hljs-built_in">Duration</span>(milliseconds: <span class="hljs-number">300</span>);<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">bool</span> <span class="hljs-keyword">get</span> maintainState =&gt; <span class="hljs-keyword">false</span>;<br><br>  <span class="hljs-meta">@override</span><br>  Widget buildTransitions(<br>    BuildContext context,<br>    Animation&lt;<span class="hljs-built_in">double</span>&gt; animation,<br>    Animation&lt;<span class="hljs-built_in">double</span>&gt; secondaryAnimation,<br>    Widget child,<br>  ) &#123;<br>    <span class="hljs-keyword">return</span> FadeTransition(<br>      opacity: animation,<br>      child: child,<br>    );<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Animation&lt;<span class="hljs-built_in">double</span>&gt; createAnimation() &#123;<br>    <span class="hljs-keyword">final</span> Animation&lt;<span class="hljs-built_in">double</span>&gt; animation = <span class="hljs-keyword">super</span>.createAnimation();<br>    delegate._proxyAnimation.parent = animation;<br>    <span class="hljs-keyword">return</span> animation;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget buildPage(<br>    BuildContext context,<br>    Animation&lt;<span class="hljs-built_in">double</span>&gt; animation,<br>    Animation&lt;<span class="hljs-built_in">double</span>&gt; secondaryAnimation,<br>  ) &#123;<br>    <span class="hljs-keyword">return</span> _SearchPage&lt;T&gt;(<br>      delegate: delegate,<br>      animation: animation,<br>    );<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> didComplete(T? result) &#123;<br>    <span class="hljs-keyword">super</span>.didComplete(result);<br>    <span class="hljs-keyword">assert</span>(delegate._route == <span class="hljs-keyword">this</span>);<br>    delegate._route = <span class="hljs-keyword">null</span>;<br>    delegate._currentBody = <span class="hljs-keyword">null</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SearchPage</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-keyword">const</span> _SearchPage(&#123;<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.delegate,<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.animation,<br>  &#125;);<br><br>  <span class="hljs-keyword">final</span> MySearchDelegate&lt;T&gt; delegate;<br>  <span class="hljs-keyword">final</span> Animation&lt;<span class="hljs-built_in">double</span>&gt; animation;<br><br>  <span class="hljs-meta">@override</span><br>  State&lt;StatefulWidget&gt; createState() =&gt; _SearchPageState&lt;T&gt;();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SearchPageState</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">_SearchPage</span>&lt;<span class="hljs-title">T</span>&gt;&gt; </span>&#123;<br>  <span class="hljs-comment">// This node is owned, but not hosted by, the search page. Hosting is done by</span><br>  <span class="hljs-comment">// the text field.</span><br>  FocusNode focusNode = FocusNode();<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    widget.delegate._queryTextController.addListener(_onQueryChanged);<br>    widget.animation.addStatusListener(_onAnimationStatusChanged);<br>    widget.delegate._currentBodyNotifier.addListener(_onSearchBodyChanged);<br>    focusNode.addListener(_onFocusChanged);<br>    widget.delegate._focusNode = focusNode;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> dispose() &#123;<br>    <span class="hljs-keyword">super</span>.dispose();<br>    widget.delegate._queryTextController.removeListener(_onQueryChanged);<br>    widget.animation.removeStatusListener(_onAnimationStatusChanged);<br>    widget.delegate._currentBodyNotifier.removeListener(_onSearchBodyChanged);<br>    widget.delegate._focusNode = <span class="hljs-keyword">null</span>;<br>    focusNode.dispose();<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _onAnimationStatusChanged(AnimationStatus status) &#123;<br>    <span class="hljs-keyword">if</span> (status != AnimationStatus.completed) &#123;<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    widget.animation.removeStatusListener(_onAnimationStatusChanged);<br>    <span class="hljs-keyword">if</span> (widget.delegate._currentBody == _SearchBody.suggestions) &#123;<br>      focusNode.requestFocus();<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> didUpdateWidget(_SearchPage&lt;T&gt; oldWidget) &#123;<br>    <span class="hljs-keyword">super</span>.didUpdateWidget(oldWidget);<br>    <span class="hljs-keyword">if</span> (widget.delegate != oldWidget.delegate) &#123;<br>      oldWidget.delegate._queryTextController.removeListener(_onQueryChanged);<br>      widget.delegate._queryTextController.addListener(_onQueryChanged);<br>      oldWidget.delegate._currentBodyNotifier<br>          .removeListener(_onSearchBodyChanged);<br>      widget.delegate._currentBodyNotifier.addListener(_onSearchBodyChanged);<br>      oldWidget.delegate._focusNode = <span class="hljs-keyword">null</span>;<br>      widget.delegate._focusNode = focusNode;<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _onFocusChanged() &#123;<br>    <span class="hljs-keyword">if</span> (focusNode.hasFocus &amp;&amp;<br>        widget.delegate._currentBody != _SearchBody.suggestions) &#123;<br>      widget.delegate.showSuggestions(context);<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _onQueryChanged() &#123;<br>    setState(() &#123;<br>      <span class="hljs-comment">// rebuild ourselves because query changed.</span><br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-keyword">void</span> _onSearchBodyChanged() &#123;<br>    setState(() &#123;<br>      <span class="hljs-comment">// rebuild ourselves because search body changed.</span><br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">assert</span>(debugCheckHasMaterialLocalizations(context));<br>    <span class="hljs-keyword">final</span> ThemeData theme = widget.delegate.appBarTheme(context);<br>    <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> searchFieldLabel = widget.delegate.searchFieldLabel ??<br>        MaterialLocalizations.of(context).searchFieldLabel;<br>    Widget? body;<br>    <span class="hljs-keyword">switch</span> (widget.delegate._currentBody) &#123;<br>      <span class="hljs-keyword">case</span> _SearchBody.suggestions:<br>        body = KeyedSubtree(<br>          key: <span class="hljs-keyword">const</span> ValueKey&lt;_SearchBody&gt;(_SearchBody.suggestions),<br>          child: widget.delegate.buildSuggestions(context),<br>        );<br>      <span class="hljs-keyword">case</span> _SearchBody.results:<br>        body = KeyedSubtree(<br>          key: <span class="hljs-keyword">const</span> ValueKey&lt;_SearchBody&gt;(_SearchBody.results),<br>          child: widget.delegate.buildResults(context),<br>        );<br>      <span class="hljs-keyword">case</span> <span class="hljs-keyword">null</span>:<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">late</span> <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> routeName;<br>    <span class="hljs-keyword">switch</span> (theme.platform) &#123;<br>      <span class="hljs-keyword">case</span> TargetPlatform.iOS:<br>      <span class="hljs-keyword">case</span> TargetPlatform.macOS:<br>        routeName = <span class="hljs-string">&#x27;&#x27;</span>;<br>      <span class="hljs-keyword">case</span> TargetPlatform.android:<br>      <span class="hljs-keyword">case</span> TargetPlatform.fuchsia:<br>      <span class="hljs-keyword">case</span> TargetPlatform.linux:<br>      <span class="hljs-keyword">case</span> TargetPlatform.windows:<br>        routeName = searchFieldLabel;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> Semantics(<br>      explicitChildNodes: <span class="hljs-keyword">true</span>,<br>      scopesRoute: <span class="hljs-keyword">true</span>,<br>      namesRoute: <span class="hljs-keyword">true</span>,<br>      label: routeName,<br>      child: Theme(<br>        data: theme,<br>        child: Scaffold(<br>          appBar: AppBar(<br>            leadingWidth: widget.delegate.leadingWidth,<br>            automaticallyImplyLeading:<br>                widget.delegate.automaticallyImplyLeading ?? <span class="hljs-keyword">true</span>,<br>            leading: widget.delegate.buildLeading(context),<br>            title: TextField(<br>              controller: widget.delegate._queryTextController,<br>              focusNode: focusNode,<br>              style: widget.delegate.searchFieldStyle ??<br>                  theme.textTheme.titleLarge,<br>              textInputAction: widget.delegate.textInputAction,<br>              keyboardType: widget.delegate.keyboardType,<br>              onSubmitted: (<span class="hljs-built_in">String</span> _) =&gt; widget.delegate.showResults(context),<br>              decoration: InputDecoration(hintText: searchFieldLabel),<br>            ),<br>            flexibleSpace: widget.delegate.buildFlexibleSpace(context),<br>            actions: widget.delegate.buildActions(context),<br>            bottom: widget.delegate.buildBottom(context),<br>          ),<br>          body: AnimatedSwitcher(<br>            duration: <span class="hljs-keyword">const</span> <span class="hljs-built_in">Duration</span>(milliseconds: <span class="hljs-number">300</span>),<br>            child: body,<br>          ),<br>        ),<br>      ),<br>    );<br>  &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChinaTextEditController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextEditingController</span> </span>&#123;<br>  <span class="hljs-comment">///<span class="language-markdown">拼音输入完成后的文字</span></span><br>  <span class="hljs-keyword">var</span> completeText = <span class="hljs-string">&#x27;&#x27;</span>;<br><br>  <span class="hljs-meta">@override</span><br>  TextSpan buildTextSpan(<br>      &#123;<span class="hljs-keyword">required</span> BuildContext context,<br>      TextStyle? style,<br>      <span class="hljs-keyword">required</span> <span class="hljs-built_in">bool</span> withComposing&#125;) &#123;<br>    <span class="hljs-comment">///<span class="language-markdown">拼音输入完成</span></span><br>    <span class="hljs-keyword">if</span> (!value.composing.isValid || !withComposing) &#123;<br>      <span class="hljs-keyword">if</span> (completeText != value.text) &#123;<br>        completeText = value.text;<br>        WidgetsBinding.instance.addPostFrameCallback((_) &#123;<br>          notifyListeners();<br>        &#125;);<br>      &#125;<br>      <span class="hljs-keyword">return</span> TextSpan(style: style, text: text);<br>    &#125;<br><br>    <span class="hljs-comment">///<span class="language-markdown">返回输入样式，可自定义样式</span></span><br>    <span class="hljs-keyword">final</span> TextStyle composingStyle = style?.merge(<br>      <span class="hljs-keyword">const</span> TextStyle(decoration: TextDecoration.underline),<br>    ) ?? <span class="hljs-keyword">const</span> TextStyle(decoration: TextDecoration.underline);<br>    <span class="hljs-keyword">return</span> TextSpan(style: style, children: &lt;TextSpan&gt;[<br>      TextSpan(text: value.composing.textBefore(value.text)),<br>      TextSpan(<br>        style: composingStyle,<br>        text: value.composing.isValid &amp;&amp; !value.composing.isCollapsed<br>            ? value.composing.textInside(value.text)<br>            : <span class="hljs-string">&quot;&quot;</span>,<br>      ),<br>      TextSpan(text: value.composing.textAfter(value.text)),<br>    ]);<br>  &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实现搜索"><a href="#实现搜索" class="headerlink" title="实现搜索"></a>实现搜索</h2><p>创建SearchPage继承MySearchDelegate，修改样式，实现页面。需要重写下面5个方法</p>
+<ul>
+<li>appBarTheme：修改搜索样式</li>
+<li>buildActions：搜索框右侧的方法</li>
+<li>buildLeading：搜索框左侧的返回按钮</li>
+<li>buildResults：搜索结果</li>
+<li>buildSuggestions：搜索建议</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/pages/search/MySearchDelegate.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/src/material/theme_data.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/src/widgets/framework.dart&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MySearchDelegate</span> </span>&#123;<br><br>  <span class="hljs-meta">@override</span><br>  ThemeData appBarTheme(BuildContext context) &#123;<br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> implement appBarTheme</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.appBarTheme(context);<br>  &#125;<br>  <br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-built_in">List</span>&lt;Widget&gt;? buildActions(BuildContext context) &#123;<br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> implement buildActions</span><br>    <span class="hljs-keyword">throw</span> UnimplementedError();<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget? buildLeading(BuildContext context) &#123;<br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> implement buildLeading</span><br>    <span class="hljs-keyword">throw</span> UnimplementedError();<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget buildResults(BuildContext context) &#123;<br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> implement buildResults</span><br>    <span class="hljs-keyword">throw</span> UnimplementedError();<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget buildSuggestions(BuildContext context) &#123;<br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> implement buildSuggestions</span><br>    <span class="hljs-keyword">throw</span> UnimplementedError();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改样式"><a href="#修改样式" class="headerlink" title="修改样式"></a>修改样式</h3><div class="tag-plugin img-wrap"><div class="frame-wrap" id="iphone11"focus="top"><img class="img lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_05.png"/><div class="frame"></div></div></div>
+
+<figure class="highlight dart"><figcaption><span>search_page.dart</span></figcaption><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-meta">@override</span><br>ThemeData appBarTheme(BuildContext context) &#123;<br>  <span class="hljs-keyword">final</span> ThemeData theme = Theme.of(context);<br>  <span class="hljs-keyword">final</span> ColorScheme colorScheme = theme.colorScheme;<br>  <span class="hljs-keyword">return</span> theme.copyWith( <span class="hljs-comment">// 使用copyWith，适配全局主题</span><br>    appBarTheme: AppBarTheme( <span class="hljs-comment">// AppBar样式修改</span><br>      systemOverlayStyle: colorScheme.brightness == Brightness.dark<br>          ? SystemUiOverlayStyle.light<br>          : SystemUiOverlayStyle.dark,<br>      surfaceTintColor: Theme.of(context).colorScheme.surface,<br>      titleSpacing: <span class="hljs-number">0</span>, <span class="hljs-comment">// textfield前面的间距</span><br>      elevation: <span class="hljs-number">0</span>, <span class="hljs-comment">// 阴影</span><br>    ),<br>    inputDecorationTheme: InputDecorationTheme(<br>      isCollapsed: <span class="hljs-keyword">true</span>,<br>      hintStyle: TextStyle( <span class="hljs-comment">// 提示文字颜色</span><br>          color: Theme.of(ToastUtils.context).colorScheme.inversePrimary),<br>      filled: <span class="hljs-keyword">true</span>,  <span class="hljs-comment">// 填充颜色</span><br>      contentPadding: EdgeInsets.symmetric(vertical: <span class="hljs-number">10.</span>h, horizontal: <span class="hljs-number">15.</span>w),<br>      fillColor: Theme.of(context).colorScheme.secondary, <span class="hljs-comment">// 填充颜色，需要配合 filled</span><br>      enabledBorder: OutlineInputBorder( <span class="hljs-comment">// testified 边框</span><br>        borderRadius: BorderRadius.circular(<span class="hljs-number">12.</span>r),<br>        borderSide: BorderSide(<br>          color: Theme.of(context).colorScheme.surface,<br>        ),<br>      ),<br>      focusedBorder: OutlineInputBorder( <span class="hljs-comment">// testified 边框</span><br>        borderRadius: BorderRadius.circular(<span class="hljs-number">12.</span>r),<br>        borderSide: BorderSide(<br>          color: Theme.of(context).colorScheme.surface,<br>        ),<br>      ),<br>    ),<br>  );<br>&#125;<br><br><span class="hljs-meta">@override</span><br>TextStyle? <span class="hljs-keyword">get</span> searchFieldStyle =&gt; TextStyle(fontSize: <span class="hljs-number">14.</span>sp); <span class="hljs-comment">// 字体大小设置，主要是覆盖默认样式</span><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="按钮功能"><a href="#按钮功能" class="headerlink" title="按钮功能"></a>按钮功能</h3><p>左侧返回按钮，右侧就放了一个搜索文本，点击之后显示搜索结果</p>
+<div class="tag-plugin img-wrap"><div class="frame-wrap" id="iphone11"focus="top"><img class="img lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/sx-code/tuchuang@main/ebook/ebook_search_05.png"/><div class="frame"></div></div></div>
+
+<figure class="highlight dart"><figcaption><span>search_page.dart</span></figcaption><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-meta">@override</span><br>Widget? buildLeading(BuildContext context) &#123;<br>  <span class="hljs-keyword">return</span> IconButton(<br>    onPressed: () &#123;<br>      close(context, <span class="hljs-keyword">null</span>);<br>    &#125;,<br>    icon: Icon(<br>      color: Theme.of(context).colorScheme.onSurface,<br>      Icons.arrow_back_ios_new,<br>      size: <span class="hljs-number">20.</span>r,<br>    ),<br>  );<br>&#125;<br><br><span class="hljs-meta">@override</span><br><span class="hljs-built_in">List</span>&lt;Widget&gt;? buildActions(BuildContext context) &#123;<br>  <span class="hljs-keyword">return</span> [<br>    Padding(<br>      padding: EdgeInsets.only(right: <span class="hljs-number">15.</span>w, left: <span class="hljs-number">15.</span>w),<br>      child: GestureDetector(<br>        onTap: () &#123;<br>          showResults(context);<br>        &#125;,<br>        child: Text(<br>          <span class="hljs-string">&#x27;搜索&#x27;</span>,<br>          style: TextStyle(<br>              color: Theme.of(context).colorScheme.primary, fontSize: <span class="hljs-number">15.</span>sp),<br>        ),<br>      ),<br>    )<br>  ];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="搜索建议"><a href="#搜索建议" class="headerlink" title="搜索建议"></a>搜索建议</h3><p>当 TextField 输入变化时，就会调用<code>buildSuggestions</code>方法，刷新布局，因此考虑使用FlutterBuilder管理页面和数据。</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">final</span> SearchViewModel _viewModel = SearchViewModel();<br><br><span class="hljs-meta">@override</span><br>Widget buildSuggestions(BuildContext context) &#123;<br>  <span class="hljs-keyword">if</span> (query.isEmpty) &#123;<br>    <span class="hljs-comment">// 这里可以展示热门搜索等，有搜索建议时，热门搜索会被替换成搜索建议</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">const</span> SizedBox();<br>  &#125;<br>  <span class="hljs-keyword">return</span> FutureBuilder(<br>    future: _viewModel.getSuggest(query),<br>    builder: (BuildContext context, AsyncSnapshot&lt;<span class="hljs-built_in">List</span>&lt;Suggest&gt;&gt; snapshot) &#123;<br>      <span class="hljs-keyword">if</span> (snapshot.connectionState == ConnectionState.waiting) &#123;<br>        <span class="hljs-comment">// 数据加载中</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">const</span> Center(child: CircularProgressIndicator());<br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (snapshot.hasError) &#123;<br>        <span class="hljs-comment">// 数据加载错误</span><br>        <span class="hljs-keyword">return</span> Center(child: Text(<span class="hljs-string">&#x27;Error: <span class="hljs-subst">$&#123;snapshot.error&#125;</span>&#x27;</span>));<br>      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (snapshot.hasData) &#123;<br>        <span class="hljs-comment">// 数据加载成功，展示结果</span><br>        <span class="hljs-keyword">final</span> <span class="hljs-built_in">List</span>&lt;Suggest&gt; searchResults = snapshot.data ?? [];<br>        <span class="hljs-keyword">return</span> ListView.builder(<br>            padding: EdgeInsets.all(<span class="hljs-number">15.</span>r),<br>            itemCount: searchResults.length,<br>            itemBuilder: (context, index) &#123;<br>              <span class="hljs-keyword">return</span> GestureDetector(<br>                onTap: () &#123;<br>                  <span class="hljs-comment">// 更新输入框</span><br>                  query = searchResults[index].text ?? query;<br>                  showResults(context);<br>                &#125;,<br>                child: Container(<br>                  padding: EdgeInsets.symmetric(vertical: <span class="hljs-number">10.</span>h),<br>                  decoration: BoxDecoration(<br>                    border: BorderDirectional(<br>                      bottom: BorderSide(<br>                        width: <span class="hljs-number">0.6</span>,<br>                        color: Theme.of(context).colorScheme.surfaceContainer,<br>                      ),<br>                    ),<br>                  ),<br>                  child: Text(<span class="hljs-string">&#x27;<span class="hljs-subst">$&#123;searchResults[index].text&#125;</span>&#x27;</span>),<br>                ),<br>              );<br>            &#125;);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 数据为空</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">const</span> Center(child: Text(<span class="hljs-string">&#x27;No results found&#x27;</span>));<br>      &#125;<br>    &#125;,<br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实体类代码如下：</p>
+<figure class="highlight dart"><figcaption><span>suggest.dart</span></figcaption><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Suggest</span> </span>&#123;<br>  Suggest(&#123;<br>    <span class="hljs-keyword">this</span>.id,<br>    <span class="hljs-keyword">this</span>.url,<br>    <span class="hljs-keyword">this</span>.text,<br>    <span class="hljs-keyword">this</span>.isHot,<br>    <span class="hljs-keyword">this</span>.hotLevel,<br>  &#125;);<br><br>  Suggest.fromJson(<span class="hljs-built_in">dynamic</span> json) &#123;<br>    id = json[<span class="hljs-string">&#x27;id&#x27;</span>];<br>    url = json[<span class="hljs-string">&#x27;url&#x27;</span>];<br>    text = json[<span class="hljs-string">&#x27;text&#x27;</span>];<br>    isHot = json[<span class="hljs-string">&#x27;is_hot&#x27;</span>];<br>    hotLevel = json[<span class="hljs-string">&#x27;hot_level&#x27;</span>];<br>  &#125;<br><br>  <span class="hljs-built_in">String?</span> id;<br>  <span class="hljs-built_in">String?</span> url;<br>  <span class="hljs-built_in">String?</span> text;<br>  <span class="hljs-built_in">bool?</span> isHot;<br>  <span class="hljs-built_in">int?</span> hotLevel;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>ViewModel代码如下：</p>
+<figure class="highlight dart"><figcaption><span>search_vm.dart</span></figcaption><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchViewModel</span> </span>&#123;<br>  Future&lt;<span class="hljs-built_in">List</span>&lt;Suggest&gt;&gt; getSuggest(<span class="hljs-built_in">String</span> keyword) <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-keyword">if</span> (keyword.isEmpty) &#123;<br>      <span class="hljs-keyword">return</span> [];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> JsonApi.instance().fetchSuggestV3(keyword);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="搜索结果"><a href="#搜索结果" class="headerlink" title="搜索结果"></a>搜索结果</h3><p>我们需要搜索结果页面支持<strong>加载更多</strong>，这里用到了 SmartRefrsh 组件</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart">flutter pub add pull_to_refresh<br></code></pre></td></tr></table></figure>
+
+<p>buildResults方法是通过调用<code>showResults(context);</code>方法刷新页面，因此为了方便数据动态变化，新建<code>search_result_page.dart</code>页面</p>
+<figure class="highlight dart"><figcaption><span>search_result_page.dart</span></figcaption><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/components/book_tile/book_tile_vertical/my_book_tile_vertical_item.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/components/book_tile/book_tile_vertical/my_book_tile_vertical_item_skeleton.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/components/my_smart_refresh.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/models/book.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/models/types.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/pages/search/search_vm.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/utils/navigator_utils.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter_screenutil/flutter_screenutil.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:provider/provider.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:pull_to_refresh/pull_to_refresh.dart&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchResultPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatefulWidget</span> </span>&#123;<br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">String</span> query; <span class="hljs-comment">// 请求参数</span><br>  <span class="hljs-keyword">const</span> SearchResultPage(&#123;<span class="hljs-keyword">super</span>.key, <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.query&#125;);<br><br>  <span class="hljs-meta">@override</span><br>  State&lt;SearchResultPage&gt; createState() =&gt; _SearchResultPageState();<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">_SearchResultPageState</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">State</span>&lt;<span class="hljs-title">SearchResultPage</span>&gt; </span>&#123;<br>  <span class="hljs-keyword">final</span> RefreshController _refreshController = RefreshController();<br>  <span class="hljs-keyword">final</span> SearchViewModel _viewModel = SearchViewModel();<br>  <span class="hljs-keyword">void</span> loadOrRefresh(<span class="hljs-built_in">bool</span> loadMore) &#123;<br>    _viewModel.getResults(widget.query, loadMore).then((_) &#123;<br>      <span class="hljs-keyword">if</span> (loadMore) &#123;<br>        _refreshController.loadComplete();<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        _refreshController.refreshCompleted();<br>      &#125;<br>    &#125;);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> initState() &#123;<br>    <span class="hljs-keyword">super</span>.initState();<br>    loadOrRefresh(<span class="hljs-keyword">false</span>);<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  <span class="hljs-keyword">void</span> dispose() &#123;<br>    _viewModel.isDispose = <span class="hljs-keyword">true</span>;<br>    _refreshController.dispose();<br>    <span class="hljs-keyword">super</span>.dispose();<br>  &#125;<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> ChangeNotifierProvider&lt;SearchViewModel&gt;.value(<br>      value:  _viewModel,<br>      builder: (context, child) &#123;<br>        <span class="hljs-keyword">return</span> Consumer&lt;SearchViewModel&gt;(<br>          builder: (context, vm, child) &#123;<br>            <span class="hljs-built_in">List</span>&lt;Book&gt;? searchResult = vm.searchResult;<br>            <span class="hljs-comment">// 下拉刷新和上拉加载组件</span><br>            <span class="hljs-keyword">return</span> MySmartRefresh(<br>              enablePullDown: <span class="hljs-keyword">false</span>,<br>              onLoading: () &#123;<br>                loadOrRefresh(<span class="hljs-keyword">true</span>);<br>              &#125;,<br>              controller: _refreshController,<br>              child: ListView.builder(<br>                padding: EdgeInsets.only(left: <span class="hljs-number">15.</span>w, right: <span class="hljs-number">15.</span>w, top: <span class="hljs-number">15.</span>h),<br>                itemCount: searchResult?.length ?? <span class="hljs-number">10</span>,<br>                itemBuilder: (context, index) &#123;<br>                  <span class="hljs-keyword">if</span> (searchResult == <span class="hljs-keyword">null</span>) &#123;<br>                    <span class="hljs-comment">// 骨架屏 </span><br>                    <span class="hljs-keyword">return</span> MyBookTileVerticalItemSkeleton(<br>                        width: <span class="hljs-number">80.</span>w, height: <span class="hljs-number">120.</span>h);<br>                  &#125;<br>                  <span class="hljs-comment">// 结果渲染组件</span><br>                  <span class="hljs-keyword">return</span> MyBookTileVerticalItem(<br>                    book: searchResult[index],<br>                    width: <span class="hljs-number">80.</span>w,<br>                    height: <span class="hljs-number">120.</span>h,<br>                    onTap: (id) &#123;<br>                      NavigatorUtils.nav2Detail(<br>                          context, DetailPageType.ebook, searchResult[index]);<br>                    &#125;,<br>                  );<br>                &#125;,<br>              ),<br>            );<br>          &#125;,<br>        );<br>      &#125;,<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>MySmartRefresh组件代码如下，主要是对SmartRefresher做了进一步的封装</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:pull_to_refresh/pull_to_refresh.dart&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MySmartRefresh</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">StatelessWidget</span> </span>&#123;<br>  <span class="hljs-comment">// 启用下拉</span><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool?</span> enablePullDown;<br><br>  <span class="hljs-comment">// 启用上拉</span><br>  <span class="hljs-keyword">final</span> <span class="hljs-built_in">bool?</span> enablePullUp;<br><br>  <span class="hljs-comment">// 头布局</span><br>  <span class="hljs-keyword">final</span> Widget? header;<br><br>  <span class="hljs-comment">// 尾布局</span><br>  <span class="hljs-keyword">final</span> Widget? footer;<br><br>  <span class="hljs-comment">// 刷新事件</span><br>  <span class="hljs-keyword">final</span> VoidCallback? onRefresh;<br><br>  <span class="hljs-comment">// 加载事件</span><br>  <span class="hljs-keyword">final</span> VoidCallback? onLoading;<br><br>  <span class="hljs-comment">// 刷新组件控制器</span><br>  <span class="hljs-keyword">final</span> RefreshController controller;<br><br>  <span class="hljs-keyword">final</span> ScrollController? scrollController;<br><br>  <span class="hljs-comment">// 被刷新的子组件</span><br>  <span class="hljs-keyword">final</span> Widget child;<br><br>  <span class="hljs-keyword">const</span> MySmartRefresh(&#123;<br>    <span class="hljs-keyword">super</span>.key,<br>    <span class="hljs-keyword">this</span>.enablePullDown,<br>    <span class="hljs-keyword">this</span>.enablePullUp,<br>    <span class="hljs-keyword">this</span>.header,<br>    <span class="hljs-keyword">this</span>.footer,<br>    <span class="hljs-keyword">this</span>.onLoading,<br>    <span class="hljs-keyword">this</span>.onRefresh,<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.controller,<br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">this</span>.child,<br>    <span class="hljs-keyword">this</span>.scrollController,<br>  &#125;);<br><br>  <span class="hljs-meta">@override</span><br>  Widget build(BuildContext context) &#123;<br>    <span class="hljs-keyword">return</span> _refreshView();<br>  &#125;<br><br>  Widget _refreshView() &#123;<br>    <span class="hljs-keyword">return</span> SmartRefresher(<br>      scrollController: scrollController,<br>      controller: controller,<br>      enablePullDown: enablePullDown ?? <span class="hljs-keyword">true</span>,<br>      enablePullUp: enablePullUp ?? <span class="hljs-keyword">true</span>,<br>      header: header ?? <span class="hljs-keyword">const</span> ClassicHeader(),<br>      footer: footer ?? <span class="hljs-keyword">const</span> ClassicFooter(),<br>      onRefresh: onRefresh,<br>      onLoading: onLoading,<br>      child: child,<br>    );<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>SearchViewModel 代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/http/spider/json_api.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/models/book.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/models/query_param.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:e_book_clone/models/suggest.dart&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;package:flutter/material.dart&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchViewModel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ChangeNotifier</span> </span>&#123;<br>  <span class="hljs-built_in">int</span> _currPage = <span class="hljs-number">2</span>;<br>  <span class="hljs-built_in">bool</span> isDispose = <span class="hljs-keyword">false</span>;<br>  <span class="hljs-built_in">List</span>&lt;Book&gt;? _searchResult;<br><br>  <span class="hljs-built_in">List</span>&lt;Book&gt;? <span class="hljs-keyword">get</span> searchResult =&gt; _searchResult;<br><br>  Future&lt;<span class="hljs-built_in">List</span>&lt;Suggest&gt;&gt; getSuggest(<span class="hljs-built_in">String</span> keyword) <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-keyword">if</span> (keyword.isEmpty) &#123;<br>      <span class="hljs-keyword">return</span> [];<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> JsonApi.instance().fetchSuggestV3(keyword);<br>  &#125;<br><br>  Future getResults(<span class="hljs-built_in">String</span> keyword, <span class="hljs-built_in">bool</span> loadMore, &#123;VoidCallback? callback&#125;) <span class="hljs-keyword">async</span> &#123;<br>    <span class="hljs-keyword">if</span> (loadMore) &#123;<br>      _currPage++;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      _currPage = <span class="hljs-number">1</span>;<br>      _searchResult?.clear();<br>    &#125;<br><br>    <span class="hljs-comment">// 请求参数</span><br>    SearchParam param = SearchParam(<br>      page: _currPage,<br>      rootKind: <span class="hljs-keyword">null</span>,<br>      q: keyword,<br>      sort: <span class="hljs-string">&quot;defalut&quot;</span>,<br>      query: SearchParam.ebookSearch,<br>    );<br>    <span class="hljs-comment">// 请求结果</span><br>    <span class="hljs-built_in">List</span>&lt;Book&gt; res = <span class="hljs-keyword">await</span> JsonApi.instance().fetchEbookSearch(param);<br>	<br>    <span class="hljs-comment">// 加载更多，使用addAll</span><br>    <span class="hljs-keyword">if</span> (_searchResult == <span class="hljs-keyword">null</span>) &#123;<br>      _searchResult = res;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      _searchResult!.addAll(res);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (res.isEmpty &amp;&amp; _currPage &gt; <span class="hljs-number">0</span>) &#123;<br>      _currPage--;<br>    &#125;<br>    <span class="hljs-comment">// 防止Provider被销毁，数据延迟请求去通知报错</span><br>    <span class="hljs-keyword">if</span> (isDispose) <span class="hljs-keyword">return</span>;<br>    notifyListeners();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>buildResults方法如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart"><span class="hljs-meta">@override</span><br>Widget buildResults(BuildContext context) &#123;<br>  <span class="hljs-keyword">if</span> (query.isEmpty) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">const</span> SizedBox();<br>  &#125;<br>  <span class="hljs-keyword">return</span> SearchResultPage(query: query);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="显示搜索界面"><a href="#显示搜索界面" class="headerlink" title="显示搜索界面"></a>显示搜索界面</h2><p>注意调用的是我们自己拷贝修改的MySearchDelegate中的方法</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><code class="hljs dart">onTap: () &#123;<br>  showMySearch(context: context, delegate: SearchPage());<br>&#125;,<br></code></pre></td></tr></table></figure>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/ebook/init/lazystack.html">懒加载导航页</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/ebook/widget/theme_switch.html">主题切换</a></div></section></div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>评论区仅供交流，有问题请提 <a target="_blank" rel="noopener" href="https://github.com/SX-Code/ebook/issues">issue</a> 反馈。</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="sx-code/blog-comments" data-repo-id="R_kgDOIYpmwg" data-category="Announcements" data-category-id="DIC_kwDOIYpmws4Ce4IF" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">swcode</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0">Stellar 1.28.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+<widget class="widget-wrapper ghrepo"><div class="widget-body"><div class="items ds-ghinfo" api="https://api.github.com/repos/SX-Code/ebook"><a class="repo" href="https://github.com/SX-Code/ebook" target="_blank" rel="external nofollow noopener noreferrer"><div class="repo-name flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>SX-Code/ebook</div><div class="repo-desc"><span type="text" id="description">&nbsp;</span></div><div class="grid"><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg><span type="text" id="stargazers_count"></span></div><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg><span type="text" id="forks_count"></span></div><div class="flex-row ds-ghinfo" index="0" api="https://api.github.com/repos/SX-Code/ebook/tags"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg><span type="text" id="latest-tag-name">0</span></div></div></a></div></div></widget>
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%95%8C%E9%9D%A2%E9%A2%84%E8%A7%88"><span class="toc-text">界面预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%B7%E8%B4%9D%E6%BA%90%E7%A0%81"><span class="toc-text">拷贝源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%90%9C%E7%B4%A2"><span class="toc-text">实现搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F"><span class="toc-text">修改样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E9%92%AE%E5%8A%9F%E8%83%BD"><span class="toc-text">按钮功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%BB%BA%E8%AE%AE"><span class="toc-text">搜索建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C"><span class="toc-text">搜索结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%90%9C%E7%B4%A2%E7%95%8C%E9%9D%A2"><span class="toc-text">显示搜索界面</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.28.0" async></script>
+
+<!-- optional -->
+
+  <script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      var script = document.createElement('script');
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  });
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+<script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+</div></body></html>

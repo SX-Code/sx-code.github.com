@@ -1,0 +1,629 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0" theme-name="Stellar" theme-version="1.28.0">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9fafb">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  
+  <title>Naive UI Admin搭建流程：项目设置 - swcode</title>
+
+  
+    <meta name="description" content="网站配置这部份的配置信息，不需要也不能动态的变更，直接使用即可。  项目的Logo信息，可在这里进行修改，Vite方式忽略  创建src&#x2F;config&#x2F;website.config.js文件，写入以下内容： config&#x2F;website.config.jsimport logoImage from &amp;#x27;@&#x2F;assets&#x2F;images&#x2F;logo.png&amp;#x27;;import loginI">
+<meta property="og:type" content="website">
+<meta property="og:title" content="项目设置">
+<meta property="og:url" content="http://example.com/wiki/adminpro/02_project_prepare/04_%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.html">
+<meta property="og:site_name" content="swcode">
+<meta property="og:description" content="网站配置这部份的配置信息，不需要也不能动态的变更，直接使用即可。  项目的Logo信息，可在这里进行修改，Vite方式忽略  创建src&#x2F;config&#x2F;website.config.js文件，写入以下内容： config&#x2F;website.config.jsimport logoImage from &amp;#x27;@&#x2F;assets&#x2F;images&#x2F;logo.png&amp;#x27;;import loginI">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-06T09:47:24.000Z">
+<meta property="article:modified_time" content="2023-11-10T07:50:48.675Z">
+<meta property="article:author" content="swcode">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.28.0">
+
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/icon/avatar-fav.png">
+  
+
+  
+    
+<link rel="stylesheet" href="/custom/css/CodeStyle.css">
+
+  
+
+  <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.1/css/all.css">
+</head>
+<body>
+
+
+
+<div class="l_body s:aa content tech" id="start" layout="wiki" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@main/adminpro/logo.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/wiki/adminpro/01_introduce/index.html"><div class="main" ff="title">Naive UI Admin搭建流程</div><div class="sub cap">Naive UI Admin项目食用教程</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" data-filter="/wiki/adminpro/" placeholder="在 Naive UI Admin 中搜索..."></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><span>博客</span></a><a class="nav-item active" title="专栏" href="/wiki/" style="color:#3DC550"><span>专栏</span></a><a class="nav-item" title="关于" href="/about/" style="color:#FA6400"><span>关于</span></a></nav>
+</div>
+<div class="widgets">
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">快速开始</span></div><div class="widget-body fs14"><a class="link" href="/wiki/adminpro/01_introduce/index.html#start"><span class="toc-text">笔记简介</span></a></div><div class="widget-header dis-select"><span class="name">项目准备</span></div><div class="widget-body fs14"><a class="link" href="/wiki/adminpro/02_project_prepare/01_%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA.html"><span class="toc-text">项目搭建</span></a><a class="link" href="/wiki/adminpro/02_project_prepare/02_%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85.html"><span class="toc-text">依赖安装</span></a><a class="link" href="/wiki/adminpro/02_project_prepare/03_%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.html"><span class="toc-text">资源文件</span></a><a class="link active" href="/wiki/adminpro/02_project_prepare/04_%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE.html"><span class="toc-text">项目设置</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a><a class="link" href="/wiki/adminpro/02_project_prepare/05_%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6.html"><span class="toc-text">常量字符</span></a><a class="link" href="/wiki/adminpro/02_project_prepare/06_%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95.html"><span class="toc-text">工具方法</span></a></div><div class="widget-header dis-select"><span class="name">高级修改</span></div><div class="widget-body fs14"><a class="link" href="/wiki/adminpro/03_advanced_operation/01_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86.html"><span class="toc-text">状态管理</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/02_VUE%E9%A1%B5%E9%9D%A2.html"><span class="toc-text">VUE页面</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/03_%E8%B7%AF%E7%94%B1%E9%85%8D%E7%BD%AE.html"><span class="toc-text">路由配置</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/04_%E9%A1%B9%E7%9B%AE%E5%B8%83%E5%B1%80.html"><span class="toc-text">项目布局</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/05_%E5%90%AF%E5%8A%A8%E9%A1%B9%E7%9B%AE.html"><span class="toc-text">启动项目</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/06_%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE.html"><span class="toc-text">网络配置</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/07_%E8%AF%B7%E6%B1%82API.html"><span class="toc-text">请求API</span></a><a class="link" href="/wiki/adminpro/03_advanced_operation/08_build.html"><span class="toc-text">项目打包</span></a></div><div class="widget-header dis-select"><span class="name">组件使用</span></div><div class="widget-body fs14"><a class="link" href="/wiki/adminpro/04_components_using/basictable.html"><span class="toc-text">BasicTable 表格组件</span></a><a class="link" href="/wiki/adminpro/04_components_using/basicform.html"><span class="toc-text">BasicForm 表单组件</span></a></div></widget>
+
+<widget class="widget-wrapper post-card"><div class="widget-header dis-select"><span class="name">更多：项目</span></div><div class="widget-body"><a class="item wiki" href="/wiki/cloudoa/01_introduce/index.html"><span class="title">云尚办公</span><span class="excerpt">云尚办公使用了Spring Security做认证、授权结合前端实现后台菜单的动态渲染和权限控制；使用Activiti做任务流，结合Form Create实现表单设计；最后推送到微信公众号。</span></a><a class="item wiki" href="/wiki/leadnews/01_introduce/index.html"><span class="title">头条新闻</span><span class="excerpt">项目采用的是SpringBoot+springcloud当下最流行的微服务为项目架构，配合spring cloud alibaba nacos作为项目的注册和配置中心。新课程采用快速开发的模式，主要解决真实企业开发的一些应用场景。深入挖掘技术和业务的解决方案，做到更加的通用，能举一反三，充分满足互联网行业中复杂的微服务技术要求。</span></a><a class="item wiki" href="/wiki/pyqgis-sd/01_intr/index.html"><span class="title">PyQGIS二次开发指南</span><span class="excerpt">当你的数据处理使用的是Python语言，而你的导师又让你开发界面，那么PyQGIS二次开发指南是你必读的圣经。QGIS支持Python语言进行二次开发，你将学会如何使用Qt Designer进行界面设计、加载栅格数据、加载矢量数据、软件打包、安装包制作等。</span></a><a class="item wiki" href="/wiki/learning-online/01-introduce/index.html"><span class="title">学成在线</span><span class="excerpt">该项目以在线教育业务为基础，基于当前热门的 Spring Cloud 微服务技术栈进行设计，采用Nginx、SpringBoot、Spring Cloud、MyBatis-Plus、MQ、Redis、Elasticsearch等框架和中间件为基础进行开发，带你体验Java大型项目从需求分析、架构设计、编码、调试、测试的整个过程。</span></a><a class="item wiki" href="/wiki/trip-cloud/01_introduce/index.html"><span class="title">旅游项目</span><span class="excerpt">该项目基于Spring Cloud微服务技术栈进行设计，使用JWT+ThreadLocal完成用户登陆，使用MongoDB NoSQL实现文章评论，使用Elasticsearch做内容搜索，使用Redis做统计数据的存储并完成数据同步。</span></a><a class="item wiki" href="/wiki/ebook/index.html"><span class="title">电子书城</span><span class="excerpt">EBook - 电子书城是一个集成豆瓣读书和豆瓣阅读商城和电子书阅读器的Flutter构建的手机APP。你可以在商城中浏览书籍，查看书籍评分、字数、价格、书评等相关信息。登录豆瓣阅读之后，你可以将电子书加入书架，查看书架、阅读电子书等操作。总之，你的豆瓣阅读不一定是豆瓣阅读，也可能是电子书城。</span></a><a class="item wiki" href="/wiki/oneread/index.html"><span class="title">ONE阅读</span><span class="excerpt">OneRead - ONE阅读,是一个使用Flutter构建的集书籍、漫画、听书和视频资源为一体的手机APP。使用自定义源来解析对应的资源，以舒适的UI来展示数据。ONE阅读，不只阅读。</span></a></div></widget>
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/wiki/oneread/index.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目介绍</span></a><a class="item title" href="/wiki/oneread/source_rule.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>源规则</span></a><a class="item title" href="/wiki/oneread/preview.html"><span class="title"><strong>OneRead</strong><span class="dot"></span>项目预览</span></a><a class="item title" href="/wiki/flutter-dev/mac/icon.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>修改应用图标</span></a><a class="item title" href="/wiki/flutter-dev/windows/title.html"><span class="title"><strong>FlutterDev</strong><span class="dot"></span>定制标题栏</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/SX-Code" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/github.png"/></a><a class="social" href="https://music.163.com/playlist?id=833469029&userid=555945648" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/music.svg"/></a><a class="social" href="https://github.com/SX-Code/about/#comments" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/sx-code/tuchuang@master/icon/comments.svg"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki">文档</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/adminpro/01_introduce/index.html">Naive UI Admin搭建流程</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2023-11-10T07:50:48.675Z">2023-11-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>项目设置</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="网站配置"><a href="#网站配置" class="headerlink" title="网站配置"></a>网站配置</h2><p>这部份的配置信息，不需要也不能动态的变更，直接使用即可。</p>
+<blockquote>
+<p>项目的Logo信息，可在这里进行修改，Vite方式忽略</p>
+</blockquote>
+<p>创建<code>src/config/website.config.js</code>文件，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>config/website.config.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> logoImage <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/assets/images/logo.png&#x27;</span>;<br><span class="hljs-keyword">import</span> loginImage <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/assets/images/account-logo.png&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> websiteConfig = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">freeze</span>(&#123;<br>  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;CloudUpOA&#x27;</span>,<br>  <span class="hljs-attr">logo</span>: logoImage,<br>  <span class="hljs-attr">loginImage</span>: loginImage,<br>  <span class="hljs-attr">loginDesc</span>: <span class="hljs-string">&#x27;云尚办公后台管理系统&#x27;</span>,<br>&#125;);<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="projectSetting"><a href="#projectSetting" class="headerlink" title="projectSetting"></a>projectSetting</h2><h3 id="默认设置"><a href="#默认设置" class="headerlink" title="默认设置"></a>默认设置</h3><p>创建<code>src/settings/projectSetting.js</code>文件，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>settings/projectSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> setting = &#123;<br>  <span class="hljs-comment">//导航模式 vertical 左侧菜单模式 horizontal 顶部菜单模式</span><br>  <span class="hljs-attr">navMode</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,<br>  <span class="hljs-comment">//导航风格 dark 暗色侧边栏 light 白色侧边栏 header-dark 暗色顶栏</span><br>  <span class="hljs-attr">navTheme</span>: <span class="hljs-string">&#x27;dark&#x27;</span>,<br>  <span class="hljs-comment">// 是否处于移动端模式</span><br>  <span class="hljs-attr">isMobile</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-comment">//顶部</span><br>  <span class="hljs-attr">headerSetting</span>: &#123;<br>    <span class="hljs-comment">//背景色</span><br>    <span class="hljs-attr">bgColor</span>: <span class="hljs-string">&#x27;#fff&#x27;</span>,<br>    <span class="hljs-comment">//固定顶部</span><br>    <span class="hljs-attr">fixed</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">//显示重载按钮</span><br>    <span class="hljs-attr">isReload</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>  <span class="hljs-comment">//页脚</span><br>  <span class="hljs-attr">showFooter</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-comment">//多标签</span><br>  <span class="hljs-attr">multiTabsSetting</span>: &#123;<br>    <span class="hljs-comment">//背景色</span><br>    <span class="hljs-attr">bgColor</span>: <span class="hljs-string">&#x27;#fff&#x27;</span>,<br>    <span class="hljs-comment">//是否显示</span><br>    <span class="hljs-attr">show</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">//固定多标签</span><br>    <span class="hljs-attr">fixed</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>  <span class="hljs-comment">//菜单</span><br>  <span class="hljs-attr">menuSetting</span>: &#123;<br>    <span class="hljs-comment">//最小宽度</span><br>    <span class="hljs-attr">minMenuWidth</span>: <span class="hljs-number">64</span>,<br>    <span class="hljs-comment">//菜单宽度</span><br>    <span class="hljs-attr">menuWidth</span>: <span class="hljs-number">200</span>,<br>    <span class="hljs-comment">//固定菜单</span><br>    <span class="hljs-attr">fixed</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">//分割菜单</span><br>    <span class="hljs-attr">mixMenu</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-comment">//触发移动端侧边栏的宽度</span><br>    <span class="hljs-attr">mobileWidth</span>: <span class="hljs-number">800</span>,<br>    <span class="hljs-comment">// 折叠菜单</span><br>    <span class="hljs-attr">collapsed</span>: <span class="hljs-literal">false</span>,<br>  &#125;,<br>  <span class="hljs-comment">//面包屑</span><br>  <span class="hljs-attr">crumbsSetting</span>: &#123;<br>    <span class="hljs-comment">//是否显示</span><br>    <span class="hljs-attr">show</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">//显示图标</span><br>    <span class="hljs-attr">showIcon</span>: <span class="hljs-literal">false</span>,<br>  &#125;,<br>  <span class="hljs-comment">//菜单权限模式 FIXED 前端固定路由  BACK 动态获取</span><br>  <span class="hljs-attr">permissionMode</span>: <span class="hljs-string">&#x27;FIXED&#x27;</span>,<br>  <span class="hljs-comment">//是否开启路由动画</span><br>  <span class="hljs-attr">isPageAnimate</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-comment">//路由动画类型</span><br>  <span class="hljs-attr">pageAnimateType</span>: <span class="hljs-string">&#x27;zoom-fade&#x27;</span>,<br>&#125;;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> setting;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="状态保存"><a href="#状态保存" class="headerlink" title="状态保存"></a>状态保存</h3><blockquote>
+<p>使用Store，保存当前菜单设置的状态，方便提供动态修改页面效果的功能</p>
+</blockquote>
+<p>创建<code>src/store/modules/projectSetting.js</code>，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>store/modules/projectSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><span class="hljs-keyword">import</span> &#123; store &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store&#x27;</span>;<br><span class="hljs-keyword">import</span> projectSetting <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/settings/projectSetting&#x27;</span>;<br><br><span class="hljs-keyword">const</span> &#123;<br>  navMode,<br>  navTheme,<br>  isMobile,<br>  headerSetting,<br>  showFooter,<br>  menuSetting,<br>  multiTabsSetting,<br>  crumbsSetting,<br>  permissionMode,<br>  isPageAnimate,<br>  pageAnimateType,<br>&#125; = projectSetting<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useProjectSettingStore = <span class="hljs-title function_">defineStore</span>(&#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;app-project-setting&#x27;</span>,<br>  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123;<br>    <span class="hljs-attr">navMode</span>: navMode, <span class="hljs-comment">//导航模式</span><br>    navTheme, <span class="hljs-comment">//导航风格</span><br>    isMobile, <span class="hljs-comment">// 是否处于移动端模式</span><br>    headerSetting,  <span class="hljs-comment">//顶部设置</span><br>    showFooter, <span class="hljs-comment">//页脚</span><br>    menuSetting,  <span class="hljs-comment">//多标签</span><br>    multiTabsSetting, <span class="hljs-comment">//多标签</span><br>    crumbsSetting,  <span class="hljs-comment">//面包屑</span><br>    permissionMode, <span class="hljs-comment">//权限模式</span><br>    isPageAnimate,  <span class="hljs-comment">//是否开启路由动画</span><br>    pageAnimateType,   <span class="hljs-comment">//路由动画类型</span><br>  &#125;),<br>  <span class="hljs-attr">getters</span>: &#123;<br>    <span class="hljs-title function_">getNavMode</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">navMode</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getNavTheme</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">navTheme</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getIsMobile</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">isMobile</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getHeaderSetting</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">headerSetting</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getShowFooter</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">showFooter</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getMenuSetting</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">menuSetting</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getMultiTabsSetting</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">multiTabsSetting</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getCrumbsSetting</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">multiTabsSetting</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getPermissionMode</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">permissionMode</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getIsPageAnimate</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">isPageAnimate</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getPageAnimateType</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">pageAnimateType</span>;<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-attr">actions</span>: &#123;<br>    <span class="hljs-title function_">setNavTheme</span>(<span class="hljs-params">value</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">navTheme</span> = value;<br>    &#125;,<br>    <span class="hljs-title function_">setIsMobile</span>(<span class="hljs-params">value</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">isMobile</span> = value<br>    &#125;,<br>  &#125;,<br>&#125;);<br><span class="hljs-comment">// Need to be used outside the setup</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useProjectSettingStoreWithOut</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">useProjectSettingStore</span>(store);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="监听读取"><a href="#监听读取" class="headerlink" title="监听读取"></a>监听读取</h3><p>当Store中的数据变化时，我们需要及时通知页面做出更改，因此需要监听其变化。</p>
+<blockquote>
+<p>使用computed监听数据变化</p>
+</blockquote>
+<p>创建<code>src/hooks/setting/useProjectSetting.js</code></p>
+<figure class="highlight js"><figcaption><span>hooks/setting/useProjectSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; useProjectSettingStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/modules/projectSetting&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useProjectSetting</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> projectStore = <span class="hljs-title function_">useProjectSettingStore</span>();<br><br>  <span class="hljs-keyword">const</span> getNavMode = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">navMode</span>);<br><br>  <span class="hljs-keyword">const</span> getNavTheme = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">navTheme</span>);<br><br>  <span class="hljs-keyword">const</span> getIsMobile = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">isMobile</span>);<br><br>  <span class="hljs-keyword">const</span> getHeaderSetting = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">headerSetting</span>);<br><br>  <span class="hljs-keyword">const</span> getMultiTabsSetting = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">multiTabsSetting</span>);<br><br>  <span class="hljs-keyword">const</span> getMenuSetting = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">menuSetting</span>);<br><br>  <span class="hljs-keyword">const</span> getCrumbsSetting = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">crumbsSetting</span>);<br><br>  <span class="hljs-keyword">const</span> getPermissionMode = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">permissionMode</span>);<br><br>  <span class="hljs-keyword">const</span> getShowFooter = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">showFooter</span>);<br><br>  <span class="hljs-keyword">const</span> getIsPageAnimate = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">isPageAnimate</span>);<br><br>  <span class="hljs-keyword">const</span> getPageAnimateType = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> projectStore.<span class="hljs-property">pageAnimateType</span>);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    getNavMode,<br>    getNavTheme,<br>    getIsMobile,<br>    getHeaderSetting,<br>    getMultiTabsSetting,<br>    getMenuSetting,<br>    getCrumbsSetting,<br>    getPermissionMode,<br>    getShowFooter,<br>    getIsPageAnimate,<br>    getPageAnimateType,<br>  &#125;;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="designSetting"><a href="#designSetting" class="headerlink" title="designSetting"></a>designSetting</h2><h3 id="默认设置-1"><a href="#默认设置-1" class="headerlink" title="默认设置"></a>默认设置</h3><p>创建<code>src/settings/designSetting.js</code>文件，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>settings/designSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// app theme preset color</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> appThemeList = [<br>  <span class="hljs-string">&quot;#2d8cf0&quot;</span>,<br>  <span class="hljs-string">&quot;#0960bd&quot;</span>,<br>  <span class="hljs-string">&quot;#0084f4&quot;</span>,<br>  <span class="hljs-string">&quot;#009688&quot;</span>,<br>  <span class="hljs-string">&quot;#536dfe&quot;</span>,<br>  <span class="hljs-string">&quot;#ff5c93&quot;</span>,<br>  <span class="hljs-string">&quot;#ee4f12&quot;</span>,<br>  <span class="hljs-string">&quot;#0096c7&quot;</span>,<br>  <span class="hljs-string">&quot;#9c27b0&quot;</span>,<br>  <span class="hljs-string">&quot;#ff9800&quot;</span>,<br>  <span class="hljs-string">&quot;#FF3D68&quot;</span>,<br>  <span class="hljs-string">&quot;#00C1D4&quot;</span>,<br>  <span class="hljs-string">&quot;#71EFA3&quot;</span>,<br>  <span class="hljs-string">&quot;#171010&quot;</span>,<br>  <span class="hljs-string">&quot;#78DEC7&quot;</span>,<br>  <span class="hljs-string">&quot;#1768AC&quot;</span>,<br>  <span class="hljs-string">&quot;#FB9300&quot;</span>,<br>  <span class="hljs-string">&quot;#FC5404&quot;</span>,<br>];<br><br><span class="hljs-keyword">const</span> setting = &#123;<br>  <span class="hljs-comment">//深色主题</span><br>  <span class="hljs-attr">darkTheme</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-comment">//系统主题色</span><br>  <span class="hljs-attr">appTheme</span>: <span class="hljs-string">&quot;#2d8cf0&quot;</span>,<br>  <span class="hljs-comment">//系统内置主题色列表</span><br>  appThemeList,<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> setting;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="状态保存-1"><a href="#状态保存-1" class="headerlink" title="状态保存"></a>状态保存</h3><p>创建<code>src/store/modules/designSetting.js</code>，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>store/modules/designSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;pinia&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; store &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/store&quot;</span>;<br><span class="hljs-keyword">import</span> designSetting <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/settings/designSetting&quot;</span>;<br><br><span class="hljs-keyword">const</span> &#123; darkTheme, appTheme, appThemeList &#125; = designSetting;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useDesignSettingStore = <span class="hljs-title function_">defineStore</span>(&#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;app-design-setting&quot;</span>,<br>  <span class="hljs-attr">state</span>: <span class="hljs-function">() =&gt;</span> (&#123;<br>    darkTheme, <span class="hljs-comment">//深色主题</span><br>    appTheme, <span class="hljs-comment">//系统风格</span><br>    appThemeList, <span class="hljs-comment">//系统内置风格</span><br>  &#125;),<br>  <span class="hljs-attr">getters</span>: &#123;<br>    <span class="hljs-title function_">getDarkTheme</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">darkTheme</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getAppTheme</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">appTheme</span>;<br>    &#125;,<br>    <span class="hljs-title function_">getAppThemeList</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">appThemeList</span>;<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-attr">actions</span>: &#123;&#125;,<br>&#125;);<br><br><span class="hljs-comment">// Need to be used outside the setup</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useDesignSettingWithOut</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">useDesignSettingStore</span>(store);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="监听读取-1"><a href="#监听读取-1" class="headerlink" title="监听读取"></a>监听读取</h3><p>当Store中的数据变化时，我们需要及时通知页面做出更改，因此需要监听其变化。</p>
+<blockquote>
+<p>使用computed监听数据变化</p>
+</blockquote>
+<p>创建<code>src/hooks/setting/useDesignSetting.js</code></p>
+<figure class="highlight js"><figcaption><span>hooks/setting/useDesignSetting.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; useDesignSettingStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/modules/designSetting&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useDesignSetting</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> designStore = <span class="hljs-title function_">useDesignSettingStore</span>();<br><br>  <span class="hljs-keyword">const</span> getDarkTheme = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> designStore.<span class="hljs-property">darkTheme</span>);<br><br>  <span class="hljs-keyword">const</span> getAppTheme = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> designStore.<span class="hljs-property">appTheme</span>);<br><br>  <span class="hljs-keyword">const</span> getAppThemeList = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> designStore.<span class="hljs-property">appThemeList</span>);<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    getDarkTheme,<br>    getAppTheme,<br>    getAppThemeList,<br>  &#125;;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="环境ENV"><a href="#环境ENV" class="headerlink" title="环境ENV"></a>环境ENV</h2><p>关于文件名：必须以如下方式命名，不要乱起名，也无需专门手动控制加载哪个文件</p>
+<ul>
+<li><code>.env</code> ：全局默认配置文件，不论什么环境都会加载合并</li>
+<li><code>.env.development </code>：开发环境下的配置文件</li>
+<li><code>.env.production</code> ：生产环境下的配置文件</li>
+</ul>
+<h3 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h3><p>注意：属性名必须以VUE_APP_开头，比如VUE_APP_XXX</p>
+<p>创建<code>src/.env</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext"># port<br>PORT = 8001<br><br># spa-title<br>VUE_APP_TITLE = CloudUpOA<br><br># spa shortname<br>VUE_APP_SHORT_NAME = CloudUpOA<br></code></pre></td></tr></table></figure>
+
+<p>创建<code>src/.env.development</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">NODE_ENV = &#x27;development&#x27;<br><br># 网站根目录<br>VUE_APP_PUBLIC_PATH = /<br><br># 是否开启mock<br>VUE_APP_USE_MOCK = true<br><br># 网站前缀<br>VUE_APP_BASE_URL = /<br><br># 是否删除console<br>VUE_APP_DROP_CONSOLE = true<br><br># API 接口地址<br>VUE_APP_API_URL =<br><br># 图片上传地址<br>VUE_APP_UPLOAD_URL=<br><br># 图片前缀地址<br>VUE_APP_IMG_URL=<br><br># 接口前缀<br>VUE_APP_API_URL_PREFIX = /dev-api<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="输出控制台"><a href="#输出控制台" class="headerlink" title="输出控制台"></a>输出控制台</h4><p>创建<code>src/utils/logs.js</code></p>
+<figure class="highlight js"><figcaption><span>utils/logs.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> projectName = process.<span class="hljs-property">env</span>.<span class="hljs-property">VUE_APP_TITLE</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">warn</span>(<span class="hljs-params">message</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">`[<span class="hljs-subst">$&#123;projectName&#125;</span> warn]:<span class="hljs-subst">$&#123;message&#125;</span>`</span>);<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">error</span>(<span class="hljs-params">message</span>) &#123;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`[<span class="hljs-subst">$&#123;projectName&#125;</span> error]:<span class="hljs-subst">$&#123;message&#125;</span>`</span>);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="获取方法"><a href="#获取方法" class="headerlink" title="获取方法"></a>获取方法</h4><p>创建<code>src/utils/env.js</code>，写入以下内容：</p>
+<figure class="highlight js"><figcaption><span>utils/env.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; warn &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/log&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getAppEnvConfig</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ENV</span> = process.<span class="hljs-property">env</span>;<br>  <span class="hljs-keyword">const</span> &#123;<br>    <span class="hljs-variable constant_">VUE_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VUE_APP_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VUE_APP_IMG_URL</span>,<br>  &#125; = <span class="hljs-variable constant_">ENV</span>;<br><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-regexp">/^[a-zA-Z_]*$/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>)) &#123;<br>    <span class="hljs-title function_">warn</span>(<br>      <span class="hljs-string">`VUE_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`</span><br>    );<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-variable constant_">VUE_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VUE_APP_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VUE_APP_IMG_URL</span>,<br>  &#125;;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Development model</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> devMode = <span class="hljs-string">&#x27;development&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Production mode</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> prodMode = <span class="hljs-string">&#x27;production&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Get environment variables</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getEnv</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span>;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Is it a development mode</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isDevMode</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === devMode;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Is it a production mode</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isProdMode</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === devMode;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="换名读取"><a href="#换名读取" class="headerlink" title="换名读取"></a>换名读取</h4><p>以VUE_APP_XXX的方式在项目中使用，终归是不方便。这里我们提供一种读取方式，更换其名称。</p>
+<p>创建<code>src/hooks/setting/index.js</code></p>
+<figure class="highlight js"><figcaption><span>hooks/setting/index.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; warn &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/log&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; getAppEnvConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/env&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">useGlobSetting</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> &#123;<br>    <span class="hljs-variable constant_">VUE_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VUE_APP_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VUE_APP_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VUE_APP_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VUE_APP_IMG_URL</span>,<br>  &#125; = <span class="hljs-title function_">getAppEnvConfig</span>();<br><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-regexp">/[a-zA-Z_]*/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>)) &#123;<br>    <span class="hljs-title function_">warn</span>(<br>      <span class="hljs-string">`VUE_APP_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`</span><br>    );<br>  &#125;<br><br>  <span class="hljs-comment">// Take global configuration</span><br>  <span class="hljs-keyword">const</span> glob = &#123;<br>    <span class="hljs-attr">title</span>: <span class="hljs-variable constant_">VUE_APP_TITLE</span>,<br>    <span class="hljs-attr">apiUrl</span>: <span class="hljs-variable constant_">VUE_APP_API_URL</span>,<br>    <span class="hljs-attr">shortName</span>: <span class="hljs-variable constant_">VUE_APP_SHORT_NAME</span>,<br>    <span class="hljs-attr">urlPrefix</span>: <span class="hljs-variable constant_">VUE_APP_API_URL_PREFIX</span>,<br>    <span class="hljs-attr">uploadUrl</span>: <span class="hljs-variable constant_">VUE_APP_UPLOAD_URL</span>,<br>    <span class="hljs-attr">prodMock</span>: <span class="hljs-variable constant_">VUE_APP_PROD_MOCK</span>,<br>    <span class="hljs-attr">imgUrl</span>: <span class="hljs-variable constant_">VUE_APP_IMG_URL</span>,<br>  &#125;;<br>  <span class="hljs-keyword">return</span> glob;<br>&#125;;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="Vite"><a href="#Vite" class="headerlink" title="Vite"></a>Vite</h3><p>注意：属性名必须以VITE_开头，比如VUE_XXX</p>
+<p>创建<code>src/.env</code></p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># port</span><br><span class="hljs-attr">VITE_PORT</span> = <span class="hljs-string">8001</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># spa-title</span><br><span class="hljs-attr">VITE_GLOB_APP_TITLE</span> = <span class="hljs-string">医院管理系统</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># spa shortname</span><br><span class="hljs-attr">VITE_GLOB_APP_SHORT_NAME</span> = <span class="hljs-string">医院管理系统</span><br></code></pre></td></tr></table></figure>
+
+<p>创建<code>src/.env.development</code></p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># 只在开发模式中被载入</span><br><span class="hljs-attr">VITE_PORT</span> = <span class="hljs-string">8001</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 网站根目录</span><br><span class="hljs-attr">VITE_PUBLIC_PATH</span> = <span class="hljs-string">/</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 网站前缀</span><br><span class="hljs-attr">VITE_BASE_URL</span> = <span class="hljs-string">/</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 跨域代理，可以配置多个，请注意不要换行</span><br><span class="hljs-comment">#VITE_PROXY = [[&quot;/appApi&quot;,&quot;http://localhost:8001&quot;],[&quot;/upload&quot;,&quot;http://localhost:8001/upload&quot;]]</span><br><span class="hljs-attr">VITE_PROXY</span>=<span class="hljs-string">[[&quot;/api&quot;,&quot;http://localhost:9000&quot;]]</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># API 接口地址</span><br><span class="hljs-attr">VITE_GLOB_API_URL</span> =<span class="hljs-string"></span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 图片上传地址</span><br><span class="hljs-attr">VITE_GLOB_UPLOAD_URL</span>=<span class="hljs-string"></span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 图片前缀地址</span><br><span class="hljs-attr">VITE_GLOB_IMG_URL</span>=<span class="hljs-string"></span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 接口前缀</span><br><span class="hljs-attr">VITE_GLOB_API_URL_PREFIX</span> = <span class="hljs-string">/api</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="输出控制台-1"><a href="#输出控制台-1" class="headerlink" title="输出控制台"></a>输出控制台</h4><p>创建<code>src/utils/log.js</code></p>
+<figure class="highlight js"><figcaption><span>utils/logs.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> projectName = <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">VITE_GLOB_APP_TITLE</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">warn</span>(<span class="hljs-params">message</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">`[<span class="hljs-subst">$&#123;projectName&#125;</span> warn]:<span class="hljs-subst">$&#123;message&#125;</span>`</span>);<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">error</span>(<span class="hljs-params">message</span>) &#123;<br>  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`[<span class="hljs-subst">$&#123;projectName&#125;</span> error]:<span class="hljs-subst">$&#123;message&#125;</span>`</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获取方法-1"><a href="#获取方法-1" class="headerlink" title="获取方法"></a>获取方法</h4><p>创建<code>src/utils/env.js</code>，写入以下内容：</p>
+<blockquote>
+<p><code>@/build/getConfigFileName</code></p>
+<figure class="highlight js"><figcaption><span>getConfigFileName.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Get the configuration file variable name</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">env</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">getConfigFileName</span> = (<span class="hljs-params">env</span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`__PRODUCTION__<span class="hljs-subst">$&#123;env.VITE_GLOB_APP_SHORT_NAME || <span class="hljs-string">&#x27;__APP&#x27;</span>&#125;</span>__CONF__`</span><br>    .<span class="hljs-title function_">toUpperCase</span>()<br>    .<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\s/g</span>, <span class="hljs-string">&#x27;&#x27;</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight js"><figcaption><span>utils/env.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; warn &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/log&#x27;</span>;<br><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../package.json&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; getConfigFileName &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../build/getConfigFileName&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getCommonStoragePrefix</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; <span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span> &#125; = <span class="hljs-title function_">getAppEnvConfig</span>();<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;VITE_GLOB_APP_SHORT_NAME&#125;</span>__<span class="hljs-subst">$&#123;getEnv()&#125;</span>`</span>.<span class="hljs-title function_">toUpperCase</span>();<br>&#125;<br><br><span class="hljs-comment">// Generate cache key according to version</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getStorageShortName</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;getCommonStoragePrefix()&#125;</span><span class="hljs-subst">$&#123;<span class="hljs-string">`__<span class="hljs-subst">$&#123;pkg.version&#125;</span>`</span>&#125;</span>__`</span>.<span class="hljs-title function_">toUpperCase</span>();<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getAppEnvConfig</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ENV_NAME</span> = <span class="hljs-title function_">getConfigFileName</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>);<br><br>  <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ENV</span> = (<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">DEV</span><br>    ? <span class="hljs-comment">// Get the global configuration (the configuration will be extracted independently when packaging)</span><br>      (<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>) : <span class="hljs-variable language_">window</span>[<span class="hljs-variable constant_">ENV_NAME</span>]);<br><br>  <span class="hljs-keyword">const</span> &#123;<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_IMG_URL</span>,<br>  &#125; = <span class="hljs-variable constant_">ENV</span>;<br><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-regexp">/^[a-zA-Z\_]*$/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>)) &#123;<br>    <span class="hljs-title function_">warn</span>(<br>      <span class="hljs-string">`VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`</span><br>    );<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_IMG_URL</span>,<br>  &#125;;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Development model</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> devMode = <span class="hljs-string">&#x27;development&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Production mode</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> prodMode = <span class="hljs-string">&#x27;production&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Get environment variables</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getEnv</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">MODE</span>;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Is it a development mode</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isDevMode</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">DEV</span>;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Is it a production mode</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span>:</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@example</span>:</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isProdMode</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">PROD</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="换名读取-1"><a href="#换名读取-1" class="headerlink" title="换名读取"></a>换名读取</h4><p>以VITE_XXX的方式在项目中使用，终归是不方便。这里我们提供一种读取方式，更换其名称。</p>
+<p>创建<code>src/hooks/setting/index.js</code></p>
+<figure class="highlight js"><figcaption><span>hooks/setting/index.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; warn &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/log&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; getAppEnvConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/env&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">useGlobSetting</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> &#123;<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_TITLE</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_API_URL_PREFIX</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_UPLOAD_URL</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_PROD_MOCK</span>,<br>    <span class="hljs-variable constant_">VITE_GLOB_IMG_URL</span>,<br>  &#125; = <span class="hljs-title function_">getAppEnvConfig</span>();<br><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-regexp">/[a-zA-Z\_]*/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>)) &#123;<br>    <span class="hljs-title function_">warn</span>(<br>      <span class="hljs-string">`VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`</span><br>    );<br>  &#125;<br><br>  <span class="hljs-comment">// Take global configuration</span><br>  <span class="hljs-keyword">const</span> glob = &#123;<br>    <span class="hljs-attr">title</span>: <span class="hljs-variable constant_">VITE_GLOB_APP_TITLE</span>,<br>    <span class="hljs-attr">apiUrl</span>: <span class="hljs-variable constant_">VITE_GLOB_API_URL</span>,<br>    <span class="hljs-attr">shortName</span>: <span class="hljs-variable constant_">VITE_GLOB_APP_SHORT_NAME</span>,<br>    <span class="hljs-attr">urlPrefix</span>: <span class="hljs-variable constant_">VITE_GLOB_API_URL_PREFIX</span>,<br>    <span class="hljs-attr">uploadUrl</span>: <span class="hljs-variable constant_">VITE_GLOB_UPLOAD_URL</span>,<br>    <span class="hljs-attr">prodMock</span>: <span class="hljs-variable constant_">VITE_GLOB_PROD_MOCK</span>,<br>    <span class="hljs-attr">imgUrl</span>: <span class="hljs-variable constant_">VITE_GLOB_IMG_URL</span>,<br>  &#125;;<br>  <span class="hljs-keyword">return</span> glob;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Env解析工具"><a href="#Env解析工具" class="headerlink" title="Env解析工具"></a>Env解析工具</h4><p>根目录创建<code>build/utils.js</code>文件，用来获取所有<code>.env.*</code>的配置信息，内容如下</p>
+<blockquote>
+<p>安装工具</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">npm install dotenv --save-dev<br></code></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight js"><figcaption><span>utils.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;fs&#x27;</span>;<br><span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;path&#x27;</span>;<br><span class="hljs-keyword">import</span> dotenv <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dotenv&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isDevFn</span>(<span class="hljs-params">mode</span>) &#123;<br>  <span class="hljs-keyword">return</span> mode === <span class="hljs-string">&#x27;development&#x27;</span>;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isProdFn</span>(<span class="hljs-params">mode</span>) &#123;<br>  <span class="hljs-keyword">return</span> mode === <span class="hljs-string">&#x27;production&#x27;</span>;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Whether to generate package preview</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isReportMode</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">REPORT</span> === <span class="hljs-string">&#x27;true&#x27;</span>;<br>&#125;<br><br><span class="hljs-comment">// Read all environment variable configuration files to process.env</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">wrapperEnv</span>(<span class="hljs-params">envConf</span>) &#123;<br>  <span class="hljs-keyword">const</span> ret = &#123;&#125;;<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> envName <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(envConf)) &#123;<br>    <span class="hljs-keyword">let</span> realName = envConf[envName].<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\\n/g</span>, <span class="hljs-string">&#x27;\n&#x27;</span>);<br>    realName = realName === <span class="hljs-string">&#x27;true&#x27;</span> ? <span class="hljs-literal">true</span> : realName === <span class="hljs-string">&#x27;false&#x27;</span> ? <span class="hljs-literal">false</span> : realName;<br><br>    <span class="hljs-keyword">if</span> (envName === <span class="hljs-string">&#x27;VITE_PORT&#x27;</span>) &#123;<br>      realName = <span class="hljs-title class_">Number</span>(realName);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (envName === <span class="hljs-string">&#x27;VITE_PROXY&#x27;</span>) &#123;<br>      <span class="hljs-keyword">try</span> &#123;<br>        realName = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(realName);<br>      &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>    &#125;<br>    ret[envName] = realName;<br>    process.<span class="hljs-property">env</span>[envName] = realName;<br>  &#125;<br>  <span class="hljs-keyword">return</span> ret;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Get the environment variables starting with the specified prefix</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> match prefix</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> confFiles ext</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getEnvConfig</span>(<span class="hljs-params">match = <span class="hljs-string">&#x27;VITE_GLOB_&#x27;</span>, confFiles = [<span class="hljs-string">&#x27;.env&#x27;</span>, <span class="hljs-string">&#x27;.env.production&#x27;</span>]</span>) &#123;<br>  <span class="hljs-keyword">let</span> envConfig = &#123;&#125;;<br>  confFiles.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">const</span> env = dotenv.<span class="hljs-title function_">parse</span>(fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">resolve</span>(process.<span class="hljs-title function_">cwd</span>(), item)));<br>      envConfig = &#123; ...envConfig, ...env &#125;;<br>    &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>  &#125;);<br><br>  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(envConfig).<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> reg = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<span class="hljs-string">`^(<span class="hljs-subst">$&#123;match&#125;</span>)`</span>);<br>    <span class="hljs-keyword">if</span> (!reg.<span class="hljs-title function_">test</span>(key)) &#123;<br>      <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">deleteProperty</span>(envConfig, key);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-keyword">return</span> envConfig;<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Get user root directory</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> dir file path</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getRootPath</span>(<span class="hljs-params">...dir</span>) &#123;<br>  <span class="hljs-keyword">return</span> path.<span class="hljs-title function_">resolve</span>(process.<span class="hljs-title function_">cwd</span>(), ...dir);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="挂载Naive-UI上下文"><a href="#挂载Naive-UI上下文" class="headerlink" title="挂载Naive UI上下文"></a>挂载Naive UI上下文</h2><p>挂载 Naive-ui 脱离上下文的 API，在 setup 外使用 useDialog、useMessage、useNotification、useLoadingBar，可以通过 createDiscreteApi 来构建对应的 API。</p>
+<p>在<code>plugins/</code>目录创建 <code>naiveDiscreateApi.js</code></p>
+<figure class="highlight js"><figcaption><span>naiveDiscreateApi.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">NaiveUI</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;naive-ui&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; useDesignSettingWithOut &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/store/modules/designSetting&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; lighten &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/index&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 挂载 Naive-ui 脱离上下文的 API</span><br><span class="hljs-comment"> * 如果你想在 setup 外使用 useDialog、useMessage、useNotification、useLoadingBar，可以通过 createDiscreteApi 来构建对应的 API。</span><br><span class="hljs-comment"> * https://www.naiveui.com/zh-CN/dark/components/discrete</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">setupNaiveDiscreteApi</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> designStore = <span class="hljs-title function_">useDesignSettingWithOut</span>();<br><br>  <span class="hljs-keyword">const</span> configProviderPropsRef = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> (&#123;<br>    <span class="hljs-attr">theme</span>: designStore.<span class="hljs-property">darkTheme</span> ? <span class="hljs-title class_">NaiveUI</span>.<span class="hljs-property">darkTheme</span> : <span class="hljs-literal">undefined</span>,<br>    <span class="hljs-attr">themeOverrides</span>: &#123;<br>      <span class="hljs-attr">common</span>: &#123;<br>        <span class="hljs-attr">primaryColor</span>: designStore.<span class="hljs-property">appTheme</span>,<br>        <span class="hljs-attr">primaryColorHover</span>: <span class="hljs-title function_">lighten</span>(designStore.<span class="hljs-property">appTheme</span>, <span class="hljs-number">6</span>),<br>        <span class="hljs-attr">primaryColorPressed</span>: <span class="hljs-title function_">lighten</span>(designStore.<span class="hljs-property">appTheme</span>, <span class="hljs-number">6</span>),<br>      &#125;,<br>      <span class="hljs-title class_">LoadingBar</span>: &#123;<br>        <span class="hljs-attr">colorLoading</span>: designStore.<span class="hljs-property">appTheme</span>,<br>      &#125;,<br>    &#125;,<br>  &#125;));<br>  <span class="hljs-keyword">const</span> &#123; message, dialog, notification, loadingBar &#125; = <span class="hljs-title class_">NaiveUI</span>.<span class="hljs-title function_">createDiscreteApi</span>(<br>    [<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-string">&#x27;dialog&#x27;</span>, <span class="hljs-string">&#x27;notification&#x27;</span>, <span class="hljs-string">&#x27;loadingBar&#x27;</span>],<br>    &#123;<br>      <span class="hljs-attr">configProviderProps</span>: configProviderPropsRef,<br>    &#125;<br>  );<br><br>  <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$message&#x27;</span>] = message;<br>  <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$dialog&#x27;</span>] = dialog;<br>  <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$notification&#x27;</span>] = notification;<br>  <span class="hljs-variable language_">window</span>[<span class="hljs-string">&#x27;$loading&#x27;</span>] = loadingBar;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改<code>plugins/index.js</code>，添加如下代码</p>
+<figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> &#123; setupNaive &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/plugins/naive&#x27;</span>;<br><span class="hljs-keyword">export</span> &#123; setupNaiveDiscreteApi &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/plugins/naiveDiscreteApi&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>修改<code>main.js</code>，添加如下代码</p>
+<figure class="highlight js"><figcaption><span>main.js</span></figcaption><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; setupStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./store&#x27;</span><br><span class="hljs-keyword">import</span> &#123; setupNaive, setupNaiveDiscreteApi &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./plugins&#x27;</span><br><span class="hljs-keyword">import</span> router, &#123; setupRouter &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./router&#x27;</span>;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">bootstrap</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> app = <span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">App</span>);<br><br>  <span class="hljs-comment">// 挂载状态管理</span><br>  <span class="hljs-title function_">setupStore</span>(app);<br><br>  <span class="hljs-comment">// 注册全局常用的 naive-ui 组件</span><br>  <span class="hljs-title function_">setupNaive</span>(app);<br><br>  <span class="hljs-comment">// 挂载 naive-ui 脱离上下文的 Api</span><br>  <span class="hljs-title function_">setupNaiveDiscreteApi</span>();<br><br>  <span class="hljs-comment">// 挂载路由</span><br>  <span class="hljs-title function_">setupRouter</span>(app);<br><br>  <span class="hljs-comment">// 路由准备就绪后挂载 APP 实例</span><br>  <span class="hljs-comment">// https://router.vuejs.org/api/interfaces/router.html#isready</span><br>  <span class="hljs-keyword">await</span> router.<span class="hljs-title function_">isReady</span>();<br><br>  app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;#app&#x27;</span>, <span class="hljs-literal">true</span>);<br>&#125;<br><br><span class="hljs-title function_">bootstrap</span>();<br></code></pre></td></tr></table></figure>
+
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">回顾上一篇</div><a href="/wiki/adminpro/02_project_prepare/03_%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.html">资源文件</a></div><div class="item" id="next"><div class="note">接下来阅读</div><a href="/wiki/adminpro/02_project_prepare/05_%E5%B8%B8%E9%87%8F%E5%AD%97%E7%AC%A6.html">常量字符</a></div></section></div>
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body giscus'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="giscus" src="https://giscus.app/client.js" data-repo="sx-code/blog-comments" data-repo-id="R_kgDOIYpmwg" data-category="Announcements" data-category-id="DIC_kwDOIYpmws4Ce4IF" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">swcode</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.28.0">Stellar 1.28.0</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+<widget class="widget-wrapper ghrepo"><div class="widget-body"><div class="items ds-ghinfo" api="https://api.github.com/repos/SX-Code/naive-admin-js"><a class="repo" href="https://github.com/SX-Code/naive-admin-js" target="_blank" rel="external nofollow noopener noreferrer"><div class="repo-name flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>SX-Code/naive-admin-js</div><div class="repo-desc"><span type="text" id="description">&nbsp;</span></div><div class="grid"><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg><span type="text" id="stargazers_count"></span></div><div class="flex-row"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg><span type="text" id="forks_count"></span></div><div class="flex-row ds-ghinfo" index="0" api="https://api.github.com/repos/SX-Code/naive-admin-js/tags"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="user-select:none;overflow:visible"><path fill-rule="evenodd" d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z"></path></svg><span type="text" id="latest-tag-name">0</span></div></div></a></div></div></widget>
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE"><span class="toc-text">网站配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#projectSetting"><span class="toc-text">projectSetting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE"><span class="toc-text">默认设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98"><span class="toc-text">状态保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E8%AF%BB%E5%8F%96"><span class="toc-text">监听读取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#designSetting"><span class="toc-text">designSetting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-1"><span class="toc-text">默认设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98-1"><span class="toc-text">状态保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E8%AF%BB%E5%8F%96-1"><span class="toc-text">监听读取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83ENV"><span class="toc-text">环境ENV</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Webpack"><span class="toc-text">Webpack</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-text">输出控制台</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8D%A2%E5%90%8D%E8%AF%BB%E5%8F%96"><span class="toc-text">换名读取</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vite"><span class="toc-text">Vite</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%E5%8F%B0-1"><span class="toc-text">输出控制台</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95-1"><span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8D%A2%E5%90%8D%E8%AF%BB%E5%8F%96-1"><span class="toc-text">换名读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Env%E8%A7%A3%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-text">Env解析工具</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%82%E8%BD%BDNaive-UI%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">挂载Naive UI上下文</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.28.0" async></script>
+
+<!-- optional -->
+
+  <script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const els = document.querySelectorAll("#comments #giscus");
+    if (els.length === 0) return;
+    els.forEach((el, i) => {
+      try {
+        el.innerHTML = '';
+      } catch (error) {
+        console.error(error);
+      }
+      var script = document.createElement('script');
+      script.async = true;
+      for (let key of Object.keys(el.attributes)) {
+        let attr = el.attributes[key];
+        if (['class', 'id'].includes(attr.name) === false) {
+          script.setAttribute(attr.name, attr.value);
+        }
+      }
+      el.appendChild(script);
+    });
+  });
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+<script type="text/javascript" src="/custom/js/CodeStyle.js"></script>
+</div></body></html>
